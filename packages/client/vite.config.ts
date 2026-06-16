@@ -42,8 +42,8 @@ export default defineConfig({
         orientation: "portrait",
         display_override: ["window-controls-overlay"],
         display: "standalone",
-        background_color: "#101823",
-        theme_color: "#101823",
+        background_color: "#11131a",
+        theme_color: "#11131a",
         icons: [
           {
             src: `${base}assets/web/android-chrome-192x192.png`,
