@@ -1,4 +1,4 @@
-import { JSX, Match, Switch, createEffect, createMemo } from "solid-js";
+import { JSX, Match, Show, Switch, createEffect, createMemo, createSignal } from "solid-js";
 
 import { Server } from "stoat.js";
 import { styled } from "styled-system/jsx";
@@ -13,7 +13,7 @@ import { useModals } from "@revolt/modal";
 import { Navigate, useBeforeLeave, useLocation } from "@revolt/routing";
 import { useState } from "@revolt/state";
 import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
-import { CircularProgress } from "@revolt/ui";
+import { CircularProgress, typography } from "@revolt/ui";
 import { useDevice } from "@revolt/common";
 
 import { Sidebar } from "./interface/Sidebar";
@@ -66,6 +66,21 @@ const Interface = (props: { children: JSX.Element }) => {
     ].includes(lifecycle.state());
   }
 
+  const [bannerDismissed, setBannerDismissed] = createSignal(
+    localStorage.getItem("tailstalk-desktop-banner") === "dismissed",
+  );
+  const showDownloadBanner = createMemo(() => {
+    if (bannerDismissed()) return false;
+    if (window.native) return false;
+    const ua = navigator.userAgent;
+    return /Windows|Macintosh|Mac OS X/.test(ua) ||
+      (/Linux/.test(ua) && !/Android/.test(ua) && !/CrOS/.test(ua));
+  });
+  const dismissBanner = () => {
+    setBannerDismissed(true);
+    localStorage.setItem("tailstalk-desktop-banner", "dismissed");
+  };
+
   return (
     <MessageCache client={client()}>
       <div
@@ -75,6 +90,21 @@ const Interface = (props: { children: JSX.Element }) => {
           height: "100%",
         }}
       >
+        <Show when={showDownloadBanner()}>
+          <DownloadBanner>
+            <BannerText>
+              You can download the Desktop Version of TailsTalk here{" "}
+            </BannerText>
+            <DownloadButton
+              href="https://tails1154.com:9782/tailstalk/download.html"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Download
+            </DownloadButton>
+            <CloseButton onClick={dismissBanner}>✕</CloseButton>
+          </DownloadBanner>
+        </Show>
         <Titlebar />
         <Switch fallback={<CircularProgress />}>
           <Match when={!isLoggedIn()}>
@@ -163,6 +193,62 @@ const Content = styled("div", {
         borderBottomLeftRadius: "var(--borderRadius-lg)",
         overflow: "hidden",
       },
+    },
+  },
+});
+
+const DownloadBanner = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "var(--gap-md)",
+    paddingBlock: "var(--gap-sm)",
+    paddingInline: "var(--gap-md)",
+    background: "var(--md-sys-color-primary-container)",
+    color: "var(--md-sys-color-on-primary-container)",
+  },
+});
+
+const BannerText = styled("span", {
+  base: {
+    ...typography.raw({ class: "label", size: "large" }),
+  },
+});
+
+const DownloadButton = styled("a", {
+  base: {
+    cursor: "pointer",
+    display: "inline-flex",
+    alignItems: "center",
+    paddingBlock: "4px",
+    paddingInline: "var(--gap-md)",
+    borderRadius: "var(--borderRadius-sm)",
+    background: "var(--md-sys-color-primary)",
+    color: "var(--md-sys-color-on-primary)",
+    textDecoration: "none",
+    fontWeight: 600,
+    ...typography.raw({ class: "label", size: "large" }),
+  },
+});
+
+const CloseButton = styled("button", {
+  base: {
+    cursor: "pointer",
+    display: "grid",
+    placeItems: "center",
+    width: "28px",
+    height: "28px",
+    border: "none",
+    borderRadius: "50%",
+    background: "transparent",
+    color: "var(--md-sys-color-on-primary-container)",
+    fontSize: "16px",
+    lineHeight: 1,
+    flexShrink: 0,
+    "&:hover": {
+      background: "var(--md-sys-color-primary-container)",
+      filter: "brightness(0.9)",
     },
   },
 });
