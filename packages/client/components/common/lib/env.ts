@@ -45,12 +45,18 @@ export default {
     (import.meta.env.VITE_PROXY_URL as string) ??
     "https://proxy.stoatusercontent.com",
   /**
-   * What gifbox server to connect to by default.
+   * What Tenor-compatible API (Klipy) to connect to by default.
    */
-  DEFAULT_GIFBOX_URL:
-    (import.meta.env.DEV ? import.meta.env.VITE_DEV_GIFBOX_URL : undefined) ??
-    (import.meta.env.VITE_GIFBOX_URL as string) ??
-    "https://api.gifbox.me",
+  KLIPY_API_BASE:
+    (import.meta.env.DEV
+      ? import.meta.env.VITE_DEV_KLIPY_API_BASE
+      : undefined) ??
+    (import.meta.env.VITE_KLIPY_API_BASE as string) ??
+    "https://api.klipy.com",
+  /**
+   * Klipy API key
+   */
+  KLIPY_API_KEY: "GhO03Vq2h3BiC6ZeS0tO8k86Tp9ghiJdPPDXiY8NUgITtDab587Ptx9pmfb0JYlD",
   /**
    * hCaptcha site key to use if enabled
    */

@@ -13,7 +13,6 @@ import { VirtualContainer } from "@minht11/solid-virtual-container";
 import { useQuery } from "@tanstack/solid-query";
 import { styled } from "styled-system/jsx";
 
-import { useClient } from "@revolt/client";
 import env from "@revolt/common/lib/env";
 import {
   CircularProgress,
@@ -34,8 +33,11 @@ const FilterContext = createContext<(value: string) => void>();
 
 export function GifPicker() {
   const [filter, setFilter] = createSignal("");
+  const [searchQuery, setSearchQuery] = createSignal("");
 
-  const fliterLowercase = () => filter().toLowerCase();
+  const commitSearch = () => {
+    setSearchQuery(filter().toLowerCase());
+  };
 
   return (
     <Stack>
@@ -50,6 +52,12 @@ export function GifPicker() {
           e.stopImmediatePropagation();
         }}
         onChange={(e) => setFilter(e.currentTarget.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            commitSearch();
+          }
+        }}
       />
       <Suspense fallback={<CircularProgress />}>
         <Switch
@@ -59,8 +67,8 @@ export function GifPicker() {
             </FilterContext.Provider>
           }
         >
-          <Match when={fliterLowercase()}>
-            <GifSearch query={fliterLowercase()} />
+          <Match when={searchQuery()}>
+            <GifSearch query={searchQuery()} />
           </Match>
         </Switch>
       </Suspense>
@@ -95,18 +103,12 @@ type CategoryItem =
 function Categories() {
   let targetElement!: HTMLDivElement;
 
-  const client = useClient();
-
   const trendingCategories = useQuery<GifCategory[]>(() => ({
     queryKey: ["trendingGifCategories"],
     queryFn: () => {
-      const [authHeader, authHeaderValue] = client()!.authenticationHeader;
-
-      return fetch(`${env.DEFAULT_GIFBOX_URL}/categories?locale=en_US`, {
-        headers: {
-          [authHeader]: authHeaderValue,
-        },
-      }).then((r) => r.json());
+      return fetch(
+        `${env.KLIPY_API_BASE}/categories?locale=en_US&key=${env.KLIPY_API_KEY}`,
+      ).then((r) => r.json());
     },
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -115,13 +117,9 @@ function Categories() {
   const trendingGif = useQuery<GifResult | null>(() => ({
     queryKey: ["trendingGif1"],
     queryFn: () => {
-      const [authHeader, authHeaderValue] = client()!.authenticationHeader;
-
-      return fetch(`${env.DEFAULT_GIFBOX_URL}/trending?locale=en_US&limit=1`, {
-        headers: {
-          [authHeader]: authHeaderValue,
-        },
-      })
+      return fetch(
+        `${env.KLIPY_API_BASE}/trending?locale=en_US&limit=1&key=${env.KLIPY_API_KEY}`,
+      )
         .then((r) => r.json())
         .then((resp) => resp.results[0]);
     },
@@ -213,23 +211,15 @@ const Category = styled("div", {
 function GifSearch(props: { query: string }) {
   let targetElement!: HTMLDivElement;
 
-  const client = useClient();
-
   const search = useQuery<GifResult[]>(() => ({
     queryKey: ["gifs", props.query],
     queryFn: () => {
-      const [authHeader, authHeaderValue] = client()!.authenticationHeader;
-
       return fetch(
-        `${env.DEFAULT_GIFBOX_URL}/` +
+        `${env.KLIPY_API_BASE}/` +
           (props.query === "trending"
             ? `trending?locale=en_US`
-            : `search?locale=en_US&query=${encodeURIComponent(props.query)}`),
-        {
-          headers: {
-            [authHeader]: authHeaderValue,
-          },
-        },
+            : `search?locale=en_US&query=${encodeURIComponent(props.query)}`) +
+          `&key=${env.KLIPY_API_KEY}`,
       )
         .then((r) => r.json())
         .then((resp) => resp.results);

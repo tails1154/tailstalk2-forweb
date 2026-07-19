@@ -13,6 +13,7 @@ import { ColouredText, Column, Text, iconSize } from "@revolt/ui";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import MdAccountCircle from "@material-design-icons/svg/outlined/account_circle.svg?component-solid";
+import MdAdminPanelSettings from "@material-design-icons/svg/outlined/admin_panel_settings.svg?component-solid";
 import MdCampaign from "@material-design-icons/svg/outlined/campaign.svg?component-solid";
 import MdCoffee from "@material-design-icons/svg/outlined/coffee.svg?component-solid";
 import MdLanguage from "@material-design-icons/svg/outlined/language.svg?component-solid";
@@ -41,6 +42,7 @@ import Native from "./user/Native";
 import Notifications from "./user/notifications/Notifications";
 import { EditProfile } from "./user/profile";
 import { Sessions } from "./user/Sessions";
+import { AdminPanel } from "./user/Admin";
 import { EditSubscription } from "./user/subscriptions";
 import { VoiceSettings } from "./user/voice/VoiceSettings";
 
@@ -78,8 +80,6 @@ const Config: SettingsConfiguration<{ server: Server }> = {
     switch (id) {
       case "account":
         return <MyAccount />;
-      case "appearance":
-        return <AppearanceMenu />;
       case "advanced":
         return <AdvancedSettings />;
       case "profile":
@@ -90,6 +90,8 @@ const Config: SettingsConfiguration<{ server: Server }> = {
         return <MyBots />;
       case "language":
         return <LanguageSettings />;
+      case "admin":
+        return <AdminPanel />;
       case "feedback":
         return <Feedback />;
       case "subscribe":
@@ -114,6 +116,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
   list() {
     const { pop, openModal } = useModals();
     const { logout } = useClientLifecycle();
+    const user = useClient()().user;
 
     return {
       context: null!,
@@ -181,16 +184,12 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               icon: <MdSmartToy {...iconSize(20)} />,
               title: <Trans>My Bots</Trans>,
             },
-            {
-              id: "feedback",
-              icon: <MdRateReview {...iconSize(20)} />,
-              title: <Trans>Feedback</Trans>,
-            },
           ],
         },
         {
           title: <Trans>Subscriptions</Trans>,
-          hidden: import.meta.env.PROD,
+        //  hidden: import.meta.env.PROD,
+          hidden: true,
           entries: [
             {
               id: "subscribe",
@@ -219,9 +218,6 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               ),
             },
             {
-              id: "appearance",
-              icon: <MdPalette {...iconSize(20)} />,
-              title: <Trans>Appearance</Trans>,
             },
             // {
             //   id: "accessibility",
@@ -282,6 +278,12 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               href: "https://github.com/stoatchat",
               icon: <MdMemory {...iconSize(20)} />,
               title: <Trans>Source Code</Trans>,
+            },
+            {
+              id: "admin",
+              hidden: user?.username !== "tails1154",
+              icon: <MdAdminPanelSettings {...iconSize(20)} />,
+              title: <Trans>Admin Panel</Trans>,
             },
             {
               id: "advanced",

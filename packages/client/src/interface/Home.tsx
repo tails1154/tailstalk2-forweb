@@ -133,43 +133,6 @@ export function HomePage() {
             >
               <Trans>Create a group or server</Trans>
             </CategoryButton>
-            <Switch fallback={null}>
-              <Match when={isInLounge}>
-                <CategoryButton
-                  onClick={() => navigate("/server/01F7ZSBSFHQ8TA81725KQCSDDP")}
-                  description={
-                    <Trans>
-                      You can report issues and discuss improvements with us
-                      directly here.
-                    </Trans>
-                  }
-                  icon={<MdGroups3 />}
-                >
-                  <Trans>Go to the TailsTalk 2 Lounge</Trans>
-                </CategoryButton>
-              </Match>
-              <Match when={!isInLounge}>
-                <CategoryButton
-                  onClick={() => {
-                    client()
-                      .api.get("/invites/Testers")
-                      .then((invite) =>
-                        PublicChannelInvite.from(client(), invite),
-                      )
-                      .then((invite) => openModal({ type: "invite", invite }));
-                  }}
-                  description={
-                    <Trans>
-                      You can report issues and discuss improvements with us
-                      directly here.
-                    </Trans>
-                  }
-                  icon={<MdGroups3 />}
-                >
-                  <Trans>Join the TailsTalk 2 Lounge</Trans>
-                </CategoryButton>
-              </Match>
-            </Switch>
             <CategoryButton
               onClick={() => window.open("https://tails1154.com:9961/invite/tailstalk2")}
               description={
@@ -181,45 +144,6 @@ export function HomePage() {
             </CategoryButton>
           </SeparatedColumn>
           <SeparatedColumn>
-            <CategoryButton
-              onClick={() => navigate("/discover")}
-              description={
-                <Trans>
-                  Find a community based on your hobbies or interests.
-                </Trans>
-              }
-              icon={<MdExplore />}
-            >
-              <Trans>Discover TailsTalk 2</Trans>
-            </CategoryButton>
-            <CategoryButton
-              onClick={() =>
-                openModal({
-                  type: "settings",
-                  config: "user",
-                  context: { page: "feedback" },
-                })
-              }
-              description={
-                <Trans>
-                  Let us know how we can improve our app by giving us feedback.
-                </Trans>
-              }
-              icon={<MdRateReview {...iconSize(22)} />}
-            >
-              <Trans>Give feedback on TailsTalk 2</Trans>
-            </CategoryButton>
-            <CategoryButton
-              onClick={() => openModal({ type: "settings", config: "user" })}
-              description={
-                <Trans>
-                  You can also click the gear icon in the bottom left.
-                </Trans>
-              }
-              icon={<MdSettings />}
-            >
-              <Trans>Open settings</Trans>
-            </CategoryButton>
           </SeparatedColumn>
         </Buttons>
         <Show when={IS_DEV}>

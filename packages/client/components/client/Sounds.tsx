@@ -76,6 +76,10 @@ export class SoundController {
     if (!force && !this.canPlay(sound)) {
       return false;
     }
+    if (this.node) {
+      this.node.pause();
+      this.node.currentTime = 0;
+    }
     switch (sound) {
       case "deafen": {
         this.node = new Audio(deafenSound);
@@ -135,7 +139,7 @@ export class SoundController {
       }
     }
     this.lastPlayedSound = sound;
-    this.node.play();
+    this.node.play().catch(() => {});
     return true;
   }
 }
