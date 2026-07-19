@@ -4,6 +4,9 @@ set -euo pipefail
 cd "$(dirname "$0")"
 CONTAINER="stoat-web-1"
 
+echo "=== Compiling translations ==="
+pnpm --filter client exec lingui compile
+
 echo "=== Building on host ==="
 pnpm --filter client exec vite build
 
