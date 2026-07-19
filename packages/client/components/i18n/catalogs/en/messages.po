@@ -377,10 +377,16 @@ msgstr "Add status text"
 msgid "Admin"
 msgstr "Admin"
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Admin authentication required"
+msgstr "Admin authentication required"
+
 #: components/app/menus/UserContextMenu.tsx
 #: components/app/menus/ServerContextMenu.tsx
 #: components/app/menus/MessageContextMenu.tsx
 #: components/app/menus/ChannelContextMenu.tsx
+#: components/app/interface/settings/UserSettings.tsx
+#: components/app/interface/settings/user/Admin.tsx
 msgid "Admin Panel"
 msgstr "Admin Panel"
 
@@ -432,7 +438,6 @@ msgstr "An error occurred."
 msgid "An internal error occurred. ({0})"
 msgstr "An internal error occurred. ({0})"
 
-#: components/app/interface/settings/UserSettings.tsx
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Appearance"
 msgstr "Appearance"
@@ -470,6 +475,10 @@ msgstr "Assign Roles"
 #: components/modal/modals/ScreenShareSettings.tsx
 msgid "Audio disabled by browser"
 msgstr "Audio disabled by browser"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Authenticate"
+msgstr "Authenticate"
 
 #: components/modal/modals/MFAFlow.tsx
 #: components/modal/modals/MFAFlow.tsx
@@ -1194,7 +1203,7 @@ msgstr "Disconnected"
 msgid "Discord RPC"
 msgstr "Discord RPC"
 
-#: src/interface/Home.tsx
+#: src/interface/Discover.tsx
 msgid "Discover TailsTalk 2"
 msgstr "Discover TailsTalk 2"
 
@@ -1426,14 +1435,13 @@ msgstr "Failed to send"
 msgid "Failed to verify!"
 msgstr "Failed to verify!"
 
-#: components/app/interface/settings/UserSettings.tsx
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Feedback"
 msgstr "Feedback"
 
 #: src/interface/Home.tsx
-msgid "Find a community based on your hobbies or interests."
-msgstr "Find a community based on your hobbies or interests."
+#~ msgid "Find a community based on your hobbies or interests."
+#~ msgstr "Find a community based on your hobbies or interests."
 
 #: components/auth/src/flows/FlowHome.tsx
 msgid "Find your com<0/>munity,<1/>connect with the world."
@@ -1501,8 +1509,8 @@ msgid "Get active recovery codes"
 msgstr "Get active recovery codes"
 
 #: src/interface/Home.tsx
-msgid "Give feedback on TailsTalk 2"
-msgstr "Give feedback on TailsTalk 2"
+#~ msgid "Give feedback on TailsTalk 2"
+#~ msgstr "Give feedback on TailsTalk 2"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Give us some detail"
@@ -1525,7 +1533,6 @@ msgstr "Go back to login"
 msgid "Go to account settings to edit your username"
 msgstr "Go to account settings to edit your username"
 
-#: src/interface/Home.tsx
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Go to the TailsTalk 2 Lounge"
 msgstr "Go to the TailsTalk 2 Lounge"
@@ -1697,7 +1704,6 @@ msgstr "Join Official Server"
 msgid "Join our official server to connect with the community!"
 msgstr "Join our official server to connect with the community!"
 
-#: src/interface/Home.tsx
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Join the TailsTalk 2 Lounge"
 msgstr "Join the TailsTalk 2 Lounge"
@@ -1790,8 +1796,8 @@ msgid "Let TailsTalk 2 use its own custom titlebar."
 msgstr "Let TailsTalk 2 use its own custom titlebar."
 
 #: src/interface/Home.tsx
-msgid "Let us know how we can improve our app by giving us feedback."
-msgstr "Let us know how we can improve our app by giving us feedback."
+#~ msgid "Let us know how we can improve our app by giving us feedback."
+#~ msgstr "Let us know how we can improve our app by giving us feedback."
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 msgid "Light"
@@ -1806,6 +1812,10 @@ msgstr "Listen"
 #: components/ui/components/features/messaging/elements/TextFile.tsx
 msgid "Load file ({0})"
 msgstr "Load file ({0})"
+
+#: src/interface/Discover.tsx
+msgid "Loading..."
+msgstr "Loading..."
 
 #: components/auth/src/flows/FlowHome.tsx
 msgid "Log In"
@@ -2100,6 +2110,10 @@ msgstr "Nickname"
 msgid "No permissions set yet"
 msgstr "No permissions set yet"
 
+#: src/interface/Discover.tsx
+msgid "No servers found."
+msgstr "No servers found."
+
 #: src/interface/Friends.tsx
 msgid "Nobody here right now!"
 msgstr "Nobody here right now!"
@@ -2203,8 +2217,8 @@ msgid "Open server settings"
 msgstr "Open server settings"
 
 #: src/interface/Home.tsx
-msgid "Open settings"
-msgstr "Open settings"
+#~ msgid "Open settings"
+#~ msgstr "Open settings"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Other"
@@ -3339,6 +3353,10 @@ msgstr "Webhooks"
 #~ msgid "Welcome to"
 #~ msgstr "Welcome to"
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Welcome to the admin panel."
+msgstr "Welcome to the admin panel."
+
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Welcome!"
 msgstr "Welcome!"
@@ -3389,8 +3407,8 @@ msgid "You are banned from this server."
 msgstr "You are banned from this server."
 
 #: src/interface/Home.tsx
-msgid "You can also click the gear icon in the bottom left."
-msgstr "You can also click the gear icon in the bottom left."
+#~ msgid "You can also click the gear icon in the bottom left."
+#~ msgstr "You can also click the gear icon in the bottom left."
 
 #: src/interface/Home.tsx
 #~ msgid "You can also right-click the user icon in the top left, or left click it if you're already home."
@@ -3400,8 +3418,6 @@ msgstr "You can also click the gear icon in the bottom left."
 msgid "You can re-open it later, but it will disappear on both sides."
 msgstr "You can re-open it later, but it will disappear on both sides."
 
-#: src/interface/Home.tsx
-#: src/interface/Home.tsx
 #: components/app/interface/settings/user/Feedback.tsx
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "You can report issues and discuss improvements with us directly here."
