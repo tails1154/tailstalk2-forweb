@@ -17,6 +17,7 @@ import { CircularProgress, typography } from "@revolt/ui";
 import { useDevice } from "@revolt/common";
 
 import { Sidebar } from "./interface/Sidebar";
+import { WarningOverlay } from "@revolt/app/WarningOverlay";
 
 /**
  * Application layout
@@ -147,6 +148,7 @@ const Interface = (props: { children: JSX.Element }) => {
         </Switch>
 
         <NotificationsWorker />
+        <WarningOverlay />
       </div>
     </MessageCache>
   );

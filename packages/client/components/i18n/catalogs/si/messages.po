@@ -3354,8 +3354,8 @@ msgstr "වෙබ්කොකු"
 #~ msgstr "සාදරයෙන් පිළිගනිමු"
 
 #: components/app/interface/settings/user/Admin.tsx
-msgid "Welcome to the admin panel."
-msgstr ""
+#~ msgid "Welcome to the admin panel."
+#~ msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Welcome!"
