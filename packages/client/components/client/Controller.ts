@@ -568,8 +568,11 @@ export default class ClientController {
     }
 
     if (session.result === "Disabled") {
-      // TODO
-      alert("Account is disabled, run special logic here.");
+      const reason = (session as any).reason || "Your account has been disabled.";
+      document.cookie = "account_disabled=1; path=/; max-age=31536000";
+      const days = 3;
+      const wait = days * 24 * 60 * 60 * 1000;
+      alert(`Your account has been disabled.\n\nReason: ${reason}\n\nDo not create another account.`);
       return;
     }
 

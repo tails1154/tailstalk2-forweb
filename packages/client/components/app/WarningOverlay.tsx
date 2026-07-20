@@ -4,6 +4,7 @@ import { Portal } from "solid-js/web";
 import { styled } from "styled-system/jsx";
 
 import MdWarning from "@material-design-icons/svg/outlined/warning.svg?component-solid";
+import MdBlock from "@material-design-icons/svg/outlined/block.svg?component-solid";
 
 import { useClient } from "@revolt/client";
 import { Button, Column, Text, iconSize, typography } from "@revolt/ui";
@@ -19,8 +20,22 @@ export function WarningOverlay() {
   const [visible, setVisible] = createSignal(false);
   const [countdown, setCountdown] = createSignal(5);
   const [canDismiss, setCanDismiss] = createSignal(false);
+  const [isSuspended, setIsSuspended] = createSignal(false);
+  const [suspendedUntil, setSuspendedUntil] = createSignal("");
 
   onMount(async () => {
+    const user = client().user;
+    if (user?.suspendedUntil) {
+      const until = user.suspendedUntil;
+      const untilDate = new Date(until);
+      if (untilDate.getTime() > Date.now()) {
+        setIsSuspended(true);
+        setSuspendedUntil(untilDate.toLocaleString());
+        setVisible(true);
+        return;
+      }
+    }
+
     try {
       const res = await client().api.get("/users/@me/warnings");
       if (res.warnings?.length > 0) {
@@ -28,9 +43,7 @@ export function WarningOverlay() {
         setVisible(true);
         startCountdown();
       }
-    } catch {
-      // No warnings or endpoint not available, nothing to do
-    }
+    } catch {}
   });
 
   function startCountdown() {
@@ -54,46 +67,74 @@ export function WarningOverlay() {
   return (
     <Show when={visible()}>
       <Portal mount={document.getElementById("floating") ?? document.body}>
-        <Overlay onClick={dismiss}>
-          <Modal onClick={(e) => e.stopPropagation()}>
+        <Overlay>
+          <Modal>
             <Column gap="md">
               <Header>
-                <MdWarning {...iconSize(28)} style={{ color: "var(--md-sys-color-error)" }} />
+                <Show
+                  when={isSuspended()}
+                  fallback={<MdWarning {...iconSize(28)} style={{ color: "var(--md-sys-color-error)" }} />}
+                >
+                  <MdBlock {...iconSize(28)} style={{ color: "var(--md-sys-color-error)" }} />
+                </Show>
                 <Text class={typography({ class: "title", size: "medium" })}>
-                  Account Warning
+                  {isSuspended() ? "Account Suspended" : "Account Warning"}
                 </Text>
               </Header>
-              <Column gap="sm">
-                <For each={warnings()}>
-                  {(w) => (
-                    <WarningCard>
-                      <Text class={typography({ class: "body", size: "small" })}>
-                        {w.reason}
-                      </Text>
-                      <Text
-                        class={typography({ class: "label", size: "small" })}
-                        style={{ color: "var(--md-sys-color-on-surface-variant)" }}
-                      >
-                        {new Date(w.created_at).toLocaleString()}
-                      </Text>
-                    </WarningCard>
-                  )}
-                </For>
-              </Column>
-              <Show
-                when={canDismiss()}
-                fallback={
+              <Show when={isSuspended()}>
+                <Column gap="sm">
+                  <WarningCard>
+                    <Text class={typography({ class: "body", size: "small" })}>
+                      Your account has been suspended until {suspendedUntil()}.
+                    </Text>
+                  </WarningCard>
+                  <Text
+                    class={typography({ class: "body", size: "small" })}
+                    style={{ color: "var(--md-sys-color-error)", textAlign: "center", fontWeight: 600 }}
+                  >
+                    Do not create another account.
+                  </Text>
                   <Text
                     class={typography({ class: "label", size: "small" })}
                     style={{ color: "var(--md-sys-color-on-surface-variant)", textAlign: "center" }}
                   >
-                    You can dismiss this warning in {countdown()} seconds
+                    You cannot perform any actions while suspended.
                   </Text>
-                }
-              >
-                <Button onPress={dismiss}>
-                  I understand, dismiss
-                </Button>
+                </Column>
+              </Show>
+              <Show when={!isSuspended()}>
+                <Column gap="sm">
+                  <For each={warnings()}>
+                    {(w) => (
+                      <WarningCard>
+                        <Text class={typography({ class: "body", size: "small" })}>
+                          {w.reason}
+                        </Text>
+                        <Text
+                          class={typography({ class: "label", size: "small" })}
+                          style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+                        >
+                          {new Date(w.created_at).toLocaleString()}
+                        </Text>
+                      </WarningCard>
+                    )}
+                  </For>
+                </Column>
+                <Show
+                  when={canDismiss()}
+                  fallback={
+                    <Text
+                      class={typography({ class: "label", size: "small" })}
+                      style={{ color: "var(--md-sys-color-on-surface-variant)", textAlign: "center" }}
+                    >
+                      You can dismiss this warning in {countdown()} seconds
+                    </Text>
+                  }
+                >
+                  <Button onPress={dismiss}>
+                    I understand, dismiss
+                  </Button>
+                </Show>
               </Show>
             </Column>
           </Modal>

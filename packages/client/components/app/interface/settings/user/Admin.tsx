@@ -1,4 +1,4 @@
-import { For, Show, createResource, createSignal } from "solid-js";
+import { For, Show, createResource, createSignal, onMount } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
@@ -18,6 +18,7 @@ import MdRefresh from "@material-design-icons/svg/outlined/refresh.svg?component
 import MdWarning from "@material-design-icons/svg/outlined/warning.svg?component-solid";
 import MdTimer from "@material-design-icons/svg/outlined/timer.svg?component-solid";
 import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-solid";
+import MdHourglassEmpty from "@material-design-icons/svg/outlined/hourglass_empty.svg?component-solid";
 
 import { CONFIGURATION } from "@revolt/common";
 import {
@@ -30,7 +31,7 @@ import {
   typography,
 } from "@revolt/ui";
 
-type Tab = "stats" | "reports" | "users";
+type Tab = "stats" | "reports" | "users" | "whatsnew";
 
 interface AdminStats {
   users: number;
@@ -44,8 +45,10 @@ interface AdminStats {
 interface AdminReport {
   id: string;
   author_id: string;
+  author_name: string;
   content_type: string;
   content_id: string;
+  content_name: string;
   report_reason: string;
   additional_context: string;
   status: string;
@@ -154,6 +157,9 @@ export function AdminPanel() {
             <TabButton active={tab() === "users"} onClick={() => setTab("users")}>
               Users
             </TabButton>
+            <TabButton active={tab() === "whatsnew"} onClick={() => setTab("whatsnew")}>
+              What's New
+            </TabButton>
           </TabBar>
           <Show when={tab() === "stats"}>
             <StatsTab password={authToken()} />
@@ -163,6 +169,9 @@ export function AdminPanel() {
           </Show>
           <Show when={tab() === "users"}>
             <UsersTab password={authToken()} />
+          </Show>
+          <Show when={tab() === "whatsnew"}>
+            <WhatsNewTab password={authToken()} />
           </Show>
         </Column>
       </Show>
@@ -197,22 +206,44 @@ function ReportsTab(props: { password: string }) {
     () => props.password,
     (pwd) => apiFetch("/admin/reports", pwd) as Promise<AdminReport[]>,
   );
+  const [loadingIds, setLoadingIds] = createSignal<Set<string>>(new Set());
+
+  function setLoading(id: string, loading: boolean) {
+    setLoadingIds((prev) => {
+      const next = new Set(prev);
+      if (loading) next.add(id);
+      else next.delete(id);
+      return next;
+    });
+  }
 
   async function resolveReport(id: string) {
-    await apiFetch(`/admin/reports/${id}/resolve`, props.password, { method: "POST" });
-    refetch();
+    setLoading(id, true);
+    try {
+      await apiFetch(`/admin/reports/${id}/resolve`, props.password, { method: "POST" });
+      refetch();
+    } finally {
+      setLoading(id, false);
+    }
   }
 
   async function dismissReport(id: string) {
     const reason = prompt("Rejection reason:");
     if (!reason) return;
-    await apiFetch(`/admin/reports/${id}/dismiss`, props.password, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ rejection_reason: reason }),
-    });
-    refetch();
+    setLoading(id, true);
+    try {
+      await apiFetch(`/admin/reports/${id}/dismiss`, props.password, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rejection_reason: reason }),
+      });
+      refetch();
+    } finally {
+      setLoading(id, false);
+    }
   }
+
+  const isLoading = (id: string) => loadingIds().has(id);
 
   return (
     <Column gap="md">
@@ -235,13 +266,13 @@ function ReportsTab(props: { password: string }) {
                     </Badge>
                   </Row>
                   <Text class={typography({ class: "label", size: "small" })}>
-                    ID: {r.id}
+                    Reporter: {r.author_name}
                   </Text>
                   <Text class={typography({ class: "label", size: "small" })}>
-                    Author: {r.author_id}
+                    Content: {r.content_name} ({r.content_type})
                   </Text>
                   <Text class={typography({ class: "label", size: "small" })}>
-                    Content: {r.content_id}
+                    ID: {r.content_id}
                   </Text>
                   <Text class={typography({ class: "label", size: "small" })}>
                     Reason: {r.report_reason}
@@ -251,7 +282,7 @@ function ReportsTab(props: { password: string }) {
                       Context: {r.additional_context}
                     </Text>
                   </Show>
-                  <Show when={r.status === "Created"}>
+                  <Show when={!isLoading(r.id) && r.status === "Created"}>
                     <Row gap="sm">
                       <Button onPress={() => resolveReport(r.id)}>
                         <MdCheckCircle {...iconSize(16)} /> Resolve
@@ -260,6 +291,9 @@ function ReportsTab(props: { password: string }) {
                         <MdCancel {...iconSize(16)} /> Dismiss
                       </Button>
                     </Row>
+                  </Show>
+                  <Show when={isLoading(r.id)}>
+                    <MdHourglassEmpty {...iconSize(16)} />
                   </Show>
                 </Column>
               </ReportCard>
@@ -275,6 +309,21 @@ function UsersTab(props: { password: string }) {
   const [query, setQuery] = createSignal("");
   const [results, setResults] = createSignal<AdminUserInfo[]>([]);
   const [searching, setSearching] = createSignal(false);
+  const [loadingIds, setLoadingIds] = createSignal<Set<string>>(new Set());
+
+  function setLoading(id: string, loading: boolean) {
+    setLoadingIds((prev) => {
+      const next = new Set(prev);
+      if (loading) next.add(id);
+      else next.delete(id);
+      return next;
+    });
+  }
+
+  async function withLoading(id: string, fn: () => Promise<void>) {
+    setLoading(id, true);
+    try { await fn(); } finally { setLoading(id, false); }
+  }
 
   async function search() {
     if (!query()) return;
@@ -291,45 +340,63 @@ function UsersTab(props: { password: string }) {
   }
 
   async function banUser(id: string) {
-    await apiFetch(`/admin/users/${id}/ban`, props.password, { method: "POST" });
-    search();
+    const reason = prompt("Ban reason (optional):");
+    if (reason === null) return;
+    await withLoading(id, async () => {
+      await apiFetch(`/admin/users/${id}/ban`, props.password, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reason: reason || null }),
+      });
+      search();
+    });
   }
 
   async function unbanUser(id: string) {
-    await apiFetch(`/admin/users/${id}/unban`, props.password, { method: "POST" });
-    search();
+    await withLoading(id, async () => {
+      await apiFetch(`/admin/users/${id}/unban`, props.password, { method: "POST" });
+      search();
+    });
   }
 
   async function suspendUser(id: string) {
     const hours = prompt("Suspend for how many hours?");
     if (!hours) return;
-    await apiFetch(`/admin/users/${id}/suspend`, props.password, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ hours: parseInt(hours) }),
+    await withLoading(id, async () => {
+      await apiFetch(`/admin/users/${id}/suspend`, props.password, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ hours: parseInt(hours) }),
+      });
+      search();
     });
-    search();
   }
 
   async function warnUser(id: string) {
     const reason = prompt("Warning reason:");
     if (!reason) return;
-    await apiFetch(`/admin/users/${id}/warn`, props.password, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ reason }),
+    await withLoading(id, async () => {
+      await apiFetch(`/admin/users/${id}/warn`, props.password, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reason }),
+      });
+      search();
     });
-    search();
   }
 
   async function clearWarnings(id: string) {
-    await apiFetch(`/admin/users/${id}/clear-warnings`, props.password, { method: "POST" });
-    search();
+    await withLoading(id, async () => {
+      await apiFetch(`/admin/users/${id}/clear-warnings`, props.password, { method: "POST" });
+      search();
+    });
   }
 
   async function deleteWarning(userId: string, index: number) {
-    await apiFetch(`/admin/users/${userId}/delete-warning/${index}`, props.password, { method: "POST" });
-    search();
+    await withLoading(userId, async () => {
+      await apiFetch(`/admin/users/${userId}/delete-warning/${index}`, props.password, { method: "POST" });
+      search();
+    });
   }
 
   function handleSearchKeyDown(e: KeyboardEvent) {
@@ -338,6 +405,7 @@ function UsersTab(props: { password: string }) {
 
   const isSuspended = (u: AdminUserInfo) => !!(u.flags && (u.flags & 1) !== 0);
   const isBanned = (u: AdminUserInfo) => !!(u.flags && (u.flags & 4) !== 0);
+  const isLoading = (id: string) => loadingIds().has(id);
 
   return (
     <Column gap="md">
@@ -377,24 +445,23 @@ function UsersTab(props: { password: string }) {
                   </Show>
                 </Column>
                 <Column gap="xs">
-                  <Show
-                    when={isBanned(u) || isSuspended(u)}
-                    fallback={
-                      <>
-                        <Button onPress={() => warnUser(u.id)}>
-                          <MdWarning {...iconSize(16)} /> Warn
-                        </Button>
-                        <Button onPress={() => suspendUser(u.id)}>
-                          <MdTimer {...iconSize(16)} /> Suspend
-                        </Button>
-                        <Button onPress={() => banUser(u.id)}>
-                          <MdBlock {...iconSize(16)} /> Ban
-                        </Button>
-                      </>
-                    }
-                  >
+                  <Show when={isLoading(u.id)}>
+                    <MdHourglassEmpty {...iconSize(20)} style={{ margin: "auto" }} />
+                  </Show>
+                  <Show when={!isLoading(u.id) && (isBanned(u) || isSuspended(u))}>
                     <Button onPress={() => unbanUser(u.id)}>
                       <MdCheckCircle {...iconSize(16)} /> Unban
+                    </Button>
+                  </Show>
+                  <Show when={!isLoading(u.id) && !isBanned(u) && !isSuspended(u)}>
+                    <Button onPress={() => warnUser(u.id)}>
+                      <MdWarning {...iconSize(16)} /> Warn
+                    </Button>
+                    <Button onPress={() => suspendUser(u.id)}>
+                      <MdTimer {...iconSize(16)} /> Suspend
+                    </Button>
+                    <Button onPress={() => banUser(u.id)}>
+                      <MdBlock {...iconSize(16)} /> Ban
                     </Button>
                   </Show>
                 </Column>
@@ -406,7 +473,7 @@ function UsersTab(props: { password: string }) {
                       style={{ fontWeight: 600 }}>
                       Warnings ({u.warnings.length}):
                     </Text>
-                    <Button onPress={() => clearWarnings(u.id)}>
+                    <Button onPress={() => clearWarnings(u.id)} disabled={isLoading(u.id)}>
                       Clear all
                     </Button>
                   </Row>
@@ -446,6 +513,93 @@ function StatCard(props: { icon: JSX.Element; label: string; value: string }) {
         {props.label}
       </Text>
     </StatBox>
+  );
+}
+
+interface WhatsNewEntry {
+  title: string;
+  body: string;
+  date: string;
+}
+
+function WhatsNewTab(props: { password: string }) {
+  const [entries, setEntries] = createSignal<WhatsNewEntry[]>([]);
+
+  onMount(async () => {
+    try {
+      const data = await apiFetch("/admin/whatsnew", props.password);
+      setEntries(data.entries || []);
+    } catch {}
+  });
+
+  function addEntry() {
+    setEntries([
+      { title: "", body: "", date: new Date().toISOString().split("T")[0] },
+      ...entries(),
+    ]);
+  }
+
+  function updateEntry(index: number, field: keyof WhatsNewEntry, value: string) {
+    setEntries((prev) => {
+      const next = [...prev];
+      next[index] = { ...next[index], [field]: value };
+      return next;
+    });
+  }
+
+  function removeEntry(index: number) {
+    setEntries((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  async function save() {
+    await apiFetch("/admin/whatsnew", props.password, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ entries: entries() }),
+    });
+  }
+
+  return (
+    <Column gap="md">
+      <Row gap="md" align>
+        <Text class={typography({ class: "title", size: "medium" })}>What's New Editor</Text>
+        <Button onPress={addEntry}>Add Entry</Button>
+        <Button onPress={save}>Save</Button>
+      </Row>
+      <For each={entries()}>
+        {(entry, i) => (
+          <Column gap="sm" style={{
+            padding: "var(--gap-md)",
+            background: "var(--md-sys-color-surface-container-highest)",
+            borderRadius: "var(--borderRadius-md)",
+          }}>
+            <Row gap="sm" align>
+              <Text class={typography({ class: "label", size: "small" })}>Title:</Text>
+              <Button onPress={() => removeEntry(i())}>
+                <MdDelete {...iconSize(14)} />
+              </Button>
+            </Row>
+            <TextField
+              value={entry.title}
+              onChange={(e) => updateEntry(i(), "title", e.currentTarget.value)}
+              placeholder="Title"
+            />
+            <Text class={typography({ class: "label", size: "small" })}>Body:</Text>
+            <TextField
+              value={entry.body}
+              onChange={(e) => updateEntry(i(), "body", e.currentTarget.value)}
+              placeholder="Body (supports plain text)"
+            />
+            <Text class={typography({ class: "label", size: "small" })}>Date:</Text>
+            <TextField
+              type="date"
+              value={entry.date}
+              onChange={(e) => updateEntry(i(), "date", e.currentTarget.value)}
+            />
+          </Column>
+        )}
+      </For>
+    </Column>
   );
 }
 
