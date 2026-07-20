@@ -675,6 +675,17 @@ const UserCard = styled("div", {
   },
 });
 
+const WarningRow = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    gap: "var(--gap-sm)",
+    padding: "var(--gap-xs) var(--gap-sm)",
+    background: "var(--md-sys-color-error-container)",
+    borderRadius: "var(--borderRadius-sm)",
+  },
+});
+
 const Badge = styled("span", {
   base: {
     padding: "2px var(--gap-sm)",
