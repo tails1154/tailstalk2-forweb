@@ -22,6 +22,7 @@ export interface ChangelogResponse {
 }
 
 interface WhatsNewEntry {
+  id?: string;
   title: string;
   body: string;
   date: string;
@@ -62,7 +63,12 @@ export async function fetchLatestChangelog(): Promise<ChangelogResponse | null> 
     );
 
     return {
-      id: entries.map((entry) => `${entry.date}:${entry.title}:${entry.body}`).join("\n"),
+      id: entries
+        .map(
+          (entry) =>
+            entry.id ?? `${entry.date}:${entry.title}:${entry.body}`,
+        )
+        .join("\n"),
       title: "What's New",
       markdown_content: entries
         .map(

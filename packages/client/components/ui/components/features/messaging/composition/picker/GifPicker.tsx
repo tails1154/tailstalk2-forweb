@@ -13,7 +13,6 @@ import { VirtualContainer } from "@minht11/solid-virtual-container";
 import { useQuery } from "@tanstack/solid-query";
 import { styled } from "styled-system/jsx";
 
-import env from "@revolt/common/lib/env";
 import {
   CircularProgress,
   TextField,
@@ -22,11 +21,27 @@ import {
 
 import { CompositionMediaPickerContext } from "./CompositionMediaPicker";
 
-type GifCategory = { title: string; image: string };
+const GIF_API = "https://api.gifukai.com/v1";
+const GIF_ACTIONS = [
+  "angry",
+  "blush",
+  "cry",
+  "dance",
+  "happy",
+  "hug",
+  "kiss",
+  "laugh",
+  "pat",
+  "slap",
+  "smile",
+  "wave",
+] as const;
+
+type GifCategory = { title: string; image: string; action: string };
 
 type GifResult = {
   url: string;
-  media_formats: Record<"webm" | "tinywebm", { url: string }>;
+  action: string;
 };
 
 const FilterContext = createContext<(value: string) => void>();
@@ -105,23 +120,24 @@ function Categories() {
 
   const trendingCategories = useQuery<GifCategory[]>(() => ({
     queryKey: ["trendingGifCategories"],
-    queryFn: () => {
-      return fetch(
-        `${env.KLIPY_API_BASE}/categories?locale=en_US&key=${env.KLIPY_API_KEY}`,
-      ).then((r) => r.json());
-    },
+    queryFn: async () =>
+      Promise.all(
+        GIF_ACTIONS.map(async (action) => {
+          const response = await fetch(`${GIF_API}/${action}`);
+          const gif = (await response.json()) as GifResult;
+          return { title: action, action, image: gif.url };
+        }),
+      ),
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   }));
 
   const trendingGif = useQuery<GifResult | null>(() => ({
     queryKey: ["trendingGif1"],
-    queryFn: () => {
-      return fetch(
-        `${env.KLIPY_API_BASE}/trending?locale=en_US&limit=1&key=${env.KLIPY_API_KEY}`,
-      )
-        .then((r) => r.json())
-        .then((resp) => resp.results[0]);
+    queryFn: async () => {
+      const action = GIF_ACTIONS[Math.floor(Math.random() * GIF_ACTIONS.length)];
+      const response = await fetch(`${GIF_API}/${action}`);
+      return (await response.json()) as GifResult;
     },
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -171,7 +187,7 @@ const CategoryItem = (props: {
       tabIndex={props.tabIndex}
       role="listitem"
       onClick={() =>
-        setFilter!(props.item.t === 0 ? props.item.category.title : "trending")
+        setFilter!(props.item.t === 0 ? props.item.category.action : "trending")
       }
       onMouseDown={(e) => {
         e.preventDefault();
@@ -213,16 +229,19 @@ function GifSearch(props: { query: string }) {
 
   const search = useQuery<GifResult[]>(() => ({
     queryKey: ["gifs", props.query],
-    queryFn: () => {
-      return fetch(
-        `${env.KLIPY_API_BASE}/` +
-          (props.query === "trending"
-            ? `trending?locale=en_US`
-            : `search?locale=en_US&query=${encodeURIComponent(props.query)}`) +
-          `&key=${env.KLIPY_API_KEY}`,
-      )
-        .then((r) => r.json())
-        .then((resp) => resp.results);
+    queryFn: async () => {
+      const requestedAction = props.query.toLowerCase();
+      const actions = GIF_ACTIONS.includes(requestedAction as never)
+        ? [requestedAction]
+        : GIF_ACTIONS;
+      const results = await Promise.all(
+        Array.from({ length: 12 }, async (_, index) => {
+          const action = actions[index % actions.length];
+          const response = await fetch(`${GIF_API}/${action}`);
+          return (await response.json()) as GifResult;
+        }),
+      );
+      return results;
     },
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -253,20 +272,17 @@ const GifItem = (props: {
 
   return (
     <Gif
-      loop
-      autoplay
-      muted
-      preload="auto"
+      src={props.item.url}
+      alt={props.item.action}
       role="listitem"
       style={props.style as string}
       tabIndex={props.tabIndex}
-      src={props.item.media_formats.tinywebm.url}
       onClick={() => onMessage(props.item.url)}
     />
   );
 };
 
-const Gif = styled("video", {
+const Gif = styled("img", {
   base: {
     width: "200px",
     height: "120px",

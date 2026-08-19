@@ -19,6 +19,9 @@ import MdWarning from "@material-design-icons/svg/outlined/warning.svg?component
 import MdTimer from "@material-design-icons/svg/outlined/timer.svg?component-solid";
 import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-solid";
 import MdHourglassEmpty from "@material-design-icons/svg/outlined/hourglass_empty.svg?component-solid";
+import MdLogout from "@material-design-icons/svg/outlined/logout.svg?component-solid";
+import MdArrowForward from "@material-design-icons/svg/outlined/arrow_forward.svg?component-solid";
+import MdDashboard from "@material-design-icons/svg/outlined/dashboard.svg?component-solid";
 
 import { CONFIGURATION } from "@revolt/common";
 import {
@@ -108,14 +111,20 @@ export function AdminPanel() {
   }
 
   return (
-    <Column gap="lg">
+    <Column gap="lg" style={{ "max-width": "960px", width: "100%" }}>
       <Show
         when={authToken()}
         fallback={
-          <Column gap="md">
-            <Text class={typography({ class: "label", size: "large" })}>
-              <Trans>Admin authentication required</Trans>
-            </Text>
+          <AuthCard>
+            <AuthIcon><MdAdminPanelSettings {...iconSize(28)} /></AuthIcon>
+            <Column gap="xs">
+              <Text class={typography({ class: "headline", size: "small" })}>
+                <Trans>Admin authentication required</Trans>
+              </Text>
+              <Text class={typography({ class: "body", size: "medium" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
+                Sign in to manage reports, users, and platform updates.
+              </Text>
+            </Column>
             <Column gap="sm">
               <TextField
                 type="password"
@@ -137,28 +146,44 @@ export function AdminPanel() {
                 {error()}
               </Text>
             </Show>
-          </Column>
+          </AuthCard>
         }
       >
-        <Column gap="md">
-          <Row gap="md" align>
-            <MdAdminPanelSettings {...iconSize(24)} />
-            <Text class={typography({ class: "title", size: "large" })}>
-              <Trans>Admin Panel</Trans>
-            </Text>
+        <Column gap="lg">
+          <Row gap="md" align style={{ "justify-content": "space-between" }}>
+            <Row gap="md" align>
+              <AdminIcon><MdAdminPanelSettings {...iconSize(28)} /></AdminIcon>
+              <Column gap="xs">
+                <Text class={typography({ class: "headline", size: "small" })}>
+                  <Trans>Admin Panel</Trans>
+                </Text>
+                <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
+                  Platform overview and moderation tools
+                </Text>
+              </Column>
+            </Row>
+            <Button onPress={() => { setAuthToken(""); setTab("stats"); }}>
+              <MdLogout {...iconSize(16)} /> Sign out
+            </Button>
           </Row>
+          <AdminNotice>
+            <MdAdminPanelSettings {...iconSize(18)} />
+            <Text class={typography({ class: "body", size: "small" })}>
+              You’re viewing the live platform workspace. Actions here affect users immediately.
+            </Text>
+          </AdminNotice>
           <TabBar>
             <TabButton active={tab() === "stats"} onClick={() => setTab("stats")}>
-              Stats
+              <MdDashboard {...iconSize(16)} /> Stats
             </TabButton>
             <TabButton active={tab() === "reports"} onClick={() => setTab("reports")}>
-              Reports
+              <MdReport {...iconSize(16)} /> Reports
             </TabButton>
             <TabButton active={tab() === "users"} onClick={() => setTab("users")}>
-              Users
+              <MdPeople {...iconSize(16)} /> Users
             </TabButton>
             <TabButton active={tab() === "whatsnew"} onClick={() => setTab("whatsnew")}>
-              What's New
+              <MdArrowForward {...iconSize(16)} /> What's New
             </TabButton>
           </TabBar>
           <Show when={tab() === "stats"}>
@@ -186,7 +211,7 @@ function StatsTab(props: { password: string }) {
   );
 
   return (
-    <Show when={data()} fallback={<Text>Loading...</Text>}>
+    <Show when={data()} fallback={<LoadingState label="Loading platform metrics..." />}>
       {(s) => (
         <StatsGrid>
           <StatCard icon={<MdPeople {...iconSize(24)} />} label="Users" value={formatNumber(s().users)} />
@@ -247,58 +272,63 @@ function ReportsTab(props: { password: string }) {
 
   return (
     <Column gap="md">
-      <Row gap="md" align>
-        <Text class={typography({ class: "title", size: "medium" })}>Reports</Text>
+      <Row gap="md" align style={{ "justify-content": "space-between" }}>
+        <Column gap="xs">
+          <Text class={typography({ class: "title", size: "medium" })}>Reports</Text>
+          <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>Review community-submitted issues.</Text>
+        </Column>
         <Button onPress={() => refetch()}>
           <MdRefresh {...iconSize(18)} />
         </Button>
       </Row>
-      <Show when={data()} fallback={<Text>Loading...</Text>}>
+      <Show when={data()} fallback={<LoadingState label="Loading reports..." />}>
         {(reports) => (
-          <For each={reports()}>
-            {(r) => (
-              <ReportCard>
-                <Column gap="xs">
-                  <Row gap="sm" align>
-                    <Badge>{r.content_type}</Badge>
-                    <Badge variant={r.status === "Created" ? "active" : "closed"}>
-                      {r.status}
-                    </Badge>
-                  </Row>
-                  <Text class={typography({ class: "label", size: "small" })}>
-                    Reporter: {r.author_name}
-                  </Text>
-                  <Text class={typography({ class: "label", size: "small" })}>
-                    Content: {r.content_name} ({r.content_type})
-                  </Text>
-                  <Text class={typography({ class: "label", size: "small" })}>
-                    ID: {r.content_id}
-                  </Text>
-                  <Text class={typography({ class: "label", size: "small" })}>
-                    Reason: {r.report_reason}
-                  </Text>
-                  <Show when={r.additional_context}>
-                    <Text class={typography({ class: "label", size: "small" })}>
-                      Context: {r.additional_context}
-                    </Text>
-                  </Show>
-                  <Show when={!isLoading(r.id) && r.status === "Created"}>
-                    <Row gap="sm">
-                      <Button onPress={() => resolveReport(r.id)}>
-                        <MdCheckCircle {...iconSize(16)} /> Resolve
-                      </Button>
-                      <Button onPress={() => dismissReport(r.id)}>
-                        <MdCancel {...iconSize(16)} /> Dismiss
-                      </Button>
+          <Show when={reports().length > 0} fallback={<EmptyState label="No reports to review" />}>
+            <For each={reports()}>
+              {(r) => (
+                <ReportCard>
+                  <Column gap="xs">
+                    <Row gap="sm" align>
+                      <Badge>{r.content_type}</Badge>
+                      <Badge variant={r.status === "Created" ? "active" : "closed"}>
+                        {r.status}
+                      </Badge>
                     </Row>
-                  </Show>
-                  <Show when={isLoading(r.id)}>
-                    <MdHourglassEmpty {...iconSize(16)} />
-                  </Show>
-                </Column>
-              </ReportCard>
-            )}
-          </For>
+                    <Text class={typography({ class: "label", size: "small" })}>
+                      Reporter: {r.author_name}
+                    </Text>
+                    <Text class={typography({ class: "label", size: "small" })}>
+                      Content: {r.content_name} ({r.content_type})
+                    </Text>
+                    <Text class={typography({ class: "label", size: "small" })}>
+                      ID: {r.content_id}
+                    </Text>
+                    <Text class={typography({ class: "label", size: "small" })}>
+                      Reason: {r.report_reason}
+                    </Text>
+                    <Show when={r.additional_context}>
+                      <Text class={typography({ class: "label", size: "small" })}>
+                        Context: {r.additional_context}
+                      </Text>
+                    </Show>
+                    <Show when={!isLoading(r.id) && r.status === "Created"}>
+                      <Row gap="sm">
+                        <Button onPress={() => resolveReport(r.id)}>
+                          <MdCheckCircle {...iconSize(16)} /> Resolve
+                        </Button>
+                        <Button onPress={() => dismissReport(r.id)}>
+                          <MdCancel {...iconSize(16)} /> Dismiss
+                        </Button>
+                      </Row>
+                    </Show>
+                    <Show when={isLoading(r.id)}>
+                      <MdHourglassEmpty {...iconSize(16)} />
+                    </Show>
+                  </Column>
+                </ReportCard>
+              )}
+            </For>
+          </Show>
         )}
       </Show>
     </Column>
@@ -409,6 +439,10 @@ function UsersTab(props: { password: string }) {
 
   return (
     <Column gap="md">
+      <Column gap="xs">
+        <Text class={typography({ class: "title", size: "medium" })}>User directory</Text>
+        <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>Search accounts and take moderation actions.</Text>
+      </Column>
       <Row gap="sm">
         <TextField
           placeholder="Search username..."
@@ -420,6 +454,8 @@ function UsersTab(props: { password: string }) {
           <MdSearch {...iconSize(18)} />
         </Button>
       </Row>
+      <Show when={searching()}><LoadingState label="Searching users..." /></Show>
+      <Show when={!searching() && query() && results().length === 0}><EmptyState label="No users found" /></Show>
       <For each={results()}>
         {(u) => (
           <UserCard>
@@ -517,6 +553,7 @@ function StatCard(props: { icon: JSX.Element; label: string; value: string }) {
 }
 
 interface WhatsNewEntry {
+  id?: string;
   title: string;
   body: string;
   date: string;
@@ -534,7 +571,12 @@ function WhatsNewTab(props: { password: string }) {
 
   function addEntry() {
     setEntries([
-      { title: "", body: "", date: new Date().toISOString().split("T")[0] },
+      {
+        id: crypto.randomUUID(),
+        title: "",
+        body: "",
+        date: new Date().toISOString().split("T")[0],
+      },
       ...entries(),
     ]);
   }
@@ -562,7 +604,10 @@ function WhatsNewTab(props: { password: string }) {
   return (
     <Column gap="md">
       <Row gap="md" align>
-        <Text class={typography({ class: "title", size: "medium" })}>What's New Editor</Text>
+        <Column gap="xs" style={{ flex: 1 }}>
+          <Text class={typography({ class: "title", size: "medium" })}>What's New Editor</Text>
+          <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>Publish updates that appear in the client.</Text>
+        </Column>
         <Button onPress={addEntry}>Add Entry</Button>
         <Button onPress={save}>Save</Button>
       </Row>
@@ -603,6 +648,14 @@ function WhatsNewTab(props: { password: string }) {
   );
 }
 
+function LoadingState(props: { label: string }) {
+  return <StatusState><MdHourglassEmpty {...iconSize(20)} /><Text>{props.label}</Text></StatusState>;
+}
+
+function EmptyState(props: { label: string }) {
+  return <StatusState><MdCheckCircle {...iconSize(20)} /><Text>{props.label}</Text></StatusState>;
+}
+
 const TabBar = styled("div", {
   base: {
     display: "flex",
@@ -622,6 +675,9 @@ const TabButton = styled("button", {
     color: "var(--md-sys-color-on-surface-variant)",
     fontSize: "inherit",
     fontFamily: "inherit",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "var(--gap-xs)",
   },
   variants: {
     active: {
@@ -630,6 +686,57 @@ const TabButton = styled("button", {
         color: "var(--md-sys-color-on-secondary-container)",
       },
     },
+  },
+});
+
+const AuthCard = styled("div", {
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--gap-md)",
+    padding: "var(--gap-xl)",
+    background: "var(--md-sys-color-surface-container)",
+    border: "1px solid var(--md-sys-color-outline-variant)",
+    borderRadius: "var(--borderRadius-lg)",
+  },
+});
+
+const AuthIcon = styled("div", {
+  base: { color: "var(--md-sys-color-primary)" },
+});
+
+const AdminIcon = styled("div", {
+  base: {
+    display: "flex",
+    padding: "var(--gap-sm)",
+    color: "var(--md-sys-color-on-primary-container)",
+    background: "var(--md-sys-color-primary-container)",
+    borderRadius: "var(--borderRadius-md)",
+  },
+});
+
+const AdminNotice = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    gap: "var(--gap-sm)",
+    padding: "var(--gap-sm) var(--gap-md)",
+    color: "var(--md-sys-color-on-secondary-container)",
+    background: "var(--md-sys-color-secondary-container)",
+    borderRadius: "var(--borderRadius-md)",
+  },
+});
+
+const StatusState = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "var(--gap-sm)",
+    minHeight: "96px",
+    color: "var(--md-sys-color-on-surface-variant)",
+    background: "var(--md-sys-color-surface-container)",
+    borderRadius: "var(--borderRadius-md)",
   },
 });
 
