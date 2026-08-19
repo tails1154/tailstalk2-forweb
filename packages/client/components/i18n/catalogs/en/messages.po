@@ -317,6 +317,10 @@ msgstr "6 hours"
 msgid "7 days"
 msgstr "7 days"
 
+#: src/serviceWorkerInterface.ts
+msgid "A newer version of TailsTalk 2 is available."
+msgstr "A newer version of TailsTalk 2 is available."
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Able to access channels on this server"
 msgstr "Able to access channels on this server"
@@ -345,6 +349,10 @@ msgstr "Accept friend request"
 #: components/modal/modals/PolicyChange.tsx
 msgid "Acknowledge"
 msgstr "Acknowledge"
+
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
+msgid "Active vanity URL"
+msgstr "Active vanity URL"
 
 #: components/modal/modals/AddMembersToGroup.tsx
 #: components/modal/modals/AddBot.tsx
@@ -579,6 +587,10 @@ msgstr "Browser Echo Cancellation"
 msgid "Bug Tracker"
 msgstr "Bug Tracker"
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Build your theme"
+msgstr "Build your theme"
+
 #: src/interface/navigation/channels/HomeSidebar.tsx
 #: src/interface/channels/text/MemberSidebar.tsx
 #: components/ui/components/features/profiles/ProfileStatus.tsx
@@ -723,8 +735,8 @@ msgid "Channels"
 msgstr "Channels"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Chat Input"
-msgstr "Chat Input"
+#~ msgid "Chat Input"
+#~ msgstr "Chat Input"
 
 #: components/auth/src/flows/FlowCheck.tsx
 msgid "Check your mail!"
@@ -733,6 +745,18 @@ msgstr "Check your mail!"
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Choose a username"
 msgstr "Choose a username"
+
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
+msgid "Choose a vanity code (3–32 lowercase characters)"
+msgstr "Choose a vanity code (3–32 lowercase characters)"
+
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
+#~ msgid "Choose a vanity code (3–32 lowercase characters):"
+#~ msgstr "Choose a vanity code (3–32 lowercase characters):"
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Choose the look and feel of TailsTalk 2. Your choice is saved automatically."
+msgstr "Choose the look and feel of TailsTalk 2. Your choice is saved automatically."
 
 #: components/modal/modals/Onboarding.tsx
 msgid "Choose username"
@@ -782,6 +806,7 @@ msgstr "Client Settings"
 #: components/modal/modals/CreateChannel.tsx
 #: components/modal/modals/CreateCategory.tsx
 #: components/modal/modals/CreateBot.tsx
+#: components/modal/modals/ChannelToggleMature.tsx
 #: components/modal/modals/ChannelInfo.tsx
 #: components/modal/modals/Changelog.tsx
 #: components/modal/modals/AddMembersToGroup.tsx
@@ -802,10 +827,18 @@ msgstr "Close conversation with {0}?"
 msgid "Code"
 msgstr "Code"
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Colour mode"
+msgstr "Colour mode"
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Coming soon! 👀"
 msgstr "Coming soon! 👀"
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Community themes"
+msgstr "Community themes"
 
 #: components/app/interface/settings/user/Account.tsx
 msgid "Configure a way to get back into your account in case your 2FA is lost"
@@ -866,6 +899,10 @@ msgstr "Conversations"
 msgid "Copied!"
 msgstr "Copied!"
 
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
+msgid "Copy"
+msgstr "Copy"
+
 #: components/app/menus/CategoryContextMenu.tsx
 msgid "Copy category ID"
 msgstr "Copy category ID"
@@ -903,6 +940,10 @@ msgstr "Copy role ID"
 #: components/app/menus/ServerContextMenu.tsx
 msgid "Copy server ID"
 msgstr "Copy server ID"
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Copy share link"
+msgstr "Copy share link"
 
 #: components/app/menus/MessageContextMenu.tsx
 #: components/app/menus/DraftMessageContextMenu.tsx
@@ -1026,6 +1067,14 @@ msgstr "Create server"
 msgid "Create server emoji"
 msgstr "Create server emoji"
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Create theme"
+msgstr "Create theme"
+
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
+msgid "Create vanity URL"
+msgstr "Create vanity URL"
+
 #: components/app/interface/settings/channel/webhooks/WebhooksList.tsx
 msgid "Create Webhook"
 msgstr "Create Webhook"
@@ -1056,7 +1105,7 @@ msgstr "Custom window frame"
 msgid "Customisation"
 msgstr "Customisation"
 
-#: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Dark"
 msgstr "Dark"
 
@@ -1199,17 +1248,25 @@ msgstr "Disabled"
 msgid "Disconnected"
 msgstr "Disconnected"
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Discord"
+msgstr "Discord"
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Discord RPC"
 msgstr "Discord RPC"
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Discord's dark interface with Blurple accents."
+msgstr "Discord's dark interface with Blurple accents."
 
 #: src/interface/Discover.tsx
 msgid "Discover TailsTalk 2"
 msgstr "Discover TailsTalk 2"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Display & Text"
-msgstr "Display & Text"
+#~ msgid "Display & Text"
+#~ msgstr "Display & Text"
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "Display Name"
@@ -1254,6 +1311,10 @@ msgstr "Donated to TailsTalk 2"
 #: components/modal/modals/MFARecovery.tsx
 msgid "Done"
 msgstr "Done"
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Download and apply this palette."
+msgstr "Download and apply this palette."
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Drugs or illegal goods"
@@ -1329,8 +1390,8 @@ msgid "Emoji Name"
 msgstr "Emoji Name"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Emoji Pack (affects your messages only)"
-msgstr "Emoji Pack (affects your messages only)"
+#~ msgid "Emoji Pack (affects your messages only)"
+#~ msgstr "Emoji Pack (affects your messages only)"
 
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Emojis"
@@ -1353,8 +1414,8 @@ msgid "Enable Push Notifications"
 msgstr "Enable Push Notifications"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Enable transparency glass/blur effects (slow on older machines)"
-msgstr "Enable transparency glass/blur effects (slow on older machines)"
+#~ msgid "Enable transparency glass/blur effects (slow on older machines)"
+#~ msgstr "Enable transparency glass/blur effects (slow on older machines)"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "End call"
@@ -1378,8 +1439,8 @@ msgid "Enter a new password."
 msgstr "Enter a new password."
 
 #: src/interface/channels/AgeGate.tsx
-msgid "Enter Channel"
-msgstr "Enter Channel"
+#~ msgid "Enter Channel"
+#~ msgstr "Enter Channel"
 
 #: components/modal/modals/MFAEnableTOTP.tsx
 msgid "Enter Code"
@@ -1485,8 +1546,8 @@ msgid "Friends"
 msgstr "Friends"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Fruit Salad"
-msgstr "Fruit Salad"
+#~ msgid "Fruit Salad"
+#~ msgstr "Fruit Salad"
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Generate a new token if it gets lost or compromised"
@@ -1591,8 +1652,8 @@ msgid "Hide Others"
 msgstr "Hide Others"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "High Contrast"
-msgstr "High Contrast"
+#~ msgid "High Contrast"
+#~ msgstr "High Contrast"
 
 #: src/interface/Home.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
@@ -1600,8 +1661,8 @@ msgid "Home"
 msgstr "Home"
 
 #: src/interface/channels/AgeGate.tsx
-msgid "I confirm that I am at least 18 years old."
-msgstr "I confirm that I am at least 18 years old."
+#~ msgid "I confirm that I am at least 18 years old."
+#~ msgstr "I confirm that I am at least 18 years old."
 
 #: components/modal/modals/LinkWarning.tsx
 msgid "I understand the consequences"
@@ -1630,13 +1691,17 @@ msgstr "Image by @fakurian"
 msgid "Impersonation"
 msgstr "Impersonation"
 
+#: src/serviceWorkerInterface.ts
+msgid "Install now"
+msgstr "Install now"
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Instead of closing, TailsTalk 2 will hide in your tray."
 msgstr "Instead of closing, TailsTalk 2 will hide in your tray."
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Interface Font"
-msgstr "Interface Font"
+#~ msgid "Interface Font"
+#~ msgstr "Interface Font"
 
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Invisible"
@@ -1727,8 +1792,8 @@ msgid "Jump to the beginning"
 msgstr "Jump to the beginning"
 
 #: components/modal/modals/ChannelToggleMature.tsx
-msgid "Keep as is"
-msgstr "Keep as is"
+#~ msgid "Keep as is"
+#~ msgstr "Keep as is"
 
 #: components/modal/modals/KickMember.tsx
 msgid "Kick"
@@ -1799,7 +1864,7 @@ msgstr "Let TailsTalk 2 use its own custom titlebar."
 #~ msgid "Let us know how we can improve our app by giving us feedback."
 #~ msgstr "Let us know how we can improve our app by giving us feedback."
 
-#: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Light"
 msgstr "Light"
 
@@ -1879,8 +1944,8 @@ msgid "Manage Webhooks"
 msgstr "Manage Webhooks"
 
 #: components/modal/modals/ChannelToggleMature.tsx
-msgid "Mark as mature"
-msgstr "Mark as mature"
+#~ msgid "Mark as mature"
+#~ msgstr "Mark as mature"
 
 #: components/app/interface/settings/channel/Overview.tsx
 #: components/app/interface/settings/channel/Overview.tsx
@@ -1904,6 +1969,14 @@ msgstr "Mark this channel as mature?"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Masquerade"
 msgstr "Masquerade"
+
+#: src/interface/channels/AgeGate.tsx
+msgid "Mature content on TailsTalk 2 is not allowed."
+msgstr "Mature content on TailsTalk 2 is not allowed."
+
+#: components/modal/modals/ChannelToggleMature.tsx
+msgid "Mature content on TailsTalk 2 is not allowed. This channel cannot be marked as mature."
+msgstr "Mature content on TailsTalk 2 is not allowed. This channel cannot be marked as mature."
 
 #: components/app/interface/settings/ServerSettings.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -1957,8 +2030,8 @@ msgid "Message {0}"
 msgstr "Message {0}"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Message Group Spacing"
-msgstr "Message Group Spacing"
+#~ msgid "Message Group Spacing"
+#~ msgstr "Message Group Spacing"
 
 #: components/ui/components/features/messaging/elements/MessageReply.tsx
 msgid "Message not loaded, click to jump"
@@ -1973,8 +2046,8 @@ msgid "Message Sent"
 msgstr "Message Sent"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Message Size"
-msgstr "Message Size"
+#~ msgid "Message Size"
+#~ msgstr "Message Size"
 
 #: components/app/interface/channels/text/Message.tsx
 msgid "Message was sent on another platform"
@@ -1994,16 +2067,16 @@ msgid "Missing permission"
 msgstr "Missing permission"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Monochrome"
-msgstr "Monochrome"
+#~ msgid "Monochrome"
+#~ msgstr "Monochrome"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Monospace Font"
-msgstr "Monospace Font"
+#~ msgid "Monospace Font"
+#~ msgstr "Monospace Font"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "More Contrast"
-msgstr "More Contrast"
+#~ msgid "More Contrast"
+#~ msgstr "More Contrast"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Move Members"
@@ -2077,8 +2150,8 @@ msgid "Name"
 msgstr "Name"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Neutral"
-msgstr "Neutral"
+#~ msgid "Neutral"
+#~ msgstr "Neutral"
 
 #: components/ui/components/features/messaging/elements/MessageDivider.tsx
 msgid "NEW"
@@ -2125,8 +2198,8 @@ msgid "None"
 msgstr "None"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Normal"
-msgstr "Normal"
+#~ msgid "Normal"
+#~ msgstr "Normal"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Not of minimum age to use the platform"
@@ -2393,8 +2466,8 @@ msgid "Recovery Codes"
 msgstr "Recovery Codes"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Reduced"
-msgstr "Reduced"
+#~ msgid "Reduced"
+#~ msgstr "Reduced"
 
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Register"
@@ -2573,6 +2646,10 @@ msgstr "Roles"
 #: components/app/interface/settings/channel/webhooks/ViewWebhook.tsx
 msgid "Save"
 msgstr "Save"
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Save and apply"
+msgstr "Save and apply"
 
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Save file"
@@ -2765,6 +2842,10 @@ msgstr "Share audio"
 msgid "Share camera or screen in voice call"
 msgstr "Share camera or screen in voice call"
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Share link copied to your clipboard."
+msgstr "Share link copied to your clipboard."
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Share screen"
 msgstr "Share screen"
@@ -2778,8 +2859,8 @@ msgid "Show Others"
 msgstr "Show Others"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Show send message button"
-msgstr "Show send message button"
+#~ msgid "Show send message button"
+#~ msgstr "Show send message button"
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Sign into TailsTalk 2"
@@ -2866,6 +2947,10 @@ msgstr "Start with Computer"
 msgid "Status"
 msgstr "Status"
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Stoat"
+msgstr "Stoat"
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Stop camera"
 msgstr "Stop camera"
@@ -2922,13 +3007,17 @@ msgstr "Sync your chosen theme, colours, and any custom CSS."
 msgid "Sync your currently chosen language."
 msgstr "Sync your currently chosen language."
 
-#: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "System"
 msgstr "System"
 
 #: components/app/interface/settings/server/Overview.tsx
 msgid "System message channels"
 msgstr "System message channels"
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "TailsTalk 2"
+msgstr "TailsTalk 2"
 
 #: components/app/interface/settings/user/Native.tsx
 #~ msgid "TailsTalk 2 Desktop"
@@ -2982,10 +3071,22 @@ msgstr "Text Channel"
 msgid "That action had no effect."
 msgstr "That action had no effect."
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "That theme link is invalid."
+msgstr "That theme link is invalid."
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "The familiar cyan and navy TailsTalk 2 style."
+msgstr "The familiar cyan and navy TailsTalk 2 style."
+
 #. placeholder {0}: file.name
 #: src/interface/channels/text/Composition.tsx
 msgid "The file \"{0}\" ({fileSize}) exceeds the maximum size limit of {maxSizeFormatted}."
 msgstr "The file \"{0}\" ({fileSize}) exceeds the maximum size limit of {maxSizeFormatted}."
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "The Material You theme from the original Stoat client."
+msgstr "The Material You theme from the original Stoat client."
 
 #: components/i18n/errors.ts
 msgid "The password is too short."
@@ -2994,6 +3095,27 @@ msgstr "The password is too short."
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Theme"
 msgstr "Theme"
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Theme added to your library and applied."
+msgstr "Theme added to your library and applied."
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Theme imported and applied."
+msgstr "Theme imported and applied."
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Theme saved to your library."
+msgstr "Theme saved to your library."
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Theme store"
+msgstr "Theme store"
+
+#: components/app/interface/settings/UserSettings.tsx
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Themes"
+msgstr "Themes"
 
 #: components/i18n/errors.ts
 msgid "This account is not activated! Please check your account's inbox and try again."
@@ -3008,8 +3130,8 @@ msgid "This channel is about..."
 msgstr "This channel is about..."
 
 #: src/interface/channels/AgeGate.tsx
-msgid "This channel is marked as mature."
-msgstr "This channel is marked as mature."
+#~ msgid "This channel is marked as mature."
+#~ msgstr "This channel is marked as mature."
 
 #: src/interface/channels/AgeGate.tsx
 #~ msgid "This channel is not available in your region while we review options on legal compliance."
@@ -3097,8 +3219,8 @@ msgid "Token copied to clipboard"
 msgstr "Token copied to clipboard"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
-msgid "Tonal Spot"
-msgstr "Tonal Spot"
+#~ msgid "Tonal Spot"
+#~ msgstr "Tonal Spot"
 
 #: components/app/interface/settings/user/Language.tsx
 msgid "Traditional (DD/MM/YYYY)"
@@ -3126,16 +3248,16 @@ msgid "Unknown Server"
 msgstr "Unknown Server"
 
 #: components/modal/modals/ChannelToggleMature.tsx
-msgid "Unmark as mature"
-msgstr "Unmark as mature"
+#~ msgid "Unmark as mature"
+#~ msgstr "Unmark as mature"
 
 #: components/app/interface/settings/channel/Overview.tsx
 msgid "Unmark as Mature"
 msgstr "Unmark as Mature"
 
 #: components/modal/modals/ChannelToggleMature.tsx
-msgid "Unmark this channel as mature?"
-msgstr "Unmark this channel as mature?"
+#~ msgid "Unmark this channel as mature?"
+#~ msgstr "Unmark this channel as mature?"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #: components/app/interface/settings/user/notifications/Sounds.tsx
@@ -3238,16 +3360,16 @@ msgid "username#1234"
 msgstr "username#1234"
 
 #: components/modal/modals/ChannelToggleMature.tsx
-msgid "Users will be asked to confirm their age before joining this channel."
-msgstr "Users will be asked to confirm their age before joining this channel."
+#~ msgid "Users will be asked to confirm their age before joining this channel."
+#~ msgstr "Users will be asked to confirm their age before joining this channel."
 
 #: components/app/interface/settings/channel/Overview.tsx
 msgid "Users will be asked to confirm their age before opening this channel."
 msgstr "Users will be asked to confirm their age before opening this channel."
 
 #: components/modal/modals/ChannelToggleMature.tsx
-msgid "Users will no longer be asked to confirm their age before joining this channel.<0/> Please ensure the content is appropriate for all ages."
-msgstr "Users will no longer be asked to confirm their age before joining this channel.<0/> Please ensure the content is appropriate for all ages."
+#~ msgid "Users will no longer be asked to confirm their age before joining this channel.<0/> Please ensure the content is appropriate for all ages."
+#~ msgstr "Users will no longer be asked to confirm their age before joining this channel.<0/> Please ensure the content is appropriate for all ages."
 
 #: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
 #~ msgid "Using default microphone"
