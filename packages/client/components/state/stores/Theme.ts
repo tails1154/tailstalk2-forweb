@@ -84,6 +84,7 @@ export type TypeTheme = {
 export type CustomTheme = {
   id: string;
   name: string;
+  description?: string;
   primary: string;
   secondary: string;
   background: string;
@@ -193,6 +194,8 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
           !!theme &&
           typeof theme.id === "string" &&
           typeof theme.name === "string" &&
+          (typeof theme.description === "undefined" ||
+            typeof theme.description === "string") &&
           isHex(theme.primary) &&
           isHex(theme.secondary) &&
           isHex(theme.background) &&
@@ -369,7 +372,10 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
 
   removeCustomTheme(id: string) {
     this.set("customThemes", this.get().customThemes.filter((theme) => theme.id !== id));
-    if (this.get().customThemeId === id) this.setPreset("tailstalk2");
+    if (this.get().customThemeId === id) {
+      this.set("customThemeId", undefined);
+      this.setPreset("tailstalk2");
+    }
   }
 
   /**

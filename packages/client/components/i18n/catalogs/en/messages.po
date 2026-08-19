@@ -317,9 +317,17 @@ msgstr "6 hours"
 msgid "7 days"
 msgstr "7 days"
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "A custom palette from the theme store."
+msgstr "A custom palette from the theme store."
+
 #: src/serviceWorkerInterface.ts
 msgid "A newer version of TailsTalk 2 is available."
 msgstr "A newer version of TailsTalk 2 is available."
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "A shared custom theme."
+msgstr "A shared custom theme."
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Able to access channels on this server"
@@ -1097,6 +1105,10 @@ msgstr "Current Password"
 msgid "Current Session"
 msgstr "Current Session"
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Custom community palette."
+msgstr "Custom community palette."
+
 #: components/modal/modals/CustomStatus.tsx
 msgid "Custom status"
 msgstr "Custom status"
@@ -1219,6 +1231,14 @@ msgstr "Delete Role"
 msgid "Delete Server"
 msgstr "Delete Server"
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Delete theme"
+msgstr "Delete theme"
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Description"
+msgstr "Description"
+
 #. placeholder {0}: props.invite.username
 #: components/modal/modals/AddBot.tsx
 msgid "Description provided by {0}"
@@ -1317,8 +1337,8 @@ msgid "Done"
 msgstr "Done"
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
-msgid "Download and apply this palette."
-msgstr "Download and apply this palette."
+#~ msgid "Download and apply this palette."
+#~ msgstr "Download and apply this palette."
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Drugs or illegal goods"
@@ -3117,8 +3137,16 @@ msgid "Theme"
 msgstr "Theme"
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
-msgid "Theme added to your library and applied."
-msgstr "Theme added to your library and applied."
+#~ msgid "Theme added to your library and applied."
+#~ msgstr "Theme added to your library and applied."
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Theme applied and opened in your themes menu."
+msgstr "Theme applied and opened in your themes menu."
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Theme deleted from your library."
+msgstr "Theme deleted from your library."
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Theme imported and applied."

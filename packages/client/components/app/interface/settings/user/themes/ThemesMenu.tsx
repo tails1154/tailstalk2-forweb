@@ -1,10 +1,12 @@
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
-import { For, Show, createSignal, onMount } from "solid-js";
+import { For, Show, createSignal, onMount, type JSX } from "solid-js";
 import { styled } from "styled-system/jsx";
 
 import { useState } from "@revolt/state";
 import { CustomTheme } from "@revolt/state/stores/Theme";
 import { Button, Column, Row, Text } from "@revolt/ui";
+
+import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-solid";
 
 type ThemePreset = "tailstalk2" | "stoat" | "discord";
 
@@ -70,6 +72,7 @@ const featuredThemes: CustomTheme[] = [
   {
     id: "store-sunset",
     name: "Sunset Arcade",
+    description: "A warm sunset gradient for late-night conversations.",
     primary: "#fb7185",
     secondary: "#fbbf24",
     background: "#1c1024",
@@ -81,6 +84,7 @@ const featuredThemes: CustomTheme[] = [
   {
     id: "store-forest",
     name: "Forest Signal",
+    description: "A calm green and teal palette inspired by the outdoors.",
     primary: "#34d399",
     secondary: "#2dd4bf",
     background: "#071a17",
@@ -100,6 +104,7 @@ export function ThemesMenu() {
   const [draft, setDraft] = createSignal<CustomTheme>({
     id: `theme-${Date.now()}`,
     name: "My theme",
+    description: "A custom palette made by me.",
     primary: "#06b6d4",
     secondary: "#3b82f6",
     background: "#11131a",
@@ -114,7 +119,12 @@ export function ThemesMenu() {
     if (!encoded) return;
     try {
       const imported = JSON.parse(decodeURIComponent(atob(encoded))) as CustomTheme;
-      state.theme.setCustomTheme({ ...imported, id: `import-${Date.now()}` });
+      state.theme.setCustomTheme({
+        ...imported,
+        id: `import-${Date.now()}`,
+        description: imported.description || t`A shared custom theme.`,
+      });
+      setTab("create");
       setStatus(t`Theme imported and applied.`);
       window.history.replaceState({}, "", window.location.pathname);
     } catch {
@@ -139,9 +149,27 @@ export function ThemesMenu() {
     setStatus(t`Share link copied to your clipboard.`);
   };
 
-  const downloadTheme = (theme: CustomTheme) => {
-    state.theme.setCustomTheme({ ...theme, id: `theme-${Date.now()}` });
-    setStatus(t`Theme added to your library and applied.`);
+  const applyTheme = (theme: CustomTheme) => {
+    state.theme.setCustomTheme({
+      ...theme,
+      description: theme.description || t`A custom palette from the theme store.`,
+    });
+    setTab("create");
+    setStatus(t`Theme applied and opened in your themes menu.`);
+  };
+
+  const deleteTheme = (theme: CustomTheme) => {
+    state.theme.removeCustomTheme(theme.id);
+    setStatus(t`Theme deleted from your library.`);
+  };
+
+  const storeThemes = () => {
+    const seen = new Set<string>();
+    return [...featuredThemes, ...state.theme.customThemes].filter((theme) => {
+      if (seen.has(theme.id)) return false;
+      seen.add(theme.id);
+      return true;
+    });
   };
 
   return (
@@ -191,15 +219,28 @@ export function ThemesMenu() {
       <Show when={tab() === "store"}>
         <Column gap="sm">
           <Text class="title" size="small"><Trans>Community themes</Trans></Text>
-          <For each={[...featuredThemes, ...state.theme.customThemes]}>
+          <For each={storeThemes()}>
             {(theme) => (
-              <ThemeCard type="button" onClick={() => downloadTheme(theme)}>
-                <Swatches style={{ background: theme.gradient }} />
-                <Column gap="xs" style={{ flex: 1, "text-align": "left" }}>
-                  <Text class="title" size="medium">{theme.name}</Text>
-                  <Text class="body" size="small"><Trans>Download and apply this palette.</Trans></Text>
-                </Column>
-              </ThemeCard>
+              <ThemeRow>
+                <ThemeCard type="button" onClick={() => applyTheme(theme)}>
+                  <Swatches style={{ background: theme.gradient }} />
+                  <Column gap="xs" style={{ flex: 1, "text-align": "left" }}>
+                    <Text class="title" size="medium">{theme.name}</Text>
+                    <Text class="body" size="small">
+                      {theme.description || <Trans>Custom community palette.</Trans>}
+                    </Text>
+                  </Column>
+                </ThemeCard>
+                <Show when={state.theme.customThemes.some((saved) => saved.id === theme.id)}>
+                  <Button
+                    variant="text"
+                    aria-label={t`Delete theme`}
+                    onPress={() => deleteTheme(theme)}
+                  >
+                    <MdDelete />
+                  </Button>
+                </Show>
+              </ThemeRow>
             )}
           </For>
         </Column>
@@ -250,6 +291,7 @@ function ThemeEditor(props: {
     <Column gap="sm">
       <Text class="title" size="small"><Trans>Build your theme</Trans></Text>
       <ThemeInput label="Name" value={props.draft.name} type="text" onInput={(value) => props.update("name", value)} />
+      <ThemeInput label={<Trans>Description</Trans>} value={props.draft.description || ""} type="text" onInput={(value) => props.update("description", value)} />
       <ColorGrid>
         <ThemeInput label="Primary" value={props.draft.primary} type="color" onInput={(value) => props.update("primary", value)} />
         <ThemeInput label="Secondary" value={props.draft.secondary} type="color" onInput={(value) => props.update("secondary", value)} />
@@ -267,7 +309,7 @@ function ThemeEditor(props: {
   );
 }
 
-function ThemeInput(props: { label: string; value: string; type: string; onInput: (value: string) => void }) {
+function ThemeInput(props: { label: string | JSX.Element; value: string; type: string; onInput: (value: string) => void }) {
   return (
     <label>
       <InputLabel>{props.label}</InputLabel>
@@ -300,6 +342,14 @@ const ThemeCard = styled("button", {
         background: "var(--md-sys-color-primary-container)",
       },
     },
+  },
+});
+
+const ThemeRow = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    gap: "var(--gap-sm)",
   },
 });
 

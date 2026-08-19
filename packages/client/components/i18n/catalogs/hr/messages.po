@@ -317,8 +317,16 @@ msgstr ""
 msgid "7 days"
 msgstr ""
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "A custom palette from the theme store."
+msgstr ""
+
 #: src/serviceWorkerInterface.ts
 msgid "A newer version of TailsTalk 2 is available."
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "A shared custom theme."
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -1097,6 +1105,10 @@ msgstr "Trenutačna zaporka"
 msgid "Current Session"
 msgstr ""
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Custom community palette."
+msgstr ""
+
 #: components/modal/modals/CustomStatus.tsx
 msgid "Custom status"
 msgstr "Prilagođeni status"
@@ -1219,6 +1231,14 @@ msgstr "Izbriši rank"
 msgid "Delete Server"
 msgstr ""
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Delete theme"
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Description"
+msgstr ""
+
 #. placeholder {0}: props.invite.username
 #: components/modal/modals/AddBot.tsx
 msgid "Description provided by {0}"
@@ -1317,8 +1337,8 @@ msgid "Done"
 msgstr "Gotovo"
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
-msgid "Download and apply this palette."
-msgstr ""
+#~ msgid "Download and apply this palette."
+#~ msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Drugs or illegal goods"
@@ -3117,7 +3137,15 @@ msgid "Theme"
 msgstr "Tema"
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
-msgid "Theme added to your library and applied."
+#~ msgid "Theme added to your library and applied."
+#~ msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Theme applied and opened in your themes menu."
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Theme deleted from your library."
 msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
