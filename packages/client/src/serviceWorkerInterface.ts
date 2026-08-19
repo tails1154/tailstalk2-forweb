@@ -5,7 +5,9 @@ import { useSnackbar } from "@revolt/ui";
 import { registerSW } from "virtual:pwa-register";
 import { CURRENT_VERSION } from "./version";
 
-const [pendingUpdate, setPendingUpdate] = createSignal<() => void>();
+const [pendingUpdate, setPendingUpdate] = createSignal<
+  () => void | Promise<void>
+>();
 const VERSION_ENDPOINT = "https://tails1154.com:9782/tailstalk2.version";
 
 export { pendingUpdate };
@@ -42,16 +44,39 @@ async function checkPublishedVersion() {
       return;
     }
 
-    setPendingUpdate(() => () => window.location.reload());
+    setPendingUpdate(() => () => installLatestVersion());
   } catch {
     // The version endpoint is optional; service-worker updates still run.
+  }
+}
+
+async function clearClientCaches() {
+  if (!("caches" in window)) return;
+
+  const cacheNames = await window.caches.keys();
+  await Promise.all(
+    cacheNames.map((cacheName) => window.caches.delete(cacheName)),
+  );
+}
+
+async function installLatestVersion(updateServiceWorker?: () => Promise<void>) {
+  try {
+    await clearClientCaches();
+  } catch {
+    // Cache Storage may be unavailable or restricted; continue with the update.
+  }
+
+  if (updateServiceWorker) {
+    await updateServiceWorker();
+  } else {
+    window.location.reload();
   }
 }
 
 if (import.meta.env.PROD) {
   const updateSW = registerSW({
     onNeedRefresh() {
-      setPendingUpdate(() => () => void updateSW(true));
+      setPendingUpdate(() => () => installLatestVersion(() => updateSW(true)));
     },
     onOfflineReady() {
       console.info("Ready to work offline =)");
@@ -65,9 +90,9 @@ if (import.meta.env.PROD) {
         void checkPublishedVersion();
       };
 
-      // Check once immediately, when the tab becomes active, and every minute.
+      // Check once immediately, when the tab becomes active, and every five seconds.
       checkForUpdate();
-      const interval = window.setInterval(checkForUpdate, 60 * 1000);
+      const interval = window.setInterval(checkForUpdate, 5 * 1000);
       window.addEventListener("focus", checkForUpdate);
       document.addEventListener("visibilitychange", checkForUpdate);
 

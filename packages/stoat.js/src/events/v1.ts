@@ -563,7 +563,10 @@ export async function handleEvent(
           }
         }
 
-        client.channels.updateUnderlyingObject(event.id, changes);
+        client.channels.updateUnderlyingObject(event.id, {
+          ...previousChannel,
+          ...changes,
+        });
         client.emit("channelUpdate", channel, previousChannel);
       }
       break;
@@ -704,7 +707,10 @@ export async function handleEvent(
           }
         }
 
-        client.servers.updateUnderlyingObject(event.id, changes);
+        client.servers.updateUnderlyingObject(event.id, {
+          ...previousServer,
+          ...changes,
+        });
         client.emit("serverUpdate", server, previousServer);
       }
       break;
@@ -804,7 +810,10 @@ export async function handleEvent(
 
         client.serverMembers.updateUnderlyingObject(
           event.id.server + event.id.user,
-          changes as never,
+          {
+            ...previousMember,
+            ...changes,
+          } as never,
         );
 
         client.emit("serverMemberUpdate", member, previousMember);
@@ -873,7 +882,21 @@ export async function handleEvent(
           }
         }
 
-        client.users.updateUnderlyingObject(event.id, changes as never);
+        client.users.updateUnderlyingObject(
+          event.id,
+          {
+            ...previousUser,
+            ...changes,
+            ...(changes.status
+              ? {
+                  status: {
+                    ...(previousUser.status ?? {}),
+                    ...changes.status,
+                  },
+                }
+              : {}),
+          } as never,
+        );
         client.emit("userUpdate", user, previousUser);
       }
       break;
