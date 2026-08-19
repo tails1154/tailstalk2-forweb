@@ -76,25 +76,19 @@ export default function FlowCreate() {
         show={aisdChoice() === null}
         onClose={() => navigate("..")}
         title={<Trans>Are you an AISD student?</Trans>}
-        actions={[
-          {
-            text: <Trans>Yes, I’m an AISD student</Trans>,
-            onClick: () => {
-              setAisdChoice(true);
-            },
-          },
-          {
-            text: <Trans>No, continue with email</Trans>,
-            onClick: () => {
-              setAisdChoice(false);
-            },
-          },
-        ]}
       >
         <Column>
           <Text>
             <Trans>Select the registration method that applies to you.</Trans>
           </Text>
+          <Row justify>
+            <Button type="button" onPress={() => setAisdChoice(true)}>
+              <Trans>Yes, I’m an AISD student</Trans>
+            </Button>
+            <Button type="button" onPress={() => setAisdChoice(false)}>
+              <Trans>No, continue with email</Trans>
+            </Button>
+          </Row>
         </Column>
       </Dialog>
       <FlowTitle subtitle={<Trans>Create an account</Trans>} emoji="wave">
