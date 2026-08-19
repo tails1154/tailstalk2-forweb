@@ -340,12 +340,16 @@ export async function handleEvent(
         }
       });
 
-      if (client.options.syncUnreads) {
-        await client.channelUnreads.sync();
-      }
-
       setReady(true);
       client.emit("ready");
+
+      // Unread sync must not block the initial render. A slow or restarting
+      // backend should not leave the entire client on its startup throbber.
+      if (client.options.syncUnreads) {
+        void client.channelUnreads.sync().catch((error) => {
+          console.warn("Unable to sync channel unread counts", error);
+        });
+      }
 
       if (event.policy_changes?.length) {
         client.emit("policyChanges", event.policy_changes, async () =>
