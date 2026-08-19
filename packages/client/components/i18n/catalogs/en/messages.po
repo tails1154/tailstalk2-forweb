@@ -775,6 +775,10 @@ msgstr "Choose a vanity code (3–32 lowercase characters)"
 #~ msgid "Choose a vanity code (3–32 lowercase characters):"
 #~ msgstr "Choose a vanity code (3–32 lowercase characters):"
 
+#: components/app/interface/settings/server/XP.tsx
+msgid "Choose how much XP a member earns for each message."
+msgstr "Choose how much XP a member earns for each message."
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Choose the look and feel of TailsTalk 2. Your choice is saved automatically."
 msgstr "Choose the look and feel of TailsTalk 2. Your choice is saved automatically."
@@ -1470,6 +1474,10 @@ msgstr "Enable Desktop Notifications"
 msgid "Enable Push Notifications"
 msgstr "Enable Push Notifications"
 
+#: components/app/interface/settings/server/XP.tsx
+msgid "Enable server XP"
+msgstr "Enable server XP"
+
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Enable transparency glass/blur effects (slow on older machines)"
 #~ msgstr "Enable transparency glass/blur effects (slow on older machines)"
@@ -1477,6 +1485,10 @@ msgstr "Enable Push Notifications"
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "End call"
 msgstr "End call"
+
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Engagement"
+msgstr "Engagement"
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Enhanced"
@@ -1524,6 +1536,10 @@ msgstr "Enter your invite code."
 #: components/auth/src/flows/Form.tsx
 msgid "Enter your preferred username."
 msgstr "Enter your preferred username."
+
+#: components/app/interface/settings/server/XP.tsx
+msgid "Experience points"
+msgstr "Experience points"
 
 #: components/modal/modals/LinkWarning.tsx
 msgid "External links can be dangerous!"
@@ -2709,6 +2725,10 @@ msgstr "Revenge or underage pornography"
 msgid "Review policy changes"
 msgstr "Review policy changes"
 
+#: components/app/interface/settings/server/XP.tsx
+msgid "Reward members with XP when they send messages in this server."
+msgstr "Reward members with XP when they send messages in this server."
+
 #: components/app/interface/settings/user/Feedback.tsx
 #~ msgid "Roadmap"
 #~ msgstr "Roadmap"
@@ -2730,6 +2750,7 @@ msgstr "Roles"
 #: components/modal/modals/ServerIdentity.tsx
 #: components/modal/modals/CustomStatus.tsx
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+#: components/app/interface/settings/server/XP.tsx
 #: components/app/interface/settings/server/Overview.tsx
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 #: components/app/interface/settings/channel/Overview.tsx
@@ -3635,8 +3656,13 @@ msgid "Would you like to create a new server or join an existing one?"
 msgstr "Would you like to create a new server or join an existing one?"
 
 #: components/modal/modals/UserProfile.tsx
+#: components/app/interface/settings/ServerSettings.tsx
 msgid "XP"
 msgstr "XP"
+
+#: components/app/interface/settings/server/XP.tsx
+msgid "XP per message"
+msgstr "XP per message"
 
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Yes, I’m an AISD student"

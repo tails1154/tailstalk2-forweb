@@ -19,6 +19,7 @@ import { ColouredText } from "@revolt/ui";
 import { SettingsConfiguration } from ".";
 import { ChannelPermissionsEditor } from "./channel/permissions/ChannelPermissionsEditor";
 import Overview from "./server/Overview";
+import ServerXPSettings from "./server/XP";
 import { ListServerBans } from "./server/bans/ListBans";
 import { EmojiList } from "./server/emojis/EmojiList";
 import { ListServerInvites } from "./server/invites/ListServerInvites";
@@ -70,6 +71,8 @@ const Config: SettingsConfiguration<Server> = {
     switch (id) {
       case "overview":
         return <Overview server={server} />;
+      case "xp":
+        return <ServerXPSettings server={server} />;
       case "emojis":
         return <EmojiList server={server} />;
       case "roles":
@@ -114,6 +117,17 @@ const Config: SettingsConfiguration<Server> = {
               id: "emojis",
               icon: <BiSolidHappyBeaming size={20} />,
               title: <Trans>Emojis</Trans>,
+            },
+          ],
+        },
+        {
+          hidden: !server.havePermission("ManageServer"),
+          title: <Trans>Engagement</Trans>,
+          entries: [
+            {
+              id: "xp",
+              icon: <BiSolidHappyBeaming size={20} />,
+              title: <Trans>XP</Trans>,
             },
           ],
         },

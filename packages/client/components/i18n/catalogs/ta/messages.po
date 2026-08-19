@@ -775,6 +775,10 @@ msgstr ""
 #~ msgid "Choose a vanity code (3–32 lowercase characters):"
 #~ msgstr ""
 
+#: components/app/interface/settings/server/XP.tsx
+msgid "Choose how much XP a member earns for each message."
+msgstr ""
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Choose the look and feel of TailsTalk 2. Your choice is saved automatically."
 msgstr ""
@@ -1470,12 +1474,20 @@ msgstr "டெஸ்க்டாப் அறிவிப்புகளை இ�
 msgid "Enable Push Notifications"
 msgstr ""
 
+#: components/app/interface/settings/server/XP.tsx
+msgid "Enable server XP"
+msgstr ""
+
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Enable transparency glass/blur effects (slow on older machines)"
 #~ msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "End call"
+msgstr ""
+
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Engagement"
 msgstr ""
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
@@ -1524,6 +1536,10 @@ msgstr ""
 #: components/auth/src/flows/Form.tsx
 msgid "Enter your preferred username."
 msgstr "உங்களுக்கு விருப்பமான பயனர்பெயரை உள்ளிடவும்."
+
+#: components/app/interface/settings/server/XP.tsx
+msgid "Experience points"
+msgstr ""
 
 #: components/modal/modals/LinkWarning.tsx
 msgid "External links can be dangerous!"
@@ -2709,6 +2725,10 @@ msgstr ""
 msgid "Review policy changes"
 msgstr ""
 
+#: components/app/interface/settings/server/XP.tsx
+msgid "Reward members with XP when they send messages in this server."
+msgstr ""
+
 #: components/app/interface/settings/user/Feedback.tsx
 #~ msgid "Roadmap"
 #~ msgstr ""
@@ -2730,6 +2750,7 @@ msgstr "பாத்திரங்கள்"
 #: components/modal/modals/ServerIdentity.tsx
 #: components/modal/modals/CustomStatus.tsx
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+#: components/app/interface/settings/server/XP.tsx
 #: components/app/interface/settings/server/Overview.tsx
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 #: components/app/interface/settings/channel/Overview.tsx
@@ -3635,7 +3656,12 @@ msgid "Would you like to create a new server or join an existing one?"
 msgstr ""
 
 #: components/modal/modals/UserProfile.tsx
+#: components/app/interface/settings/ServerSettings.tsx
 msgid "XP"
+msgstr ""
+
+#: components/app/interface/settings/server/XP.tsx
+msgid "XP per message"
 msgstr ""
 
 #: components/auth/src/flows/FlowCreate.tsx
