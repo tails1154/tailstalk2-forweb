@@ -3,6 +3,7 @@ import { For, Show, createSignal, onMount, type JSX } from "solid-js";
 import { styled } from "styled-system/jsx";
 
 import { useClient } from "@revolt/client";
+import { requestClientJson } from "../../../../../client/customApi";
 import { useState } from "@revolt/state";
 import { CustomTheme } from "@revolt/state/stores/Theme";
 import { Button, Column, Row, Text } from "@revolt/ui";
@@ -186,11 +187,11 @@ export function ThemesMenu() {
     try {
       const { id: _id, surfaceHigh, onSurface, ...theme } = draft();
       const published = fromApiTheme(
-        (await client().api.post("/themes", {
+        await requestClientJson<ThemeApiEntry>(client().api, "POST", "/themes", {
           ...theme,
           surface_high: surfaceHigh,
           on_surface: onSurface,
-        })) as ThemeApiEntry,
+        }),
       );
       setPublishedThemes((current) => [...current, published]);
       setDraft(published);

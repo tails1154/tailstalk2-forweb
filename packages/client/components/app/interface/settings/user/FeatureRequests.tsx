@@ -4,6 +4,7 @@ import { styled } from "styled-system/jsx";
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 
 import { useClient } from "@revolt/client";
+import { requestClientJson } from "../../../../client/customApi";
 import { useModals } from "@revolt/modal";
 import { Button, Column, CircularProgress, Text } from "@revolt/ui";
 
@@ -69,10 +70,10 @@ export function FeatureRequests() {
     if (!title().trim() || !body().trim()) return;
     setSubmitting(true);
     try {
-      const request = (await client().api.post("/feature-requests", {
+      const request = await requestClientJson<FeatureRequest>(client().api, "POST", "/feature-requests", {
         title: title().trim(),
         body: body().trim(),
-      })) as FeatureRequest;
+      });
       setRequests((current) => [request, ...current]);
       setTitle("");
       setBody("");
