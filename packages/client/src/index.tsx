@@ -48,7 +48,7 @@ import { Friends } from "./interface/Friends";
 import { HomePage } from "./interface/Home";
 import { ServerHome } from "./interface/ServerHome";
 import { ChannelPage } from "./interface/channels/ChannelPage";
-import "./serviceWorkerInterface";
+import { ServiceWorkerUpdatePrompt } from "./serviceWorkerInterface";
 
 attachDevtoolsOverlay();
 
@@ -68,6 +68,21 @@ function SettingsRedirect() {
 
   onMount(() => openModal({ type: "settings", config: "user" }));
   return <PWARedirect />;
+}
+
+/** Keep the browser's native leave-site confirmation enabled for this app. */
+function LeaveSitePrompt() {
+  onMount(() => {
+    const confirmLeave = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", confirmLeave);
+    return () => window.removeEventListener("beforeunload", confirmLeave);
+  });
+
+  return null;
 }
 
 /**
@@ -137,6 +152,8 @@ function MountContext(props: { children?: JSX.Element }) {
                 <QueryClientProvider client={client}>
                   <SnackbarProvider controller={snackbarController}>
                     {props.children}
+                    <LeaveSitePrompt />
+                    <ServiceWorkerUpdatePrompt />
                     <ModalRenderer />
                     <FloatingManager />
                   </SnackbarProvider>
