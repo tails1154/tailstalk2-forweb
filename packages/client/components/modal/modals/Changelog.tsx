@@ -1,6 +1,7 @@
 import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
+import { CONFIGURATION } from "@revolt/common";
 import { useTime } from "@revolt/i18n";
 import { renderChangelogMarkdown } from "@revolt/markdown";
 import { Column, Dialog, DialogProps } from "@revolt/ui";
@@ -20,7 +21,17 @@ export interface ChangelogResponse {
   updated_at?: string;
 }
 
-const CHANGELOG_ENDPOINT = "https://changelog.stoat.chat/v1/changelogs/latest";
+interface WhatsNewEntry {
+  title: string;
+  body: string;
+  date: string;
+}
+
+interface WhatsNewResponse {
+  entries: WhatsNewEntry[];
+}
+
+const CHANGELOG_ENDPOINT = `${CONFIGURATION.DEFAULT_API_URL}/whatsnew`;
 
 export async function fetchLatestChangelog(): Promise<ChangelogResponse | null> {
   try {
@@ -32,18 +43,35 @@ export async function fetchLatestChangelog(): Promise<ChangelogResponse | null> 
       return null;
     }
 
-    const data = (await response.json()) as Partial<ChangelogResponse>;
-
-    if (
-      typeof data?.id !== "string" ||
-      typeof data?.title !== "string" ||
-      typeof data?.markdown_content !== "string" ||
-      typeof data?.published_at !== "string"
-    ) {
+    const data = (await response.json()) as Partial<WhatsNewResponse>;
+    if (!Array.isArray(data.entries)) {
       return null;
     }
 
-    return data as ChangelogResponse;
+    const entries = data.entries.filter(
+      (entry): entry is WhatsNewEntry =>
+        typeof entry?.title === "string" &&
+        typeof entry?.body === "string" &&
+        typeof entry?.date === "string",
+    );
+    if (!entries.length) return null;
+
+    const latestDate = entries.reduce(
+      (latest, entry) => (entry.date > latest ? entry.date : latest),
+      entries[0].date,
+    );
+
+    return {
+      id: entries.map((entry) => `${entry.date}:${entry.title}:${entry.body}`).join("\n"),
+      title: "What's New",
+      markdown_content: entries
+        .map(
+          (entry) =>
+            `## ${entry.title}\n\n${entry.body}\n\n*${entry.date}*`,
+        )
+        .join("\n\n"),
+      published_at: latestDate || new Date().toISOString(),
+    };
   } catch {
     return null;
   }
