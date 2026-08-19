@@ -1,6 +1,6 @@
 import { For, Show, createResource, createSignal, onMount } from "solid-js";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
 import MdAdminPanelSettings from "@material-design-icons/svg/outlined/admin_panel_settings.svg?component-solid";
@@ -22,6 +22,7 @@ import MdHourglassEmpty from "@material-design-icons/svg/outlined/hourglass_empt
 import MdLogout from "@material-design-icons/svg/outlined/logout.svg?component-solid";
 import MdArrowForward from "@material-design-icons/svg/outlined/arrow_forward.svg?component-solid";
 import MdDashboard from "@material-design-icons/svg/outlined/dashboard.svg?component-solid";
+import MdExplore from "@material-design-icons/svg/outlined/explore.svg?component-solid";
 
 import { CONFIGURATION } from "@revolt/common";
 import {
@@ -35,7 +36,18 @@ import {
   typography,
 } from "@revolt/ui";
 
-type Tab = "stats" | "reports" | "users" | "whatsnew";
+type Tab = "stats" | "reports" | "users" | "discovery" | "whatsnew";
+
+interface DiscoveryListing {
+  id: string;
+  kind: string;
+  target_id: string;
+  name: string;
+  description: string;
+  category: string;
+  members: number;
+  status: string;
+}
 
 interface AdminStats {
   users: number;
@@ -185,6 +197,9 @@ export function AdminPanel() {
             <TabButton active={tab() === "users"} onClick={() => setTab("users")}>
               <MdPeople {...iconSize(16)} /> Users
             </TabButton>
+            <TabButton active={tab() === "discovery"} onClick={() => setTab("discovery")}>
+              <MdExplore {...iconSize(16)} /> Discovery
+            </TabButton>
             <TabButton active={tab() === "whatsnew"} onClick={() => setTab("whatsnew")}>
               <MdArrowForward {...iconSize(16)} /> What's New
             </TabButton>
@@ -198,10 +213,75 @@ export function AdminPanel() {
           <Show when={tab() === "users"}>
             <UsersTab password={authToken()} />
           </Show>
+          <Show when={tab() === "discovery"}>
+            <DiscoveryTab password={authToken()} />
+          </Show>
           <Show when={tab() === "whatsnew"}>
             <WhatsNewTab password={authToken()} />
           </Show>
         </Column>
+      </Show>
+    </Column>
+  );
+}
+
+function DiscoveryTab(props: { password: string }) {
+  const { t } = useLingui();
+  const [data, { refetch }] = createResource(
+    () => props.password,
+    (pwd) => apiFetch("/admin/discovery", pwd) as Promise<DiscoveryListing[]>,
+  );
+  const [loadingId, setLoadingId] = createSignal<string>();
+
+  async function review(id: string, action: "approve" | "deny") {
+    setLoadingId(id);
+    try {
+      await apiFetch(`/admin/discovery/${id}/${action}`, props.password, { method: "POST" });
+      await refetch();
+    } finally {
+      setLoadingId();
+    }
+  }
+
+  return (
+    <Column gap="md">
+      <Row gap="md" align style={{ "justify-content": "space-between" }}>
+        <Column gap="xs">
+          <Text class={typography({ class: "title", size: "medium" })}><Trans>Discovery submissions</Trans></Text>
+          <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
+            <Trans>Approve or deny community servers and bots.</Trans>
+          </Text>
+        </Column>
+        <Button onPress={() => refetch()} isDisabled={data.loading}>
+          <Show when={data.loading} fallback={<MdRefresh {...iconSize(18)} />}><CircularProgress /></Show>
+        </Button>
+      </Row>
+      <Show when={data()} fallback={<LoadingState label={t`Loading Discovery submissions...`} />}>
+        {(entries) => (
+          <Show when={entries().length} fallback={<EmptyState label={t`No Discovery submissions`} />}>
+            <For each={entries()}>
+              {(entry) => (
+                <ReportCard>
+                  <Column gap="xs">
+                    <Row gap="sm" align>
+                      <Badge>{entry.kind}</Badge><Badge variant={entry.status === "approved" ? "active" : "closed"}>{entry.status}</Badge>
+                    </Row>
+                    <Text class={typography({ class: "title", size: "small" })}>{entry.name}</Text>
+                    <Text class={typography({ class: "body", size: "small" })}>{entry.description}</Text>
+                    <Show when={entry.status === "pending"}>
+                      <Row gap="sm">
+                        <Button onPress={() => review(entry.id, "approve")} isDisabled={loadingId() === entry.id}>
+                          <Show when={loadingId() === entry.id} fallback={<MdCheckCircle {...iconSize(16)} />}><CircularProgress /></Show> <Trans>Approve</Trans>
+                        </Button>
+                        <Button onPress={() => review(entry.id, "deny")} isDisabled={loadingId() === entry.id}><MdCancel {...iconSize(16)} /> <Trans>Deny</Trans></Button>
+                      </Row>
+                    </Show>
+                  </Column>
+                </ReportCard>
+              )}
+            </For>
+          </Show>
+        )}
       </Show>
     </Column>
   );

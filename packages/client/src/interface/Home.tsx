@@ -142,6 +142,13 @@ export function HomePage() {
             >
               <Trans>Join Official Server</Trans>
             </CategoryButton>
+            <CategoryButton
+              onClick={() => navigate("/discover")}
+              description={<Trans>Find community servers and useful bots.</Trans>}
+              icon={<MdExplore />}
+            >
+              <Trans>Discover servers and bots</Trans>
+            </CategoryButton>
           </SeparatedColumn>
           <SeparatedColumn>
           </SeparatedColumn>

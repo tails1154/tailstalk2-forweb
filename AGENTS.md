@@ -19,6 +19,15 @@ pnpm --filter client exec panda codegen
 pnpm exec eslint .
 ```
 
+## Mandatory message catalogs
+
+**Always update the message catalogs whenever modifying user-facing text.**
+Use `<Trans>` or the `t` macro for every new UI string, run Lingui extraction
+with writes enabled (`pnpm --filter client exec lingui extract --overwrite`),
+then compile the catalogs before building or deploying. Never leave a new
+button, label, dialog, status, error, empty state, prompt, or notification as
+an uncatalogued literal.
+
 ## Architecture
 
 - **pnpm workspace** monorepo with `packages/client` (main app), `packages/stoat.js` (SDK), and i18n subpackages.

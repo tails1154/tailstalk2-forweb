@@ -454,6 +454,14 @@ msgstr ""
 msgid "Appearance"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Approve"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Approve or deny community servers and bots."
+msgstr ""
+
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Are you an AISD student?"
 msgstr ""
@@ -971,6 +979,10 @@ msgstr ""
 msgid "Could not find what you requested."
 msgstr ""
 
+#: components/app/interface/settings/user/bots/ViewBot.tsx
+msgid "Could not submit your bot."
+msgstr ""
+
 #: components/modal/modals/CreateWebhook.tsx
 #: components/modal/modals/CreateServer.tsx
 #: components/modal/modals/CreateRole.tsx
@@ -1013,6 +1025,10 @@ msgstr ""
 
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Create an account"
+msgstr ""
+
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
+msgid "Create an invite before submitting your server to Discovery."
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -1223,6 +1239,14 @@ msgstr ""
 msgid "Delete theme"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Deny"
+msgstr ""
+
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
+msgid "Describe your server for Discovery:"
+msgstr ""
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Description"
 msgstr ""
@@ -1272,8 +1296,16 @@ msgstr ""
 msgid "Discord's dark interface with Blurple accents."
 msgstr ""
 
+#: src/interface/Home.tsx
+msgid "Discover servers and bots"
+msgstr ""
+
 #: src/interface/Discover.tsx
 msgid "Discover TailsTalk 2"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Discovery submissions"
 msgstr ""
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
@@ -1515,6 +1547,10 @@ msgstr ""
 #: src/interface/Home.tsx
 #~ msgid "Find a community based on your hobbies or interests."
 #~ msgstr ""
+
+#: src/interface/Home.tsx
+msgid "Find community servers and useful bots."
+msgstr ""
 
 #: components/auth/src/flows/FlowHome.tsx
 msgid "Find your com<0/>munity,<1/>connect with the world."
@@ -1881,6 +1917,10 @@ msgstr ""
 msgid "Load file ({0})"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Loading Discovery submissions..."
+msgstr ""
+
 #: src/interface/Discover.tsx
 msgid "Loading..."
 msgstr ""
@@ -2182,12 +2222,20 @@ msgstr ""
 msgid "Nickname"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "No Discovery submissions"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "No permissions set yet"
 msgstr ""
 
 #: src/interface/Discover.tsx
-msgid "No servers found."
+#~ msgid "No servers found."
+#~ msgstr ""
+
+#: src/interface/Discover.tsx
+msgid "No servers or bots found."
 msgstr ""
 
 #: components/auth/src/flows/FlowCreate.tsx
@@ -2978,6 +3026,10 @@ msgstr ""
 msgid "Submit feedback"
 msgstr ""
 
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
+msgid "Submit server to Discovery"
+msgstr ""
+
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Submit to Discover"
 msgstr ""
@@ -3666,6 +3718,10 @@ msgstr ""
 msgid "Your account has been verified!"
 msgstr ""
 
+#: components/app/interface/settings/user/bots/ViewBot.tsx
+msgid "Your bot was submitted for Discovery review."
+msgstr ""
+
 #: components/i18n/errors.ts
 msgid "Your discriminator change has been ratelimited, please try again later."
 msgstr ""
@@ -3680,6 +3736,10 @@ msgstr ""
 
 #: components/i18n/errors.ts
 msgid "Your role ranking is too low to take this action."
+msgstr ""
+
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
+msgid "Your server was submitted for Discovery review."
 msgstr ""
 
 #: components/i18n/errors.ts

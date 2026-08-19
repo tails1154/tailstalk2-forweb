@@ -3,6 +3,7 @@ import type { User as APIUser } from "stoat-api";
 import type { Client } from "../Client.js";
 import { User } from "../classes/User.js";
 import type { HydratedUser } from "../hydration/user.js";
+import { hydrate } from "../hydration/index.js";
 
 import { ClassCollection } from "./Collection.js";
 
@@ -10,6 +11,8 @@ import { ClassCollection } from "./Collection.js";
  * Collection of Users
  */
 export class UserCollection extends ClassCollection<User, HydratedUser> {
+  #pendingPresence = new Map<string, boolean>();
+
   /**
    * Construct User collection
    */
@@ -46,12 +49,39 @@ export class UserCollection extends ClassCollection<User, HydratedUser> {
    */
   getOrCreate(id: string, data: APIUser): User {
     if (this.has(id) && !this.isPartial(id)) {
+      const changes = hydrate("user", data, this.client, false);
+      const pendingPresence = this.#pendingPresence.get(id);
+      if (pendingPresence !== undefined) {
+        changes.online = pendingPresence;
+        this.#pendingPresence.delete(id);
+      }
+      this.updateUnderlyingObject(id, (current) => ({
+        ...current,
+        ...changes,
+        ...(changes.status
+          ? { status: { ...(current.status ?? {}), ...changes.status } }
+          : {}),
+      }));
       return this.get(id)!;
-    } else {
-      const instance = new User(this, id);
-      this.create(id, "user", instance, this.client, data);
-      return instance;
     }
+
+    const instance = new User(this, id);
+    this.create(id, "user", instance, this.client, data);
+    const pendingPresence = this.#pendingPresence.get(id);
+    if (pendingPresence !== undefined) {
+      this.updateUnderlyingObject(id, "online", pendingPresence);
+      this.#pendingPresence.delete(id);
+    }
+    return instance;
+  }
+
+  /** Apply presence even when the user payload arrives later. */
+  updatePresence(id: string, online: boolean): void {
+    if (!this.has(id)) {
+      this.#pendingPresence.set(id, online);
+      return;
+    }
+    this.updateUnderlyingObject(id, "online", online);
   }
 
   /**

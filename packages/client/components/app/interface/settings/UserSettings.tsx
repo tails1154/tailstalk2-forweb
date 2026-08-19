@@ -28,13 +28,13 @@ import MdSmartToy from "@material-design-icons/svg/outlined/smart_toy.svg?compon
 import MdVerifiedUser from "@material-design-icons/svg/outlined/verified_user.svg?component-solid";
 import MdWorkspacePremium from "@material-design-icons/svg/outlined/workspace_premium.svg?component-solid";
 
-import pkg from "../../../../../../package.json";
+import { CURRENT_VERSION } from "../../../../src/version";
 
 import { SettingsConfiguration } from ".";
 import { AccountCard } from "./user/_AccountCard";
 import { MyAccount } from "./user/Account";
 import AdvancedSettings from "./user/Advanced";
-import { AppearanceMenu } from "./user/appearance";
+import { ThemesMenu } from "./user/appearance";
 import { MyBots, ViewBot } from "./user/bots";
 import { Feedback } from "./user/Feedback";
 import { LanguageSettings } from "./user/Language";
@@ -82,6 +82,8 @@ const Config: SettingsConfiguration<{ server: Server }> = {
         return <MyAccount />;
       case "advanced":
         return <AdvancedSettings />;
+      case "themes":
+        return <ThemesMenu />;
       case "profile":
         return <EditProfile />;
       case "sessions":
@@ -132,7 +134,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             <span class={css({ userSelect: "none", fontWeight: "bold" })}>
               <Trans>Version:</Trans>
             </span>{" "}
-            <span class={css({ userSelect: "all" })}>{pkg.version}</span>
+            <span class={css({ userSelect: "all" })}>{CURRENT_VERSION}</span>
           </Text>
           <Show when={window.native}>
             <Text class="label">
@@ -234,6 +236,11 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               id: "notifications",
               icon: <MdNotifications {...iconSize(20)} />,
               title: <Trans>Notifications</Trans>,
+            },
+            {
+              id: "themes",
+              icon: <MdPalette {...iconSize(20)} />,
+              title: <Trans>Themes</Trans>,
             },
             // {
             //   id: "keybinds",

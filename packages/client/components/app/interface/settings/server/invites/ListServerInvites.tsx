@@ -93,6 +93,28 @@ export function ListServerInvites(props: { server: Server }) {
     }
   }
 
+  async function submitToDiscovery() {
+    const invite = query.data?.[0]?.id;
+    if (!invite) {
+      showError(new Error(t`Create an invite before submitting your server to Discovery.`));
+      return;
+    }
+    const description = prompt(t`Describe your server for Discovery:`);
+    if (description === null) return;
+    try {
+      const [authHeader, authValue] = client().authenticationHeader;
+      const response = await fetch(`${CONFIGURATION.DEFAULT_API_URL}/discovery/servers/${props.server.id}`, {
+        method: "POST",
+        headers: { [authHeader]: authValue, "Content-Type": "application/json" },
+        body: JSON.stringify({ invite, description }),
+      });
+      if (!response.ok) throw new Error(await response.text());
+      alert(t`Your server was submitted for Discovery review.`);
+    } catch (error) {
+      showError(error);
+    }
+  }
+
   return (
     <Column>
       <Button
@@ -112,6 +134,9 @@ export function ListServerInvites(props: { server: Server }) {
       </Button>
       <Button group="standard" onPress={createVanity}>
         <Trans>Create vanity URL</Trans>
+      </Button>
+      <Button group="standard" onPress={submitToDiscovery}>
+        <Trans>Submit server to Discovery</Trans>
       </Button>
       <VanityInput
         value={vanityCode()}

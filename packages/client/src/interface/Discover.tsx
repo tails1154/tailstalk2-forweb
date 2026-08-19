@@ -2,10 +2,10 @@ import { For, Show, createResource, createSignal } from "solid-js";
 
 import { Trans, t } from "@lingui-solid/solid/macro";
 import { PublicChannelInvite } from "stoat.js";
-import { css } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import { useClient } from "@revolt/client";
+import { CONFIGURATION } from "@revolt/common";
 import { useModals } from "@revolt/modal";
 import { useNavigate } from "@revolt/routing";
 import {
@@ -20,24 +20,22 @@ import { HeaderIcon } from "./common/CommonHeader";
 
 import MdExplore from "@material-design-icons/svg/filled/explore.svg?component-solid";
 
-const DISCOVER_API = "https://tails1154.com:9962";
-
-interface DiscoverServer {
+interface DiscoverListing {
   id: string;
+  kind: "server" | "bot";
+  target_id: string;
   name: string;
-  description?: string;
-  icon?: string;
+  description: string;
   invite?: string;
-  category?: string;
-  members?: number;
+  category: string;
+  members: number;
 }
 
-async function fetchServers(query?: string): Promise<DiscoverServer[]> {
+async function fetchListings(query?: string): Promise<DiscoverListing[]> {
   const params = query ? `?query=${encodeURIComponent(query)}` : "";
-  const res = await fetch(`${DISCOVER_API}/api/getdiscovery${params}`);
+  const res = await fetch(`${CONFIGURATION.DEFAULT_API_URL}/discovery${params}`);
   if (!res.ok) return [];
-  const data = await res.json();
-  return data.servers ?? [];
+  return res.json();
 }
 
 function parseInviteCode(url: string): string | null {
@@ -55,11 +53,15 @@ export function Discover() {
   const { openModal } = useModals();
   const navigate = useNavigate();
   const [query, setQuery] = createSignal("");
-  const [servers] = createResource(query, fetchServers);
+  const [listings] = createResource(query, fetchListings);
 
-  async function joinServer(server: DiscoverServer) {
-    if (!server.invite) return;
-    const code = parseInviteCode(server.invite);
+  async function openListing(listing: DiscoverListing) {
+    if (listing.kind === "bot") {
+      navigate(`/bot/${listing.target_id}`);
+      return;
+    }
+    if (!listing.invite) return;
+    const code = parseInviteCode(listing.invite);
     if (!code) return;
     try {
       const invite = await client()
@@ -68,7 +70,7 @@ export function Discover() {
       openModal({ type: "invite", invite });
     } catch {
       // fallback: just navigate to invite URL
-      window.open(server.invite);
+      window.open(listing.invite);
     }
   }
 
@@ -83,12 +85,12 @@ export function Discover() {
       <Content>
         <SearchBar
           type="text"
-          placeholder={t`Search servers...`}
+          placeholder={t`Search servers and bots...`}
           value={query()}
           onInput={(e) => setQuery(e.currentTarget.value)}
         />
         <Show
-          when={!servers.loading}
+          when={!listings.loading}
           fallback={
             <Empty>
               <Trans>Loading...</Trans>
@@ -96,44 +98,36 @@ export function Discover() {
           }
         >
           <Show
-            when={servers()?.length}
+            when={listings()?.length}
             fallback={
               <Empty>
-                <Trans>No servers found.</Trans>
+                <Trans>No servers or bots found.</Trans>
               </Empty>
             }
           >
-            <For each={servers()}>
-              {(server) => (
+            <For each={listings()}>
+              {(listing) => (
                 <CategoryButton
-                  onClick={() => joinServer(server)}
-                  icon={
-                    <ServerIcon
-                      src={server.icon}
-                      alt={server.name}
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                      }}
-                    />
-                  }
+                  onClick={() => openListing(listing)}
+                  icon={<MdExplore {...iconSize(22)} />}
                   description={
                     <Column>
-                      <span>{server.description}</span>
+                      <span>{listing.description}</span>
                       <Meta>
-                        {server.category && (
-                          <Category>{server.category}</Category>
+                        <Category>{listing.kind === "bot" ? t`Bot` : t`Server`}</Category>
+                        {listing.category && (
+                          <Category>{listing.category}</Category>
                         )}
-                        {typeof server.members === "number" && (
+                        {listing.kind === "server" && (
                           <span>
-                            {server.members}{" "}
-                            {server.members === 1 ? "member" : "members"}
+                            {listing.members} {t`members`}
                           </span>
                         )}
                       </Meta>
                     </Column>
                   }
                 >
-                  {server.name}
+                  {listing.name}
                 </CategoryButton>
               )}
             </For>

@@ -284,7 +284,7 @@ export async function handleEvent(
   switch (event.type) {
     case "Bulk": {
       for (const item of event.v) {
-        handleEvent(client, item, setReady);
+        await handleEvent(client, item, setReady);
       }
       break;
     }
@@ -916,17 +916,7 @@ export async function handleEvent(
       break;
     }
     case "UserPresence": {
-      handleEvent(
-        client,
-        {
-          type: "UserUpdate",
-          id: event.id,
-          data: {
-            online: event.online,
-          },
-        },
-        setReady,
-      );
+      client.users.updatePresence(event.id, event.online);
       break;
     }
     case "UserSettingsUpdate": {
