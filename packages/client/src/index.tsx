@@ -48,7 +48,10 @@ import { Friends } from "./interface/Friends";
 import { HomePage } from "./interface/Home";
 import { ServerHome } from "./interface/ServerHome";
 import { ChannelPage } from "./interface/channels/ChannelPage";
-import { ServiceWorkerUpdatePrompt } from "./serviceWorkerInterface";
+import {
+  isLeaveSitePromptSuppressed,
+  ServiceWorkerUpdatePrompt,
+} from "./serviceWorkerInterface";
 
 attachDevtoolsOverlay();
 
@@ -74,6 +77,8 @@ function SettingsRedirect() {
 function LeaveSitePrompt() {
   onMount(() => {
     const confirmLeave = (event: BeforeUnloadEvent) => {
+      if (isLeaveSitePromptSuppressed()) return;
+
       event.preventDefault();
       event.returnValue = "";
     };

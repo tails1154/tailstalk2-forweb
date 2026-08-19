@@ -13,6 +13,12 @@ const VERSION_ENDPOINT =
 
 export { pendingUpdate };
 
+let suppressLeaveSitePrompt = false;
+
+export function isLeaveSitePromptSuppressed() {
+  return suppressLeaveSitePrompt;
+}
+
 function isNewerVersion(remote: string, current: string): boolean {
   const remoteParts = remote.split(".").map(Number);
   const currentParts = current.split(".").map(Number);
@@ -61,6 +67,8 @@ async function clearClientCaches() {
 }
 
 async function installLatestVersion(updateServiceWorker?: () => Promise<void>) {
+  suppressLeaveSitePrompt = true;
+
   try {
     await clearClientCaches();
   } catch {
