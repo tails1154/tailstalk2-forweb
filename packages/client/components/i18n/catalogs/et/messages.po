@@ -163,8 +163,8 @@ msgid "{m} minutes"
 msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "{scope}: {description}"
-msgstr ""
+#~ msgid "{scope}: {description}"
+#~ msgstr ""
 
 #: src/interface/channels/text/Composition.tsx
 msgid "{sec} seconds"
@@ -438,8 +438,8 @@ msgid "Allow others to add your bot to their servers from Discover"
 msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Allowed scopes"
-msgstr ""
+#~ msgid "Allowed scopes"
+#~ msgstr ""
 
 #: components/i18n/errors.ts
 msgid "Already friends with this user."
@@ -467,8 +467,8 @@ msgid "Appearance"
 msgstr "Välimus"
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Application name"
-msgstr ""
+#~ msgid "Application name"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Approve"
@@ -535,6 +535,7 @@ msgid "Avatar"
 msgstr "Avatar"
 
 #: src/interface/channels/AgeGate.tsx
+#: components/modal/modals/SourceCode.tsx
 #: components/modal/modals/MFAFlow.tsx
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/auth/src/flows/FlowCreate.tsx
@@ -820,12 +821,12 @@ msgid "Click to show spoiler"
 msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Client ID copied."
-msgstr ""
+#~ msgid "Client ID copied."
+#~ msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Client secret copied."
-msgstr ""
+#~ msgid "Client secret copied."
+#~ msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Client Settings"
@@ -834,6 +835,7 @@ msgstr "Kliendisätted"
 #: components/modal/modals/UserProfileRoles.tsx
 #: components/modal/modals/UserProfileMutualGroups.tsx
 #: components/modal/modals/UserProfileMutualFriends.tsx
+#: components/modal/modals/SourceCode.tsx
 #: components/modal/modals/ServerInfo.tsx
 #: components/modal/modals/PolicyChange.tsx
 #: components/modal/modals/LinkWarning.tsx
@@ -891,8 +893,8 @@ msgid "Community themes"
 msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Confidential client"
-msgstr ""
+#~ msgid "Confidential client"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/Account.tsx
 msgid "Configure a way to get back into your account in case your 2FA is lost"
@@ -966,8 +968,8 @@ msgid "Copy channel ID"
 msgstr "Kopeeri kanali ID"
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Copy client ID"
-msgstr ""
+#~ msgid "Copy client ID"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Copy ID"
@@ -1009,8 +1011,8 @@ msgid "Copy text"
 msgstr "Kopeeri tekst"
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Copy this client secret now. It cannot be retrieved later."
-msgstr ""
+#~ msgid "Copy this client secret now. It cannot be retrieved later."
+#~ msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Copy Token"
@@ -1026,20 +1028,20 @@ msgid "Copy webhook URL"
 msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Could not create the OAuth application. Check the redirect URI and scopes."
-msgstr ""
+#~ msgid "Could not create the OAuth application. Check the redirect URI and scopes."
+#~ msgstr ""
 
 #: components/i18n/errors.ts
 msgid "Could not find what you requested."
 msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Could not revoke this OAuth application."
-msgstr ""
+#~ msgid "Could not revoke this OAuth application."
+#~ msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Could not rotate this application's secret."
-msgstr ""
+#~ msgid "Could not rotate this application's secret."
+#~ msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Could not submit your bot."
@@ -1108,8 +1110,8 @@ msgid "Create and edit webhooks"
 msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Create applications that can securely connect to TailsTalk 2 using OAuth 2.1."
-msgstr ""
+#~ msgid "Create applications that can securely connect to TailsTalk 2 using OAuth 2.1."
+#~ msgstr ""
 
 #: components/app/interface/settings/user/bots/MyBots.tsx
 msgid "Create Bot"
@@ -1141,8 +1143,8 @@ msgid "Create invites for others to use"
 msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Create OAuth application"
-msgstr ""
+#~ msgid "Create OAuth application"
+#~ msgstr ""
 
 #: components/modal/modals/CreateRole.tsx
 #: components/app/interface/settings/server/roles/ServerRoleOverview.tsx
@@ -1398,6 +1400,14 @@ msgstr ""
 msgid "Do Not Disturb"
 msgstr "Mitte segada"
 
+#: components/modal/modals/SourceCode.tsx
+msgid "Do you want to view Stoat or TailsTalk 2's source code?"
+msgstr ""
+
+#: components/modal/modals/SourceCode.tsx
+msgid "Do you want to view the backend or frontend code?"
+msgstr ""
+
 #: components/modal/modals/ScreenShareSettings.tsx
 msgid "Don't ask me again"
 msgstr ""
@@ -1569,8 +1579,8 @@ msgid "Enter a new password."
 msgstr "Sisestage uus parool."
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Enter an application name, redirect URI, and at least one scope."
-msgstr ""
+#~ msgid "Enter an application name, redirect URI, and at least one scope."
+#~ msgstr ""
 
 #: src/interface/channels/AgeGate.tsx
 #~ msgid "Enter Channel"
@@ -1603,8 +1613,8 @@ msgid "Enter your preferred username."
 msgstr "Sisestage oma eelistatud kasutajanimi."
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Exact HTTPS redirect URI"
-msgstr ""
+#~ msgid "Exact HTTPS redirect URI"
+#~ msgstr ""
 
 #: components/app/interface/settings/server/XP.tsx
 msgid "Experience points"
@@ -2395,20 +2405,20 @@ msgid "Notifications"
 msgstr "Teated"
 
 #: components/app/interface/settings/UserSettings.tsx
-msgid "OAuth"
-msgstr ""
+#~ msgid "OAuth"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "OAuth application created. Save the secret now; it will not be shown again."
-msgstr ""
+#~ msgid "OAuth application created. Save the secret now; it will not be shown again."
+#~ msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "OAuth application revoked."
-msgstr ""
+#~ msgid "OAuth application revoked."
+#~ msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "OAuth Applications"
-msgstr ""
+#~ msgid "OAuth Applications"
+#~ msgstr ""
 
 #: components/ui/components/features/messaging/composition/MessageReplyPreview.tsx
 msgid "Off"
@@ -2602,12 +2612,12 @@ msgid "Provided email or password is wrong."
 msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Public client"
-msgstr ""
+#~ msgid "Public client"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Public client (requires PKCE)"
-msgstr ""
+#~ msgid "Public client (requires PKCE)"
+#~ msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"
@@ -2828,16 +2838,16 @@ msgid "Review policy changes"
 msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Revoke application"
-msgstr ""
+#~ msgid "Revoke application"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Revoke this OAuth application and all of its tokens?"
-msgstr ""
+#~ msgid "Revoke this OAuth application and all of its tokens?"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Revoked"
-msgstr ""
+#~ msgid "Revoked"
+#~ msgstr ""
 
 #: components/app/interface/settings/server/XP.tsx
 msgid "Reward members with XP when they send messages in this server."
@@ -2862,8 +2872,8 @@ msgid "Roles"
 msgstr "Rollid"
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Rotate secret"
-msgstr ""
+#~ msgid "Rotate secret"
+#~ msgstr ""
 
 #: components/modal/modals/ServerIdentity.tsx
 #: components/modal/modals/CustomStatus.tsx
@@ -2925,8 +2935,8 @@ msgid "Search servers and bots..."
 msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "Secret rotated. Save the new secret now; it will not be shown again."
-msgstr ""
+#~ msgid "Secret rotated. Save the new secret now; it will not be shown again."
+#~ msgstr ""
 
 #: components/app/interface/settings/user/Feedback.tsx
 #~ msgid "See what we're currently working on."
@@ -3160,6 +3170,7 @@ msgstr ""
 msgid "Sounds"
 msgstr "Helid"
 
+#: components/modal/modals/SourceCode.tsx
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Source Code"
 msgstr "Lähtekood (source)"
@@ -3670,6 +3681,10 @@ msgstr ""
 msgid "Video"
 msgstr "Video"
 
+#: components/modal/modals/SourceCode.tsx
+msgid "View backend source code"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "View Channel"
 msgstr "Vaata kanaleid"
@@ -3677,6 +3692,10 @@ msgstr "Vaata kanaleid"
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "View currently active bug reports here."
 msgstr "Vaata hetkel aktiivsete vigade listi siit."
+
+#: components/modal/modals/SourceCode.tsx
+msgid "View frontend source code"
+msgstr ""
 
 #: src/interface/channels/ChannelHeader.tsx
 msgid "View members"
@@ -3693,6 +3712,14 @@ msgstr ""
 #: components/app/interface/settings/user/Account.tsx
 msgid "View Recovery Codes"
 msgstr "Taastekoodide Kuvamine"
+
+#: components/modal/modals/SourceCode.tsx
+msgid "View Stoat source code"
+msgstr ""
+
+#: components/modal/modals/SourceCode.tsx
+msgid "View TailsTalk 2 source code"
+msgstr ""
 
 #: components/ui/components/features/messaging/bars/JumpToBottom.tsx
 msgid "Viewing older messages"
@@ -3898,8 +3925,8 @@ msgid "You have been locked out for entering a wrong password multiple times. Pl
 msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
-msgid "You have no OAuth applications yet."
-msgstr ""
+#~ msgid "You have no OAuth applications yet."
+#~ msgstr ""
 
 #: components/i18n/errors.ts
 msgid "You have this user blocked."

@@ -1,4 +1,4 @@
-import { ComponentProps, splitProps } from "solid-js";
+import { ComponentProps, Show, splitProps } from "solid-js";
 
 import emojiRegex from "emoji-regex";
 
@@ -8,6 +8,7 @@ import { EmojiBase, toCodepoint } from ".";
 // openmoji is off due to incomplete implementation
 
 export type UnicodeEmojiPacks =
+  | "system"
   | "fluent-3d"
   | "fluent-color"
   | "fluent-flat"
@@ -17,6 +18,7 @@ export type UnicodeEmojiPacks =
   | "twemoji";
 
 export const UNICODE_EMOJI_PACKS: UnicodeEmojiPacks[] = [
+  "system",
   "fluent-3d",
   "fluent-color",
   "fluent-flat",
@@ -67,6 +69,7 @@ export function unicodeEmojiUrl(
   pack: UnicodeEmojiPacks = "fluent-3d",
   text: string,
 ) {
+  if (pack === "system") return "";
   return `https://static.stoat.chat/emoji/${pack}/${toCodepoint(text)}.svg?v=1`;
 }
 
@@ -81,18 +84,25 @@ export function UnicodeEmoji(
 ) {
   const [local, remote] = splitProps(props, ["emoji"]);
   const state = useState();
+  const pack = () =>
+    props.pack ?? state.settings.getValue("appearance:unicode_emoji");
+  const emoji = () => local.emoji.replace(/^[\uE0E0-\uE0E6]/, "");
 
   return (
-    <EmojiBase
-      {...remote}
-      loading="lazy"
-      class="emoji"
-      alt={local.emoji}
-      draggable={false}
-      src={unicodeEmojiUrl(
-        props.pack ?? state.settings.getValue("appearance:unicode_emoji"),
-        props.emoji,
-      )}
-    />
+    <Show
+      when={pack() === "system"}
+      fallback={
+        <EmojiBase
+          {...remote}
+          loading="lazy"
+          class="emoji"
+          alt={local.emoji}
+          draggable={false}
+          src={unicodeEmojiUrl(pack(), emoji())}
+        />
+      }
+    >
+      <span class="emoji">{emoji()}</span>
+    </Show>
   );
 }

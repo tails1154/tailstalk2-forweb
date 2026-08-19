@@ -21,7 +21,6 @@ import MdLogout from "@material-design-icons/svg/outlined/logout.svg?component-s
 import MdMemory from "@material-design-icons/svg/outlined/memory.svg?component-solid";
 import MdMic from "@material-design-icons/svg/outlined/mic.svg?component-solid";
 import MdNotifications from "@material-design-icons/svg/outlined/notifications.svg?component-solid";
-import MdApi from "@material-design-icons/svg/outlined/api.svg?component-solid";
 import MdPalette from "@material-design-icons/svg/outlined/palette.svg?component-solid";
 import MdRateReview from "@material-design-icons/svg/outlined/rate_review.svg?component-solid";
 import MdScience from "@material-design-icons/svg/outlined/science.svg?component-solid";
@@ -37,7 +36,6 @@ import { MyAccount } from "./user/Account";
 import AdvancedSettings from "./user/Advanced";
 import { ThemesMenu } from "./user/appearance";
 import { MyBots, ViewBot } from "./user/bots";
-import { OAuthSettings } from "./user/OAuth";
 import { Feedback } from "./user/Feedback";
 import { LanguageSettings } from "./user/Language";
 import Native from "./user/Native";
@@ -92,8 +90,6 @@ const Config: SettingsConfiguration<{ server: Server }> = {
         return <Sessions />;
       case "bots":
         return <MyBots />;
-      case "oauth":
-        return <OAuthSettings />;
       case "language":
         return <LanguageSettings />;
       case "admin":
@@ -189,11 +185,6 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               id: "bots",
               icon: <MdSmartToy {...iconSize(20)} />,
               title: <Trans>My Bots</Trans>,
-            },
-            {
-              id: "oauth",
-              icon: <MdApi {...iconSize(20)} />,
-              title: <Trans>OAuth</Trans>,
             },
           ],
         },
@@ -291,7 +282,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               title: <Trans>What's New</Trans>,
             },
             {
-              href: "https://github.com/stoatchat",
+              onClick: () => openModal({ type: "source_code" }),
               icon: <MdMemory {...iconSize(20)} />,
               title: <Trans>Source Code</Trans>,
             },

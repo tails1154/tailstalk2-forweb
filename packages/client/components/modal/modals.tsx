@@ -56,6 +56,7 @@ import { ServerInfoModal } from "./modals/ServerInfo";
 import { SettingsModal } from "./modals/Settings";
 import { SignOutSessionsModal } from "./modals/SignOutSessions";
 import { SignedOutModal } from "./modals/SignedOut";
+import { SourceCodeModal } from "./modals/SourceCode";
 import { UserProfileModal } from "./modals/UserProfile";
 import { UserProfileMutualFriendsModal } from "./modals/UserProfileMutualFriends";
 import { UserProfileMutualGroupsModal } from "./modals/UserProfileMutualGroups";
@@ -170,6 +171,8 @@ export function RenderModal(props: ActiveModal & { onClose: () => void }) {
       return <ServerInfoModal {...modalProps} />;
     case "settings":
       return <SettingsModal {...modalProps} />;
+    case "source_code":
+      return <SourceCodeModal {...modalProps} />;
     case "signed_out":
       return <SignedOutModal {...modalProps} />;
     case "sign_out_sessions":

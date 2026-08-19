@@ -244,6 +244,9 @@ export type Modals =
       context?: any;
     }
   | {
+      type: "source_code";
+    }
+  | {
       type: "signed_out";
     }
   | {
