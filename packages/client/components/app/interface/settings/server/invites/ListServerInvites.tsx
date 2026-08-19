@@ -1,9 +1,12 @@
-import { For, Match, Switch } from "solid-js";
+import { For, Match, Show, Switch, createSignal } from "solid-js";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { useQuery, useQueryClient } from "@tanstack/solid-query";
 import { Server, ServerInvite } from "stoat.js";
+import { styled } from "styled-system/jsx";
 
+import { useClient } from "@revolt/client";
+import { CONFIGURATION } from "@revolt/common";
 import { useModals } from "@revolt/modal";
 import {
   Avatar,
@@ -22,8 +25,11 @@ import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-s
  */
 export function ListServerInvites(props: { server: Server }) {
   const { t } = useLingui();
-  const client = useQueryClient();
+  const client = useClient();
+  const queryClient = useQueryClient();
   const { showError, openModal } = useModals();
+  const [vanityUrl, setVanityUrl] = createSignal<string>();
+  const [vanityCode, setVanityCode] = createSignal("");
   const query = useQuery(() => ({
     queryKey: ["invites", props.server.id],
     queryFn: () => props.server.fetchInvites() as Promise<ServerInvite[]>,
@@ -35,10 +41,11 @@ export function ListServerInvites(props: { server: Server }) {
   async function deleteInvite(invite: ServerInvite) {
     try {
       await invite.delete();
-      client.setQueryData(
+      queryClient.setQueryData(
         ["invites", props.server.id],
-        query.data!.filter((entry) => entry.id !== entry.id),
+        query.data!.filter((entry) => entry.id !== invite.id),
       );
+      if (vanityUrl()?.endsWith(`/invite/${invite.id}`)) setVanityUrl();
     } catch (error) {
       showError(error);
     }
@@ -52,6 +59,37 @@ export function ListServerInvites(props: { server: Server }) {
         type: "create_invite",
         channel: defaultChannel,
       });
+    }
+  }
+
+  async function createVanity() {
+    const code = vanityCode().trim().toLowerCase();
+    if (!code) return;
+
+    try {
+      const [authHeader, authValue] = client().authenticationHeader;
+      const response = await fetch(
+        `${CONFIGURATION.DEFAULT_API_URL}/servers/${props.server.id}/vanity`,
+        {
+          method: "POST",
+          headers: {
+            [authHeader]: authValue,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ code }),
+        },
+      );
+      if (!response.ok) {
+        const error = await response.json().catch(() => undefined);
+        throw new Error(error?.error ?? `Vanity URL request failed (${response.status})`);
+      }
+      const url = `https://tails1154.com:9961/invite/${code}`;
+      setVanityUrl(url);
+      await navigator.clipboard?.writeText(url);
+      queryClient.invalidateQueries({ queryKey: ["invites", props.server.id] });
+      setVanityCode("");
+    } catch (error) {
+      showError(error);
     }
   }
 
@@ -72,6 +110,29 @@ export function ListServerInvites(props: { server: Server }) {
       >
         <Trans>Create invite</Trans>
       </Button>
+      <Button group="standard" onPress={createVanity}>
+        <Trans>Create vanity URL</Trans>
+      </Button>
+      <VanityInput
+        value={vanityCode()}
+        placeholder={t`Choose a vanity code (3–32 lowercase characters)`}
+        onInput={(event) => setVanityCode(event.currentTarget.value)}
+        onKeyDown={(event) => event.key === "Enter" && createVanity()}
+      />
+      <Show when={vanityUrl()}>
+        <VanityCard>
+          <Column gap="xs">
+            <Text class="title" size="small"><Trans>Active vanity URL</Trans></Text>
+            <a href={vanityUrl()} target="_blank" rel="noreferrer">{vanityUrl()}</a>
+          </Column>
+          <Button
+            variant="tonal"
+            onPress={async () => await navigator.clipboard?.writeText(vanityUrl()!)}
+          >
+            <Trans>Copy</Trans>
+          </Button>
+        </VanityCard>
+      </Show>
       <DataTable
         columns={[<Trans>Inviter</Trans>, <Trans>Invite Code</Trans>, <></>]}
         itemCount={query.data?.length}
@@ -134,3 +195,30 @@ export function ListServerInvites(props: { server: Server }) {
     </Column>
   );
 }
+
+const VanityInput = styled("input", {
+  base: {
+    width: "100%",
+    minHeight: "40px",
+    padding: "0 var(--gap-md)",
+    border: "1px solid var(--md-sys-color-outline-variant)",
+    borderRadius: "var(--borderRadius-sm)",
+    color: "var(--md-sys-color-on-surface)",
+    background: "var(--md-sys-color-surface-container)",
+    font: "inherit",
+  },
+});
+
+const VanityCard = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "var(--gap-md)",
+    padding: "var(--gap-md)",
+    borderRadius: "var(--borderRadius-md)",
+    background: "var(--md-sys-color-primary-container)",
+    color: "var(--md-sys-color-on-primary-container)",
+    "& a": { color: "inherit", overflowWrap: "anywhere" },
+  },
+});
