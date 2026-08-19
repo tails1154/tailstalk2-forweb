@@ -8,7 +8,8 @@ import { CURRENT_VERSION } from "./version";
 const [pendingUpdate, setPendingUpdate] = createSignal<
   () => void | Promise<void>
 >();
-const VERSION_ENDPOINT = "https://tails1154.com:9782/tailstalk2.version";
+const VERSION_ENDPOINT =
+  "https://tails1154.com:9782/cgi-bin/tailstalk2_version.py";
 
 export { pendingUpdate };
 
