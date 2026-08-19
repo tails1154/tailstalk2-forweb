@@ -587,6 +587,7 @@ msgstr "Blocked"
 msgid "Blocked User"
 msgstr "Blocked User"
 
+#: src/interface/Discover.tsx
 #: components/app/interface/channels/text/Message.tsx
 msgid "Bot"
 msgstr "Bot"
@@ -2046,6 +2047,10 @@ msgstr "Mature content on TailsTalk 2 is not allowed."
 msgid "Mature content on TailsTalk 2 is not allowed. This channel cannot be marked as mature."
 msgstr "Mature content on TailsTalk 2 is not allowed. This channel cannot be marked as mature."
 
+#: src/interface/Discover.tsx
+msgid "members"
+msgstr "members"
+
 #: components/app/interface/settings/ServerSettings.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Members"
@@ -2767,6 +2772,10 @@ msgstr "Search for groups..."
 msgid "Search for users..."
 msgstr "Search for users..."
 
+#: src/interface/Discover.tsx
+msgid "Search servers and bots..."
+msgstr "Search servers and bots..."
+
 #: components/app/interface/settings/user/Feedback.tsx
 #~ msgid "See what we're currently working on."
 #~ msgstr "See what we're currently working on."
@@ -2858,6 +2867,10 @@ msgstr "Sent an attachment"
 #: components/ui/components/features/messaging/elements/MessageReply.tsx
 msgid "Sent multiple attachments"
 msgstr "Sent multiple attachments"
+
+#: src/interface/Discover.tsx
+msgid "Server"
+msgstr "Server"
 
 #: components/modal/modals/ServerIdentity.tsx
 msgid "Server Avatar"

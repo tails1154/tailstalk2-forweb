@@ -1,7 +1,7 @@
 import { For, Show, createResource, createSignal } from "solid-js";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
-import { PublicChannelInvite } from "stoat.js";
+import { PublicBot, PublicChannelInvite } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
 import { useClient } from "@revolt/client";
@@ -67,7 +67,14 @@ export function Discover() {
 
   async function openListing(listing: DiscoverListing) {
     if (listing.kind === "bot") {
-      navigate(`/bot/${listing.target_id}`);
+      try {
+        const invite = await client()
+          .api.get(`/bots/${listing.target_id}/invite`)
+          .then((bot) => new PublicBot(client(), bot));
+        openModal({ type: "add_bot", invite });
+      } catch {
+        navigate(`/bot/${listing.target_id}`);
+      }
       return;
     }
     if (!listing.invite) return;
