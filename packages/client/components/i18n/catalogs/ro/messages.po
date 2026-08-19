@@ -1929,6 +1929,11 @@ msgstr ""
 #~ msgid "Let us know how we can improve our app by giving us feedback."
 #~ msgstr "Spune-ne cum putem îmbunătăți aplicația noastră, oferindu-ne feedback."
 
+#. placeholder {0}: xp.data!.level
+#: components/modal/modals/UserProfile.tsx
+msgid "Level {0}"
+msgstr ""
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Light"
 msgstr ""
@@ -3627,6 +3632,10 @@ msgstr ""
 
 #: components/modal/modals/CreateOrJoinServer.tsx
 msgid "Would you like to create a new server or join an existing one?"
+msgstr ""
+
+#: components/modal/modals/UserProfile.tsx
+msgid "XP"
 msgstr ""
 
 #: components/auth/src/flows/FlowCreate.tsx

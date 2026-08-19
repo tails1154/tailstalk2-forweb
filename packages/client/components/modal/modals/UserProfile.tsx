@@ -1,6 +1,8 @@
+import { Trans } from "@lingui-solid/solid/macro";
 import { useQuery } from "@tanstack/solid-query";
 import { styled } from "styled-system/jsx";
 
+import { CONFIGURATION } from "@revolt/common";
 import { Dialog, DialogProps, Profile } from "@revolt/ui";
 
 import { useModals } from "..";
@@ -14,6 +16,21 @@ export function UserProfileModal(
   const query = useQuery(() => ({
     queryKey: ["profile", props.user.id],
     queryFn: () => props.user.fetchProfile(),
+  }));
+
+  const xp = useQuery(() => ({
+    queryKey: ["xp", props.user.id],
+    queryFn: async () =>
+      fetch(`${CONFIGURATION.DEFAULT_API_URL}/users/${props.user.id}/xp`, {
+        cache: "no-store",
+      }).then((response) => {
+        if (!response.ok) throw new Error("Unable to load XP");
+        return response.json() as Promise<{
+          xp: number;
+          level: number;
+          next_level_xp: number;
+        }>;
+      }),
   }));
 
   return (
@@ -44,6 +61,14 @@ export function UserProfileModal(
         />
 
         <Profile.Actions user={props.user} width={3} />
+        <Show when={xp.data}>
+          <XPBadge>
+            <strong><Trans>Level {xp.data!.level}</Trans></strong>
+            <span>
+              {xp.data!.xp} / {xp.data!.next_level_xp} <Trans>XP</Trans>
+            </span>
+          </XPBadge>
+        </Show>
         <Profile.Status user={props.user} />
         <Profile.Badges user={props.user} />
         <Profile.Joined user={props.user} />
@@ -60,5 +85,18 @@ const Grid = styled("div", {
     gap: "var(--gap-md)",
     padding: "var(--gap-md)",
     gridTemplateColumns: "repeat(3, 1fr)",
+  },
+});
+
+const XPBadge = styled("div", {
+  base: {
+    gridColumn: "1 / -1",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "10px 14px",
+    borderRadius: "var(--borderRadius-md)",
+    background: "var(--md-sys-color-secondary-container)",
+    color: "var(--md-sys-color-on-secondary-container)",
   },
 });

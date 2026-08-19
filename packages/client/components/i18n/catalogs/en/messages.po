@@ -1929,6 +1929,11 @@ msgstr "Let TailsTalk 2 use its own custom titlebar."
 #~ msgid "Let us know how we can improve our app by giving us feedback."
 #~ msgstr "Let us know how we can improve our app by giving us feedback."
 
+#. placeholder {0}: xp.data!.level
+#: components/modal/modals/UserProfile.tsx
+msgid "Level {0}"
+msgstr "Level {0}"
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Light"
 msgstr "Light"
@@ -3628,6 +3633,10 @@ msgstr "Would you like to create a new group or server?"
 #: components/modal/modals/CreateOrJoinServer.tsx
 msgid "Would you like to create a new server or join an existing one?"
 msgstr "Would you like to create a new server or join an existing one?"
+
+#: components/modal/modals/UserProfile.tsx
+msgid "XP"
+msgstr "XP"
 
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Yes, I’m an AISD student"
