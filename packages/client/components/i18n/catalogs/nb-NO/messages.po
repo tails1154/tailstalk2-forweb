@@ -3559,6 +3559,10 @@ msgid "You can't have more than {0} emojis on this server."
 msgstr ""
 
 #: components/i18n/errors.ts
+msgid "You can't have spaces in your username or your username is invalid."
+msgstr ""
+
+#: components/i18n/errors.ts
 msgid "You cannot give yourself missing permissions."
 msgstr ""
 

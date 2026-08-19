@@ -79,6 +79,12 @@ export function useError() {
         case "EmptyMessage":
           return t`This message is empty and has not been sent.`;
         case "FailedValidation":
+          if (
+            typeof err.error === "string" &&
+            /username[\s\S]*validation error[\s\S]*regex/i.test(err.error)
+          ) {
+            return t`You can't have spaces in your username or your username is invalid.`;
+          }
           return t`Something is wrong with your request, ${err.error}.`;
         case "FeatureDisabled":
           return t`This feature is currently disabled.`;
