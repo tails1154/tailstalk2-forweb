@@ -4,11 +4,11 @@ import { useApi, useClient, useClientLifecycle } from "@revolt/client";
 import { CONFIGURATION } from "@revolt/common";
 import { useModals } from "@revolt/modal";
 import { useNavigate, useParams } from "@revolt/routing";
-import { Button, Row, iconSize } from "@revolt/ui";
+import { Button, Column, Dialog, Row, Text, iconSize } from "@revolt/ui";
 
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
-import { Show } from "solid-js";
+import { createSignal, Show } from "solid-js";
 import { FlowTitle } from "./Flow";
 import { setFlowCheckEmail } from "./FlowCheck";
 import { Fields, Form } from "./Form";
@@ -22,6 +22,7 @@ export default function FlowCreate() {
   const navigate = useNavigate();
   const { code } = useParams();
   const modals = useModals();
+  const [isAisdStudent, setIsAisdStudent] = createSignal<boolean>();
   const { login } = useClientLifecycle();
 
   /**
@@ -29,7 +30,10 @@ export default function FlowCreate() {
    * @param data Form Data
    */
   async function create(data: FormData) {
-    const email = data.get("email") as string;
+    const studentId = (data.get("student-id") as string | null)?.trim();
+    const email = isAisdStudent()
+      ? `${studentId}@cats.angletonisd.net`
+      : (data.get("email") as string);
     const password = data.get("new-password") as string;
     const captcha = data.get("captcha") as string;
     const invite = data.get("invite") as string;
@@ -67,25 +71,59 @@ export default function FlowCreate() {
 
   return (
     <>
+      <Dialog
+        show={isAisdStudent() === undefined}
+        onClose={() => navigate("..")}
+        title={<Trans>Are you an AISD student?</Trans>}
+        actions={[
+          {
+            text: <Trans>Yes, I’m an AISD student</Trans>,
+            onClick: () => {
+              setIsAisdStudent(true);
+              return true;
+            },
+          },
+          {
+            text: <Trans>No, continue with email</Trans>,
+            onClick: () => {
+              setIsAisdStudent(false);
+              return true;
+            },
+          },
+        ]}
+      >
+        <Column>
+          <Text>
+            <Trans>Select the registration method that applies to you.</Trans>
+          </Text>
+        </Column>
+      </Dialog>
       <FlowTitle subtitle={<Trans>Create an account</Trans>} emoji="wave">
         <Trans>Hello!</Trans>
       </FlowTitle>
-      <Form onSubmit={create} captcha={CONFIGURATION.HCAPTCHA_SITEKEY}>
-        <Fields fields={["email", "new-password"]} />
-        <Show when={isInviteOnly()}>
-          <Fields fields={[{ field: "invite", value: code }]} />
-        </Show>
-        <Row justify>
-          <a href="..">
-            <Button variant="text">
-              <MdArrowBack {...iconSize("1.2em")} /> <Trans>Back</Trans>
+      <Show when={isAisdStudent() !== undefined}>
+        <Form onSubmit={create} captcha={CONFIGURATION.HCAPTCHA_SITEKEY}>
+          <Fields
+            fields={[
+              isAisdStudent() ? "student-id" : "email",
+              "new-password",
+            ]}
+          />
+          <Show when={isInviteOnly()}>
+            <Fields fields={[{ field: "invite", value: code }]} />
+          </Show>
+          <Row justify>
+            <a href="..">
+              <Button variant="text">
+                <MdArrowBack {...iconSize("1.2em")} /> <Trans>Back</Trans>
+              </Button>
+            </a>
+            <Button type="submit">
+              <Trans>Register</Trans>
             </Button>
-          </a>
-          <Button type="submit">
-            <Trans>Register</Trans>
-          </Button>
-        </Row>
-      </Form>
+          </Row>
+        </Form>
+      </Show>
       {import.meta.env.DEV && (
         <div
           style={{

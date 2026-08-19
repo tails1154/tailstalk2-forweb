@@ -450,6 +450,10 @@ msgstr ""
 msgid "Appearance"
 msgstr "selo ilo"
 
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "Are you an AISD student?"
+msgstr ""
+
 #: components/modal/modals/SignOutSessions.tsx
 msgid "Are you sure you want to clear your sessions?"
 msgstr ""
@@ -1447,6 +1451,10 @@ msgid "Enter Code"
 msgstr ""
 
 #: components/auth/src/flows/Form.tsx
+msgid "Enter your AISD student ID."
+msgstr ""
+
+#: components/auth/src/flows/Form.tsx
 msgid "Enter your current password."
 msgstr "o sitelen e nimi open pi tenpo ni."
 
@@ -2187,6 +2195,10 @@ msgstr ""
 msgid "No servers found."
 msgstr ""
 
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "No, continue with email"
+msgstr ""
+
 #: src/interface/Friends.tsx
 msgid "Nobody here right now!"
 msgstr ""
@@ -2711,6 +2723,10 @@ msgstr ""
 msgid "Select screen share quality"
 msgstr ""
 
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "Select the registration method that applies to you."
+msgstr ""
+
 #: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
 msgid "Select video input"
 msgstr ""
@@ -2965,6 +2981,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 msgid "Stream Start"
+msgstr ""
+
+#: components/auth/src/flows/Form.tsx
+msgid "Student ID"
 msgstr ""
 
 #: components/app/interface/settings/user/Feedback.tsx
@@ -3506,6 +3526,10 @@ msgstr ""
 
 #: components/modal/modals/CreateOrJoinServer.tsx
 msgid "Would you like to create a new server or join an existing one?"
+msgstr ""
+
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "Yes, I’m an AISD student"
 msgstr ""
 
 #: components/app/interface/settings/user/bots/MyBots.tsx

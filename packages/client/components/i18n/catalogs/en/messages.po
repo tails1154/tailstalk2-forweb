@@ -450,6 +450,10 @@ msgstr "An internal error occurred. ({0})"
 msgid "Appearance"
 msgstr "Appearance"
 
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "Are you an AISD student?"
+msgstr "Are you an AISD student?"
+
 #: components/modal/modals/SignOutSessions.tsx
 msgid "Are you sure you want to clear your sessions?"
 msgstr "Are you sure you want to clear your sessions?"
@@ -1447,6 +1451,10 @@ msgid "Enter Code"
 msgstr "Enter Code"
 
 #: components/auth/src/flows/Form.tsx
+msgid "Enter your AISD student ID."
+msgstr "Enter your AISD student ID."
+
+#: components/auth/src/flows/Form.tsx
 msgid "Enter your current password."
 msgstr "Enter your current password."
 
@@ -2187,6 +2195,10 @@ msgstr "No permissions set yet"
 msgid "No servers found."
 msgstr "No servers found."
 
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "No, continue with email"
+msgstr "No, continue with email"
+
 #: src/interface/Friends.tsx
 msgid "Nobody here right now!"
 msgstr "Nobody here right now!"
@@ -2711,6 +2723,10 @@ msgstr "Select noise suppression"
 msgid "Select screen share quality"
 msgstr "Select screen share quality"
 
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "Select the registration method that applies to you."
+msgstr "Select the registration method that applies to you."
+
 #: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
 msgid "Select video input"
 msgstr "Select video input"
@@ -2966,6 +2982,10 @@ msgstr "Stream End"
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 msgid "Stream Start"
 msgstr "Stream Start"
+
+#: components/auth/src/flows/Form.tsx
+msgid "Student ID"
+msgstr "Student ID"
 
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Submit feature suggestion"
@@ -3507,6 +3527,10 @@ msgstr "Would you like to create a new group or server?"
 #: components/modal/modals/CreateOrJoinServer.tsx
 msgid "Would you like to create a new server or join an existing one?"
 msgstr "Would you like to create a new server or join an existing one?"
+
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "Yes, I’m an AISD student"
+msgstr "Yes, I’m an AISD student"
 
 #: components/app/interface/settings/user/bots/MyBots.tsx
 msgid "You agree that your bot is subject to the Acceptable Usage Policy."

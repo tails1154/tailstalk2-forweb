@@ -25,6 +25,7 @@ type Field =
   | "email"
   | "password"
   | "new-password"
+  | "student-id"
   | "log-out"
   | "username"
   | "invite";
@@ -54,6 +55,14 @@ const useFieldConfiguration = () => {
       autocomplete: "new-password",
       name: () => t`New Password`,
       placeholder: () => t`Enter a new password.`,
+    },
+    "student-id": {
+      minLength: 1,
+      pattern: "[^\\s@]+",
+      type: "text" as const,
+      autocomplete: "username",
+      name: () => t`Student ID`,
+      placeholder: () => t`Enter your AISD student ID.`,
     },
     "log-out": {
       name: () => t`Log out of all other sessions`,
