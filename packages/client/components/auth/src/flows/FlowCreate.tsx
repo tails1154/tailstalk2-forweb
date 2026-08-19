@@ -22,7 +22,8 @@ export default function FlowCreate() {
   const navigate = useNavigate();
   const { code } = useParams();
   const modals = useModals();
-  const [isAisdStudent, setIsAisdStudent] = createSignal<boolean>();
+  const [aisdChoice, setAisdChoice] = createSignal<boolean | null>(null);
+  const isAisdStudent = () => aisdChoice() === true;
   const { login } = useClientLifecycle();
 
   /**
@@ -72,22 +73,20 @@ export default function FlowCreate() {
   return (
     <>
       <Dialog
-        show={isAisdStudent() === undefined}
+        show={aisdChoice() === null}
         onClose={() => navigate("..")}
         title={<Trans>Are you an AISD student?</Trans>}
         actions={[
           {
             text: <Trans>Yes, I’m an AISD student</Trans>,
             onClick: () => {
-              setIsAisdStudent(true);
-              return true;
+              setAisdChoice(true);
             },
           },
           {
             text: <Trans>No, continue with email</Trans>,
             onClick: () => {
-              setIsAisdStudent(false);
-              return true;
+              setAisdChoice(false);
             },
           },
         ]}
@@ -101,7 +100,7 @@ export default function FlowCreate() {
       <FlowTitle subtitle={<Trans>Create an account</Trans>} emoji="wave">
         <Trans>Hello!</Trans>
       </FlowTitle>
-      <Show when={isAisdStudent() !== undefined}>
+      <Show when={aisdChoice() !== null}>
         <Form onSubmit={create} captcha={CONFIGURATION.HCAPTCHA_SITEKEY}>
           <Fields
             fields={[
