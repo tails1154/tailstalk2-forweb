@@ -2,7 +2,7 @@ import { Trans } from "@lingui-solid/solid/macro";
 import { useQuery } from "@tanstack/solid-query";
 import { styled } from "styled-system/jsx";
 
-import { CONFIGURATION } from "@revolt/common";
+import { useClient } from "@revolt/client";
 import { Dialog, DialogProps, Profile } from "@revolt/ui";
 
 import { useModals } from "..";
@@ -11,6 +11,7 @@ import { Modals } from "../types";
 export function UserProfileModal(
   props: DialogProps & Modals & { type: "user_profile" },
 ) {
+  const client = useClient();
   const { openModal } = useModals();
 
   const query = useQuery(() => ({
@@ -20,17 +21,12 @@ export function UserProfileModal(
 
   const xp = useQuery(() => ({
     queryKey: ["xp", props.user.id],
-    queryFn: async () =>
-      fetch(`${CONFIGURATION.DEFAULT_API_URL}/users/${props.user.id}/xp`, {
-        cache: "no-store",
-      }).then((response) => {
-        if (!response.ok) throw new Error("Unable to load XP");
-        return response.json() as Promise<{
-          xp: number;
-          level: number;
-          next_level_xp: number;
-        }>;
-      }),
+    queryFn: () =>
+      client().api.get(`/users/${props.user.id}/xp`) as Promise<{
+        xp: number;
+        level: number;
+        next_level_xp: number;
+      }>,
   }));
 
   return (
