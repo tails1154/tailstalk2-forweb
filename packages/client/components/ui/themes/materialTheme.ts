@@ -25,7 +25,7 @@ export function createMaterialColourVariables<P extends string>(
   prefix: P,
 ): addPrefixToObject<MaterialColours, P> {
   switch (theme.preset) {
-    case "you":
+    case "stoat":
       return Object.entries(
         generateMaterialYouScheme(
           theme.accent,

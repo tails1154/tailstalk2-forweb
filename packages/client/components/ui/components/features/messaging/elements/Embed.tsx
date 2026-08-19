@@ -20,6 +20,15 @@ import { TextEmbed } from "./TextEmbed";
 export function Embed(props: { embed: MessageEmbed }) {
   const { openModal } = useModals();
 
+  const isGifukaiUrl = (url: string) => {
+    try {
+      const parsed = new URL(url);
+      return parsed.protocol === "https:" && parsed.hostname === "cdn.gifukai.com";
+    } catch {
+      return false;
+    }
+  };
+
   /**
    * Whether the embed is a GIF
    */
@@ -52,7 +61,11 @@ export function Embed(props: { embed: MessageEmbed }) {
         <SizedContent width={image()!.width} height={image()!.height}>
           <img
             // bypass proxy for known GIF providers
-            src={isGIF() ? image()!.url : image()!.proxiedURL}
+            src={
+              isGIF() && isGifukaiUrl(image()!.url)
+                ? image()!.url
+                : image()!.proxiedURL
+            }
             loading="lazy"
             class={css({ cursor: "pointer" })}
             onClick={() =>
@@ -73,7 +86,11 @@ export function Embed(props: { embed: MessageEmbed }) {
             controls={!isGIF()}
             preload="metadata"
             // bypass proxy for known GIF providers
-            src={isGIF() ? video()!.url : video()!.proxiedURL}
+            src={
+              isGIF() && isGifukaiUrl(video()!.url)
+                ? video()!.url
+                : video()!.proxiedURL
+            }
             class={css({ cursor: isGIF() ? "pointer" : "unset" })}
             onClick={() =>
               isGIF() &&

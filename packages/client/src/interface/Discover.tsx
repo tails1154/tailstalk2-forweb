@@ -48,12 +48,17 @@ async function fetchListings(query?: string): Promise<DiscoverListing[]> {
 }
 
 function parseInviteCode(url: string): string | null {
+  const value = url.trim();
+  if (!value) return null;
+
   try {
-    const u = new URL(url);
+    const u = new URL(value);
     const parts = u.pathname.split("/").filter(Boolean);
     return parts[parts.length - 1] || null;
   } catch {
-    return null;
+    // Discovery stores the invite ID, while some older entries may contain
+    // the full invite URL.
+    return value;
   }
 }
 

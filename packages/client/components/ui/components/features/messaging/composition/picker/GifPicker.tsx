@@ -23,6 +23,7 @@ import { CompositionMediaPickerContext } from "./CompositionMediaPicker";
 import { CONFIGURATION } from "@revolt/common";
 
 const GIF_API = `${CONFIGURATION.DEFAULT_API_URL}/gifs`;
+const GIF_PROXY_API = `${CONFIGURATION.DEFAULT_API_URL}/gif`;
 const GIF_ACTIONS = [
   "angry",
   "blush",
@@ -291,7 +292,9 @@ const GifItem = (props: {
       role="listitem"
       style={props.style as string}
       tabIndex={props.tabIndex}
-      onClick={() => onMessage(props.item.url)}
+      onClick={() =>
+        onMessage(`${GIF_PROXY_API}/${encodeURIComponent(props.item.url)}`)
+      }
     />
   );
 };

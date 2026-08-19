@@ -43,7 +43,9 @@ an uncatalogued literal.
 ## Client update workflow
 
 - Bump `packages/client/src/version.ts` for every client feature or bug-fix update.
-- Keep `packages/client/public/tailstalk2.version` and `/home/tails1154/ecraft/tailstalk2.version` at the same version.
+- Keep all three version files synchronized: `packages/client/src/version.ts`,
+  `packages/client/public/tailstalk2.version`, and the deployed
+  `/home/tails1154/ecraft/tailstalk2.version`.
 - The client checks `https://tails1154.com:9782/cgi-bin/tailstalk2_version.py`; keep the CGI endpoint CORS-enabled and no-cache.
 - Do not rely on the static `/tailstalk2.version` file for browser fetches; the CGI endpoint supplies `Access-Control-Allow-Origin: *`.
 - Run Lingui extraction and compilation whenever UI text is added or changed.

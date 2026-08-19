@@ -45,8 +45,8 @@ ssh -p "$REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" "
   cp /tmp/tailstalk2.version /home/tails1154/ecraft/tailstalk2.version
   install -m 755 /tmp/tailstalk2_version.py /home/tails1154/ecraft/cgi-bin/tailstalk2_version.py
   rm -rf /tmp/stoat-dist /tmp/stoat-dist.tar.gz
-  rm -f /tmp/tailstalk2.version
   rm -f /tmp/tailstalk2_version.py
+  rm -f /tmp/tailstalk2.version
 "
 
 rm -f /tmp/stoat-dist.tar.gz

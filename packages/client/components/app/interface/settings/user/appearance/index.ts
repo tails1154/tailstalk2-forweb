@@ -1,1 +1,1 @@
-export { AppearanceMenu } from "./AppearanceMenu";
+export { ThemesMenu } from "../themes/ThemesMenu";

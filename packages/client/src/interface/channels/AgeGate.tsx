@@ -3,9 +3,7 @@ import { JSXElement, Match, Switch } from "solid-js";
 import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
-import { useState } from "@revolt/state";
-import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
-import { Button, Checkbox, Text, iconSize } from "@revolt/ui";
+import { Button, Text, iconSize } from "@revolt/ui";
 
 import MdWarning from "@material-design-icons/svg/round/warning.svg?component-solid";
 
@@ -19,16 +17,9 @@ export function AgeGate(props: {
   contentType: "channel";
   children: JSXElement;
 }) {
-  const state = useState();
-
-  const confirmed = () =>
-    state.layout.getSectionState(LAYOUT_SECTIONS.MATURE, false);
-  const allowed = () =>
-    state.layout.getSectionState(props.contentId + "-nsfw", false);
-
   return (
     <Switch fallback={props.children}>
-      <Match when={props.enabled && (!confirmed() || !allowed())}>
+      <Match when={props.enabled}>
           <Base>
             <MdWarning {...iconSize("8em")} />
             <Text class="headline" size="large">
@@ -36,36 +27,12 @@ export function AgeGate(props: {
             </Text>
 
             <Text class="body" size="large">
-              <Trans>This channel is marked as mature.</Trans>
+              <Trans>Mature content on TailsTalk 2 is not allowed.</Trans>
             </Text>
 
-            <Confirmation>
-              <Checkbox
-                checked={state.layout.getSectionState(
-                  LAYOUT_SECTIONS.MATURE,
-                  false,
-                )}
-                onChange={() =>
-                  state.layout.toggleSectionState(LAYOUT_SECTIONS.MATURE, false)
-                }
-              />
-              <Text class="body" size="large">
-                <Trans>I confirm that I am at least 18 years old.</Trans>
-              </Text>
-            </Confirmation>
-
             <Actions>
-              <Button variant="text" onPress={() => history.back()}>
+              <Button variant="filled" onPress={() => history.back()}>
                 <Trans>Back</Trans>
-              </Button>
-              <Button
-                variant="filled"
-                onPress={() =>
-                  confirmed() &&
-                  state.layout.setSectionState(props.contentId + "-nsfw", true)
-                }
-              >
-                <Trans>Enter Channel</Trans>
               </Button>
             </Actions>
           </Base>
@@ -88,19 +55,10 @@ const Base = styled("div", {
     color: "var(--md-sys-color-on-surface)",
 
     "& svg": {
-      // TODO
       fill: "orange",
     },
 
     gap: "var(--gap-md)",
-  },
-});
-
-const Confirmation = styled("label", {
-  base: {
-    display: "flex",
-    gap: "var(--gap-sm)",
-    alignItems: "center",
   },
 });
 
