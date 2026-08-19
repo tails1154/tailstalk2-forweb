@@ -27,6 +27,7 @@ import { CONFIGURATION } from "@revolt/common";
 import {
   Button,
   Column,
+  CircularProgress,
   Row,
   Text,
   TextField,
@@ -134,8 +135,10 @@ export function AdminPanel() {
                 onKeyDown={handleKeyDown}
                 disabled={loading()}
               />
-              <Button onPress={authenticate} disabled={loading()}>
-                <Trans>Authenticate</Trans>
+              <Button onPress={authenticate} isDisabled={loading()}>
+                <Show when={loading()} fallback={<Trans>Authenticate</Trans>}>
+                  <CircularProgress />
+                </Show>
               </Button>
             </Column>
             <Show when={error()}>
@@ -277,8 +280,10 @@ function ReportsTab(props: { password: string }) {
           <Text class={typography({ class: "title", size: "medium" })}>Reports</Text>
           <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>Review community-submitted issues.</Text>
         </Column>
-        <Button onPress={() => refetch()}>
-          <MdRefresh {...iconSize(18)} />
+        <Button onPress={() => refetch()} isDisabled={data.loading}>
+          <Show when={data.loading} fallback={<MdRefresh {...iconSize(18)} />}>
+            <CircularProgress />
+          </Show>
         </Button>
       </Row>
       <Show when={data()} fallback={<LoadingState label="Loading reports..." />}>
@@ -561,12 +566,18 @@ interface WhatsNewEntry {
 
 function WhatsNewTab(props: { password: string }) {
   const [entries, setEntries] = createSignal<WhatsNewEntry[]>([]);
+  const [loading, setLoading] = createSignal(true);
+  const [saving, setSaving] = createSignal(false);
 
   onMount(async () => {
     try {
       const data = await apiFetch("/admin/whatsnew", props.password);
       setEntries(data.entries || []);
-    } catch {}
+    } catch {
+      // Keep the panel usable even if the initial request fails.
+    } finally {
+      setLoading(false);
+    }
   });
 
   function addEntry() {
@@ -594,11 +605,16 @@ function WhatsNewTab(props: { password: string }) {
   }
 
   async function save() {
-    await apiFetch("/admin/whatsnew", props.password, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ entries: entries() }),
-    });
+    setSaving(true);
+    try {
+      await apiFetch("/admin/whatsnew", props.password, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ entries: entries() }),
+      });
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -608,10 +624,15 @@ function WhatsNewTab(props: { password: string }) {
           <Text class={typography({ class: "title", size: "medium" })}>What's New Editor</Text>
           <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>Publish updates that appear in the client.</Text>
         </Column>
-        <Button onPress={addEntry}>Add Entry</Button>
-        <Button onPress={save}>Save</Button>
+        <Button onPress={addEntry} isDisabled={loading() || saving()}>Add Entry</Button>
+        <Button onPress={save} isDisabled={loading() || saving()}>
+          <Show when={saving()} fallback="Save">
+            <CircularProgress />
+          </Show>
+        </Button>
       </Row>
-      <For each={entries()}>
+      <Show when={!loading()} fallback={<LoadingState label="Loading updates..." />}>
+        <For each={entries()}>
         {(entry, i) => (
           <Column gap="sm" style={{
             padding: "var(--gap-md)",
@@ -643,13 +664,14 @@ function WhatsNewTab(props: { password: string }) {
             />
           </Column>
         )}
-      </For>
+        </For>
+      </Show>
     </Column>
   );
 }
 
 function LoadingState(props: { label: string }) {
-  return <StatusState><MdHourglassEmpty {...iconSize(20)} /><Text>{props.label}</Text></StatusState>;
+  return <StatusState><CircularProgress /><Text>{props.label}</Text></StatusState>;
 }
 
 function EmptyState(props: { label: string }) {
