@@ -14,6 +14,9 @@ import codegenPlugin from "./codegen.plugin";
 const base = process.env.BASE_PATH ?? "/";
 
 export default defineConfig({
+  server: {
+    allowedHosts: ["tails1154.com"]
+  },
   base,
   plugins: [
     Inspect(),
@@ -46,26 +49,9 @@ export default defineConfig({
         theme_color: "#11131a",
         icons: [
           {
-            src: `${base}assets/web/android-chrome-192x192.png`,
-            type: "image/png",
-            sizes: "192x192",
-          },
-          {
-            src: `${base}assets/web/android-chrome-512x512.png`,
-            type: "image/png",
-            sizes: "512x512",
-          },
-          {
-            src: `${base}assets/web/monochrome.svg`,
-            type: "image/svg+xml",
-            sizes: "48x48 72x72 96x96 128x128 256x256",
-            purpose: "monochrome",
-          },
-          {
-            src: `${base}assets/web/masking-512x512.png`,
-            type: "image/png",
-            sizes: "512x512",
-            purpose: "maskable",
+            src: `${base}assets/web/icon.ico`,
+            type: "image/x-icon",
+            sizes: "48x48",
           },
         ],
         // TODO: take advantage of shortcuts
