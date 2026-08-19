@@ -168,6 +168,14 @@ export type Modals =
       error: any;
     }
   | {
+      type: "feature_request_response";
+      request: {
+        title: string;
+        status: "approved" | "denied";
+        admin_response: string;
+      };
+    }
+  | {
       type: "image_viewer";
       embed?: ImageEmbed;
       gif?: VideoEmbed;

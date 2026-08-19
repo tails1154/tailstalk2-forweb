@@ -2,6 +2,7 @@ import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { For, Show, createSignal, onMount, type JSX } from "solid-js";
 import { styled } from "styled-system/jsx";
 
+import { useClient } from "@revolt/client";
 import { useState } from "@revolt/state";
 import { CustomTheme } from "@revolt/state/stores/Theme";
 import { Button, Column, Row, Text } from "@revolt/ui";
@@ -68,43 +69,62 @@ const themesWithPreviews = themes.map((theme) => ({
   colours: themePreviews.find((preview) => preview.id === theme.id)!.colours,
 }));
 
-const featuredThemes: CustomTheme[] = [
-  {
-    id: "store-sunset",
-    name: "Sunset Arcade",
-    description: "A warm sunset gradient for late-night conversations.",
-    primary: "#fb7185",
-    secondary: "#fbbf24",
-    background: "#1c1024",
-    surface: "#291535",
-    surfaceHigh: "#45204b",
-    onSurface: "#fff1f2",
-    gradient: "linear-gradient(135deg, #fb7185 0%, #f59e0b 100%)",
-  },
-  {
-    id: "store-forest",
-    name: "Forest Signal",
-    description: "A calm green and teal palette inspired by the outdoors.",
-    primary: "#34d399",
-    secondary: "#2dd4bf",
-    background: "#071a17",
-    surface: "#0d2924",
-    surfaceHigh: "#17443a",
-    onSurface: "#ecfdf5",
-    gradient: "linear-gradient(135deg, #059669 0%, #06b6d4 100%)",
-  },
-];
+type ThemeStoreEntry = CustomTheme & { owner_id?: string };
+type ThemeApiEntry = Omit<ThemeStoreEntry, "surfaceHigh" | "onSurface"> & {
+  surface_high: string;
+  on_surface: string;
+};
+
+function fromApiTheme(theme: ThemeApiEntry): ThemeStoreEntry {
+  return {
+    ...theme,
+    surfaceHigh: theme.surface_high,
+    onSurface: theme.on_surface,
+  };
+}
+
+function featuredThemes(t: ReturnType<typeof useLingui>["t"]): CustomTheme[] {
+  return [
+    {
+      id: "store-sunset",
+      name: t`Sunset Arcade`,
+      description: t`A warm sunset gradient for late-night conversations.`,
+      primary: "#fb7185",
+      secondary: "#fbbf24",
+      background: "#1c1024",
+      surface: "#291535",
+      surfaceHigh: "#45204b",
+      onSurface: "#fff1f2",
+      gradient: "linear-gradient(135deg, #fb7185 0%, #f59e0b 100%)",
+    },
+    {
+      id: "store-forest",
+      name: t`Forest Signal`,
+      description: t`A calm green and teal palette inspired by the outdoors.`,
+      primary: "#34d399",
+      secondary: "#2dd4bf",
+      background: "#071a17",
+      surface: "#0d2924",
+      surfaceHigh: "#17443a",
+      onSurface: "#ecfdf5",
+      gradient: "linear-gradient(135deg, #059669 0%, #06b6d4 100%)",
+    },
+  ];
+}
 
 /** Theme selection and the small set of display controls shared by themes. */
 export function ThemesMenu() {
   const state = useState();
+  const client = useClient();
   const { t } = useLingui();
   const [tab, setTab] = createSignal<"store" | "create">("store");
   const [status, setStatus] = createSignal<string>();
+  const [publishedThemes, setPublishedThemes] = createSignal<ThemeStoreEntry[]>([]);
+  const [publishing, setPublishing] = createSignal(false);
   const [draft, setDraft] = createSignal<CustomTheme>({
     id: `theme-${Date.now()}`,
-    name: "My theme",
-    description: "A custom palette made by me.",
+    name: t`My theme`,
+    description: t`A custom palette made by me.`,
     primary: "#06b6d4",
     secondary: "#3b82f6",
     background: "#11131a",
@@ -115,6 +135,25 @@ export function ThemesMenu() {
   });
 
   onMount(() => {
+    void client().api
+      .get("/themes")
+      .then((themes) =>
+        setPublishedThemes((themes as ThemeApiEntry[]).map(fromApiTheme)),
+      )
+      .catch(() => setStatus(t`Unable to load the theme store right now.`));
+
+    const themePath = window.location.pathname.match(/^\/theme\/([A-Za-z0-9_-]+)$/);
+    if (themePath) {
+      void client().api
+        .get(`/themes/${themePath[1]}`)
+        .then((theme) => {
+          applyTheme(fromApiTheme(theme as ThemeApiEntry));
+          window.history.replaceState({}, "", window.location.pathname.replace(/^\/theme\/.+$/, "/"));
+        })
+        .catch(() => setStatus(t`That theme could not be found.`));
+      return;
+    }
+
     const encoded = new URLSearchParams(window.location.search).get("theme");
     if (!encoded) return;
     try {
@@ -142,11 +181,35 @@ export function ThemesMenu() {
     setStatus(t`Theme saved to your library.`);
   };
 
+  const publishDraft = async (): Promise<ThemeStoreEntry | undefined> => {
+    setPublishing(true);
+    try {
+      const { id: _id, surfaceHigh, onSurface, ...theme } = draft();
+      const published = fromApiTheme(
+        (await client().api.post("/themes", {
+          ...theme,
+          surface_high: surfaceHigh,
+          on_surface: onSurface,
+        })) as ThemeApiEntry,
+      );
+      setPublishedThemes((current) => [...current, published]);
+      setDraft(published);
+      setStatus(t`Theme uploaded to the community theme store.`);
+      return published;
+    } catch {
+      setStatus(t`Unable to upload this theme right now.`);
+    } finally {
+      setPublishing(false);
+    }
+  };
+
   const shareDraft = async () => {
-    const encoded = btoa(encodeURIComponent(JSON.stringify(draft())));
-    const link = `${window.location.origin}${window.location.pathname}?theme=${encoded}`;
+    const published = publishedThemes().find((theme) => theme.id === draft().id) ||
+      (await publishDraft());
+    if (!published) return;
+    const link = `${window.location.origin}/theme/${published.id}`;
     await navigator.clipboard?.writeText(link);
-    setStatus(t`Share link copied to your clipboard.`);
+    setStatus(t`Theme link copied to your clipboard.`);
   };
 
   const applyTheme = (theme: CustomTheme) => {
@@ -163,9 +226,20 @@ export function ThemesMenu() {
     setStatus(t`Theme deleted from your library.`);
   };
 
+  const deletePublishedTheme = async (theme: ThemeStoreEntry) => {
+    try {
+      await client().api.delete(`/themes/${theme.id}`);
+      setPublishedThemes((current) => current.filter((entry) => entry.id !== theme.id));
+      state.theme.removeCustomTheme(theme.id);
+      setStatus(t`Theme removed from the community theme store.`);
+    } catch {
+      setStatus(t`Unable to remove this theme right now.`);
+    }
+  };
+
   const storeThemes = () => {
     const seen = new Set<string>();
-    return [...featuredThemes, ...state.theme.customThemes].filter((theme) => {
+    return [...featuredThemes(t), ...publishedThemes(), ...state.theme.customThemes].filter((theme) => {
       if (seen.has(theme.id)) return false;
       seen.add(theme.id);
       return true;
@@ -182,7 +256,8 @@ export function ThemesMenu() {
       </Column>
 
       <Column gap="sm">
-        {themesWithPreviews.map((theme) => (
+        <For each={themesWithPreviews}>
+          {(theme) => (
           <ThemeCard
             type="button"
             selected={state.theme.preset === theme.id}
@@ -190,9 +265,9 @@ export function ThemesMenu() {
             onClick={() => state.theme.setPreset(theme.id)}
           >
             <Swatches>
-              {theme.colours.map((colour) => (
-                <Swatch style={{ "background-color": colour }} />
-              ))}
+              <For each={theme.colours}>
+                {(colour) => <Swatch style={{ "background-color": colour }} />}
+              </For>
             </Swatches>
             <Column gap="xs" style={{ flex: 1, "text-align": "left" }}>
               <Text class="title" size="medium">{themeName(theme.id)}</Text>
@@ -204,7 +279,8 @@ export function ThemesMenu() {
               {state.theme.preset === theme.id ? "✓" : ""}
             </SelectionMark>
           </ThemeCard>
-        ))}
+          )}
+        </For>
       </Column>
 
       <Row>
@@ -231,11 +307,20 @@ export function ThemesMenu() {
                     </Text>
                   </Column>
                 </ThemeCard>
-                <Show when={state.theme.customThemes.some((saved) => saved.id === theme.id)}>
+                <Show
+                  when={
+                    state.theme.customThemes.some((saved) => saved.id === theme.id) ||
+                    ("owner_id" in theme && theme.owner_id === client().user?.id)
+                  }
+                >
                   <Button
                     variant="text"
                     aria-label={t`Delete theme`}
-                    onPress={() => deleteTheme(theme)}
+                    onPress={() =>
+                      "owner_id" in theme
+                        ? void deletePublishedTheme(theme)
+                        : deleteTheme(theme)
+                    }
                   >
                     <MdDelete />
                   </Button>
@@ -247,7 +332,14 @@ export function ThemesMenu() {
       </Show>
 
       <Show when={tab() === "create"}>
-        <ThemeEditor draft={draft()} update={updateDraft} save={saveDraft} share={shareDraft} />
+        <ThemeEditor
+          draft={draft()}
+          update={updateDraft}
+          save={saveDraft}
+          share={shareDraft}
+          publish={() => void publishDraft()}
+          publishing={publishing()}
+        />
       </Show>
       <Show when={status()}><Status>{status()}</Status></Show>
 
@@ -286,24 +378,29 @@ function ThemeEditor(props: {
   update: (key: keyof CustomTheme, value: string) => void;
   save: () => void;
   share: () => void;
+  publish: () => void;
+  publishing: boolean;
 }) {
   return (
     <Column gap="sm">
       <Text class="title" size="small"><Trans>Build your theme</Trans></Text>
-      <ThemeInput label="Name" value={props.draft.name} type="text" onInput={(value) => props.update("name", value)} />
+      <ThemeInput label={<Trans>Name</Trans>} value={props.draft.name} type="text" onInput={(value) => props.update("name", value)} />
       <ThemeInput label={<Trans>Description</Trans>} value={props.draft.description || ""} type="text" onInput={(value) => props.update("description", value)} />
       <ColorGrid>
-        <ThemeInput label="Primary" value={props.draft.primary} type="color" onInput={(value) => props.update("primary", value)} />
-        <ThemeInput label="Secondary" value={props.draft.secondary} type="color" onInput={(value) => props.update("secondary", value)} />
-        <ThemeInput label="Background" value={props.draft.background} type="color" onInput={(value) => props.update("background", value)} />
-        <ThemeInput label="Surface" value={props.draft.surface} type="color" onInput={(value) => props.update("surface", value)} />
-        <ThemeInput label="Raised surface" value={props.draft.surfaceHigh} type="color" onInput={(value) => props.update("surfaceHigh", value)} />
-        <ThemeInput label="Text" value={props.draft.onSurface} type="color" onInput={(value) => props.update("onSurface", value)} />
+        <ThemeInput label={<Trans>Primary</Trans>} value={props.draft.primary} type="color" onInput={(value) => props.update("primary", value)} />
+        <ThemeInput label={<Trans>Secondary</Trans>} value={props.draft.secondary} type="color" onInput={(value) => props.update("secondary", value)} />
+        <ThemeInput label={<Trans>Background</Trans>} value={props.draft.background} type="color" onInput={(value) => props.update("background", value)} />
+        <ThemeInput label={<Trans>Surface</Trans>} value={props.draft.surface} type="color" onInput={(value) => props.update("surface", value)} />
+        <ThemeInput label={<Trans>Raised surface</Trans>} value={props.draft.surfaceHigh} type="color" onInput={(value) => props.update("surfaceHigh", value)} />
+        <ThemeInput label={<Trans>Text</Trans>} value={props.draft.onSurface} type="color" onInput={(value) => props.update("onSurface", value)} />
       </ColorGrid>
-      <ThemeInput label="Gradient CSS" value={props.draft.gradient} type="text" onInput={(value) => props.update("gradient", value)} />
+      <ThemeInput label={<Trans>Gradient CSS</Trans>} value={props.draft.gradient} type="text" onInput={(value) => props.update("gradient", value)} />
       <Row>
         <Button onPress={props.save}><Trans>Save and apply</Trans></Button>
         <Button variant="tonal" onPress={props.share}><Trans>Copy share link</Trans></Button>
+        <Button onPress={props.publish} isDisabled={props.publishing}>
+          <Trans>Publish to theme store</Trans>
+        </Button>
       </Row>
     </Column>
   );

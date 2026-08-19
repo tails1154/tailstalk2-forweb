@@ -37,6 +37,7 @@ import AdvancedSettings from "./user/Advanced";
 import { ThemesMenu } from "./user/appearance";
 import { MyBots, ViewBot } from "./user/bots";
 import { Feedback } from "./user/Feedback";
+import { FeatureRequests } from "./user/FeatureRequests";
 import { LanguageSettings } from "./user/Language";
 import Native from "./user/Native";
 import Notifications from "./user/notifications/Notifications";
@@ -96,6 +97,8 @@ const Config: SettingsConfiguration<{ server: Server }> = {
         return <AdminPanel />;
       case "feedback":
         return <Feedback />;
+      case "feature_requests":
+        return <FeatureRequests />;
       case "subscribe":
         return <EditSubscription />;
       case "native":
@@ -296,6 +299,11 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               id: "advanced",
               icon: <MdScience {...iconSize(20)} />,
               title: <Trans>Advanced</Trans>,
+            },
+            {
+              id: "feature_requests",
+              icon: <MdRateReview {...iconSize(20)} />,
+              title: <Trans>Feature Requests</Trans>,
             },
             {
               href: "https://ko-fi.com/stoatchat",

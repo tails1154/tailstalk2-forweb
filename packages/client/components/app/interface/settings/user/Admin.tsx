@@ -24,6 +24,7 @@ import MdLogout from "@material-design-icons/svg/outlined/logout.svg?component-s
 import MdArrowForward from "@material-design-icons/svg/outlined/arrow_forward.svg?component-solid";
 import MdDashboard from "@material-design-icons/svg/outlined/dashboard.svg?component-solid";
 import MdExplore from "@material-design-icons/svg/outlined/explore.svg?component-solid";
+import MdStar from "@material-design-icons/svg/outlined/star_outline.svg?component-solid";
 
 import { CONFIGURATION } from "@revolt/common";
 import {
@@ -37,7 +38,7 @@ import {
   typography,
 } from "@revolt/ui";
 
-type Tab = "stats" | "reports" | "users" | "discovery" | "whatsnew";
+type Tab = "stats" | "reports" | "users" | "discovery" | "feature_requests" | "whatsnew";
 
 interface DiscoveryListing {
   id: string;
@@ -83,6 +84,14 @@ interface AdminUserInfo {
   badges: number;
 }
 
+interface AdminFeatureRequest {
+  id: string;
+  title: string;
+  body: string;
+  author_name: string;
+  status: string;
+}
+
 function authHeader(password: string) {
   return { Authorization: `Basic ${btoa(`tails1154:${password}`)}` };
 }
@@ -90,7 +99,11 @@ function authHeader(password: string) {
 async function apiFetch(path: string, password: string, init?: RequestInit) {
   const res = await fetch(`${CONFIGURATION.DEFAULT_API_URL}${path}`, {
     ...init,
-    headers: { ...authHeader(password), ...init?.headers },
+    headers: {
+      ...(init?.body ? { "Content-Type": "application/json" } : {}),
+      ...authHeader(password),
+      ...init?.headers,
+    },
   });
   if (!res.ok) throw new Error(await res.text());
   return res.json();
@@ -202,6 +215,9 @@ export function AdminPanel() {
             <TabButton active={tab() === "discovery"} onClick={() => setTab("discovery")}>
               <MdExplore {...iconSize(16)} /> Discovery
             </TabButton>
+            <TabButton active={tab() === "feature_requests"} onClick={() => setTab("feature_requests")}>
+              <MdStar {...iconSize(16)} /> <Trans>Feature requests</Trans>
+            </TabButton>
             <TabButton active={tab() === "whatsnew"} onClick={() => setTab("whatsnew")}>
               <MdArrowForward {...iconSize(16)} /> What's New
             </TabButton>
@@ -217,6 +233,9 @@ export function AdminPanel() {
           </Show>
           <Show when={tab() === "discovery"}>
             <DiscoveryTab password={authToken()} />
+          </Show>
+          <Show when={tab() === "feature_requests"}>
+            <FeatureRequestsTab password={authToken()} />
           </Show>
           <Show when={tab() === "whatsnew"}>
             <WhatsNewTab password={authToken()} />
@@ -308,6 +327,60 @@ function StatsTab(props: { password: string }) {
         </StatsGrid>
       )}
     </Show>
+  );
+}
+
+function FeatureRequestsTab(props: { password: string }) {
+  const { t } = useLingui();
+  const [data, { refetch }] = createResource(
+    () => props.password,
+    (pwd) => apiFetch("/admin/feature-requests", pwd) as Promise<AdminFeatureRequest[]>,
+  );
+  const [loadingId, setLoadingId] = createSignal<string>();
+
+  async function review(id: string, action: "approve" | "deny") {
+    setLoadingId(id);
+    try {
+      await apiFetch(`/admin/feature-requests/${id}/${action}`, props.password, { method: "POST" });
+      await refetch();
+    } finally {
+      setLoadingId();
+    }
+  }
+
+  return (
+    <Column gap="md">
+      <Row gap="md" align style={{ "justify-content": "space-between" }}>
+        <Column gap="xs">
+          <Text class={typography({ class: "title", size: "medium" })}><Trans>Feature requests</Trans></Text>
+          <Text class={typography({ class: "body", size: "small" })}><Trans>Review ideas submitted by users.</Trans></Text>
+        </Column>
+        <Button onPress={() => refetch()} isDisabled={data.loading}><Show when={data.loading} fallback={<MdRefresh {...iconSize(18)} />}><CircularProgress /></Show></Button>
+      </Row>
+      <Show when={data()} fallback={<LoadingState label={t`Loading feature requests...`} />}>
+        {(entries) => (
+          <Show when={entries().length} fallback={<EmptyState label={t`No feature requests`} />}>
+            <For each={entries()}>
+              {(entry) => (
+                <ReportCard>
+                  <Column gap="xs">
+                    <Row gap="sm" align><Badge>{entry.status}</Badge><Text>{entry.author_name}</Text></Row>
+                    <Text class={typography({ class: "title", size: "small" })}>{entry.title}</Text>
+                    <Text class={typography({ class: "body", size: "small" })}>{entry.body}</Text>
+                    <Show when={entry.status === "pending"}>
+                      <Row gap="sm">
+                        <Button onPress={() => review(entry.id, "approve")} isDisabled={loadingId() === entry.id}><Trans>Approve</Trans></Button>
+                        <Button onPress={() => review(entry.id, "deny")} isDisabled={loadingId() === entry.id}><Trans>Deny</Trans></Button>
+                      </Row>
+                    </Show>
+                  </Column>
+                </ReportCard>
+              )}
+            </For>
+          </Show>
+        )}
+      </Show>
+    </Column>
   );
 }
 

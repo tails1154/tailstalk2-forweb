@@ -325,6 +325,10 @@ msgstr ""
 msgid "A custom palette from the theme store."
 msgstr ""
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "A custom palette made by me."
+msgstr ""
+
 #: src/serviceWorkerInterface.ts
 msgid "A newer version of TailsTalk 2 is available."
 msgstr ""
@@ -471,11 +475,16 @@ msgstr "Ulkoasu"
 #~ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
+#: components/app/interface/settings/user/Admin.tsx
 msgid "Approve"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Approve or deny community servers and bots."
+msgstr ""
+
+#: components/app/interface/settings/user/FeatureRequests.tsx
+msgid "Approved"
 msgstr ""
 
 #: components/auth/src/flows/FlowCreate.tsx
@@ -541,6 +550,10 @@ msgstr "Kuva"
 #: components/auth/src/flows/FlowCreate.tsx
 #: components/auth/src/flows/FlowCheck.tsx
 msgid "Back"
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Background"
 msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
@@ -840,6 +853,7 @@ msgstr "Asiakasohjelman asetukset"
 #: components/modal/modals/PolicyChange.tsx
 #: components/modal/modals/LinkWarning.tsx
 #: components/modal/modals/JoinServer.tsx
+#: components/modal/modals/FeatureRequestResponse.tsx
 #: components/modal/modals/EmojiPreview.tsx
 #: components/modal/modals/EditUsername.tsx
 #: components/modal/modals/EditPassword.tsx
@@ -1319,8 +1333,17 @@ msgstr ""
 msgid "Delete theme"
 msgstr ""
 
+#: components/app/interface/settings/user/FeatureRequests.tsx
+msgid "Denied"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Deny"
+msgstr ""
+
+#: components/app/interface/settings/user/FeatureRequests.tsx
+msgid "Describe the feature you would like to see."
 msgstr ""
 
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
@@ -1652,6 +1675,35 @@ msgstr ""
 msgid "Failed to verify!"
 msgstr "Vahistus epäonnistui!"
 
+#: components/modal/modals/FeatureRequestResponse.tsx
+msgid "Feature request approved"
+msgstr ""
+
+#: components/app/interface/settings/user/FeatureRequests.tsx
+msgid "Feature request forum"
+msgstr ""
+
+#: components/app/interface/settings/user/FeatureRequests.tsx
+msgid "Feature request submitted for review."
+msgstr ""
+
+#: components/modal/modals/FeatureRequestResponse.tsx
+msgid "Feature request update"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Feature requests"
+msgstr ""
+
+#: components/app/interface/settings/UserSettings.tsx
+msgid "Feature Requests"
+msgstr ""
+
+#: components/app/interface/settings/user/FeatureRequests.tsx
+msgid "Feature title"
+msgstr ""
+
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Feedback"
 msgstr "Palaute"
@@ -1769,6 +1821,10 @@ msgstr ""
 
 #: components/modal/modals/Onboarding.tsx
 msgid "Good"
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Gradient CSS"
 msgstr ""
 
 #. placeholder {0}: countBits(props.context.rolePermissions![role.id].a)
@@ -2055,6 +2111,10 @@ msgstr ""
 msgid "Loading Discovery submissions..."
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Loading feature requests..."
+msgstr ""
+
 #: src/interface/Discover.tsx
 msgid "Loading..."
 msgstr ""
@@ -2325,8 +2385,13 @@ msgstr "Minun tilini"
 msgid "My Bots"
 msgstr "Omat bottini"
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "My theme"
+msgstr ""
+
 #: components/modal/modals/RenameSession.tsx
 #: components/modal/modals/CreateCategory.tsx
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Name"
 msgstr ""
 
@@ -2362,6 +2427,10 @@ msgstr "Nimimerkki"
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "No Discovery submissions"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "No feature requests"
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
@@ -2530,6 +2599,10 @@ msgstr "Salasana"
 msgid "Pending"
 msgstr ""
 
+#: components/app/interface/settings/user/FeatureRequests.tsx
+msgid "Pending review"
+msgstr ""
+
 #: components/app/interface/settings/ChannelSettings.tsx
 msgid "Permissions"
 msgstr "Oikeudet"
@@ -2586,6 +2659,10 @@ msgstr ""
 msgid "Powered by RNNoise"
 msgstr ""
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Primary"
+msgstr ""
+
 #: components/auth/src/AuthPage.tsx
 msgid "Privacy Policy"
 msgstr "Tietosuojakäytäntö"
@@ -2619,8 +2696,16 @@ msgstr ""
 #~ msgid "Public client (requires PKCE)"
 #~ msgstr ""
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Publish to theme store"
+msgstr ""
+
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Raised surface"
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -2781,6 +2866,10 @@ msgstr "Ilmoita palvelin"
 msgid "Report user"
 msgstr "Ilmoita käyttäjä"
 
+#: components/app/interface/settings/user/FeatureRequests.tsx
+msgid "Request a feature"
+msgstr ""
+
 #: components/auth/src/flows/FlowResend.tsx
 msgid "Resend"
 msgstr ""
@@ -2831,6 +2920,10 @@ msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Revenge or underage pornography"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Review ideas submitted by users."
 msgstr ""
 
 #: components/modal/modals/PolicyChange.tsx
@@ -2932,6 +3025,10 @@ msgstr ""
 
 #: src/interface/Discover.tsx
 msgid "Search servers and bots..."
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Secondary"
 msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
@@ -3102,8 +3199,8 @@ msgid "Share camera or screen in voice call"
 msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
-msgid "Share link copied to your clipboard."
-msgstr ""
+#~ msgid "Share link copied to your clipboard."
+#~ msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Share screen"
@@ -3239,6 +3336,10 @@ msgstr "Lähetä ominaisuusehdotus"
 msgid "Submit feedback"
 msgstr "Lähetä palautetta"
 
+#: components/app/interface/settings/user/FeatureRequests.tsx
+msgid "Submit request"
+msgstr ""
+
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
 msgid "Submit server to Discovery"
 msgstr ""
@@ -3251,6 +3352,10 @@ msgstr ""
 msgid "Subscriptions"
 msgstr ""
 
+#: components/app/interface/settings/user/FeatureRequests.tsx
+msgid "Suggest ideas for TailsTalk 2 and track their review status."
+msgstr ""
+
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Suggest new TailsTalk 2 features on GitHub discussions."
 msgstr ""
@@ -3258,6 +3363,10 @@ msgstr ""
 #: src/interface/Home.tsx
 #~ msgid "Support the project by donating - thank you!"
 #~ msgstr "Tue projektia lahjoittamalla - kiitos!"
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Surface"
+msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Switch to this voice channel"
@@ -3336,12 +3445,20 @@ msgstr ""
 msgid "Terms of Service"
 msgstr "Käyttöehdot"
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Text"
+msgstr ""
+
 #: components/modal/modals/CreateChannel.tsx
 msgid "Text Channel"
 msgstr "Tekstikanava"
 
 #: components/i18n/errors.ts
 msgid "That action had no effect."
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "That theme could not be found."
 msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
@@ -3386,11 +3503,23 @@ msgid "Theme imported and applied."
 msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Theme link copied to your clipboard."
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Theme removed from the community theme store."
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Theme saved to your library."
 msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Theme store"
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Theme uploaded to the community theme store."
 msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
@@ -3513,6 +3642,26 @@ msgstr ""
 
 #: src/interface/Discover.tsx
 msgid "Unable to load Discovery right now. Please try again."
+msgstr ""
+
+#: components/app/interface/settings/user/FeatureRequests.tsx
+msgid "Unable to load feature requests right now."
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Unable to load the theme store right now."
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Unable to remove this theme right now."
+msgstr ""
+
+#: components/app/interface/settings/user/FeatureRequests.tsx
+msgid "Unable to submit this feature request right now."
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Unable to upload this theme right now."
 msgstr ""
 
 #: components/app/menus/UserContextMenu.tsx
@@ -3928,6 +4077,10 @@ msgstr ""
 #~ msgid "You have no OAuth applications yet."
 #~ msgstr ""
 
+#: components/app/interface/settings/user/FeatureRequests.tsx
+msgid "You have not submitted any feature requests yet."
+msgstr ""
+
 #: components/i18n/errors.ts
 msgid "You have this user blocked."
 msgstr ""
@@ -4004,6 +4157,14 @@ msgstr ""
 msgid "Your discriminator change has been ratelimited, please try again later."
 msgstr ""
 
+#: components/modal/modals/FeatureRequestResponse.tsx
+msgid "Your feature request was approved."
+msgstr ""
+
+#: components/modal/modals/FeatureRequestResponse.tsx
+msgid "Your feature request was not approved."
+msgstr ""
+
 #: components/i18n/errors.ts
 msgid "Your message is too long, please remove some characters and try again."
 msgstr ""
@@ -4011,6 +4172,10 @@ msgstr ""
 #: components/modal/modals/MFARecovery.tsx
 msgid "Your recovery codes"
 msgstr "Palautuskoodisi"
+
+#: components/app/interface/settings/user/FeatureRequests.tsx
+msgid "Your requests"
+msgstr ""
 
 #: components/i18n/errors.ts
 msgid "Your role ranking is too low to take this action."
