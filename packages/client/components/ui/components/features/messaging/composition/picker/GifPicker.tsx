@@ -8,7 +8,7 @@ import {
   useContext,
 } from "solid-js";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { VirtualContainer } from "@minht11/solid-virtual-container";
 import { useQuery } from "@tanstack/solid-query";
 import { styled } from "styled-system/jsx";
@@ -20,8 +20,9 @@ import {
 } from "@revolt/ui/components/design";
 
 import { CompositionMediaPickerContext } from "./CompositionMediaPicker";
+import { CONFIGURATION } from "@revolt/common";
 
-const GIF_API = "https://api.gifukai.com/v1";
+const GIF_API = `${CONFIGURATION.DEFAULT_API_URL}/gifs`;
 const GIF_ACTIONS = [
   "angry",
   "blush",
@@ -44,9 +45,25 @@ type GifResult = {
   action: string;
 };
 
+async function fetchGif(action: string): Promise<GifResult> {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 12_000);
+  try {
+    const response = await fetch(`${GIF_API}/${action}`, {
+      cache: "no-store",
+      signal: controller.signal,
+    });
+    if (!response.ok) throw new Error(`GIF request failed (${response.status})`);
+    return response.json();
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
 const FilterContext = createContext<(value: string) => void>();
 
 export function GifPicker() {
+  const { t } = useLingui();
   const [filter, setFilter] = createSignal("");
   const [searchQuery, setSearchQuery] = createSignal("");
 
@@ -59,7 +76,7 @@ export function GifPicker() {
       <TextField
         autoFocus
         variant="filled"
-        placeholder="Search for GIFs..."
+        placeholder={t`Search for GIFs...`}
         value={filter()}
         onMouseDown={(e) => {
           e.preventDefault();
@@ -123,8 +140,7 @@ function Categories() {
     queryFn: async () =>
       Promise.all(
         GIF_ACTIONS.map(async (action) => {
-          const response = await fetch(`${GIF_API}/${action}`);
-          const gif = (await response.json()) as GifResult;
+          const gif = await fetchGif(action);
           return { title: action, action, image: gif.url };
         }),
       ),
@@ -136,8 +152,7 @@ function Categories() {
     queryKey: ["trendingGif1"],
     queryFn: async () => {
       const action = GIF_ACTIONS[Math.floor(Math.random() * GIF_ACTIONS.length)];
-      const response = await fetch(`${GIF_API}/${action}`);
-      return (await response.json()) as GifResult;
+      return fetchGif(action);
     },
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -237,8 +252,7 @@ function GifSearch(props: { query: string }) {
       const results = await Promise.all(
         Array.from({ length: 12 }, async (_, index) => {
           const action = actions[index % actions.length];
-          const response = await fetch(`${GIF_API}/${action}`);
-          return (await response.json()) as GifResult;
+          return fetchGif(action);
         }),
       );
       return results;

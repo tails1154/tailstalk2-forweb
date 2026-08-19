@@ -2763,6 +2763,10 @@ msgstr "Screen Share Settings"
 msgid "Screen Share Volume"
 msgstr "Screen Share Volume"
 
+#: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
+msgid "Search for GIFs..."
+msgstr "Search for GIFs..."
+
 #: components/modal/modals/AddBot.tsx
 msgid "Search for groups..."
 msgstr "Search for groups..."
