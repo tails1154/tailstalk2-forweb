@@ -15,7 +15,13 @@ export type TypeTheme = {
   /**
    * Base theme preset
    */
-  preset: "you";
+  preset: "tailstalk2" | "stoat" | "discord" | "custom";
+
+  /** User-created palettes kept in the local theme library. */
+  customThemes: CustomTheme[];
+
+  /** The selected user-created theme, when preset is custom. */
+  customThemeId?: string;
 
   /**
    * Light/dark mode
@@ -75,6 +81,18 @@ export type TypeTheme = {
   messageGroupSpacing: number;
 };
 
+export type CustomTheme = {
+  id: string;
+  name: string;
+  primary: string;
+  secondary: string;
+  background: string;
+  surface: string;
+  surfaceHigh: string;
+  onSurface: string;
+  gradient: string;
+};
+
 export type SelectedTheme = Pick<
   TypeTheme,
   | "blur"
@@ -83,12 +101,13 @@ export type SelectedTheme = Pick<
   | "messageSize"
   | "messageGroupSpacing"
 > & {
-  preset: "you";
+  preset: TypeTheme["preset"];
   darkMode: boolean;
 
   accent: string;
   contrast: number;
   variant: TypeTheme["m3Variant"];
+  custom?: CustomTheme;
 };
 
 /**
@@ -131,7 +150,8 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
    */
   default(): TypeTheme {
     return {
-      preset: "you",
+      preset: "tailstalk2",
+      customThemes: [],
       mode: "system",
 
       m3Accent: "#5865f2",
@@ -157,8 +177,35 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
       data.mode = input.mode!;
     }
 
-    if (["you", "neutral"].includes(input.preset!)) {
-      data.preset = input.preset!;
+    const preset = (input as { preset?: unknown }).preset;
+    if (["tailstalk2", "stoat", "discord", "custom"].includes(preset!)) {
+      data.preset = preset as TypeTheme["preset"];
+    } else if (preset === "you" || preset === "neutral") {
+      // Migrate the former Material You presets to Stoat.
+      data.preset = "stoat";
+    }
+
+    const isHex = (value: unknown): value is string =>
+      typeof value === "string" && /^#[0-9a-f]{6}$/i.test(value);
+    if (Array.isArray(input.customThemes)) {
+      data.customThemes = input.customThemes
+        .filter((theme): theme is CustomTheme =>
+          !!theme &&
+          typeof theme.id === "string" &&
+          typeof theme.name === "string" &&
+          isHex(theme.primary) &&
+          isHex(theme.secondary) &&
+          isHex(theme.background) &&
+          isHex(theme.surface) &&
+          isHex(theme.surfaceHigh) &&
+          isHex(theme.onSurface) &&
+          typeof theme.gradient === "string" &&
+          /^linear-gradient\(/.test(theme.gradient),
+        )
+        .slice(0, 100);
+    }
+    if (typeof input.customThemeId === "string") {
+      data.customThemeId = input.customThemeId;
     }
 
     if (typeof input.m3Contrast === "number") {
@@ -224,14 +271,16 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
     const opts = this.get();
 
     switch (opts.preset) {
-      case "you":
+      case "tailstalk2":
+      case "stoat":
+      case "discord":
         return {
           blur: opts.blur,
           interfaceFont: opts.interfaceFont,
           monospaceFont: opts.monospaceFont,
           messageSize: opts.messageSize,
           messageGroupSpacing: opts.messageGroupSpacing,
-          preset: "you",
+          preset: opts.preset,
           darkMode:
             opts.mode === "dark" ||
             (opts.mode === "system" && this.prefersDark()),
@@ -240,6 +289,40 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
           contrast: opts.m3Contrast,
           variant: opts.m3Variant,
         };
+      case "custom": {
+        const custom = opts.customThemes.find(
+          (theme) => theme.id === opts.customThemeId,
+        );
+        if (custom) {
+          return {
+            blur: opts.blur,
+            interfaceFont: opts.interfaceFont,
+            monospaceFont: opts.monospaceFont,
+            messageSize: opts.messageSize,
+            messageGroupSpacing: opts.messageGroupSpacing,
+            preset: "custom",
+            darkMode: opts.mode === "dark" ||
+              (opts.mode === "system" && this.prefersDark()),
+            accent: custom.primary,
+            contrast: opts.m3Contrast,
+            variant: opts.m3Variant,
+            custom,
+          };
+        }
+        return {
+          blur: opts.blur,
+          interfaceFont: opts.interfaceFont,
+          monospaceFont: opts.monospaceFont,
+          messageSize: opts.messageSize,
+          messageGroupSpacing: opts.messageGroupSpacing,
+          preset: "tailstalk2",
+          darkMode: opts.mode === "dark" ||
+            (opts.mode === "system" && this.prefersDark()),
+          accent: opts.m3Accent,
+          contrast: opts.m3Contrast,
+          variant: opts.m3Variant,
+        };
+      }
     }
   }
 
@@ -271,6 +354,22 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
    */
   setPreset(preset: TypeTheme["preset"]) {
     this.set("preset", preset);
+  }
+
+  get customThemes() {
+    return this.get().customThemes;
+  }
+
+  setCustomTheme(theme: CustomTheme) {
+    const themes = this.get().customThemes.filter((entry) => entry.id !== theme.id);
+    this.set("customThemes", [...themes, theme]);
+    this.set("customThemeId", theme.id);
+    this.set("preset", "custom");
+  }
+
+  removeCustomTheme(id: string) {
+    this.set("customThemes", this.get().customThemes.filter((theme) => theme.id !== id));
+    if (this.get().customThemeId === id) this.setPreset("tailstalk2");
   }
 
   /**
