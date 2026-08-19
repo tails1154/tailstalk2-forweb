@@ -8,6 +8,7 @@ REMOTE_PORT="1699"
 REMOTE_USER="tails1154"
 REMOTE_COMPOSE_DIR="/home/tails1154/stoat"
 LOCAL_DIST="packages/client/dist"
+LOCAL_VERSION="packages/client/public/tailstalk2.version"
 CONTAINER="stoat-web-1"
 
 echo "=== Compiling translations ==="
@@ -27,6 +28,7 @@ tar czf /tmp/stoat-dist.tar.gz -C "$LOCAL_DIST" .
 
 echo "=== Uploading to $REMOTE_HOST ==="
 scp -P "$REMOTE_PORT" /tmp/stoat-dist.tar.gz "$REMOTE_USER@$REMOTE_HOST:/tmp/"
+scp -P "$REMOTE_PORT" "$LOCAL_VERSION" "$REMOTE_USER@$REMOTE_HOST:/tmp/tailstalk2.version"
 
 echo "=== Deploying on remote ==="
 ssh -p "$REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" "
@@ -37,7 +39,10 @@ ssh -p "$REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" "
   tar xzf /tmp/stoat-dist.tar.gz -C /tmp/stoat-dist
   docker cp /tmp/stoat-dist/. $CONTAINER:/app/dist/
   docker restart $CONTAINER
+  mkdir -p /home/tails1154/ecraft
+  cp /tmp/tailstalk2.version /home/tails1154/ecraft/tailstalk2.version
   rm -rf /tmp/stoat-dist /tmp/stoat-dist.tar.gz
+  rm -f /tmp/tailstalk2.version
 "
 
 rm -f /tmp/stoat-dist.tar.gz
