@@ -1,6 +1,6 @@
 import { For, Show, createResource, createSignal } from "solid-js";
 
-import { Trans, t } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { PublicChannelInvite } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
@@ -59,6 +59,7 @@ function parseInviteCode(url: string): string | null {
 
 export function Discover() {
   const client = useClient();
+  const { t } = useLingui();
   const { openModal } = useModals();
   const navigate = useNavigate();
   const [query, setQuery] = createSignal("");
