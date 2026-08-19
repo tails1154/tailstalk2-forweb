@@ -11,6 +11,7 @@ const [pendingUpdate, setPendingUpdate] = createSignal<
 >();
 const VERSION_ENDPOINT =
   "https://tails1154.com:9782/cgi-bin/tailstalk2_version.py";
+const SERVER_ENDPOINT = new URL(CONFIGURATION.DEFAULT_API_URL).origin;
 
 export { pendingUpdate };
 
@@ -52,7 +53,7 @@ async function checkPublishedVersion() {
       return;
     }
 
-    setPendingUpdate(() => () => installLatestVersion());
+    queueUpdate(() => installLatestVersion());
   } catch {
     // The version endpoint is optional; service-worker updates still run.
   }
@@ -68,22 +69,35 @@ async function clearClientCaches() {
 }
 
 /** Wait through a backend/container restart before reloading the app. */
+let waitingForServer = false;
+
 async function waitForServer() {
   while (true) {
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 3000);
     try {
-      await fetch(`${CONFIGURATION.DEFAULT_API_URL}/?t=${Date.now()}`, {
+      const response = await fetch(`${SERVER_ENDPOINT}/?t=${Date.now()}`, {
         cache: "no-store",
         signal: controller.signal,
       });
-      return;
+      if (response.ok) return;
+      await new Promise((resolve) => window.setTimeout(resolve, 5000));
     } catch {
-      await new Promise((resolve) => window.setTimeout(resolve, 1000));
+      await new Promise((resolve) => window.setTimeout(resolve, 5000));
     } finally {
       window.clearTimeout(timeout);
     }
   }
+}
+
+function queueUpdate(update: () => void | Promise<void>) {
+  if (pendingUpdate() || waitingForServer) return;
+
+  waitingForServer = true;
+  void waitForServer().then(() => {
+    waitingForServer = false;
+    setPendingUpdate(() => update);
+  });
 }
 
 async function installLatestVersion(updateServiceWorker?: () => Promise<void>) {
@@ -106,7 +120,7 @@ async function installLatestVersion(updateServiceWorker?: () => Promise<void>) {
 if (import.meta.env.PROD) {
   const updateSW = registerSW({
     onNeedRefresh() {
-      setPendingUpdate(() => () => installLatestVersion(() => updateSW(true)));
+      queueUpdate(() => installLatestVersion(() => updateSW(true)));
     },
     onOfflineReady() {
       console.info("Ready to work offline =)");
