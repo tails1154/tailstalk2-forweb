@@ -111,7 +111,7 @@ const Interface = (props: { children: JSX.Element }) => {
           <Match when={!isLoggedIn()}>
             <Navigate href="/login" />
           </Match>
-          <Match when={lifecycle.loadedOnce()}>
+          <Match when={lifecycle.loadedOnce() || pathname.startsWith("/discover")}>
             <Layout
               disconnected={isDisconnected()}
               style={{ "flex-grow": 1, "min-height": 0 }}
