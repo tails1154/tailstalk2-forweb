@@ -1,6 +1,7 @@
 import { createEffect, createSignal, onCleanup } from "solid-js";
 
 import { useLingui } from "@lingui-solid/solid/macro";
+import { CONFIGURATION } from "@revolt/common";
 import { useSnackbar } from "@revolt/ui";
 import { registerSW } from "virtual:pwa-register";
 import { CURRENT_VERSION } from "./version";
@@ -66,6 +67,25 @@ async function clearClientCaches() {
   );
 }
 
+/** Wait through a backend/container restart before reloading the app. */
+async function waitForServer() {
+  while (true) {
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 3000);
+    try {
+      await fetch(`${CONFIGURATION.DEFAULT_API_URL}/?t=${Date.now()}`, {
+        cache: "no-store",
+        signal: controller.signal,
+      });
+      return;
+    } catch {
+      await new Promise((resolve) => window.setTimeout(resolve, 1000));
+    } finally {
+      window.clearTimeout(timeout);
+    }
+  }
+}
+
 async function installLatestVersion(updateServiceWorker?: () => Promise<void>) {
   suppressLeaveSitePrompt = true;
 
@@ -77,9 +97,10 @@ async function installLatestVersion(updateServiceWorker?: () => Promise<void>) {
 
   if (updateServiceWorker) {
     await updateServiceWorker();
-  } else {
-    window.location.reload();
   }
+
+  await waitForServer();
+  window.location.reload();
 }
 
 if (import.meta.env.PROD) {
