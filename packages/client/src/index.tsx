@@ -3,12 +3,13 @@
  */
 import "./sentry";
 
-import { JSX, onMount } from "solid-js";
+import { JSX, Show, createSignal, onCleanup, onMount } from "solid-js";
 import { render } from "solid-js/web";
 
 import { attachDevtoolsOverlay } from "@solid-devtools/overlay";
 import { Navigate, Route, Router, useParams } from "@solidjs/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/solid-query";
+import { Trans } from "@lingui-solid/solid/macro";
 import "material-symbols";
 import "mdui/mdui.css";
 import { PublicBot, PublicChannelInvite } from "stoat.js";
@@ -22,13 +23,19 @@ import FlowLogin from "@revolt/auth/src/flows/FlowLogin";
 import FlowResend from "@revolt/auth/src/flows/FlowResend";
 import FlowReset from "@revolt/auth/src/flows/FlowReset";
 import FlowVerify from "@revolt/auth/src/flows/FlowVerify";
-import { ClientContext, SoundContext, useClient } from "@revolt/client";
+import {
+  ClientContext,
+  SoundContext,
+  useClient,
+  useClientLifecycle,
+} from "@revolt/client";
 import { DeviceContext } from "@revolt/common";
 import { I18nProvider } from "@revolt/i18n";
 import { KeybindContext } from "@revolt/keybinds";
 import { ModalContext, ModalRenderer, useModals } from "@revolt/modal";
 import { VoiceContext } from "@revolt/rtc";
 import { StateContext, SyncWorker, useState } from "@revolt/state";
+import { styled } from "styled-system/jsx";
 import {
   FloatingManager,
   LoadTheme,
@@ -89,6 +96,69 @@ function LeaveSitePrompt() {
 
   return null;
 }
+
+function LevelUpOverlay() {
+  const client = useClient();
+  const { isLoggedIn } = useClientLifecycle();
+  const [level, setLevel] = createSignal<number>();
+
+  async function checkLevel() {
+    if (!isLoggedIn() || !client().user) return;
+
+    try {
+      const user = client().user!;
+      const result = (await client().api.get(`/users/${user.id}/xp`)) as {
+        level: number;
+      };
+      const storageKey = `tailstalk2:xp-level:${user.id}`;
+      const previous = Number(localStorage.getItem(storageKey) ?? 0);
+
+      if (previous > 0 && result.level > previous) {
+        setLevel(result.level);
+        window.setTimeout(() => setLevel(undefined), 8000);
+      }
+
+      localStorage.setItem(storageKey, String(result.level));
+    } catch {
+      // XP is optional; do not interrupt the client if it is unavailable.
+    }
+  }
+
+  onMount(() => {
+    void checkLevel();
+    const interval = window.setInterval(() => void checkLevel(), 5000);
+    onCleanup(() => window.clearInterval(interval));
+  });
+
+  return (
+    <Show when={level()}>
+      {(currentLevel) => (
+        <LevelUpCard role="status">
+          <strong><Trans>Level up!</Trans></strong>
+          <span><Trans>You reached level {currentLevel()}!</Trans></span>
+        </LevelUpCard>
+      )}
+    </Show>
+  );
+}
+
+const LevelUpCard = styled("div", {
+  base: {
+    position: "fixed",
+    top: "var(--gap-lg)",
+    right: "var(--gap-lg)",
+    zIndex: 1000,
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--gap-xs)",
+    minWidth: "220px",
+    padding: "var(--gap-md) var(--gap-lg)",
+    borderRadius: "var(--borderRadius-lg)",
+    background: "var(--md-sys-color-primary-container)",
+    color: "var(--md-sys-color-on-primary-container)",
+    boxShadow: "var(--elevation-3)",
+  },
+});
 
 /**
  * Open invite and redirect to last active path
@@ -158,6 +228,7 @@ function MountContext(props: { children?: JSX.Element }) {
                   <SnackbarProvider controller={snackbarController}>
                     {props.children}
                     <LeaveSitePrompt />
+                    <LevelUpOverlay />
                     <ServiceWorkerUpdatePrompt />
                     <ModalRenderer />
                     <FloatingManager />

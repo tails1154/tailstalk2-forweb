@@ -1950,6 +1950,10 @@ msgstr ""
 msgid "Level {0}"
 msgstr ""
 
+#: src/index.tsx
+msgid "Level up!"
+msgstr ""
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Light"
 msgstr ""
@@ -3771,6 +3775,11 @@ msgstr ""
 
 #: components/ui/components/features/voice/VoiceStatefulUserIcons.tsx
 msgid "You muted this user."
+msgstr ""
+
+#. placeholder {0}: currentLevel()
+#: src/index.tsx
+msgid "You reached level {0}!"
 msgstr ""
 
 #: components/auth/src/flows/FlowHome.tsx

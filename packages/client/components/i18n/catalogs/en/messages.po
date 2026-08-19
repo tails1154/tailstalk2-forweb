@@ -1950,6 +1950,10 @@ msgstr "Let TailsTalk 2 use its own custom titlebar."
 msgid "Level {0}"
 msgstr "Level {0}"
 
+#: src/index.tsx
+msgid "Level up!"
+msgstr "Level up!"
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Light"
 msgstr "Light"
@@ -3772,6 +3776,11 @@ msgstr "You have this user blocked."
 #: components/ui/components/features/voice/VoiceStatefulUserIcons.tsx
 msgid "You muted this user."
 msgstr "You muted this user."
+
+#. placeholder {0}: currentLevel()
+#: src/index.tsx
+msgid "You reached level {0}!"
+msgstr "You reached level {0}!"
 
 #: components/auth/src/flows/FlowHome.tsx
 msgid "You were logged out!"

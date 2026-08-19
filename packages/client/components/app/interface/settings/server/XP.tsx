@@ -79,7 +79,7 @@ export default function ServerXPSettings(props: ServerSettingsProps) {
             <Form2.TextField
               type="number"
               min={0}
-              max={1000}
+              max={20}
               name="xp-per-message"
               control={editGroup.controls.xpPerMessage}
               label={t`XP per message`}
