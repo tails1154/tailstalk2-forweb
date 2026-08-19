@@ -72,6 +72,9 @@ export enum UserBadges {
   EarlyAdopter = 256,
   ReservedRelevantJokeBadge1 = 512,
   ReservedRelevantJokeBadge2 = 1024,
+  XPChampion = 2048,
+  CommunityHelper = 4096,
+  TailsTalkSupporter = 8192,
 }
 
 /**

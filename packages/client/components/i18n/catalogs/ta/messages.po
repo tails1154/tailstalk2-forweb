@@ -861,6 +861,11 @@ msgstr ""
 msgid "Coming soon! 👀"
 msgstr ""
 
+#: components/ui/components/features/profiles/ProfileBadges.tsx
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Community Helper"
+msgstr ""
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Community themes"
 msgstr ""
@@ -1124,6 +1129,10 @@ msgstr "தற்போதைய கடவுச்சொல்"
 
 #: components/app/interface/settings/user/Sessions.tsx
 msgid "Current Session"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Custom badges"
 msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
@@ -1648,6 +1657,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/Account.tsx
 msgid "Get active recovery codes"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Give"
 msgstr ""
 
 #: src/interface/Home.tsx
@@ -2596,6 +2609,7 @@ msgid "Relevance"
 msgstr "சம்பந்தம்"
 
 #: components/modal/modals/RemoveMember.tsx
+#: components/app/interface/settings/user/Admin.tsx
 msgid "Remove"
 msgstr ""
 
@@ -3182,6 +3196,11 @@ msgstr ""
 msgid "TailsTalk 2 will start in the system tray."
 msgstr ""
 
+#: components/ui/components/features/profiles/ProfileBadges.tsx
+#: components/app/interface/settings/user/Admin.tsx
+msgid "TailsTalk Supporter"
+msgstr ""
+
 #: components/modal/modals/ReportContent.tsx
 msgid "Tell us what's wrong with this message"
 msgstr ""
@@ -3662,6 +3681,11 @@ msgstr ""
 #: components/modal/modals/UserProfile.tsx
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "XP"
+msgstr ""
+
+#: components/ui/components/features/profiles/ProfileBadges.tsx
+#: components/app/interface/settings/user/Admin.tsx
+msgid "XP Champion"
 msgstr ""
 
 #: components/app/interface/settings/server/XP.tsx

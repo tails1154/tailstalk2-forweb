@@ -2,6 +2,7 @@ import { For, Show, createResource, createSignal, onMount } from "solid-js";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
+import { UserBadges } from "stoat.js";
 
 import MdAdminPanelSettings from "@material-design-icons/svg/outlined/admin_panel_settings.svg?component-solid";
 import MdPeople from "@material-design-icons/svg/outlined/people.svg?component-solid";
@@ -79,6 +80,7 @@ interface AdminUserInfo {
   flags?: number;
   suspended_until?: string;
   privileged: boolean;
+  badges: number;
 }
 
 function authHeader(password: string) {
@@ -421,6 +423,7 @@ function ReportsTab(props: { password: string }) {
 }
 
 function UsersTab(props: { password: string }) {
+  const { t } = useLingui();
   const [query, setQuery] = createSignal("");
   const [results, setResults] = createSignal<AdminUserInfo[]>([]);
   const [searching, setSearching] = createSignal(false);
@@ -513,6 +516,23 @@ function UsersTab(props: { password: string }) {
       search();
     });
   }
+
+  async function setBadge(userId: string, badge: number, enabled: boolean) {
+    await withLoading(userId, async () => {
+      await apiFetch(`/admin/users/${userId}/badge`, props.password, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ badge, enabled }),
+      });
+      await search();
+    });
+  }
+
+  const customBadges = [
+    { bit: UserBadges.XPChampion, label: t`XP Champion` },
+    { bit: UserBadges.CommunityHelper, label: t`Community Helper` },
+    { bit: UserBadges.TailsTalkSupporter, label: t`TailsTalk Supporter` },
+  ];
 
   function handleSearchKeyDown(e: KeyboardEvent) {
     if (e.key === "Enter") search();
@@ -612,6 +632,26 @@ function UsersTab(props: { password: string }) {
                   </For>
                 </Column>
               </Show>
+              <Column gap="xs">
+                <Text class={typography({ class: "label", size: "small" })} style={{ "font-weight": 600 }}>
+                  <Trans>Custom badges</Trans>
+                </Text>
+                <Row gap="xs" style={{ "flex-wrap": "wrap" }}>
+                  <For each={customBadges}>
+                    {(badge) => {
+                      const hasBadge = () => (u.badges & badge.bit) !== 0;
+                      return (
+                        <Button
+                          onPress={() => setBadge(u.id, badge.bit, !hasBadge())}
+                          disabled={isLoading(u.id)}
+                        >
+                          {hasBadge() ? t`Remove` : t`Give`} {badge.label}
+                        </Button>
+                      );
+                    }}
+                  </For>
+                </Row>
+              </Column>
             </Column>
           </UserCard>
         )}

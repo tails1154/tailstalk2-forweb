@@ -861,6 +861,11 @@ msgstr "Colour mode"
 msgid "Coming soon! 👀"
 msgstr "Coming soon! 👀"
 
+#: components/ui/components/features/profiles/ProfileBadges.tsx
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Community Helper"
+msgstr "Community Helper"
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Community themes"
 msgstr "Community themes"
@@ -1125,6 +1130,10 @@ msgstr "Current Password"
 #: components/app/interface/settings/user/Sessions.tsx
 msgid "Current Session"
 msgstr "Current Session"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Custom badges"
+msgstr "Custom badges"
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Custom community palette."
@@ -1649,6 +1658,10 @@ msgstr "Get a new set of recovery codes"
 #: components/app/interface/settings/user/Account.tsx
 msgid "Get active recovery codes"
 msgstr "Get active recovery codes"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Give"
+msgstr "Give"
 
 #: src/interface/Home.tsx
 #~ msgid "Give feedback on TailsTalk 2"
@@ -2596,6 +2609,7 @@ msgid "Relevance"
 msgstr "Relevance"
 
 #: components/modal/modals/RemoveMember.tsx
+#: components/app/interface/settings/user/Admin.tsx
 msgid "Remove"
 msgstr "Remove"
 
@@ -3182,6 +3196,11 @@ msgstr "TailsTalk 2 is one of the best ways to stay connected with your friends 
 msgid "TailsTalk 2 will start in the system tray."
 msgstr "TailsTalk 2 will start in the system tray."
 
+#: components/ui/components/features/profiles/ProfileBadges.tsx
+#: components/app/interface/settings/user/Admin.tsx
+msgid "TailsTalk Supporter"
+msgstr "TailsTalk Supporter"
+
 #: components/modal/modals/ReportContent.tsx
 msgid "Tell us what's wrong with this message"
 msgstr "Tell us what's wrong with this message"
@@ -3663,6 +3682,11 @@ msgstr "Would you like to create a new server or join an existing one?"
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "XP"
 msgstr "XP"
+
+#: components/ui/components/features/profiles/ProfileBadges.tsx
+#: components/app/interface/settings/user/Admin.tsx
+msgid "XP Champion"
+msgstr "XP Champion"
 
 #: components/app/interface/settings/server/XP.tsx
 msgid "XP per message"

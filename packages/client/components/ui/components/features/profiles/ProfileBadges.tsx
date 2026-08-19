@@ -15,6 +15,9 @@ import badgePaw from "../../../../../public/assets/badges/paw.svg";
 import badgeRaccoon from "../../../../../public/assets/badges/raccoon.svg";
 import badgeSupporter from "../../../../../public/assets/badges/supporter.svg";
 import badgeTranslator from "../../../../../public/assets/badges/translator.svg";
+import badgeXPChampion from "../../../../../public/assets/badges/xp_champion.png";
+import badgeCommunityHelper from "../../../../../public/assets/badges/community_helper.png";
+import badgeTailsTalkSupporter from "../../../../../public/assets/badges/tailstalk_supporter.png";
 import { Text } from "../../design";
 
 import { ProfileCard } from "./ProfileCard";
@@ -145,6 +148,15 @@ export function ProfileBadges(props: { user: User }) {
               }}
               src={badgePaw}
             />
+          </Show>
+          <Show when={props.user.badges & UserBadges.XPChampion}>
+            <img use:floating={{ tooltip: { placement: "top", content: t`XP Champion` } }} src={badgeXPChampion} />
+          </Show>
+          <Show when={props.user.badges & UserBadges.CommunityHelper}>
+            <img use:floating={{ tooltip: { placement: "top", content: t`Community Helper` } }} src={badgeCommunityHelper} />
+          </Show>
+          <Show when={props.user.badges & UserBadges.TailsTalkSupporter}>
+            <img use:floating={{ tooltip: { placement: "top", content: t`TailsTalk Supporter` } }} src={badgeTailsTalkSupporter} />
           </Show>
           <Show when={props.user.id === "01EX2NCWQ0CHS3QJF0FEQS1GR4"}>
             <img
