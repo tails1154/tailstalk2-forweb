@@ -29,12 +29,14 @@ pnpm exec eslint .
 
 ## Deploy workflow
 
-`deploy.sh` runs locally: `lingui compile` → `panda codegen` → `vite build` → tars `dist/` → scp to `tails1154.com:1699` → `docker cp` into `stoat-web-1` → restart.
+`deploy.sh` runs locally: `lingui compile` → `panda codegen` → `vite build` → tars `dist/` → scp to `tails1154.com:1699` → `docker cp` into `stoat-web-1` → restart. It also uploads `packages/client/public/tailstalk2.version` to `/home/tails1154/ecraft/tailstalk2.version` and installs `scripts/tailstalk2_version.py` at `/home/tails1154/ecraft/cgi-bin/tailstalk2_version.py`.
 
 ## Client update workflow
 
 - Bump `packages/client/src/version.ts` for every client feature or bug-fix update.
 - Keep `packages/client/public/tailstalk2.version` and `/home/tails1154/ecraft/tailstalk2.version` at the same version.
+- The client checks `https://tails1154.com:9782/cgi-bin/tailstalk2_version.py`; keep the CGI endpoint CORS-enabled and no-cache.
+- Do not rely on the static `/tailstalk2.version` file for browser fetches; the CGI endpoint supplies `Access-Control-Allow-Origin: *`.
 - Run Lingui extraction and compilation whenever UI text is added or changed.
 - Commit and push each client update to GitHub before deployment.
 - Deploy client changes only with `./deploy.sh`; it is the required catalog, codegen, build, upload, and restart gate.
