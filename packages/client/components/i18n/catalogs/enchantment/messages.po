@@ -3330,6 +3330,10 @@ msgstr ""
 msgid "Trending GIFs"
 msgstr ""
 
+#: src/interface/Discover.tsx
+msgid "Unable to load Discovery right now. Please try again."
+msgstr ""
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Unblock user"
 msgstr "⚍リʖꖎ𝙹ᓵꖌ ⚍ᓭᒷ∷"

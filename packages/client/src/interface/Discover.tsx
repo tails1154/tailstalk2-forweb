@@ -33,9 +33,18 @@ interface DiscoverListing {
 
 async function fetchListings(query?: string): Promise<DiscoverListing[]> {
   const params = query ? `?query=${encodeURIComponent(query)}` : "";
-  const res = await fetch(`${CONFIGURATION.DEFAULT_API_URL}/discovery${params}`);
-  if (!res.ok) return [];
-  return res.json();
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 10_000);
+  try {
+    const res = await fetch(
+      `${CONFIGURATION.DEFAULT_API_URL}/discovery${params}`,
+      { cache: "no-store", signal: controller.signal },
+    );
+    if (!res.ok) throw new Error(`Discovery request failed (${res.status})`);
+    return res.json();
+  } finally {
+    window.clearTimeout(timeout);
+  }
 }
 
 function parseInviteCode(url: string): string | null {
@@ -90,10 +99,12 @@ export function Discover() {
           onInput={(e) => setQuery(e.currentTarget.value)}
         />
         <Show
-          when={!listings.loading}
+          when={!listings.loading && !listings.error}
           fallback={
             <Empty>
-              <Trans>Loading...</Trans>
+              <Show when={listings.error} fallback={<Trans>Loading...</Trans>}>
+                <Trans>Unable to load Discovery right now. Please try again.</Trans>
+              </Show>
             </Empty>
           }
         >

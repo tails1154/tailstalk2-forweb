@@ -3330,6 +3330,10 @@ msgstr "Traditional (DD/MM/YYYY)"
 msgid "Trending GIFs"
 msgstr "Trending GIFs"
 
+#: src/interface/Discover.tsx
+msgid "Unable to load Discovery right now. Please try again."
+msgstr "Unable to load Discovery right now. Please try again."
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Unblock user"
 msgstr "Unblock user"
