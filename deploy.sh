@@ -21,6 +21,9 @@ pnpm --filter client exec node scripts/copyAssets.mjs
 echo "=== Running panda codegen ==="
 pnpm --filter client exec panda codegen
 
+echo "=== Building stoat.js client library ==="
+pnpm --filter stoat.js exec tsc
+
 echo "=== Building on host ==="
 pnpm --filter client exec vite build
 

@@ -784,7 +784,7 @@ export class Channel {
      */
     const performAck = (): void => {
       this.#ackLimit = undefined;
-      const endpoint = `/channels/${this.id}/ack/${lastMessageId as ""}`;
+      const endpoint = `/channels/${this.id}/ack/${lastMessageId as ""}` as const;
       console.info("[TailsTalk unread] ack:send", {
         channel: this.id,
         messageId: lastMessageId,
