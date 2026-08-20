@@ -1,4 +1,12 @@
-import { For, Match, Show, Switch, createSignal, onMount } from "solid-js";
+import {
+  ComponentProps,
+  For,
+  Match,
+  Show,
+  Switch,
+  createSignal,
+  onMount,
+} from "solid-js";
 
 import { useLingui } from "@lingui-solid/solid/macro";
 import { Message as MessageInterface, WebsiteEmbed } from "stoat.js";
@@ -407,7 +415,7 @@ const PollQuestion = styled("strong", {
   base: { fontSize: "1rem" },
 });
 
-const PollOptionButton = styled(Button, {
+const pollOptionButton = cva({
   base: {
     display: "flex",
     justifyContent: "space-between",
@@ -415,6 +423,10 @@ const PollOptionButton = styled(Button, {
     textAlign: "left",
   },
 });
+
+function PollOptionButton(props: ComponentProps<typeof Button>) {
+  return <Button {...props} class={pollOptionButton()} />;
+}
 
 const PollOptionLabel = styled("span", { base: { overflow: "hidden" } });
 const PollOptionCount = styled("span", { base: { opacity: 0.8 } });
