@@ -398,8 +398,8 @@ msgid "Add new members to the group"
 msgstr ""
 
 #: src/interface/channels/text/Composition.tsx
-msgid "Add option"
-msgstr ""
+#~ msgid "Add option"
+#~ msgstr ""
 
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Add status text"
@@ -446,8 +446,8 @@ msgid "Allow members to change name and avatar per-message"
 msgstr ""
 
 #: src/interface/channels/text/Composition.tsx
-msgid "Allow multiple selections"
-msgstr ""
+#~ msgid "Allow multiple selections"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Allow others to add your bot to their servers from Discover"
@@ -531,8 +531,8 @@ msgid "Are you sure you want to remove {0} from {1}?"
 msgstr ""
 
 #: src/interface/channels/text/Composition.tsx
-msgid "Ask a question"
-msgstr ""
+#~ msgid "Ask a question"
+#~ msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Assign lower-ranked roles to lower-ranking members"
@@ -686,7 +686,6 @@ msgstr ""
 msgid "Bypasses slowmode in channels"
 msgstr ""
 
-#: src/interface/channels/text/Composition.tsx
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/ServerIdentity.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
@@ -913,12 +912,12 @@ msgid "Close conversation with {0}?"
 msgstr ""
 
 #: components/app/interface/channels/text/Message.tsx
-msgid "Close poll"
-msgstr ""
+#~ msgid "Close poll"
+#~ msgstr ""
 
 #: components/app/interface/channels/text/Message.tsx
-msgid "Closed"
-msgstr ""
+#~ msgid "Closed"
+#~ msgstr ""
 
 #: components/modal/modals/JoinServer.tsx
 msgid "Code"
@@ -1204,8 +1203,8 @@ msgstr ""
 #: src/interface/channels/text/Composition.tsx
 #: src/interface/channels/text/Composition.tsx
 #: src/interface/channels/text/Composition.tsx
-msgid "Create poll"
-msgstr ""
+#~ msgid "Create poll"
+#~ msgstr ""
 
 #: components/modal/modals/CreateRole.tsx
 #: components/app/interface/settings/server/roles/ServerRoleOverview.tsx
@@ -2421,8 +2420,8 @@ msgid "Multi-factor authentication is already enabled for this account."
 msgstr ""
 
 #: components/app/interface/channels/text/Message.tsx
-msgid "multiple selections"
-msgstr ""
+#~ msgid "multiple selections"
+#~ msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #: components/app/menus/UserContextMenu.tsx
@@ -2676,10 +2675,9 @@ msgstr ""
 #~ msgid "Open settings"
 #~ msgstr "o open e nasin"
 
-#. placeholder {0}: index() + 1
 #: src/interface/channels/text/Composition.tsx
-msgid "Option {0}"
-msgstr ""
+#~ msgid "Option {0}"
+#~ msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Other"
@@ -4082,8 +4080,8 @@ msgid "Volume"
 msgstr ""
 
 #: components/app/interface/channels/text/Message.tsx
-msgid "votes"
-msgstr ""
+#~ msgid "votes"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "Want to change username?"

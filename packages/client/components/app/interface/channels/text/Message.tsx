@@ -1,12 +1,4 @@
-import {
-  ComponentProps,
-  For,
-  Match,
-  Show,
-  Switch,
-  createSignal,
-  onMount,
-} from "solid-js";
+import { For, Match, Show, Switch, createSignal, onMount } from "solid-js";
 
 import { useLingui } from "@lingui-solid/solid/macro";
 import { Message as MessageInterface, WebsiteEmbed } from "stoat.js";
@@ -21,7 +13,6 @@ import { useState } from "@revolt/state";
 import {
   Attachment,
   Avatar,
-  Button,
   Embed,
   MessageContainer,
   MessageReply,
@@ -312,9 +303,6 @@ export function Message(props: Props) {
           {(embed) => <Embed embed={embed} />}
         </For>
       </Show>
-      <Show when={props.message.poll}>
-        <PollCard message={props.message} />
-      </Show>
       <Reactions
         reactions={props.message.reactions as never as Map<string, Set<string>>}
         interactions={props.message.interactions}
@@ -332,114 +320,12 @@ export function Message(props: Props) {
   );
 }
 
-function PollCard(props: { message: MessageInterface }) {
-  const { t } = useLingui();
-  const client = useClient();
-  const poll = () => props.message.poll!;
-  const totalVotes = () =>
-    new Set(Object.values(poll().votes ?? {}).flat()).size;
-  const canClose = () =>
-    props.message.author?.self ||
-    props.message.channel?.havePermission("ManageMessages");
-
-  return (
-    <PollContainer>
-      <PollQuestion>{poll().question}</PollQuestion>
-      <For each={poll().options}>
-        {(option) => {
-          const voters = () => poll().votes?.[option.id] ?? [];
-          const selected = () => voters().includes(client().user!.id);
-          const count = () => voters().length;
-          const percentage = () =>
-            totalVotes() ? Math.round((count() / totalVotes()) * 100) : 0;
-
-          return (
-            <PollOptionButton
-              onPress={() =>
-                props.message.votePoll(option.id, !selected()).catch(() => {})
-              }
-              isDisabled={poll().closed}
-              variant={selected() ? "filled" : "outlined"}
-            >
-              <PollOptionLabel>{option.text}</PollOptionLabel>
-              <PollOptionSeparator>|</PollOptionSeparator>
-              <PollOptionCount>
-                {count()} ({percentage()}%)
-              </PollOptionCount>
-            </PollOptionButton>
-          );
-        }}
-      </For>
-      <PollFooter>
-        <span>
-          {totalVotes()} {t`votes`}
-          {poll().multiple ? ` · ${t`multiple selections`}` : ""}
-          {poll().closed ? ` · ${t`Closed`}` : ""}
-        </span>
-        <Show when={!poll().closed && canClose()}>
-          <Button
-            variant="text"
-            onPress={() => props.message.closePoll().catch(() => {})}
-          >
-            {t`Close poll`}
-          </Button>
-        </Show>
-      </PollFooter>
-    </PollContainer>
-  );
-}
-
 /**
  * New user indicator
  */
 const NewUser = styled("div", {
   base: {
     fill: "var(--md-sys-color-primary)",
-  },
-});
-
-const PollContainer = styled("div", {
-  base: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "8px",
-    maxWidth: "420px",
-    marginTop: "8px",
-    padding: "12px",
-    border: "1px solid var(--md-sys-color-outline-variant)",
-    borderRadius: "12px",
-    background: "var(--md-sys-color-surface-container)",
-  },
-});
-
-const PollQuestion = styled("strong", {
-  base: { fontSize: "1rem" },
-});
-
-const pollOptionButton = cva({
-  base: {
-    display: "flex",
-    justifyContent: "space-between",
-    width: "100%",
-    textAlign: "left",
-  },
-});
-
-function PollOptionButton(props: ComponentProps<typeof Button>) {
-  return <Button {...props} class={pollOptionButton()} />;
-}
-
-const PollOptionLabel = styled("span", { base: { overflow: "hidden" } });
-const PollOptionSeparator = styled("span", { base: { opacity: 0.65 } });
-const PollOptionCount = styled("span", { base: { opacity: 0.8 } });
-const PollFooter = styled("div", {
-  base: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: "8px",
-    fontSize: "0.8rem",
-    opacity: 0.85,
   },
 });
 

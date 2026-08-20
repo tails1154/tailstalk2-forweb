@@ -11,7 +11,6 @@ import { decodeTime } from "ulid";
 
 import type { Client } from "../Client.js";
 import type { MessageCollection } from "../collections/MessageCollection.js";
-import { hydrate } from "../hydration/index.js";
 import { MessageFlags } from "../hydration/message.js";
 
 import type { Channel } from "./Channel.js";
@@ -22,19 +21,6 @@ import type { ServerMember } from "./ServerMember.js";
 import { ServerRole } from "./ServerRole.js";
 import type { SystemMessage } from "./SystemMessage.js";
 import type { User } from "./User.js";
-
-export interface PollOption {
-  id: string;
-  text: string;
-}
-
-export interface Poll {
-  question: string;
-  options: PollOption[];
-  multiple: boolean;
-  closed: boolean;
-  votes: Record<string, string[]>;
-}
 
 /**
  * Message Class
@@ -241,66 +227,6 @@ export class Message {
    */
   get interactions(): APIMessage["interactions"] {
     return this.#collection.getUnderlyingObject(this.id).interactions;
-  }
-
-  /** Native poll attached to this message. */
-  get poll(): Poll | undefined {
-    return (this.#collection.getUnderlyingObject(this.id) as unknown as APIMessage & {
-      poll?: Poll;
-    }).poll;
-  }
-
-  /** Toggle the current user's selection in a poll option. */
-  async votePoll(optionId: string, selected: boolean): Promise<void> {
-    const updated = await this.pollRequest(
-      `/channels/${this.channelId}/messages/${this.id}/poll/vote`,
-      { option_id: optionId, selected },
-    );
-    this.#collection.updateUnderlyingObject(
-      this.id,
-      hydrate(
-        "message",
-        { ...updated, channel: this.channelId },
-        this.#collection.client,
-        false,
-      ),
-    );
-  }
-
-  /** Close this poll. */
-  async closePoll(): Promise<void> {
-    const updated = await this.pollRequest(
-      `/channels/${this.channelId}/messages/${this.id}/poll/close`,
-    );
-    this.#collection.updateUnderlyingObject(
-      this.id,
-      hydrate(
-        "message",
-        { ...updated, channel: this.channelId },
-        this.#collection.client,
-        false,
-      ),
-    );
-  }
-
-  /** Send a request for a route not present in the generated API schema. */
-  private async pollRequest(
-    path: string,
-    body?: Record<string, unknown>,
-  ): Promise<APIMessage> {
-    const config = this.#collection.client.api.config;
-    const response = await fetch(new URL(path, config.baseURL), {
-      method: "POST",
-      headers: {
-        ...config.headers,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body ?? {}),
-    });
-
-    const data = await response.text();
-    if (!response.ok) throw data;
-    return JSON.parse(data) as APIMessage;
   }
 
   /**

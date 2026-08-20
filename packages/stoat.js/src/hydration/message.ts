@@ -5,7 +5,6 @@ import type { Embed, Interactions, Masquerade, Message } from "stoat-api";
 import type { Client } from "../Client.js";
 import { File } from "../classes/File.js";
 import { MessageWebhook } from "../classes/Message.js";
-import type { Poll } from "../classes/Message.js";
 import { MessageEmbed } from "../classes/MessageEmbed.js";
 import { SystemMessage } from "../classes/SystemMessage.js";
 import type { Merge } from "../lib/merge.js";
@@ -28,7 +27,6 @@ export type HydratedMessage = {
   replyIds?: string[];
   reactions: ReactiveMap<string, ReactiveSet<string>>;
   interactions?: Interactions;
-  poll?: Poll;
   masquerade?: Masquerade;
   pinned?: boolean;
   flags?: MessageFlags;
@@ -74,8 +72,6 @@ export const messageHydration: Hydrate<Merge<Message>, HydratedMessage> = {
       return map;
     },
     interactions: (message) => message.interactions,
-    poll: (message) =>
-      (message as unknown as { poll?: Poll }).poll,
     masquerade: (message) => message.masquerade!,
     pinned: (message) => message.pinned!,
     flags: (message) => message.flags!,
