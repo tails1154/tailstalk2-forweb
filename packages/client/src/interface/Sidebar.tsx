@@ -30,7 +30,6 @@ export const Sidebar = (props: {
   const user = useUser();
   const state = useState();
   const client = useClient();
-  const shownOnboarding = new Set<string>();
   const { openModal } = useModals();
   const device = useDevice();
 
@@ -169,6 +168,7 @@ const Server: Component = () => {
   const { openModal } = useModals();
   const params = useSmartParams();
   const client = useClient();
+  const shownOnboarding = new Set<string>();
 
   /**
    * Resolve the server
