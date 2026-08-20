@@ -1,6 +1,7 @@
-import { Match, Switch, createSignal } from "solid-js";
+import { Match, Show, Switch, createSignal } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
+import { styled } from "styled-system/jsx";
 
 import { useClientLifecycle } from "@revolt/client";
 import { State, TransitionType } from "@revolt/client/Controller";
@@ -20,7 +21,7 @@ import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?compon
 
 import { useState } from "@revolt/state";
 import { FlowTitle } from "./Flow";
-import { Fields, Form } from "./Form";
+import { Fields, Form, isInvalidStudentId } from "./Form";
 
 const AccountWarning = styled("div", {
   base: {
@@ -41,6 +42,7 @@ export default function FlowLogin() {
   const modals = useModals();
   const { lifecycle, isLoggedIn, login, selectUsername } = useClientLifecycle();
   const [aisdChoice, setAisdChoice] = createSignal<boolean | null>(null);
+  const [studentIdError, setStudentIdError] = createSignal(false);
 
   /**
    * Log into account
@@ -48,6 +50,11 @@ export default function FlowLogin() {
    */
   async function performLogin(data: FormData) {
     const studentId = (data.get("student-id") as string | null)?.trim();
+    if (aisdChoice() && isInvalidStudentId(studentId ?? "")) {
+      setStudentIdError(true);
+      return;
+    }
+    setStudentIdError(false);
     const email = aisdChoice()
       ? `${studentId}@cats.angletonisd.net`
       : (data.get("email") as string);
@@ -105,6 +112,11 @@ export default function FlowLogin() {
             </AccountWarning>
             <Form onSubmit={performLogin}>
               <Fields fields={[aisdChoice() ? "student-id" : "email", "password"]} />
+              <Show when={studentIdError()}>
+                <AccountWarning role="alert">
+                  <Trans>You don't have to put @cats.angletonisd.net in this box or your ID is invalid. Please remove it</Trans>
+                </AccountWarning>
+              </Show>
               <Column gap="xl" align>
                 <a href="/login/reset">
                   <Button variant="text">
