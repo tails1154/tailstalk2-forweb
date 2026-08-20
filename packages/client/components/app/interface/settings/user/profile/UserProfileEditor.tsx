@@ -74,6 +74,7 @@ export function UserProfileEditor(props: Props) {
           editGroup.controls.decoration.setValue(
             (profileData as typeof profileData & { decoration?: string }).decoration || "",
           );
+          editGroup.controls.decoration.markDirty(false);
           setInitialBio([profileData.content || ""]);
         }
       },
@@ -92,6 +93,7 @@ export function UserProfileEditor(props: Props) {
       editGroup.controls.decoration.setValue(
         (profile.data as typeof profile.data & { decoration?: string }).decoration || "",
       );
+      editGroup.controls.decoration.markDirty(false);
       setInitialBio([profile.data.content || ""]);
     }
   }
@@ -217,7 +219,10 @@ export function UserProfileEditor(props: Props) {
           <Trans>Profile decoration</Trans>
           <select
             value={editGroup.controls.decoration.value}
-            onChange={(event) => editGroup.controls.decoration.setValue(event.currentTarget.value)}
+            onChange={(event) => {
+              editGroup.controls.decoration.setValue(event.currentTarget.value);
+              editGroup.controls.decoration.markDirty(true);
+            }}
           >
             <option value="">{t`None`}</option>
             <For each={decorations() || []}>
