@@ -24,7 +24,7 @@ export function AccountSwitcherModal(
     account.displayName ?? account.username ?? account.userId;
 
   function switchTo(account: Session) {
-    props.onClose();
+    closeAll();
     switchAccount(account);
   }
 
