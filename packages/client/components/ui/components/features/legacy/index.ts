@@ -1,6 +1,8 @@
-import { Checkbox, List, Switch } from "../../design";
+import { Checkbox } from "../../design/Checkbox";
 import { type DialogProps, Dialog } from "../../design/Dialog";
-import { NavigationRail } from "../../navigation";
+import { List } from "../../design/List";
+import { Switch } from "../../design/Switch";
+import { NavigationRail } from "../../navigation/NavigationRail";
 
 /**
  * @deprecated Use the `Dialog` export instead!

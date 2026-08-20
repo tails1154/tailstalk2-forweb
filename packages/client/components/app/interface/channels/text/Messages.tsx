@@ -142,6 +142,10 @@ export function Messages(props: Props) {
    */
   let collectedMessages: MessageInterface[] | undefined;
 
+  // A reconnect should not refetch channel history that is already loaded.
+  // The websocket sync is responsible for catching up missed messages.
+  let initialLoadComplete = false;
+
   /**
    * Pre-empt the current fetch
    */
@@ -277,6 +281,7 @@ export function Messages(props: Props) {
 
       // Mark as fetching has ended
       setFetching();
+      initialLoadComplete = true;
 
       // If we're not at the end, restore scroll position
       if (existingState && !existingState.atEnd) {
@@ -616,6 +621,7 @@ export function Messages(props: Props) {
     on(
       () => props.channel,
       (channel) => {
+        initialLoadComplete = false;
         caseInitialLoad(props.highlightedMessageId());
 
         // move state into cache when navigating away
@@ -709,8 +715,9 @@ export function Messages(props: Props) {
       (state) => {
         if (
           state === State.Connected &&
-          atEnd() &&
-          !props.highlightedMessageId
+          !initialLoadComplete &&
+          !fetching() &&
+          !props.highlightedMessageId()
         ) {
           caseInitialLoad();
         }

@@ -337,7 +337,7 @@ function PollCard(props: { message: MessageInterface }) {
   const client = useClient();
   const poll = () => props.message.poll!;
   const totalVotes = () =>
-    new Set(Object.values(poll().votes).flat()).size;
+    new Set(Object.values(poll().votes ?? {}).flat()).size;
   const canClose = () =>
     props.message.author?.self ||
     props.message.channel?.havePermission("ManageMessages");
@@ -347,7 +347,7 @@ function PollCard(props: { message: MessageInterface }) {
       <PollQuestion>{poll().question}</PollQuestion>
       <For each={poll().options}>
         {(option) => {
-          const voters = () => poll().votes[option.id] ?? [];
+          const voters = () => poll().votes?.[option.id] ?? [];
           const selected = () => voters().includes(client().user!.id);
           const count = () => voters().length;
           const percentage = () =>

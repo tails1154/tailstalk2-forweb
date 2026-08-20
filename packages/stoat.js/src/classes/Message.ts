@@ -11,6 +11,7 @@ import { decodeTime } from "ulid";
 
 import type { Client } from "../Client.js";
 import type { MessageCollection } from "../collections/MessageCollection.js";
+import { hydrate } from "../hydration/index.js";
 import { MessageFlags } from "../hydration/message.js";
 
 import type { Channel } from "./Channel.js";
@@ -251,16 +252,34 @@ export class Message {
 
   /** Toggle the current user's selection in a poll option. */
   async votePoll(optionId: string, selected: boolean): Promise<void> {
-    await this.#collection.client.api.post(
+    const updated = (await this.#collection.client.api.post(
       `/channels/${this.channelId}/messages/${this.id}/poll/vote` as never,
       { option_id: optionId, selected } as never,
+    )) as unknown as APIMessage;
+    this.#collection.updateUnderlyingObject(
+      this.id,
+      hydrate(
+        "message",
+        { ...updated, channel: this.channelId },
+        this.#collection.client,
+        false,
+      ),
     );
   }
 
   /** Close this poll. */
   async closePoll(): Promise<void> {
-    await this.#collection.client.api.post(
+    const updated = (await this.#collection.client.api.post(
       `/channels/${this.channelId}/messages/${this.id}/poll/close` as never,
+    )) as unknown as APIMessage;
+    this.#collection.updateUnderlyingObject(
+      this.id,
+      hydrate(
+        "message",
+        { ...updated, channel: this.channelId },
+        this.#collection.client,
+        false,
+      ),
     );
   }
 
