@@ -25,7 +25,6 @@ import MdArrowForward from "@material-design-icons/svg/outlined/arrow_forward.sv
 import MdDashboard from "@material-design-icons/svg/outlined/dashboard.svg?component-solid";
 import MdExplore from "@material-design-icons/svg/outlined/explore.svg?component-solid";
 import MdStar from "@material-design-icons/svg/outlined/star_outline.svg?component-solid";
-import MdBrush from "@material-design-icons/svg/outlined/brush.svg?component-solid";
 
 import { CONFIGURATION } from "@revolt/common";
 import {
@@ -39,7 +38,7 @@ import {
   typography,
 } from "@revolt/ui";
 
-type Tab = "stats" | "reports" | "users" | "discovery" | "feature_requests" | "decorations" | "whatsnew";
+type Tab = "stats" | "reports" | "users" | "discovery" | "feature_requests" | "whatsnew";
 
 interface DiscoveryListing {
   id: string;
@@ -91,13 +90,6 @@ interface AdminFeatureRequest {
   body: string;
   author_name: string;
   status: string;
-}
-
-interface AdminDecoration {
-  id: string;
-  name: string;
-  image: string;
-  required_level: number;
 }
 
 function authHeader(password: string) {
@@ -226,9 +218,6 @@ export function AdminPanel() {
             <TabButton active={tab() === "feature_requests"} onClick={() => setTab("feature_requests")}>
               <MdStar {...iconSize(16)} /> <Trans>Feature requests</Trans>
             </TabButton>
-            <TabButton active={tab() === "decorations"} onClick={() => setTab("decorations")}>
-              <MdBrush {...iconSize(16)} /> <Trans>Decorations</Trans>
-            </TabButton>
             <TabButton active={tab() === "whatsnew"} onClick={() => setTab("whatsnew")}>
               <MdArrowForward {...iconSize(16)} /> What's New
             </TabButton>
@@ -248,85 +237,10 @@ export function AdminPanel() {
           <Show when={tab() === "feature_requests"}>
             <FeatureRequestsTab password={authToken()} />
           </Show>
-          <Show when={tab() === "decorations"}>
-            <DecorationsTab password={authToken()} />
-          </Show>
           <Show when={tab() === "whatsnew"}>
             <WhatsNewTab password={authToken()} />
           </Show>
         </Column>
-      </Show>
-    </Column>
-  );
-}
-
-function DecorationsTab(props: { password: string }) {
-  const { t } = useLingui();
-  const [entries, { refetch }] = createResource(
-    () => props.password,
-    (password) => apiFetch("/decorations", password) as Promise<AdminDecoration[]>,
-  );
-  const [name, setName] = createSignal("");
-  const [level, setLevel] = createSignal("1");
-  const [image, setImage] = createSignal("");
-  const [saving, setSaving] = createSignal(false);
-
-  function chooseImage(event: Event) {
-    const file = (event.currentTarget as HTMLInputElement).files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => setImage(String(reader.result));
-    reader.readAsDataURL(file);
-  }
-
-  async function createDecoration() {
-    if (!name().trim() || !image()) return;
-    setSaving(true);
-    try {
-      await apiFetch("/admin/decorations", props.password, {
-        method: "POST",
-        body: JSON.stringify({ name: name().trim(), image: image(), required_level: Number(level()) || 1 }),
-      });
-      setName("");
-      setLevel("1");
-      setImage("");
-      await refetch();
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  async function removeDecoration(id: string) {
-    await apiFetch(`/admin/decorations/${id}`, props.password, { method: "DELETE" });
-    await refetch();
-  }
-
-  return (
-    <Column gap="md">
-      <Column gap="xs">
-        <Text class={typography({ class: "title", size: "medium" })}><Trans>Profile decorations</Trans></Text>
-        <Text class={typography({ class: "body", size: "small" })}><Trans>Upload transparent frames users can unlock with XP levels.</Trans></Text>
-      </Column>
-      <Column gap="sm">
-        <TextField placeholder={t`Decoration name`} value={name()} onChange={(event) => setName(event.currentTarget.value)} />
-        <TextField type="number" min="1" placeholder={t`Required level`} value={level()} onChange={(event) => setLevel(event.currentTarget.value)} />
-        <input type="file" accept="image/png,image/webp,image/gif" onChange={chooseImage} />
-        <Button onPress={createDecoration} isDisabled={saving() || !name().trim() || !image()}>
-          <Show when={saving()} fallback={<Trans>Upload decoration</Trans>}><CircularProgress /></Show>
-        </Button>
-      </Column>
-      <Show when={entries()} fallback={<LoadingState label={t`Loading decorations...`} />}>
-        <For each={entries()}>
-          {(entry) => (
-            <ReportCard>
-              <Row gap="md" align>
-                <img src={entry.image} alt={entry.name} style={{ width: "48px", height: "48px", "object-fit": "contain" }} />
-                <Column gap="xs" style={{ flex: 1 }}><Text>{entry.name}</Text><Text>Level {entry.required_level}</Text></Column>
-                <Button onPress={() => removeDecoration(entry.id)}><MdDelete {...iconSize(16)} /><Trans>Delete</Trans></Button>
-              </Row>
-            </ReportCard>
-          )}
-        </For>
       </Show>
     </Column>
   );

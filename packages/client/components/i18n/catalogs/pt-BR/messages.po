@@ -1287,14 +1287,6 @@ msgstr ""
 msgid "Deafen Members"
 msgstr ""
 
-#: components/app/interface/settings/user/Admin.tsx
-msgid "Decoration name"
-msgstr ""
-
-#: components/app/interface/settings/user/Admin.tsx
-msgid "Decorations"
-msgstr ""
-
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Default"
 msgstr ""
@@ -1317,7 +1309,6 @@ msgstr ""
 #: components/modal/modals/DeleteChannel.tsx
 #: components/modal/modals/DeleteCategory.tsx
 #: components/modal/modals/DeleteBot.tsx
-#: components/app/interface/settings/user/Admin.tsx
 msgid "Delete"
 msgstr ""
 
@@ -2174,10 +2165,6 @@ msgid "Load file ({0})"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
-msgid "Loading decorations..."
-msgstr ""
-
-#: components/app/interface/settings/user/Admin.tsx
 msgid "Loading Discovery submissions..."
 msgstr ""
 
@@ -2540,7 +2527,6 @@ msgstr ""
 #: components/app/menus/ServerContextMenu.tsx
 #: components/app/menus/shared/NotificationContextMenu.tsx
 #: components/app/menus/shared/NotificationContextMenu.tsx
-#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "None"
 msgstr ""
 
@@ -2785,14 +2771,6 @@ msgstr ""
 msgid "Profile Bio"
 msgstr ""
 
-#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
-msgid "Profile decoration"
-msgstr ""
-
-#: components/app/interface/settings/user/Admin.tsx
-msgid "Profile decorations"
-msgstr ""
-
 #: components/modal/modals/ReportContent.tsx
 msgid "Promotes harm"
 msgstr ""
@@ -2982,10 +2960,6 @@ msgstr ""
 
 #: components/app/interface/settings/user/FeatureRequests.tsx
 msgid "Request a feature"
-msgstr ""
-
-#: components/app/interface/settings/user/Admin.tsx
-msgid "Required level"
 msgstr ""
 
 #: components/auth/src/flows/FlowResend.tsx
@@ -3891,16 +3865,8 @@ msgstr ""
 msgid "Until I turn it back on"
 msgstr ""
 
-#: components/app/interface/settings/user/Admin.tsx
-msgid "Upload decoration"
-msgstr ""
-
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Upload Files"
-msgstr ""
-
-#: components/app/interface/settings/user/Admin.tsx
-msgid "Upload transparent frames users can unlock with XP levels."
 msgstr ""
 
 #: components/modal/modals/JoinServer.tsx

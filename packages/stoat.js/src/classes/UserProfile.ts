@@ -10,7 +10,6 @@ import { File } from "./File.js";
 export class UserProfile {
   readonly content?: string;
   readonly banner?: File;
-  readonly decoration?: string;
 
   /**
    * Construct Public Bot
@@ -22,7 +21,6 @@ export class UserProfile {
     this.banner = data.background
       ? new File(client, data.background)
       : undefined;
-    this.decoration = (data as APIUserProfile & { decoration?: string }).decoration;
   }
 
   /**

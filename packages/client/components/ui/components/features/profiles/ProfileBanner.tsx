@@ -13,7 +13,6 @@ export function ProfileBanner(props: {
   user: User;
   member?: ServerMember;
   bannerUrl?: string;
-  decorationUrl?: string;
   onClick?: (e: MouseEvent) => void;
   onClickAvatar?: (e: MouseEvent) => void;
   width: 2 | 3;
@@ -57,7 +56,6 @@ export function ProfileBanner(props: {
           size={48}
           holepunch="bottom-right"
           onClick={props.onClickAvatar}
-          decoration={props.decorationUrl}
           interactive={props.user.avatar && !!props.onClickAvatar}
           overlay={<UserStatus.Graphic status={props.user.presence} />}
         />

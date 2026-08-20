@@ -1,4 +1,4 @@
-import { For, createResource } from "solid-js";
+import { For } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 
@@ -20,16 +20,12 @@ export function EditProfile() {
   const client = useClient();
   const { openModal } = useModals();
   const profile = createOwnProfileResource();
-  const [decorations] = createResource(async () =>
-    (await client().api.get("/decorations" as never)) as unknown as Array<{ id: string; image: string }>,
-  );
 
   return (
     <Column gap="lg">
       <UserSummary
         user={client().user!}
         bannerUrl={profile.data?.animatedBannerURL}
-        decorationUrl={decorations()?.find((entry) => entry.id === profile.data?.decoration)?.image}
       />
 
       <CategoryButton.Group>
