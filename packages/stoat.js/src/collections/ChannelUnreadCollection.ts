@@ -16,15 +16,51 @@ export class ChannelUnreadCollection extends ClassCollection<
   ChannelUnread,
   HydratedChannelUnread
 > {
+  #syncGeneration = 0;
+
   /**
    * Load unread information from server
    */
   async sync(): Promise<void> {
+    const generation = ++this.#syncGeneration;
     const unreads = await this.client.api.get("/sync/unreads");
+
+    // A reconnect can leave multiple sync requests in flight. Never allow an
+    // older response to overwrite a newer unread state.
+    if (generation !== this.#syncGeneration) return;
+
     batch(() => {
+      const existing = new Map(
+        [...this.entries()].map(([id, unread]) => [
+          id,
+          {
+            lastMessageId: unread.lastMessageId,
+            mentions: [...unread.messageMentionIds],
+          },
+        ]),
+      );
+      const received = new Set<string>();
+
       this.reset();
       for (const unread of unreads) {
-        this.getOrCreate(unread._id.channel, unread);
+        const id = unread._id.channel;
+        const local = existing.get(id);
+        const serverLast = unread.last_id ?? undefined;
+        const localIsNewer =
+          !!local?.lastMessageId &&
+          (!serverLast || local.lastMessageId > serverLast);
+
+        this.getOrCreate(id, {
+          ...unread,
+          last_id: localIsNewer ? local.lastMessageId! : unread.last_id,
+          mentions: localIsNewer ? local.mentions : unread.mentions,
+        });
+        received.add(id);
+      }
+
+      // A channel omitted from the server response is no longer unread.
+      for (const id of [...this.keys()]) {
+        if (!received.has(id)) this.delete(id);
       }
     });
   }
