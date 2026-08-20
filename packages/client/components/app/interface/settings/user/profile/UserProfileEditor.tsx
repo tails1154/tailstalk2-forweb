@@ -47,6 +47,7 @@ export function UserProfileEditor(props: Props) {
     ),
     banner: createFormControl<string | File[] | null>(null),
     bio: createFormControl(""),
+    decoration: createFormControl(""),
   });
   /* eslint-enable solid/reactivity */
 
@@ -55,7 +56,6 @@ export function UserProfileEditor(props: Props) {
   // unlikely that the user is going to be doing this
 
   const [initialBio, setInitialBio] = createSignal<readonly [string]>();
-  const [decoration, setDecoration] = createSignal<string>("");
   const [decorations] = createResource(async () =>
     (await client().api.get("/decorations" as never)) as unknown as Array<{ id: string; name: string; image: string; required_level: number }>,
   );
@@ -71,7 +71,9 @@ export function UserProfileEditor(props: Props) {
           );
 
           editGroup.controls.bio.setValue(profileData.content || "");
-          setDecoration((profileData as typeof profileData & { decoration?: string }).decoration || "");
+          editGroup.controls.decoration.setValue(
+            (profileData as typeof profileData & { decoration?: string }).decoration || "",
+          );
           setInitialBio([profileData.content || ""]);
         }
       },
@@ -87,7 +89,9 @@ export function UserProfileEditor(props: Props) {
         profile.data.animatedBannerURL || null,
       );
       editGroup.controls.bio.setValue(profile.data.content || "");
-      setDecoration((profile.data as typeof profile.data & { decoration?: string }).decoration || "");
+      editGroup.controls.decoration.setValue(
+        (profile.data as typeof profile.data & { decoration?: string }).decoration || "",
+      );
       setInitialBio([profile.data.content || ""]);
     }
   }
@@ -123,9 +127,9 @@ export function UserProfileEditor(props: Props) {
     }
 
     const currentDecoration = (profile.data as (typeof profile.data & { decoration?: string }) | undefined)?.decoration || "";
-    if (decoration() !== currentDecoration) {
+    if (editGroup.controls.decoration.value !== currentDecoration) {
       changes.profile ??= {};
-      if (decoration()) changes.profile.decoration = decoration();
+      if (editGroup.controls.decoration.value) changes.profile.decoration = editGroup.controls.decoration.value;
       else changes.profile.decoration = "";
     }
 
@@ -211,7 +215,10 @@ export function UserProfileEditor(props: Props) {
 
         <label>
           <Trans>Profile decoration</Trans>
-          <select value={decoration()} onChange={(event) => setDecoration(event.currentTarget.value)}>
+          <select
+            value={editGroup.controls.decoration.value}
+            onChange={(event) => editGroup.controls.decoration.setValue(event.currentTarget.value)}
+          >
             <option value="">{t`None`}</option>
             <For each={decorations() || []}>
               {(entry) => <option value={entry.id}>{entry.name} (level {entry.required_level})</option>}
