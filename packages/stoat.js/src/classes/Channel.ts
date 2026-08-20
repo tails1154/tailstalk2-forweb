@@ -299,7 +299,13 @@ export class Channel {
     )
       return false;
 
-    const unread = this.#collection.client.channelUnreads.for(this);
+    // A missing unread record means the channel has no server-reported
+    // unread state. Do not create a synthetic record while merely checking
+    // whether the channel is unread, as its null read position would make
+    // every channel with messages appear unread forever.
+    const unread = this.#collection.client.channelUnreads.get(this.id);
+    if (!unread) return false;
+
     return (
       (unread.lastMessageId ?? "0") < this.lastMessageId ||
       unread.messageMentionIds.size > 0
