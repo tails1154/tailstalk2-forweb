@@ -21,6 +21,7 @@ import { ChannelPermissionsEditor } from "./channel/permissions/ChannelPermissio
 import Overview from "./server/Overview";
 import ServerAnalyticsSettings from "./server/Analytics";
 import ServerOnboardingSettings from "./server/Onboarding";
+import ServerLeaderboard from "./server/Leaderboard";
 import ServerXPSettings from "./server/XP";
 import { ListServerBans } from "./server/bans/ListBans";
 import { EmojiList } from "./server/emojis/EmojiList";
@@ -79,6 +80,8 @@ const Config: SettingsConfiguration<Server> = {
         return <ServerAnalyticsSettings server={server} />;
       case "onboarding":
         return <ServerOnboardingSettings server={server} />;
+      case "leaderboard":
+        return <ServerLeaderboard server={server} />;
       case "emojis":
         return <EmojiList server={server} />;
       case "roles":
@@ -139,6 +142,11 @@ const Config: SettingsConfiguration<Server> = {
               id: "analytics",
               icon: <BiSolidGroup size={20} />,
               title: <Trans>Analytics</Trans>,
+            },
+            {
+              id: "leaderboard",
+              icon: <BiSolidGroup size={20} />,
+              title: <Trans>Leaderboard</Trans>,
             },
             {
               id: "onboarding",

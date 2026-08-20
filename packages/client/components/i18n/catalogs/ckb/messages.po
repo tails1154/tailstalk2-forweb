@@ -2068,6 +2068,10 @@ msgstr "تازەترین"
 msgid "Launch TailsTalk 2 when you log into your computer."
 msgstr ""
 
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Leaderboard"
+msgstr ""
+
 #: components/app/interface/settings/user/bots/MyBots.tsx
 msgid "Learn more about how to create bots on TailsTalk 2."
 msgstr ""
@@ -2099,6 +2103,10 @@ msgstr ""
 #: src/interface/Home.tsx
 #~ msgid "Let us know how we can improve our app by giving us feedback."
 #~ msgstr "با بزانین چۆن دەتوانین بەرنامەی خۆمان باشتر بکەین بە پێدانی فیدباک."
+
+#: components/app/interface/settings/server/Leaderboard.tsx
+msgid "Level"
+msgstr ""
 
 #. placeholder {0}: xp.data!.level
 #: components/modal/modals/UserProfile.tsx
@@ -2464,6 +2472,10 @@ msgstr ""
 
 #: src/interface/Discover.tsx
 msgid "No servers or bots found."
+msgstr ""
+
+#: components/app/interface/settings/server/Leaderboard.tsx
+msgid "No XP has been earned yet."
 msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
@@ -3070,6 +3082,10 @@ msgstr ""
 #: components/app/interface/settings/user/Feedback.tsx
 #~ msgid "See what we're currently working on."
 #~ msgstr ""
+
+#: components/app/interface/settings/server/Leaderboard.tsx
+msgid "See which members have earned the most XP in this server."
+msgstr ""
 
 #: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
 msgid "Select audio input"
@@ -4040,6 +4056,10 @@ msgstr ""
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 #: components/app/interface/settings/user/Admin.tsx
 msgid "XP Champion"
+msgstr ""
+
+#: components/app/interface/settings/server/Leaderboard.tsx
+msgid "XP leaderboard"
 msgstr ""
 
 #: components/app/interface/settings/server/XP.tsx
