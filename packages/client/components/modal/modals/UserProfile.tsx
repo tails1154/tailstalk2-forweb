@@ -29,6 +29,12 @@ export function UserProfileModal(
       }>,
   }));
 
+  const decorations = useQuery(() => ({
+    queryKey: ["profile-decorations"],
+    queryFn: () =>
+      client().api.get("/decorations" as never) as Promise<Array<{ id: string; image: string }>>,
+  }));
+
   return (
     <Dialog
       show={props.show}
@@ -41,6 +47,7 @@ export function UserProfileModal(
           width={3}
           user={props.user}
           bannerUrl={query.data?.animatedBannerURL}
+          decorationUrl={decorations.data?.find((entry) => entry.id === query.data?.decoration)?.image}
           onClick={
             query.data?.banner
               ? () =>

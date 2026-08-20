@@ -1,5 +1,5 @@
 import { createFormControl, createFormGroup } from "solid-forms";
-import { Show, createEffect, createSignal, on } from "solid-js";
+import { For, Show, createEffect, createResource, createSignal, on } from "solid-js";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { useQuery, useQueryClient } from "@tanstack/solid-query";
@@ -55,6 +55,10 @@ export function UserProfileEditor(props: Props) {
   // unlikely that the user is going to be doing this
 
   const [initialBio, setInitialBio] = createSignal<readonly [string]>();
+  const [decoration, setDecoration] = createSignal<string>("");
+  const [decorations] = createResource(async () =>
+    (await client().api.get("/decorations" as never)) as unknown as Array<{ id: string; name: string; image: string; required_level: number }>,
+  );
 
   // once profile data is loaded, copy it into the form
   createEffect(
@@ -67,6 +71,7 @@ export function UserProfileEditor(props: Props) {
           );
 
           editGroup.controls.bio.setValue(profileData.content || "");
+          setDecoration((profileData as typeof profileData & { decoration?: string }).decoration || "");
           setInitialBio([profileData.content || ""]);
         }
       },
@@ -82,6 +87,7 @@ export function UserProfileEditor(props: Props) {
         profile.data.animatedBannerURL || null,
       );
       editGroup.controls.bio.setValue(profile.data.content || "");
+      setDecoration((profile.data as typeof profile.data & { decoration?: string }).decoration || "");
       setInitialBio([profile.data.content || ""]);
     }
   }
@@ -114,6 +120,13 @@ export function UserProfileEditor(props: Props) {
         changes.profile ??= {};
         changes.profile.content = editGroup.controls.bio.value;
       }
+    }
+
+    const currentDecoration = (profile.data as (typeof profile.data & { decoration?: string }) | undefined)?.decoration || "";
+    if (decoration() !== currentDecoration) {
+      changes.profile ??= {};
+      if (decoration()) changes.profile.decoration = decoration();
+      else changes.profile.decoration = "";
     }
 
     let newBannerUrl: string | null = null;
@@ -195,6 +208,16 @@ export function UserProfileEditor(props: Props) {
           control={editGroup.controls.bio}
           placeholder={t`Something cool about me...`}
         />
+
+        <label>
+          <Trans>Profile decoration</Trans>
+          <select value={decoration()} onChange={(event) => setDecoration(event.currentTarget.value)}>
+            <option value="">{t`None`}</option>
+            <For each={decorations() || []}>
+              {(entry) => <option value={entry.id}>{entry.name} (level {entry.required_level})</option>}
+            </For>
+          </select>
+        </label>
 
         <Row>
           <Form2.Reset group={editGroup} onReset={onReset} />

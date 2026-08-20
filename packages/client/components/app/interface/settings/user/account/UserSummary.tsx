@@ -13,6 +13,7 @@ export function UserSummary(props: {
   user: User;
   showBadges?: boolean;
   bannerUrl?: string;
+  decorationUrl?: string;
   onEdit?: () => void;
 }) {
   const dayjs = useTime();
@@ -31,7 +32,7 @@ export function UserSummary(props: {
     <CategoryButton.Group>
       <AccountBox style={bannerStyle()}>
         <ProfileDetails>
-          <Avatar src={props.user.animatedAvatarURL} size={58} />
+          <Avatar src={props.user.animatedAvatarURL} size={58} decoration={props.decorationUrl} />
           <Username>
             <span>{props.user.displayName}</span>
             <span>{props.user.username}</span>

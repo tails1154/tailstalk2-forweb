@@ -50,6 +50,9 @@ export type Props = {
    */
   overlay?: JSXElement;
 
+  /** Transparent profile decoration displayed over the avatar */
+  decoration?: string;
+
   /**
    * Whether this icon is interactive
    */
@@ -164,6 +167,9 @@ export function Avatar(props: Props) {
           </Shape>
         </foreignObject>
       </g>
+      <Show when={props.decoration}>
+        <image href={props.decoration} x="0" y="0" width="32" height="32" preserveAspectRatio="none" />
+      </Show>
       {props.overlay}
     </ParentBase>
   );
