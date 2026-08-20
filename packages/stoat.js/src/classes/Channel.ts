@@ -301,7 +301,7 @@ export class Channel {
 
     const unread = this.#collection.client.channelUnreads.for(this);
     return (
-      (unread.lastMessageId ?? "0").localeCompare(this.lastMessageId) === -1 ||
+      (unread.lastMessageId ?? "0") < this.lastMessageId ||
       unread.messageMentionIds.size > 0
     );
   }

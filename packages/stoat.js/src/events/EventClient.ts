@@ -93,6 +93,7 @@ export class EventClient<
   #heartbeatIntervalReference: number | undefined;
   #pongTimeoutReference: number | undefined;
   #connectTimeoutReference: number | undefined;
+  #connectionGeneration = 0;
 
   #lastError: // eslint-disable-next-line @typescript-eslint/no-explicit-any
   { type: "socket"; data: any } | { type: "revolt"; data: Error } | undefined;
@@ -148,6 +149,7 @@ export class EventClient<
    */
   connect(uri: string, token: string): void {
     this.disconnect();
+    const generation = ++this.#connectionGeneration;
     this.#lastError = undefined;
     this.setState(ConnectionState.Connecting);
 
@@ -175,25 +177,46 @@ export class EventClient<
     // url.searchParams.append("ready", "unreads or something");
     // url.searchParams.append("ready", "policy_changes");
 
-    this.#socket = new WebSocket(url);
+    const socket = new WebSocket(url);
+    this.#socket = socket;
 
-    this.#socket.onopen = () => {
+    socket.onopen = () => {
+      if (this.#socket !== socket || generation !== this.#connectionGeneration)
+        return;
+
+      clearTimeout(this.#connectTimeoutReference);
       this.#heartbeatIntervalReference = setInterval(() => {
+        if (this.#socket !== socket || generation !== this.#connectionGeneration)
+          return;
+
         this.send({ type: "Ping", data: +new Date() });
         this.#pongTimeoutReference = setTimeout(
-          () => this.disconnect(),
+          () => {
+            if (
+              this.#socket === socket &&
+              generation === this.#connectionGeneration
+            ) {
+              this.disconnect();
+            }
+          },
           this.options.pongTimeout * 1e3,
         ) as never;
       }, this.options.heartbeatInterval * 1e3) as never;
     };
 
-    this.#socket.onerror = (error) => {
+    socket.onerror = (error) => {
+      if (this.#socket !== socket || generation !== this.#connectionGeneration)
+        return;
+
       this.#lastError = { type: "socket", data: error };
       this.emit("error", error as never);
     };
 
-    this.#socket.onmessage = (event) => {
-      clearInterval(this.#connectTimeoutReference);
+    socket.onmessage = (event) => {
+      if (this.#socket !== socket || generation !== this.#connectionGeneration)
+        return;
+
+      clearTimeout(this.#connectTimeoutReference);
 
       if (this.#transportFormat === "json") {
         if (typeof event.data === "string") {
@@ -203,26 +226,37 @@ export class EventClient<
     };
 
     let closed = false;
-    this.#socket.onclose = () => {
+    socket.onclose = () => {
       if (closed) return;
       closed = true;
+
+      if (this.#socket !== socket || generation !== this.#connectionGeneration)
+        return;
+
+      this.clearTimers();
       this.#socket = undefined;
       this.setState(ConnectionState.Disconnected);
-      this.disconnect();
     };
+  }
+
+  private clearTimers(): void {
+    clearInterval(this.#heartbeatIntervalReference);
+    clearTimeout(this.#connectTimeoutReference);
+    clearTimeout(this.#pongTimeoutReference);
+    this.#heartbeatIntervalReference = undefined;
+    this.#connectTimeoutReference = undefined;
+    this.#pongTimeoutReference = undefined;
   }
 
   /**
    * Disconnect the websocket client.
    */
   disconnect(): void {
-    if (!this.#socket) return;
-    clearInterval(this.#heartbeatIntervalReference);
-    clearInterval(this.#connectTimeoutReference);
-    clearInterval(this.#pongTimeoutReference);
+    this.#connectionGeneration += 1;
+    this.clearTimers();
     const socket = this.#socket;
     this.#socket = undefined;
-    socket.close();
+    socket?.close();
   }
 
   /**

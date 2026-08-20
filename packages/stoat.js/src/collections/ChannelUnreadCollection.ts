@@ -5,6 +5,7 @@ import type { ChannelUnread as APIChannelUnread } from "stoat-api";
 import { ChannelUnread } from "../classes/ChannelUnread.js";
 import { Channel } from "../classes/index.js";
 import type { HydratedChannelUnread } from "../hydration/channelUnread.js";
+import { hydrate } from "../hydration/index.js";
 
 import { ClassCollection } from "./Collection.js";
 
@@ -32,7 +33,7 @@ export class ChannelUnreadCollection extends ClassCollection<
    * Clear all unread data
    */
   reset(): void {
-    this.updateUnderlyingObject({});
+    for (const id of [...this.keys()]) this.delete(id);
   }
 
   /**
@@ -42,6 +43,10 @@ export class ChannelUnreadCollection extends ClassCollection<
    */
   getOrCreate(id: string, data: APIChannelUnread): ChannelUnread {
     if (this.has(id)) {
+      this.updateUnderlyingObject(
+        id,
+        hydrate("channelUnread", data, this.client),
+      );
       return this.get(id)!;
     } else {
       const instance = new ChannelUnread(this, id);
