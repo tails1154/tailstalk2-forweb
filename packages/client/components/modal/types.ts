@@ -234,6 +234,15 @@ export type Modals =
       contextMessage?: Message;
     }
   | {
+      type: "server_onboarding";
+      server: Server;
+      onboarding: {
+        title: string;
+        message: string;
+        rules: string;
+      };
+    }
+  | {
       type: "server_identity";
       member: ServerMember;
     }

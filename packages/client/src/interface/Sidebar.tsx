@@ -1,4 +1,4 @@
-import { Component, JSX, Match, Show, Switch, createMemo } from "solid-js";
+import { Component, JSX, Match, Show, Switch, createEffect, createMemo } from "solid-js";
 
 import { Channel, Server as ServerI } from "stoat.js";
 import { css } from "styled-system/css";
@@ -30,6 +30,7 @@ export const Sidebar = (props: {
   const user = useUser();
   const state = useState();
   const client = useClient();
+  const shownOnboarding = new Set<string>();
   const { openModal } = useModals();
   const device = useDevice();
 
@@ -174,6 +175,20 @@ const Server: Component = () => {
    * @returns Server
    */
   const server = () => client()!.servers.get(params().serverId!)!;
+
+  createEffect(() => {
+    const current = server();
+    if (!current || shownOnboarding.has(current.id)) return;
+    shownOnboarding.add(current.id);
+    client().api.get(`/servers/${current.id}/onboarding`).then((onboarding) => {
+      const settings = onboarding as { enabled: boolean; title: string; message: string; rules: string };
+      const key = `tailstalk2:onboarding:${client().user?.id}:${current.id}`;
+      if (settings.enabled && !localStorage.getItem(key)) {
+        localStorage.setItem(key, "1");
+        openModal({ type: "server_onboarding", server: current, onboarding: settings });
+      }
+    }).catch(() => undefined);
+  });
 
   /**
    * Open the server information modal

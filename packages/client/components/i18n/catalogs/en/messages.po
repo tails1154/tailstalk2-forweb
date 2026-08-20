@@ -470,6 +470,10 @@ msgstr "An error occurred."
 msgid "An internal error occurred. ({0})"
 msgstr "An internal error occurred. ({0})"
 
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Analytics"
+msgstr "Analytics"
+
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Appearance"
 msgstr "Appearance"
@@ -782,6 +786,7 @@ msgstr "Channel Settings"
 msgid "Channel Slowmode"
 msgstr "Channel Slowmode"
 
+#: components/app/interface/settings/server/Analytics.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Channels"
 msgstr "Channels"
@@ -954,6 +959,7 @@ msgstr "Connecting"
 msgid "Content breaks one or more laws"
 msgstr "Content breaks one or more laws"
 
+#: components/modal/modals/ServerOnboarding.tsx
 #: components/modal/modals/MFAEnableTOTP.tsx
 #: components/modal/modals/LinkWarning.tsx
 msgid "Continue"
@@ -1573,6 +1579,10 @@ msgstr "Enable Desktop Notifications"
 #: components/app/interface/settings/user/notifications/Notifications.tsx
 msgid "Enable Push Notifications"
 msgstr "Enable Push Notifications"
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Enable server onboarding"
+msgstr "Enable server onboarding"
 
 #: components/app/interface/settings/server/XP.tsx
 msgid "Enable server XP"
@@ -2230,6 +2240,7 @@ msgid "members"
 msgstr "members"
 
 #: components/app/interface/settings/ServerSettings.tsx
+#: components/app/interface/settings/server/Analytics.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Members"
 msgstr "Members"
@@ -2533,6 +2544,10 @@ msgstr "Oldest"
 msgid "On"
 msgstr "On"
 
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Onboarding"
+msgstr "Onboarding"
+
 #: components/modal/modals/DeleteServer.tsx
 #: components/modal/modals/DeleteRole.tsx
 #: components/modal/modals/DeleteChannel.tsx
@@ -2799,6 +2814,7 @@ msgid "Relevance"
 msgstr "Relevance"
 
 #: components/modal/modals/RemoveMember.tsx
+#: components/modal/modals/AccountSwitcher.tsx
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Remove"
 msgstr "Remove"
@@ -2984,6 +3000,7 @@ msgstr "Roles"
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 #: components/app/interface/settings/server/XP.tsx
 #: components/app/interface/settings/server/Overview.tsx
+#: components/app/interface/settings/server/Onboarding.tsx
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 #: components/app/interface/settings/channel/Overview.tsx
 #: components/app/interface/settings/channel/webhooks/ViewWebhook.tsx
@@ -3045,6 +3062,10 @@ msgstr "Secondary"
 #: components/app/interface/settings/user/OAuth.tsx
 #~ msgid "Secret rotated. Save the new secret now; it will not be shown again."
 #~ msgstr "Secret rotated. Save the new secret now; it will not be shown again."
+
+#: components/app/interface/settings/server/Analytics.tsx
+msgid "See an overview of activity and membership in your server."
+msgstr "See an overview of activity and membership in your server."
 
 #: components/app/interface/settings/user/Feedback.tsx
 #~ msgid "See what we're currently working on."
@@ -3146,6 +3167,10 @@ msgstr "Sent multiple attachments"
 msgid "Server"
 msgstr "Server"
 
+#: components/app/interface/settings/server/Analytics.tsx
+msgid "Server analytics"
+msgstr "Server analytics"
+
 #: components/modal/modals/ServerIdentity.tsx
 msgid "Server Avatar"
 msgstr "Server Avatar"
@@ -3175,9 +3200,18 @@ msgstr "Server Identities"
 msgid "Server Name"
 msgstr "Server Name"
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Server onboarding"
+msgstr "Server onboarding"
+
 #: components/app/interface/settings/server/roles/ServerRoleOverview.tsx
 msgid "Server Roles"
 msgstr "Server Roles"
+
+#: components/modal/modals/ServerOnboarding.tsx
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Server rules"
+msgstr "Server rules"
 
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Sessions"
@@ -3224,6 +3258,10 @@ msgstr "Share screen"
 #: components/app/interface/settings/user/Native.tsx
 msgid "Show corrections and suggestions as you type."
 msgstr "Show corrections and suggestions as you type."
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Show new members a welcome message and server rules when they first join."
+msgstr "Show new members a welcome message and server rules when they first join."
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
 msgid "Show Others"
@@ -3655,6 +3693,10 @@ msgstr "Token copied to clipboard"
 #~ msgid "Tonal Spot"
 #~ msgstr "Tonal Spot"
 
+#: components/app/interface/settings/server/Analytics.tsx
+msgid "Total messages"
+msgstr "Total messages"
+
 #: components/app/interface/settings/user/Language.tsx
 msgid "Traditional (DD/MM/YYYY)"
 msgstr "Traditional (DD/MM/YYYY)"
@@ -3943,6 +3985,14 @@ msgstr "Webhook Name"
 #: components/app/interface/settings/ChannelSettings.tsx
 msgid "Webhooks"
 msgstr "Webhooks"
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Welcome message"
+msgstr "Welcome message"
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Welcome title"
+msgstr "Welcome title"
 
 #: src/interface/Home.tsx
 #: components/auth/src/flows/FlowLogin.tsx

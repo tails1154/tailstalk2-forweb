@@ -470,6 +470,10 @@ msgstr ""
 msgid "An internal error occurred. ({0})"
 msgstr ""
 
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Analytics"
+msgstr ""
+
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Appearance"
 msgstr "การแสดงผล"
@@ -782,6 +786,7 @@ msgstr ""
 msgid "Channel Slowmode"
 msgstr ""
 
+#: components/app/interface/settings/server/Analytics.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Channels"
 msgstr "ช่อง"
@@ -954,6 +959,7 @@ msgstr ""
 msgid "Content breaks one or more laws"
 msgstr "เนื้อหาผิดกฎหมาย"
 
+#: components/modal/modals/ServerOnboarding.tsx
 #: components/modal/modals/MFAEnableTOTP.tsx
 #: components/modal/modals/LinkWarning.tsx
 msgid "Continue"
@@ -1572,6 +1578,10 @@ msgstr "เปิดใช้งานการแจ้งเตือนบน
 
 #: components/app/interface/settings/user/notifications/Notifications.tsx
 msgid "Enable Push Notifications"
+msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Enable server onboarding"
 msgstr ""
 
 #: components/app/interface/settings/server/XP.tsx
@@ -2230,6 +2240,7 @@ msgid "members"
 msgstr ""
 
 #: components/app/interface/settings/ServerSettings.tsx
+#: components/app/interface/settings/server/Analytics.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Members"
 msgstr "สมาชิก"
@@ -2533,6 +2544,10 @@ msgstr "เก่าสุด"
 msgid "On"
 msgstr "เปิด"
 
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Onboarding"
+msgstr ""
+
 #: components/modal/modals/DeleteServer.tsx
 #: components/modal/modals/DeleteRole.tsx
 #: components/modal/modals/DeleteChannel.tsx
@@ -2799,6 +2814,7 @@ msgid "Relevance"
 msgstr "เกี่ยวข้อง"
 
 #: components/modal/modals/RemoveMember.tsx
+#: components/modal/modals/AccountSwitcher.tsx
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Remove"
 msgstr ""
@@ -2984,6 +3000,7 @@ msgstr "บทบาท"
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 #: components/app/interface/settings/server/XP.tsx
 #: components/app/interface/settings/server/Overview.tsx
+#: components/app/interface/settings/server/Onboarding.tsx
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 #: components/app/interface/settings/channel/Overview.tsx
 #: components/app/interface/settings/channel/webhooks/ViewWebhook.tsx
@@ -3045,6 +3062,10 @@ msgstr ""
 #: components/app/interface/settings/user/OAuth.tsx
 #~ msgid "Secret rotated. Save the new secret now; it will not be shown again."
 #~ msgstr ""
+
+#: components/app/interface/settings/server/Analytics.tsx
+msgid "See an overview of activity and membership in your server."
+msgstr ""
 
 #: components/app/interface/settings/user/Feedback.tsx
 #~ msgid "See what we're currently working on."
@@ -3146,6 +3167,10 @@ msgstr "ส่งไฟล์แนบหลายไฟล์"
 msgid "Server"
 msgstr ""
 
+#: components/app/interface/settings/server/Analytics.tsx
+msgid "Server analytics"
+msgstr ""
+
 #: components/modal/modals/ServerIdentity.tsx
 msgid "Server Avatar"
 msgstr ""
@@ -3175,8 +3200,17 @@ msgstr ""
 msgid "Server Name"
 msgstr "ชื่อเซิร์ฟเวอร์"
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Server onboarding"
+msgstr ""
+
 #: components/app/interface/settings/server/roles/ServerRoleOverview.tsx
 msgid "Server Roles"
+msgstr ""
+
+#: components/modal/modals/ServerOnboarding.tsx
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Server rules"
 msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
@@ -3223,6 +3257,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Show corrections and suggestions as you type."
+msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Show new members a welcome message and server rules when they first join."
 msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
@@ -3655,6 +3693,10 @@ msgstr ""
 #~ msgid "Tonal Spot"
 #~ msgstr ""
 
+#: components/app/interface/settings/server/Analytics.tsx
+msgid "Total messages"
+msgstr ""
+
 #: components/app/interface/settings/user/Language.tsx
 msgid "Traditional (DD/MM/YYYY)"
 msgstr ""
@@ -3943,6 +3985,14 @@ msgstr ""
 #: components/app/interface/settings/ChannelSettings.tsx
 msgid "Webhooks"
 msgstr "เว็บฮุก"
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Welcome message"
+msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Welcome title"
+msgstr ""
 
 #: src/interface/Home.tsx
 #: components/auth/src/flows/FlowLogin.tsx

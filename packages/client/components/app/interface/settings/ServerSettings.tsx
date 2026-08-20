@@ -19,6 +19,8 @@ import { ColouredText } from "@revolt/ui";
 import { SettingsConfiguration } from ".";
 import { ChannelPermissionsEditor } from "./channel/permissions/ChannelPermissionsEditor";
 import Overview from "./server/Overview";
+import ServerAnalyticsSettings from "./server/Analytics";
+import ServerOnboardingSettings from "./server/Onboarding";
 import ServerXPSettings from "./server/XP";
 import { ListServerBans } from "./server/bans/ListBans";
 import { EmojiList } from "./server/emojis/EmojiList";
@@ -73,6 +75,10 @@ const Config: SettingsConfiguration<Server> = {
         return <Overview server={server} />;
       case "xp":
         return <ServerXPSettings server={server} />;
+      case "analytics":
+        return <ServerAnalyticsSettings server={server} />;
+      case "onboarding":
+        return <ServerOnboardingSettings server={server} />;
       case "emojis":
         return <EmojiList server={server} />;
       case "roles":
@@ -128,6 +134,16 @@ const Config: SettingsConfiguration<Server> = {
               id: "xp",
               icon: <BiSolidHappyBeaming size={20} />,
               title: <Trans>XP</Trans>,
+            },
+            {
+              id: "analytics",
+              icon: <BiSolidGroup size={20} />,
+              title: <Trans>Analytics</Trans>,
+            },
+            {
+              id: "onboarding",
+              icon: <BiSolidInfoCircle size={20} />,
+              title: <Trans>Onboarding</Trans>,
             },
           ],
         },
