@@ -397,6 +397,10 @@ msgstr "Add friends to group"
 msgid "Add new members to the group"
 msgstr "Add new members to the group"
 
+#: src/interface/channels/text/Composition.tsx
+msgid "Add option"
+msgstr "Add option"
+
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Add status text"
 msgstr "Add status text"
@@ -440,6 +444,10 @@ msgstr "All Messages"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Allow members to change name and avatar per-message"
 msgstr "Allow members to change name and avatar per-message"
+
+#: src/interface/channels/text/Composition.tsx
+msgid "Allow multiple selections"
+msgstr "Allow multiple selections"
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Allow others to add your bot to their servers from Discover"
@@ -521,6 +529,10 @@ msgstr "Are you sure you want to go to "
 #: components/modal/modals/RemoveMember.tsx
 msgid "Are you sure you want to remove {0} from {1}?"
 msgstr "Are you sure you want to remove {0} from {1}?"
+
+#: src/interface/channels/text/Composition.tsx
+msgid "Ask a question"
+msgstr "Ask a question"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Assign lower-ranked roles to lower-ranking members"
@@ -674,6 +686,7 @@ msgstr "Bypass Slowmode"
 msgid "Bypasses slowmode in channels"
 msgstr "Bypasses slowmode in channels"
 
+#: src/interface/channels/text/Composition.tsx
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/ServerIdentity.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
@@ -898,6 +911,14 @@ msgstr "Close chat"
 #: components/modal/modals/DeleteChannel.tsx
 msgid "Close conversation with {0}?"
 msgstr "Close conversation with {0}?"
+
+#: components/app/interface/channels/text/Message.tsx
+msgid "Close poll"
+msgstr "Close poll"
+
+#: components/app/interface/channels/text/Message.tsx
+msgid "Closed"
+msgstr "Closed"
 
 #: components/modal/modals/JoinServer.tsx
 msgid "Code"
@@ -1179,6 +1200,12 @@ msgstr "Create invites for others to use"
 #: components/app/interface/settings/user/OAuth.tsx
 #~ msgid "Create OAuth application"
 #~ msgstr "Create OAuth application"
+
+#: src/interface/channels/text/Composition.tsx
+#: src/interface/channels/text/Composition.tsx
+#: src/interface/channels/text/Composition.tsx
+msgid "Create poll"
+msgstr "Create poll"
 
 #: components/modal/modals/CreateRole.tsx
 #: components/app/interface/settings/server/roles/ServerRoleOverview.tsx
@@ -2393,6 +2420,10 @@ msgstr "Move members between voice channels"
 msgid "Multi-factor authentication is already enabled for this account."
 msgstr "Multi-factor authentication is already enabled for this account."
 
+#: components/app/interface/channels/text/Message.tsx
+msgid "multiple selections"
+msgstr "multiple selections"
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #: components/app/menus/UserContextMenu.tsx
 #: components/app/interface/settings/user/notifications/Sounds.tsx
@@ -2644,6 +2675,11 @@ msgstr "Open server settings"
 #: src/interface/Home.tsx
 #~ msgid "Open settings"
 #~ msgstr "Open settings"
+
+#. placeholder {0}: index() + 1
+#: src/interface/channels/text/Composition.tsx
+msgid "Option {0}"
+msgstr "Option {0}"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Other"
@@ -4044,6 +4080,10 @@ msgstr "Voice Processing"
 #: components/app/menus/UserContextMenu.tsx
 msgid "Volume"
 msgstr "Volume"
+
+#: components/app/interface/channels/text/Message.tsx
+msgid "votes"
+msgstr "votes"
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "Want to change username?"

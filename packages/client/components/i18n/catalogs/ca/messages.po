@@ -397,6 +397,10 @@ msgstr ""
 msgid "Add new members to the group"
 msgstr ""
 
+#: src/interface/channels/text/Composition.tsx
+msgid "Add option"
+msgstr ""
+
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Add status text"
 msgstr ""
@@ -439,6 +443,10 @@ msgstr "Tots els missatges"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Allow members to change name and avatar per-message"
+msgstr ""
+
+#: src/interface/channels/text/Composition.tsx
+msgid "Allow multiple selections"
 msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
@@ -520,6 +528,10 @@ msgstr ""
 #. placeholder {1}: props.group.name
 #: components/modal/modals/RemoveMember.tsx
 msgid "Are you sure you want to remove {0} from {1}?"
+msgstr ""
+
+#: src/interface/channels/text/Composition.tsx
+msgid "Ask a question"
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -674,6 +686,7 @@ msgstr ""
 msgid "Bypasses slowmode in channels"
 msgstr ""
 
+#: src/interface/channels/text/Composition.tsx
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/ServerIdentity.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
@@ -897,6 +910,14 @@ msgstr ""
 #. placeholder {0}: props.channel.recipient?.displayName
 #: components/modal/modals/DeleteChannel.tsx
 msgid "Close conversation with {0}?"
+msgstr ""
+
+#: components/app/interface/channels/text/Message.tsx
+msgid "Close poll"
+msgstr ""
+
+#: components/app/interface/channels/text/Message.tsx
+msgid "Closed"
 msgstr ""
 
 #: components/modal/modals/JoinServer.tsx
@@ -1179,6 +1200,12 @@ msgstr ""
 #: components/app/interface/settings/user/OAuth.tsx
 #~ msgid "Create OAuth application"
 #~ msgstr ""
+
+#: src/interface/channels/text/Composition.tsx
+#: src/interface/channels/text/Composition.tsx
+#: src/interface/channels/text/Composition.tsx
+msgid "Create poll"
+msgstr ""
 
 #: components/modal/modals/CreateRole.tsx
 #: components/app/interface/settings/server/roles/ServerRoleOverview.tsx
@@ -2393,6 +2420,10 @@ msgstr ""
 msgid "Multi-factor authentication is already enabled for this account."
 msgstr ""
 
+#: components/app/interface/channels/text/Message.tsx
+msgid "multiple selections"
+msgstr ""
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #: components/app/menus/UserContextMenu.tsx
 #: components/app/interface/settings/user/notifications/Sounds.tsx
@@ -2644,6 +2675,11 @@ msgstr ""
 #: src/interface/Home.tsx
 #~ msgid "Open settings"
 #~ msgstr "Obre la configuració"
+
+#. placeholder {0}: index() + 1
+#: src/interface/channels/text/Composition.tsx
+msgid "Option {0}"
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Other"
@@ -4043,6 +4079,10 @@ msgstr ""
 
 #: components/app/menus/UserContextMenu.tsx
 msgid "Volume"
+msgstr ""
+
+#: components/app/interface/channels/text/Message.tsx
+msgid "votes"
 msgstr ""
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx

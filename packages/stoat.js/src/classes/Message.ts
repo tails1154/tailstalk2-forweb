@@ -22,6 +22,19 @@ import { ServerRole } from "./ServerRole.js";
 import type { SystemMessage } from "./SystemMessage.js";
 import type { User } from "./User.js";
 
+export interface PollOption {
+  id: string;
+  text: string;
+}
+
+export interface Poll {
+  question: string;
+  options: PollOption[];
+  multiple: boolean;
+  closed: boolean;
+  votes: Record<string, string[]>;
+}
+
 /**
  * Message Class
  */
@@ -227,6 +240,28 @@ export class Message {
    */
   get interactions(): APIMessage["interactions"] {
     return this.#collection.getUnderlyingObject(this.id).interactions;
+  }
+
+  /** Native poll attached to this message. */
+  get poll(): Poll | undefined {
+    return (this.#collection.getUnderlyingObject(this.id) as unknown as APIMessage & {
+      poll?: Poll;
+    }).poll;
+  }
+
+  /** Toggle the current user's selection in a poll option. */
+  async votePoll(optionId: string, selected: boolean): Promise<void> {
+    await this.#collection.client.api.post(
+      `/channels/${this.channelId}/messages/${this.id}/poll/vote` as never,
+      { option_id: optionId, selected } as never,
+    );
+  }
+
+  /** Close this poll. */
+  async closePoll(): Promise<void> {
+    await this.#collection.client.api.post(
+      `/channels/${this.channelId}/messages/${this.id}/poll/close` as never,
+    );
   }
 
   /**

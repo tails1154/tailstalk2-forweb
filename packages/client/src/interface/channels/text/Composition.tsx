@@ -23,6 +23,7 @@ import { useModals } from "@revolt/modal";
 import { useState } from "@revolt/state";
 import {
   CompositionMediaPicker,
+  Button,
   FileCarousel,
   FileDropAnywhereCollector,
   FilePasteCollector,
@@ -177,6 +178,35 @@ export function MessageComposition(props: Props) {
 
   const [nodeReplacement, setNodeReplacement] =
     createSignal<readonly [string | "_focus"]>();
+
+  const [pollOpen, setPollOpen] = createSignal(false);
+  const [pollQuestion, setPollQuestion] = createSignal("");
+  const [pollOptions, setPollOptions] = createSignal(["", ""]);
+  const [pollMultiple, setPollMultiple] = createSignal(false);
+
+  function resetPoll() {
+    setPollOpen(false);
+    setPollQuestion("");
+    setPollOptions(["", ""]);
+    setPollMultiple(false);
+  }
+
+  async function sendPoll() {
+    const question = pollQuestion().trim();
+    const options = pollOptions().map((option) => option.trim()).filter(Boolean);
+    if (!question || options.length < 2 || currentSlowmode()) return;
+
+    stopTyping();
+    props.onMessageSend?.();
+    await props.channel.sendMessage({
+      poll: {
+        question,
+        options,
+        multiple: pollMultiple(),
+      },
+    } as never);
+    resetPoll();
+  }
 
   // bind this composition instance to the global node replacement signal
   state.draft._setNodeReplacement = setNodeReplacement;
@@ -378,6 +408,54 @@ export function MessageComposition(props: Props) {
 
   return (
     <>
+      <Show when={pollOpen()}>
+        <PollPanel>
+          <PollHeading>{t`Create poll`}</PollHeading>
+          <PollInput
+            value={pollQuestion()}
+            placeholder={t`Ask a question`}
+            onInput={(event) => setPollQuestion(event.currentTarget.value)}
+          />
+          <For each={pollOptions()}>
+            {(option, index) => (
+              <PollInput
+                value={option}
+                placeholder={t`Option ${index() + 1}`}
+                onInput={(event) =>
+                  setPollOptions((current) => {
+                    const next = [...current];
+                    next[index()] = event.currentTarget.value;
+                    return next;
+                  })
+                }
+              />
+            )}
+          </For>
+          <PollActions>
+            <Button
+              variant="text"
+              onPress={() => setPollOptions((options) => [...options, ""])}
+              isDisabled={pollOptions().length >= 10}
+            >
+              {t`Add option`}
+            </Button>
+            <label>
+              <input
+                type="checkbox"
+                checked={pollMultiple()}
+                onChange={(event) => setPollMultiple(event.currentTarget.checked)}
+              />{" "}
+              {t`Allow multiple selections`}
+            </label>
+            <Button variant="tonal" onPress={resetPoll}>
+              {t`Cancel`}
+            </Button>
+            <Button onPress={sendPoll} isDisabled={!pollQuestion().trim() || pollOptions().filter(Boolean).length < 2}>
+              {t`Create poll`}
+            </Button>
+          </PollActions>
+        </PollPanel>
+      </Show>
       <Show when={state.draft.hasAdditionalElements(props.channel.id)}>
         <Keybind
           keybind={KeybindAction.CHAT_REMOVE_COMPOSITION_ELEMENT}
@@ -454,6 +532,15 @@ export function MessageComposition(props: Props) {
                 </IconButton>
               </MessageBox.InlineIcon>
             </Match>
+            <Show when={props.channel.havePermission("SendMessage")}>
+              <MessageBox.InlineIcon size="wide">
+                <Tooltip content={t`Create poll`} placement="top">
+                  <IconButton onPress={() => setPollOpen((open) => !open)}>
+                    <Symbol>poll</Symbol>
+                  </IconButton>
+                </Tooltip>
+              </MessageBox.InlineIcon>
+            </Show>
           </Switch>
         }
         actionsEnd={
@@ -529,6 +616,42 @@ const SlowmodeContainer = styled("div", {
     display: "flex",
     justifyContent: "flex-end",
     padding: "0 12px 6px 0",
+  },
+});
+
+const PollPanel = styled("div", {
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--gap-sm)",
+    margin: "0 12px 8px",
+    padding: "12px",
+    borderRadius: "12px",
+    background: "var(--md-sys-color-surface-container)",
+  },
+});
+
+const PollHeading = styled("strong", {
+  base: { fontSize: "1rem" },
+});
+
+const PollInput = styled("input", {
+  base: {
+    minHeight: "36px",
+    padding: "0 10px",
+    border: "1px solid var(--md-sys-color-outline)",
+    borderRadius: "8px",
+    background: "var(--md-sys-color-surface)",
+    color: "var(--md-sys-color-on-surface)",
+  },
+});
+
+const PollActions = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: "var(--gap-sm)",
   },
 });
 
