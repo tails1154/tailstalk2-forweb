@@ -22,7 +22,6 @@ import Overview from "./server/Overview";
 import ServerAnalyticsSettings from "./server/Analytics";
 import ServerOnboardingSettings from "./server/Onboarding";
 import ServerLeaderboard from "./server/Leaderboard";
-import ServerPageSettings from "./server/Page";
 import ServerBackupSettings from "./server/Backup";
 import ServerXPSettings from "./server/XP";
 import { ListServerBans } from "./server/bans/ListBans";
@@ -84,8 +83,6 @@ const Config: SettingsConfiguration<Server> = {
         return <ServerOnboardingSettings server={server} />;
       case "leaderboard":
         return <ServerLeaderboard server={server} />;
-      case "page":
-        return <ServerPageSettings server={server} />;
       case "backup":
         return <ServerBackupSettings server={server} />;
       case "emojis":
@@ -153,11 +150,6 @@ const Config: SettingsConfiguration<Server> = {
               id: "leaderboard",
               icon: <BiSolidGroup size={20} />,
               title: <Trans>Leaderboard</Trans>,
-            },
-            {
-              id: "page",
-              icon: <BiSolidInfoCircle size={20} />,
-              title: <Trans>Custom page</Trans>,
             },
             {
               id: "backup",

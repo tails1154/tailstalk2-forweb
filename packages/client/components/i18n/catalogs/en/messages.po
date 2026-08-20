@@ -1118,8 +1118,8 @@ msgid "Create a new role"
 msgstr "Create a new role"
 
 #: components/app/interface/settings/server/Page.tsx
-msgid "Create a public landing page for your server with a description and useful links."
-msgstr "Create a public landing page for your server with a description and useful links."
+#~ msgid "Create a public landing page for your server with a description and useful links."
+#~ msgstr "Create a public landing page for your server with a description and useful links."
 
 #: components/modal/modals/CreateWebhook.tsx
 msgid "Create a webhook"
@@ -1228,12 +1228,12 @@ msgid "Custom community palette."
 msgstr "Custom community palette."
 
 #: components/app/interface/settings/ServerSettings.tsx
-msgid "Custom page"
-msgstr "Custom page"
+#~ msgid "Custom page"
+#~ msgstr "Custom page"
 
 #: components/app/interface/settings/server/Page.tsx
-msgid "Custom server page"
-msgstr "Custom server page"
+#~ msgid "Custom server page"
+#~ msgstr "Custom server page"
 
 #: components/modal/modals/CustomStatus.tsx
 msgid "Custom status"
@@ -1597,8 +1597,8 @@ msgid "Enable Desktop Notifications"
 msgstr "Enable Desktop Notifications"
 
 #: components/app/interface/settings/server/Page.tsx
-msgid "Enable public server page"
-msgstr "Enable public server page"
+#~ msgid "Enable public server page"
+#~ msgstr "Enable public server page"
 
 #: components/app/interface/settings/user/notifications/Notifications.tsx
 msgid "Enable Push Notifications"
@@ -2150,8 +2150,8 @@ msgid "Light"
 msgstr "Light"
 
 #: components/app/interface/settings/server/Page.tsx
-msgid "Links"
-msgstr "Links"
+#~ msgid "Links"
+#~ msgstr "Links"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -2601,8 +2601,8 @@ msgid "Once it's deleted, there's no going back."
 msgstr "Once it's deleted, there's no going back."
 
 #: components/app/interface/settings/server/Page.tsx
-msgid "One link per line in the format Label|https://example.com"
-msgstr "One link per line in the format Label|https://example.com"
+#~ msgid "One link per line in the format Label|https://example.com"
+#~ msgstr "One link per line in the format Label|https://example.com"
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "One of the first 1000 users!"
@@ -2659,12 +2659,12 @@ msgid "Overview"
 msgstr "Overview"
 
 #: components/app/interface/settings/server/Page.tsx
-msgid "Page description"
-msgstr "Page description"
+#~ msgid "Page description"
+#~ msgstr "Page description"
 
 #: components/app/interface/settings/server/Page.tsx
-msgid "Page title"
-msgstr "Page title"
+#~ msgid "Page title"
+#~ msgstr "Page title"
 
 #: components/app/interface/settings/server/bans/ListBans.tsx
 msgid "Pardon User"
@@ -3059,7 +3059,6 @@ msgstr "Roles"
 #: components/modal/modals/CustomStatus.tsx
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 #: components/app/interface/settings/server/XP.tsx
-#: components/app/interface/settings/server/Page.tsx
 #: components/app/interface/settings/server/Overview.tsx
 #: components/app/interface/settings/server/Onboarding.tsx
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
