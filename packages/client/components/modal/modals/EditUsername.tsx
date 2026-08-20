@@ -2,7 +2,7 @@ import { createFormControl, createFormGroup } from "solid-forms";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 
-import { Column, Dialog, DialogProps, Form2, Row, Text } from "@revolt/ui";
+import { Column, Dialog, DialogProps, Form2 } from "@revolt/ui";
 
 import { useModals } from "..";
 import { Modals } from "../types";
@@ -27,7 +27,6 @@ export function EditUsernameModal(
 
   async function onSubmit() {
     try {
-      const previousDiscriminator = props.client.user!.discriminator;
       await props.client.user!.changeUsername(
         group.controls.username.value,
         group.controls.currentPassword.value,
@@ -35,14 +34,6 @@ export function EditUsernameModal(
 
       props.onClose();
 
-      if (props.client.user!.discriminator !== previousDiscriminator) {
-        // open modal alerting user that discirminator changed
-        // or just open a modal anyways with new uname?
-        alert(
-          // temporary solution
-          `Your discriminator changed to ${props.client.user!.discriminator}`,
-        );
-      }
     } catch (err) {
       showError(err);
     }
@@ -70,17 +61,14 @@ export function EditUsernameModal(
     >
       <form onSubmit={submit}>
         <Column>
-          <Row align>
-            <Form2.TextField
-              minlength={1}
-              maxlength={32}
-              counter
-              name="username"
-              control={group.controls.username}
-              label={t`Username`}
-            />
-            <Text class="label">#{props.client.user!.discriminator}</Text>
-          </Row>
+          <Form2.TextField
+            minlength={1}
+            maxlength={32}
+            counter
+            name="username"
+            control={group.controls.username}
+            label={t`Username`}
+          />
           <Form2.TextField
             name="currentPassword"
             control={group.controls.currentPassword}

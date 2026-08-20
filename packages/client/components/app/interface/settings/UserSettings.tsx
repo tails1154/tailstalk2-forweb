@@ -291,7 +291,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             },
             {
               id: "admin",
-              hidden: user?.discriminator !== "6547",
+              hidden: !user?.privileged,
               icon: <MdAdminPanelSettings {...iconSize(20)} />,
               title: <Trans>Admin Panel</Trans>,
             },

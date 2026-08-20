@@ -963,7 +963,7 @@ function Suggestions(props: {
                   match.displayName !== match.user?.username && (
                     <>
                       {" "}
-                      @{match.user?.username}#{match.user?.discriminator}
+                      @{match.user?.username}
                     </>
                   )}
               </Entry>

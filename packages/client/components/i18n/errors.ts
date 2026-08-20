@@ -73,7 +73,7 @@ export function useError() {
         case "DatabaseError":
           return t`Database error, please contact support. (${err.location})`;
         case "DiscriminatorChangeRatelimited":
-          return t`Your discriminator change has been ratelimited, please try again later.`;
+          return t`Something went wrong. Try again later.`;
         case "DuplicateNonce":
           return t`This has already been sent.`;
         case "EmptyMessage":

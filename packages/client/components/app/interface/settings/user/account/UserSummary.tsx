@@ -34,9 +34,7 @@ export function UserSummary(props: {
           <Avatar src={props.user.animatedAvatarURL} size={58} />
           <Username>
             <span>{props.user.displayName}</span>
-            <span>
-              {props.user.username}#{props.user.discriminator}
-            </span>
+            <span>{props.user.username}</span>
           </Username>
           <Show when={props.onEdit}>
             <IconButton variant="filled" shape="square" onPress={props.onEdit}>
@@ -108,7 +106,7 @@ const Username = styled("div", {
       fontWeight: 600,
     },
 
-    // Username#Discrim
+    // Username
     "& :nth-child(2)": {
       fontSize: "14px",
       fontWeight: 400,

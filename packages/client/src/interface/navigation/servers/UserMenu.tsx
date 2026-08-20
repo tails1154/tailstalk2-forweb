@@ -133,9 +133,7 @@ export function UserMenu(props: Props) {
                   />
                   <Column gap="none">
                     <Text>{user()?.displayName}</Text>
-                    <Text class="label">
-                      {user()?.username}#{user()?.discriminator}
-                    </Text>
+                    <Text class="label">{user()?.username}</Text>
                   </Column>
                 </Row>
               </ContextMenuItem>

@@ -23,7 +23,7 @@ export function ProfileBanner(props: {
 
   function copyUsername() {
     navigator.clipboard.writeText(
-      `${props.user.username}#${props.user.discriminator}`,
+      props.user.username,
     );
   }
 
@@ -76,9 +76,6 @@ export function ProfileBanner(props: {
           >
             <Username onClick={onUsernameClick}>
               {props.user.username}
-              <span class={css({ fontWeight: 200 })}>
-                #{props.user.discriminator}
-              </span>
             </Username>
           </Tooltip>
         </UserShort>

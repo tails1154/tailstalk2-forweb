@@ -73,10 +73,7 @@ export function codeMirrorAutoCompleteSource(
         type: "user",
         label: "@" + entry.displayName,
         displayLabel: entry.displayName,
-        detail:
-          entry.displayName !== user.username
-            ? `${user.username}#${user.discriminator}`
-            : undefined,
+        detail: entry.displayName !== user.username ? user.username : undefined,
         apply: `<@${typeof entry.id === "string" ? entry.id : entry.id.user}> `,
         url: entry.animatedAvatarURL,
       };

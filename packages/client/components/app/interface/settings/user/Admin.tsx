@@ -641,7 +641,7 @@ function UsersTab(props: { password: string }) {
               <Row gap="md" align>
                 <Column gap="xs" style={{ flex: 1 }}>
                   <Text class={typography({ class: "label", size: "large" })}>
-                    {u.display_name ?? u.username}#{u.discriminator}
+                    {u.display_name ?? u.username}
                   </Text>
                   <Text class={typography({ class: "label", size: "small" })}>
                     ID: {u.id}

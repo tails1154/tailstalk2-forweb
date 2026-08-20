@@ -3263,6 +3263,10 @@ msgstr ""
 #~ msgid "Something went wrong! Try again later."
 #~ msgstr ""
 
+#: components/i18n/errors.ts
+msgid "Something went wrong. Try again later."
+msgstr ""
+
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 msgid "Sounds"
 msgstr "Sliši se"
@@ -3784,14 +3788,15 @@ msgstr ""
 #: components/modal/modals/EditUsername.tsx
 #: components/modal/modals/CreateBot.tsx
 #: components/modal/modals/AddFriend.tsx
+#: components/modal/modals/AddFriend.tsx
 #: components/auth/src/flows/Form.tsx
 #: components/app/interface/settings/user/Account.tsx
 msgid "Username"
 msgstr "Uporabniško ime"
 
 #: components/modal/modals/AddFriend.tsx
-msgid "username#1234"
-msgstr ""
+#~ msgid "username#1234"
+#~ msgstr ""
 
 #: components/modal/modals/ChannelToggleMature.tsx
 #~ msgid "Users will be asked to confirm their age before joining this channel."
@@ -4154,8 +4159,8 @@ msgid "Your bot was submitted for Discovery review."
 msgstr ""
 
 #: components/i18n/errors.ts
-msgid "Your discriminator change has been ratelimited, please try again later."
-msgstr ""
+#~ msgid "Your discriminator change has been ratelimited, please try again later."
+#~ msgstr ""
 
 #: components/modal/modals/FeatureRequestResponse.tsx
 msgid "Your feature request was approved."

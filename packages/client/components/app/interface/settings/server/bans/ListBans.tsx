@@ -104,7 +104,7 @@ export function ListServerBans(props: { server: Server }) {
                         size={32}
                       />
                       <span>
-                        {item.user?.username}#{item.user?.discriminator}
+                        {item.user?.username}
                       </span>
                     </Row>
                   </DataTable.Cell>

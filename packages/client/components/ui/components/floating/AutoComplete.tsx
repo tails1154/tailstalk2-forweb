@@ -80,8 +80,7 @@ export function AutoComplete(
                   match.user.displayName !== match.user.user?.username && (
                     <>
                       {" "}
-                      @{match.user.user?.username}#
-                      {match.user.user?.discriminator}
+                      @{match.user.user?.username}
                     </>
                   )}
               </Entry>
