@@ -201,6 +201,13 @@ class Lifecycle {
         break;
       case State.Connected:
         this.#controller.state.auth.markValid();
+        if (this.client.user) {
+          this.#controller.state.auth.updateSessionProfile({
+            username: this.client.user.username,
+            displayName: this.client.user.displayName,
+            avatar: this.client.user.animatedAvatarURL,
+          });
+        }
         this.#setLoadedOnce(true);
         this.#connectionFailures = 0;
         break;
@@ -466,6 +473,7 @@ export default class ClientController {
 
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+    this.switchAccount = this.switchAccount.bind(this);
     this.selectUsername = this.selectUsername.bind(this);
     this.isLoggedIn = this.isLoggedIn.bind(this);
     this.isError = this.isError.bind(this);
@@ -600,12 +608,29 @@ export default class ClientController {
     });
   }
 
-  logout() {
+  logout(keepAccount = false) {
     this.state.settings.resetNotificationsState();
     killServiceWorkerSubscription(this.getCurrentClient());
+    const session = this.state.auth.getSession();
+    if (session && !keepAccount) {
+      this.state.auth.removeAccount(session._id);
+    }
     this.state.auth.removeSession();
     this.lifecycle.transition({
       type: TransitionType.Logout,
+    });
+  }
+
+  switchAccount(session: Session) {
+    if (this.state.auth.getSession()?._id === session._id) return;
+
+    this.state.settings.resetNotificationsState();
+    killServiceWorkerSubscription(this.getCurrentClient());
+    this.state.auth.setSession(session);
+    this.lifecycle.transition({ type: TransitionType.Logout });
+    this.lifecycle.transition({
+      type: TransitionType.LoginCached,
+      session,
     });
   }
 

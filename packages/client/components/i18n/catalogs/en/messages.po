@@ -380,6 +380,10 @@ msgstr "Add"
 msgid "Add a new friend"
 msgstr "Add a new friend"
 
+#: components/modal/modals/AccountSwitcher.tsx
+msgid "Add account"
+msgstr "Add account"
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Add friend"
 msgstr "Add friend"
@@ -487,6 +491,7 @@ msgstr "Approve or deny community servers and bots."
 msgid "Approved"
 msgstr "Approved"
 
+#: components/auth/src/flows/FlowLogin.tsx
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Are you an AISD student?"
 msgstr "Are you an AISD student?"
@@ -872,6 +877,7 @@ msgstr "Client Settings"
 #: components/modal/modals/Changelog.tsx
 #: components/modal/modals/AddMembersToGroup.tsx
 #: components/modal/modals/AddFriend.tsx
+#: components/modal/modals/AccountSwitcher.tsx
 msgid "Close"
 msgstr "Close"
 
@@ -2152,6 +2158,10 @@ msgstr "Malware or phishing"
 msgid "Manage Channel"
 msgstr "Manage Channel"
 
+#: components/modal/modals/AccountSwitcher.tsx
+msgid "Manage current account"
+msgstr "Manage current account"
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Manage Customisation"
 msgstr "Manage Customisation"
@@ -2445,6 +2455,7 @@ msgstr "No permissions set yet"
 msgid "No servers or bots found."
 msgstr "No servers or bots found."
 
+#: components/auth/src/flows/FlowLogin.tsx
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "No, continue with email"
 msgstr "No, continue with email"
@@ -3059,6 +3070,10 @@ msgstr "Select noise suppression"
 msgid "Select screen share quality"
 msgstr "Select screen share quality"
 
+#: components/auth/src/flows/FlowLogin.tsx
+msgid "Select the login method that applies to you."
+msgstr "Select the login method that applies to you."
+
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Select the registration method that applies to you."
 msgstr "Select the registration method that applies to you."
@@ -3371,6 +3386,10 @@ msgstr "Suggest new TailsTalk 2 features on GitHub discussions."
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Surface"
 msgstr "Surface"
+
+#: components/modal/modals/AccountSwitcher.tsx
+msgid "Switch account"
+msgstr "Switch account"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Switch to this voice channel"
@@ -3977,6 +3996,7 @@ msgstr "XP Champion"
 msgid "XP per message"
 msgstr "XP per message"
 
+#: components/auth/src/flows/FlowLogin.tsx
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Yes, I’m an AISD student"
 msgstr "Yes, I’m an AISD student"

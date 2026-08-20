@@ -9,6 +9,9 @@ export type Session = {
   token: string;
   userId: string;
   valid: boolean;
+  username?: string;
+  displayName?: string;
+  avatar?: string;
 };
 
 export type TypeAuth = {
@@ -16,6 +19,7 @@ export type TypeAuth = {
    * Session information
    */
   session?: Session;
+  accounts: Session[];
 };
 
 /**
@@ -50,6 +54,7 @@ export class Auth extends AbstractStore<"auth", TypeAuth> {
   default(): TypeAuth {
     return {
       session: undefined,
+      accounts: [],
     };
   }
 
@@ -57,25 +62,46 @@ export class Auth extends AbstractStore<"auth", TypeAuth> {
    * Validate the given data to see if it is compliant and return a compliant object
    */
   clean(input: Partial<TypeAuth>): TypeAuth {
-    let session;
-    if (typeof input.session === "object") {
+    const cleanSession = (value: unknown): Session | undefined => {
+      if (!value || typeof value !== "object") return;
+      const candidate = value as Partial<Session>;
       if (
-        typeof input.session._id === "string" &&
-        typeof input.session.token === "string" &&
-        typeof input.session.userId === "string" &&
-        input.session.valid
+        typeof candidate._id !== "string" ||
+        typeof candidate.token !== "string" ||
+        typeof candidate.userId !== "string" ||
+        !candidate.valid
       ) {
-        session = {
-          _id: input.session._id,
-          token: input.session.token,
-          userId: input.session.userId,
-          valid: true,
-        };
+        return;
       }
+      return {
+        _id: candidate._id,
+        token: candidate.token,
+        userId: candidate.userId,
+        valid: true,
+        ...(typeof candidate.username === "string"
+          ? { username: candidate.username }
+          : {}),
+        ...(typeof candidate.displayName === "string"
+          ? { displayName: candidate.displayName }
+          : {}),
+        ...(typeof candidate.avatar === "string"
+          ? { avatar: candidate.avatar }
+          : {}),
+      };
+    };
+
+    const accounts = Array.isArray(input.accounts)
+      ? input.accounts.map(cleanSession).filter(Boolean) as Session[]
+      : [];
+    const session = cleanSession(input.session);
+
+    if (session && !accounts.some((account) => account._id === session._id)) {
+      accounts.unshift(session);
     }
 
     return {
       session,
+      accounts,
     };
   }
 
@@ -92,7 +118,31 @@ export class Auth extends AbstractStore<"auth", TypeAuth> {
    * @param session Session
    */
   setSession(session: Session) {
+    const accounts = [
+      session,
+      ...this.get().accounts.filter((account) => account._id !== session._id),
+    ];
     this.set("session", session);
+    this.set("accounts", accounts);
+  }
+
+  getAccounts() {
+    return this.get().accounts;
+  }
+
+  updateSessionProfile(profile: Pick<Session, "username" | "displayName" | "avatar">) {
+    const current = this.get().session;
+    if (!current) return;
+
+    const updated = { ...current, ...profile };
+    this.setSession(updated);
+  }
+
+  removeAccount(sessionId: string) {
+    this.set(
+      "accounts",
+      this.get().accounts.filter((account) => account._id !== sessionId),
+    );
   }
 
   /**

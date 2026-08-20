@@ -380,6 +380,10 @@ msgstr ""
 msgid "Add a new friend"
 msgstr ""
 
+#: components/modal/modals/AccountSwitcher.tsx
+msgid "Add account"
+msgstr ""
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Add friend"
 msgstr "Přidat přítele"
@@ -487,6 +491,7 @@ msgstr ""
 msgid "Approved"
 msgstr ""
 
+#: components/auth/src/flows/FlowLogin.tsx
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Are you an AISD student?"
 msgstr ""
@@ -872,6 +877,7 @@ msgstr "Nastavení klienta"
 #: components/modal/modals/Changelog.tsx
 #: components/modal/modals/AddMembersToGroup.tsx
 #: components/modal/modals/AddFriend.tsx
+#: components/modal/modals/AccountSwitcher.tsx
 msgid "Close"
 msgstr "Zavřít"
 
@@ -2152,6 +2158,10 @@ msgstr ""
 msgid "Manage Channel"
 msgstr ""
 
+#: components/modal/modals/AccountSwitcher.tsx
+msgid "Manage current account"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Manage Customisation"
 msgstr "Spravovat přizpůsobení"
@@ -2445,6 +2455,7 @@ msgstr ""
 msgid "No servers or bots found."
 msgstr ""
 
+#: components/auth/src/flows/FlowLogin.tsx
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "No, continue with email"
 msgstr ""
@@ -3059,6 +3070,10 @@ msgstr ""
 msgid "Select screen share quality"
 msgstr ""
 
+#: components/auth/src/flows/FlowLogin.tsx
+msgid "Select the login method that applies to you."
+msgstr ""
+
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Select the registration method that applies to you."
 msgstr ""
@@ -3370,6 +3385,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Surface"
+msgstr ""
+
+#: components/modal/modals/AccountSwitcher.tsx
+msgid "Switch account"
 msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
@@ -3977,6 +3996,7 @@ msgstr ""
 msgid "XP per message"
 msgstr ""
 
+#: components/auth/src/flows/FlowLogin.tsx
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Yes, I’m an AISD student"
 msgstr ""

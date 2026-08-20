@@ -1,6 +1,7 @@
 import { Trans } from "@lingui-solid/solid/macro";
 
 import { useClient } from "@revolt/client";
+import { useModals } from "@revolt/modal";
 import { Avatar, OverflowingText, Ripple, typography } from "@revolt/ui";
 
 import { useSettingsNavigation } from "../Settings";
@@ -15,11 +16,16 @@ import {
  */
 export function AccountCard() {
   const client = useClient();
-  const { page, navigate } = useSettingsNavigation();
+  const { openModal } = useModals();
+  const { page } = useSettingsNavigation();
 
   return (
     <SidebarButton
-      onClick={() => navigate("account")}
+      onClick={() =>
+        openModal({
+          type: "account_switcher",
+        })
+      }
       aria-selected={page() === "account"}
     >
       <Ripple />

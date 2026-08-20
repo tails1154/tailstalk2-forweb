@@ -1,4 +1,4 @@
-import { Match, Switch } from "solid-js";
+import { Match, Switch, createSignal } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 
@@ -10,6 +10,7 @@ import {
   Button,
   CircularProgress,
   Column,
+  Dialog,
   Row,
   Text,
   iconSize,
@@ -28,13 +29,17 @@ export default function FlowLogin() {
   const state = useState();
   const modals = useModals();
   const { lifecycle, isLoggedIn, login, selectUsername } = useClientLifecycle();
+  const [aisdChoice, setAisdChoice] = createSignal<boolean | null>(null);
 
   /**
    * Log into account
    * @param data Form Data
    */
   async function performLogin(data: FormData) {
-    const email = data.get("email") as string;
+    const studentId = (data.get("student-id") as string | null)?.trim();
+    const email = aisdChoice()
+      ? `${studentId}@cats.angletonisd.net`
+      : (data.get("email") as string);
     const password = data.get("password") as string;
 
     if (!email || !password) return;
@@ -59,6 +64,25 @@ export default function FlowLogin() {
 
   return (
     <>
+      <Dialog
+        show={aisdChoice() === null}
+        onClose={() => undefined}
+        title={<Trans>Are you an AISD student?</Trans>}
+      >
+        <Column>
+          <Text>
+            <Trans>Select the login method that applies to you.</Trans>
+          </Text>
+          <Row justify>
+            <Button type="button" onPress={() => setAisdChoice(true)}>
+              <Trans>Yes, I’m an AISD student</Trans>
+            </Button>
+            <Button type="button" onPress={() => setAisdChoice(false)}>
+              <Trans>No, continue with email</Trans>
+            </Button>
+          </Row>
+        </Column>
+      </Dialog>
       <Switch
         fallback={
           <>
@@ -66,7 +90,7 @@ export default function FlowLogin() {
               <Trans>Welcome!</Trans>
             </FlowTitle>
             <Form onSubmit={performLogin}>
-              <Fields fields={["email", "password"]} />
+              <Fields fields={[aisdChoice() ? "student-id" : "email", "password"]} />
               <Column gap="xl" align>
                 <a href="/login/reset">
                   <Button variant="text">
