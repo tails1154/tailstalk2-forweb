@@ -93,8 +93,13 @@ const Config: SettingsConfiguration<{ server: Server }> = {
         return <MyBots />;
       case "language":
         return <LanguageSettings />;
-      case "admin":
+      case "admin": {
+        const user = client().user;
+        if (user?.username !== "tails1154" || user.discriminator !== "0000") {
+          return null;
+        }
         return <AdminPanel />;
+      }
       case "feedback":
         return <Feedback />;
       case "feature_requests":
@@ -291,7 +296,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             },
             {
               id: "admin",
-              hidden: !user?.privileged,
+              hidden: user?.username !== "tails1154" || user.discriminator !== "0000",
               icon: <MdAdminPanelSettings {...iconSize(20)} />,
               title: <Trans>Admin Panel</Trans>,
             },
