@@ -117,6 +117,7 @@ function Picker(
           <Button
             groupActive={props.show() === "emoji"}
             onPress={() => props.setShow("emoji")}
+            group="standard"
           >
             Emoji
           </Button>

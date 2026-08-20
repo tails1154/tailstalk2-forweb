@@ -409,7 +409,7 @@ export function MessageComposition(props: Props) {
   return (
     <>
       <Show when={pollOpen()}>
-        <PollPanel>
+        <PollPanel onKeyDown={(event) => event.stopPropagation()}>
           <PollHeading>{t`Create poll`}</PollHeading>
           <PollInput
             value={pollQuestion()}
