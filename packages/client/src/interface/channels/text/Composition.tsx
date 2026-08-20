@@ -524,14 +524,14 @@ export function MessageComposition(props: Props) {
         content={draft()?.content ?? ""}
         setContent={setContent}
         actionsStart={
-          <Switch fallback={<MessageBox.InlineIcon size="short" />}>
-            <Match when={props.channel.havePermission("UploadFiles")}>
+          <>
+            <Show when={props.channel.havePermission("UploadFiles")}>
               <MessageBox.InlineIcon size="wide">
                 <IconButton onPress={addFile}>
                   <Symbol>add</Symbol>
                 </IconButton>
               </MessageBox.InlineIcon>
-            </Match>
+            </Show>
             <Show when={props.channel.havePermission("SendMessage")}>
               <MessageBox.InlineIcon size="wide">
                 <Tooltip content={t`Create poll`} placement="top">
@@ -541,7 +541,15 @@ export function MessageComposition(props: Props) {
                 </Tooltip>
               </MessageBox.InlineIcon>
             </Show>
-          </Switch>
+            <Show
+              when={
+                !props.channel.havePermission("UploadFiles") &&
+                !props.channel.havePermission("SendMessage")
+              }
+            >
+              <MessageBox.InlineIcon size="short" />
+            </Show>
+          </>
         }
         actionsEnd={
           <MessageBox.ActionContainer column>
