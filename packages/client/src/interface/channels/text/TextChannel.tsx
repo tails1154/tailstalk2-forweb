@@ -79,16 +79,28 @@ export function TextChannel(props: ChannelPageProps) {
   // Get a reference to the message list's "end status"
   let atEndRef: (() => boolean) | undefined;
 
+  const acknowledgeIfAtEnd = () => {
+    if (
+      document.hasFocus() &&
+      atEndRef?.() &&
+      props.channel.lastMessageId
+    ) {
+      props.channel.ack();
+    }
+  };
+
   // Store last unread message id
   createEffect(
     on(
       () => props.channel.id,
-      (id) =>
+      (id) => {
         setLastId(
           props.channel.unread
             ? (client().channelUnreads.get(id)?.lastMessageId as string)
             : undefined,
-        ),
+        );
+        acknowledgeIfAtEnd();
+      },
     ),
   );
 
@@ -116,9 +128,7 @@ export function TextChannel(props: ChannelPageProps) {
 
   // Mark as read on re-focus
   function onFocus() {
-    if (props.channel.unread && (atEndRef ? atEndRef() : true)) {
-      props.channel.ack();
-    }
+    acknowledgeIfAtEnd();
   }
 
   document.addEventListener("focus", onFocus);
@@ -202,7 +212,10 @@ export function TextChannel(props: ChannelPageProps) {
             }
             highlightedMessageId={highlightMessageId}
             clearHighlightedMessage={() => navigate(".")}
-            atEndRef={(ref) => (atEndRef = ref)}
+            atEndRef={(ref) => {
+              atEndRef = ref;
+              acknowledgeIfAtEnd();
+            }}
             jumpToBottomRef={(ref) => (jumpToBottomRef = ref)}
           />
 
