@@ -23,11 +23,28 @@ export class ChannelUnreadCollection extends ClassCollection<
    */
   async sync(): Promise<void> {
     const generation = ++this.#syncGeneration;
+    console.info("[TailsTalk unread] sync:start", { generation });
     const unreads = await this.client.api.get("/sync/unreads");
+
+    console.info("[TailsTalk unread] sync:response", {
+      generation,
+      count: unreads.length,
+      channels: unreads.map((unread) => ({
+        channel: unread._id.channel,
+        lastId: unread.last_id ?? null,
+        mentions: unread.mentions?.length ?? 0,
+      })),
+    });
 
     // A reconnect can leave multiple sync requests in flight. Never allow an
     // older response to overwrite a newer unread state.
-    if (generation !== this.#syncGeneration) return;
+    if (generation !== this.#syncGeneration) {
+      console.warn("[TailsTalk unread] sync:stale-response", {
+        generation,
+        currentGeneration: this.#syncGeneration,
+      });
+      return;
+    }
 
     batch(() => {
       const existing = new Map(
@@ -50,6 +67,16 @@ export class ChannelUnreadCollection extends ClassCollection<
           !!local?.lastMessageId &&
           (!serverLast || local.lastMessageId > serverLast);
 
+        console.info("[TailsTalk unread] sync:apply", {
+          channel: id,
+          serverLast,
+          localLast: local?.lastMessageId ?? null,
+          appliedLast: localIsNewer ? local!.lastMessageId : serverLast,
+          serverMentions: unread.mentions?.length ?? 0,
+          localMentions: local?.mentions.length ?? 0,
+          keptLocalState: localIsNewer,
+        });
+
         this.getOrCreate(id, {
           ...unread,
           last_id: localIsNewer ? local.lastMessageId! : unread.last_id,
@@ -60,7 +87,10 @@ export class ChannelUnreadCollection extends ClassCollection<
 
       // A channel omitted from the server response is no longer unread.
       for (const id of [...this.keys()]) {
-        if (!received.has(id)) this.delete(id);
+        if (!received.has(id)) {
+          console.info("[TailsTalk unread] sync:remove-local", { channel: id });
+          this.delete(id);
+        }
       }
     });
   }

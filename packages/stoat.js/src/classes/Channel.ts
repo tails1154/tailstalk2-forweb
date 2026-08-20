@@ -747,6 +747,15 @@ export class Channel {
       this.lastMessageId ??
       ulid();
 
+    console.info("[TailsTalk unread] ack:requested", {
+      channel: this.id,
+      messageId: lastMessageId,
+      skipRateLimiter: !!skipRateLimiter,
+      skipRequest: !!skipRequest,
+      skipNextMarking: !!skipNextMarking,
+      channelLastMessageId: this.lastMessageId ?? null,
+    });
+
     const channelUnread = this.#collection.client.channelUnreads.for(this);
 
     batch(() => {
@@ -762,25 +771,58 @@ export class Channel {
     });
 
     // Skip request if not needed
-    if (skipRequest) return;
+    if (skipRequest) {
+      console.info("[TailsTalk unread] ack:local-only", {
+        channel: this.id,
+        messageId: lastMessageId,
+      });
+      return;
+    }
 
     /**
      * Send the actual acknowledgement request
      */
     const performAck = (): void => {
       this.#ackLimit = undefined;
-      this.#collection.client.api.put(
-        `/channels/${this.id}/ack/${lastMessageId as ""}`,
-      );
+      const endpoint = `/channels/${this.id}/ack/${lastMessageId as ""}`;
+      console.info("[TailsTalk unread] ack:send", {
+        channel: this.id,
+        messageId: lastMessageId,
+        endpoint,
+      });
+      void this.#collection.client.api
+        .put(endpoint)
+        .then(() => {
+          console.info("[TailsTalk unread] ack:success", {
+            channel: this.id,
+            messageId: lastMessageId,
+          });
+        })
+        .catch((error) => {
+          console.error("[TailsTalk unread] ack:failure", {
+            channel: this.id,
+            messageId: lastMessageId,
+            error,
+          });
+        });
     };
 
     if (skipRateLimiter) return performAck();
 
     clearTimeout(this.#ackTimeout);
     if (this.#ackLimit && +new Date() > this.#ackLimit) {
+      console.info("[TailsTalk unread] ack:rate-limit-expired", {
+        channel: this.id,
+        messageId: lastMessageId,
+      });
       performAck();
     }
 
+    console.info("[TailsTalk unread] ack:scheduled", {
+      channel: this.id,
+      messageId: lastMessageId,
+      delayMs: 1500,
+    });
     this.#ackTimeout = setTimeout(performAck, 1500) as unknown as number;
 
     if (!this.#ackLimit) {
