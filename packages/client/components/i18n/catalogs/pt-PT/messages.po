@@ -4336,6 +4336,10 @@ msgstr ""
 msgid "Your server was submitted for Discovery review."
 msgstr ""
 
+#: components/auth/src/flows/FlowLogin.tsx
+msgid "Your tails1154 account and TailsTalk 2 account are separate accounts."
+msgstr ""
+
 #: components/i18n/errors.ts
 msgid "Your user has already been created? Try logging in again or refreshing the app."
 msgstr ""

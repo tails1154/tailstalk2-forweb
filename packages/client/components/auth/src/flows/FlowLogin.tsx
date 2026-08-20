@@ -22,6 +22,17 @@ import { useState } from "@revolt/state";
 import { FlowTitle } from "./Flow";
 import { Fields, Form } from "./Form";
 
+const AccountWarning = styled("div", {
+  base: {
+    padding: "12px 16px",
+    borderRadius: "12px",
+    color: "var(--md-sys-color-on-error-container)",
+    background: "var(--md-sys-color-error-container)",
+    fontSize: "0.9em",
+    lineHeight: "1.4",
+  },
+});
+
 /**
  * Flow for logging into an account
  */
@@ -89,6 +100,9 @@ export default function FlowLogin() {
             <FlowTitle subtitle={<Trans>Sign into TailsTalk 2</Trans>} emoji="wave">
               <Trans>Welcome!</Trans>
             </FlowTitle>
+            <AccountWarning role="alert">
+              <Trans>Your tails1154 account and TailsTalk 2 account are separate accounts.</Trans>
+            </AccountWarning>
             <Form onSubmit={performLogin}>
               <Fields fields={[aisdChoice() ? "student-id" : "email", "password"]} />
               <Column gap="xl" align>
