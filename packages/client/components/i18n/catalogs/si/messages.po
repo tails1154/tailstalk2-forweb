@@ -565,6 +565,10 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Backup and restore"
+msgstr ""
+
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Badges"
 msgstr "චිහ්න"
@@ -1113,6 +1117,10 @@ msgstr ""
 msgid "Create a new role"
 msgstr "නම භූමිකාවක් සාදන්න"
 
+#: components/app/interface/settings/server/Page.tsx
+msgid "Create a public landing page for your server with a description and useful links."
+msgstr ""
+
 #: components/modal/modals/CreateWebhook.tsx
 msgid "Create a webhook"
 msgstr ""
@@ -1217,6 +1225,14 @@ msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Custom community palette."
+msgstr ""
+
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Custom page"
+msgstr ""
+
+#: components/app/interface/settings/server/Page.tsx
+msgid "Custom server page"
 msgstr ""
 
 #: components/modal/modals/CustomStatus.tsx
@@ -1483,6 +1499,10 @@ msgstr "අහවරයි"
 #~ msgid "Download and apply this palette."
 #~ msgstr ""
 
+#: components/app/interface/settings/server/Backup.tsx
+msgid "Download backup"
+msgstr ""
+
 #: components/modal/modals/ReportContent.tsx
 msgid "Drugs or illegal goods"
 msgstr ""
@@ -1576,6 +1596,10 @@ msgstr "සත්‍යාපන යෙදුම සක්‍රිය කරන
 msgid "Enable Desktop Notifications"
 msgstr "වැඩතල දැනුම්දීම් සබල කරන්න"
 
+#: components/app/interface/settings/server/Page.tsx
+msgid "Enable public server page"
+msgstr ""
+
 #: components/app/interface/settings/user/notifications/Notifications.tsx
 msgid "Enable Push Notifications"
 msgstr ""
@@ -1657,6 +1681,10 @@ msgstr "ඔබ කැමති පරිශීලක නාමය ඇතුල�
 
 #: components/app/interface/settings/server/XP.tsx
 msgid "Experience points"
+msgstr ""
+
+#: components/app/interface/settings/server/Backup.tsx
+msgid "Export or restore server configuration, including roles, categories, and permissions."
 msgstr ""
 
 #: components/modal/modals/LinkWarning.tsx
@@ -2121,6 +2149,10 @@ msgstr ""
 msgid "Light"
 msgstr ""
 
+#: components/app/interface/settings/server/Page.tsx
+msgid "Links"
+msgstr ""
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Listen"
@@ -2568,6 +2600,10 @@ msgstr ""
 msgid "Once it's deleted, there's no going back."
 msgstr "එය මකා දැමූ පසු, ආපසු යාමක් නැත."
 
+#: components/app/interface/settings/server/Page.tsx
+msgid "One link per line in the format Label|https://example.com"
+msgstr ""
+
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "One of the first 1000 users!"
 msgstr ""
@@ -2621,6 +2657,14 @@ msgstr ""
 #: components/app/interface/settings/ChannelSettings.tsx
 msgid "Overview"
 msgstr "දළ විශ්ලේෂණය"
+
+#: components/app/interface/settings/server/Page.tsx
+msgid "Page description"
+msgstr ""
+
+#: components/app/interface/settings/server/Page.tsx
+msgid "Page title"
+msgstr ""
 
 #: components/app/interface/settings/server/bans/ListBans.tsx
 msgid "Pardon User"
@@ -2949,6 +2993,10 @@ msgstr "සංකේතය නැවත සකසන්න"
 msgid "Responsibly disclosed security issues"
 msgstr ""
 
+#: components/app/interface/settings/server/Backup.tsx
+msgid "Restore backup"
+msgstr ""
+
 #: components/app/menus/DraftMessageContextMenu.tsx
 msgid "Retry sending"
 msgstr ""
@@ -3011,6 +3059,7 @@ msgstr "භූමිකා"
 #: components/modal/modals/CustomStatus.tsx
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 #: components/app/interface/settings/server/XP.tsx
+#: components/app/interface/settings/server/Page.tsx
 #: components/app/interface/settings/server/Overview.tsx
 #: components/app/interface/settings/server/Onboarding.tsx
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
@@ -3189,6 +3238,18 @@ msgstr ""
 
 #: components/modal/modals/ServerIdentity.tsx
 msgid "Server Avatar"
+msgstr ""
+
+#: components/app/interface/settings/server/Backup.tsx
+msgid "Server backup and restore"
+msgstr ""
+
+#: components/app/interface/settings/server/Backup.tsx
+msgid "Server backup downloaded."
+msgstr ""
+
+#: components/app/interface/settings/server/Backup.tsx
+msgid "Server backup restored."
 msgstr ""
 
 #: components/app/interface/settings/server/Overview.tsx
@@ -3721,6 +3782,10 @@ msgstr ""
 msgid "Trending GIFs"
 msgstr ""
 
+#: components/app/interface/settings/server/Backup.tsx
+msgid "Unable to create a server backup."
+msgstr ""
+
 #: src/interface/Discover.tsx
 msgid "Unable to load Discovery right now. Please try again."
 msgstr ""
@@ -3735,6 +3800,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Unable to remove this theme right now."
+msgstr ""
+
+#: components/app/interface/settings/server/Backup.tsx
+msgid "Unable to restore this server backup."
 msgstr ""
 
 #: components/app/interface/settings/user/FeatureRequests.tsx
@@ -4038,6 +4107,10 @@ msgstr ""
 #. placeholder {0}: names.join(", ")
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "With {0}"
+msgstr ""
+
+#: components/app/interface/settings/server/Backup.tsx
+msgid "Working…"
 msgstr ""
 
 #: components/modal/modals/CreateGroupOrServer.tsx
