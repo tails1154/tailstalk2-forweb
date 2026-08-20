@@ -90,12 +90,24 @@ export class Auth extends AbstractStore<"auth", TypeAuth> {
       };
     };
 
-    const accounts = Array.isArray(input.accounts)
-      ? input.accounts.map(cleanSession).filter(Boolean) as Session[]
-      : [];
+    const accounts: Session[] = [];
+    if (Array.isArray(input.accounts)) {
+      for (const account of input.accounts.map(cleanSession)) {
+        if (
+          account &&
+          !accounts.some((stored) => stored.userId === account.userId)
+        ) {
+          accounts.push(account);
+        }
+      }
+    }
     const session = cleanSession(input.session);
 
-    if (session && !accounts.some((account) => account._id === session._id)) {
+    if (session) {
+      const existing = accounts.findIndex(
+        (account) => account.userId === session.userId,
+      );
+      if (existing >= 0) accounts.splice(existing, 1);
       accounts.unshift(session);
     }
 
@@ -120,7 +132,9 @@ export class Auth extends AbstractStore<"auth", TypeAuth> {
   setSession(session: Session) {
     const accounts = [
       session,
-      ...this.get().accounts.filter((account) => account._id !== session._id),
+      ...this.get().accounts.filter(
+        (account) => account.userId !== session.userId,
+      ),
     ];
     this.set("session", session);
     this.set("accounts", accounts);
