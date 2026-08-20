@@ -1,4 +1,4 @@
-import { For } from "solid-js";
+import { For, Show } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { useNavigate } from "@revolt/routing";
@@ -44,21 +44,35 @@ export function AccountSwitcherModal(
       <Column gap="md">
         <For each={state.auth.getAccounts()}>
           {(account) => (
-            <Button
-              variant="text"
-              onPress={() => switchTo(account)}
-              isDisabled={account._id === client().sessionId}
-            >
-              <Row align gap="sm">
-                <Avatar size={32} src={account.avatar} fallback={accountLabel(account)} />
-                <Column gap="none" align="start">
-                  <Text>{accountLabel(account)}</Text>
-                  <Text class="label">
-                    {account.username ?? account.userId}
-                  </Text>
-                </Column>
-              </Row>
-            </Button>
+            <Row align>
+              <Button
+                variant="text"
+                onPress={() => switchTo(account)}
+                isDisabled={account._id === client().sessionId}
+              >
+                <Row align gap="sm">
+                  <Avatar
+                    size={32}
+                    src={account.avatar}
+                    fallback={accountLabel(account)}
+                  />
+                  <Column gap="none" align="start">
+                    <Text>{accountLabel(account)}</Text>
+                    <Text class="label">
+                      {account.username ?? account.userId}
+                    </Text>
+                  </Column>
+                </Row>
+              </Button>
+              <Show when={account._id !== client().sessionId}>
+                <Button
+                  variant="text"
+                  onPress={() => state.auth.removeAccount(account._id)}
+                >
+                  <Trans>Remove</Trans>
+                </Button>
+              </Show>
+            </Row>
           )}
         </For>
         <Button onPress={addAccount}>
