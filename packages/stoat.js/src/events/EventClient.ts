@@ -175,15 +175,10 @@ export class EventClient<
     // url.searchParams.append("ready", "unreads or something");
     // url.searchParams.append("ready", "policy_changes");
 
-    const socket = new WebSocket(url);
-    this.#socket = socket;
+    this.#socket = new WebSocket(url);
 
-    socket.onopen = () => {
-      if (this.#socket !== socket) return;
-
+    this.#socket.onopen = () => {
       this.#heartbeatIntervalReference = setInterval(() => {
-        if (this.#socket !== socket) return;
-
         this.send({ type: "Ping", data: +new Date() });
         this.#pongTimeoutReference = setTimeout(
           () => this.disconnect(),
@@ -192,16 +187,12 @@ export class EventClient<
       }, this.options.heartbeatInterval * 1e3) as never;
     };
 
-    socket.onerror = (error) => {
-      if (this.#socket !== socket) return;
-
+    this.#socket.onerror = (error) => {
       this.#lastError = { type: "socket", data: error };
       this.emit("error", error as never);
     };
 
-    socket.onmessage = (event) => {
-      if (this.#socket !== socket) return;
-
+    this.#socket.onmessage = (event) => {
       clearInterval(this.#connectTimeoutReference);
 
       if (this.#transportFormat === "json") {
@@ -212,39 +203,26 @@ export class EventClient<
     };
 
     let closed = false;
-    socket.onclose = () => {
+    this.#socket.onclose = () => {
       if (closed) return;
       closed = true;
-
-      // A previous socket may close after a newer connection has already
-      // replaced it. It must not tear down or change the state of that
-      // newer connection.
-      if (this.#socket !== socket) return;
-
-      this.clearTimers();
       this.#socket = undefined;
       this.setState(ConnectionState.Disconnected);
+      this.disconnect();
     };
-  }
-
-  private clearTimers(): void {
-    clearInterval(this.#heartbeatIntervalReference);
-    clearTimeout(this.#connectTimeoutReference);
-    clearTimeout(this.#pongTimeoutReference);
-    this.#heartbeatIntervalReference = undefined;
-    this.#connectTimeoutReference = undefined;
-    this.#pongTimeoutReference = undefined;
   }
 
   /**
    * Disconnect the websocket client.
    */
   disconnect(): void {
-    this.clearTimers();
-
+    if (!this.#socket) return;
+    clearInterval(this.#heartbeatIntervalReference);
+    clearInterval(this.#connectTimeoutReference);
+    clearInterval(this.#pongTimeoutReference);
     const socket = this.#socket;
     this.#socket = undefined;
-    socket?.close();
+    socket.close();
   }
 
   /**
