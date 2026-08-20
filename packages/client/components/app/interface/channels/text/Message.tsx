@@ -362,6 +362,7 @@ function PollCard(props: { message: MessageInterface }) {
               variant={selected() ? "filled" : "outlined"}
             >
               <PollOptionLabel>{option.text}</PollOptionLabel>
+              <PollOptionSeparator>|</PollOptionSeparator>
               <PollOptionCount>
                 {count()} ({percentage()}%)
               </PollOptionCount>
@@ -429,6 +430,7 @@ function PollOptionButton(props: ComponentProps<typeof Button>) {
 }
 
 const PollOptionLabel = styled("span", { base: { overflow: "hidden" } });
+const PollOptionSeparator = styled("span", { base: { opacity: 0.65 } });
 const PollOptionCount = styled("span", { base: { opacity: 0.8 } });
 const PollFooter = styled("div", {
   base: {

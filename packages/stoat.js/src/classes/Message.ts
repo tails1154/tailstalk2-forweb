@@ -252,10 +252,10 @@ export class Message {
 
   /** Toggle the current user's selection in a poll option. */
   async votePoll(optionId: string, selected: boolean): Promise<void> {
-    const updated = (await this.#collection.client.api.post(
-      `/channels/${this.channelId}/messages/${this.id}/poll/vote` as never,
-      { option_id: optionId, selected } as never,
-    )) as unknown as APIMessage;
+    const updated = await this.pollRequest(
+      `/channels/${this.channelId}/messages/${this.id}/poll/vote`,
+      { option_id: optionId, selected },
+    );
     this.#collection.updateUnderlyingObject(
       this.id,
       hydrate(
@@ -269,9 +269,9 @@ export class Message {
 
   /** Close this poll. */
   async closePoll(): Promise<void> {
-    const updated = (await this.#collection.client.api.post(
-      `/channels/${this.channelId}/messages/${this.id}/poll/close` as never,
-    )) as unknown as APIMessage;
+    const updated = await this.pollRequest(
+      `/channels/${this.channelId}/messages/${this.id}/poll/close`,
+    );
     this.#collection.updateUnderlyingObject(
       this.id,
       hydrate(
@@ -281,6 +281,26 @@ export class Message {
         false,
       ),
     );
+  }
+
+  /** Send a request for a route not present in the generated API schema. */
+  private async pollRequest(
+    path: string,
+    body?: Record<string, unknown>,
+  ): Promise<APIMessage> {
+    const config = this.#collection.client.api.config;
+    const response = await fetch(new URL(path, config.baseURL), {
+      method: "POST",
+      headers: {
+        ...config.headers,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body ?? {}),
+    });
+
+    const data = await response.text();
+    if (!response.ok) throw data;
+    return JSON.parse(data) as APIMessage;
   }
 
   /**
