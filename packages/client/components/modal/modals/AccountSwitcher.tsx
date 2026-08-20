@@ -18,7 +18,7 @@ export function AccountSwitcherModal(
   const client = useClient();
   const navigate = useNavigate();
   const { logout, switchAccount } = useClientLifecycle();
-  const { openModal } = useModals();
+  const { closeAll, openModal } = useModals();
 
   const accountLabel = (account: Session) =>
     account.displayName ?? account.username ?? account.userId;
@@ -29,7 +29,7 @@ export function AccountSwitcherModal(
   }
 
   function addAccount() {
-    props.onClose();
+    closeAll();
     logout(true);
     navigate("/login/auth");
   }
