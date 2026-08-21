@@ -6,6 +6,7 @@ export { Embed } from "./Embed";
 export {
   DEVELOPMENT_BUILD_URL,
   DevelopmentBuildCard,
+  isDevelopmentBuildUrl,
 } from "./Embed";
 export { FileInfo } from "./FileInfo";
 export { MessageDivider } from "./MessageDivider";

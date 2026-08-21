@@ -3529,6 +3529,10 @@ msgstr ""
 msgid "Stop sharing"
 msgstr ""
 
+#: components/app/interface/settings/user/Advanced.tsx
+msgid "Stop Using Development Build"
+msgstr ""
+
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 msgid "Stream End"
 msgstr ""
@@ -3837,6 +3841,10 @@ msgstr ""
 msgid "Timeout Members"
 msgstr "Timeouwt Membews"
 
+#: components/ui/components/features/messaging/elements/Embed.tsx
+msgid "To Disable, go to advanced options in user settings and click Stop Using Development Build"
+msgstr ""
+
 #: src/interface/common/CommonHeader.tsx
 msgid "Toggle main sidebar"
 msgstr ""
@@ -4046,6 +4054,10 @@ msgstr ""
 #: components/modal/modals/ChannelToggleMature.tsx
 #~ msgid "Users will no longer be asked to confirm their age before joining this channel.<0/> Please ensure the content is appropriate for all ages."
 #~ msgstr ""
+
+#: components/ui/components/features/messaging/elements/Embed.tsx
+msgid "Using"
+msgstr ""
 
 #: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
 #~ msgid "Using default microphone"

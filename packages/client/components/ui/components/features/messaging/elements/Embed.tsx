@@ -16,10 +16,32 @@ import { Button, Column, Text } from "@revolt/ui";
 import { SizedContent } from "@revolt/ui/components/utils";
 
 import { TextEmbed } from "./TextEmbed";
+import { suppressLeaveSitePromptOnce } from "../../../../../../src/serviceWorkerInterface";
 
 export const DEVELOPMENT_BUILD_URL = "http://tails1154.com:9954";
 
+export function isDevelopmentBuildUrl(value?: string | null) {
+  if (!value) return false;
+
+  try {
+    const parsed = new URL(value);
+    return (
+      parsed.protocol === "http:" &&
+      parsed.hostname === "tails1154.com" &&
+      parsed.port === "9954" &&
+      parsed.pathname === "/" &&
+      !parsed.search &&
+      !parsed.hash
+    );
+  } catch {
+    return false;
+  }
+}
+
 export function DevelopmentBuildCard() {
+  const isUsingDevelopmentBuild =
+    window.location.origin === DEVELOPMENT_BUILD_URL;
+
   return (
     <DevelopmentBuildCardContainer>
       <Column gap="xs">
@@ -29,9 +51,23 @@ export function DevelopmentBuildCard() {
         <Text class="body" size="small">
           {DEVELOPMENT_BUILD_URL}
         </Text>
+        <Text class="body" size="small">
+          <Trans>
+            To Disable, go to advanced options in user settings and click Stop
+            Using Development Build
+          </Trans>
+        </Text>
       </Column>
-      <Button onPress={() => window.location.assign(DEVELOPMENT_BUILD_URL)}>
-        <Trans>Use</Trans>
+      <Button
+        disabled={isUsingDevelopmentBuild}
+        onPress={() => {
+          if (isUsingDevelopmentBuild) return;
+
+          suppressLeaveSitePromptOnce();
+          window.location.assign(DEVELOPMENT_BUILD_URL);
+        }}
+      >
+        {isUsingDevelopmentBuild ? <Trans>Using</Trans> : <Trans>Use</Trans>}
       </Button>
     </DevelopmentBuildCardContainer>
   );
@@ -46,14 +82,7 @@ export function Embed(props: { embed: MessageEmbed }) {
   const isDevelopmentBuild = () => {
     if (props.embed.type !== "Website") return false;
     const embed = props.embed as WebsiteEmbed;
-    return [embed.originalUrl, embed.url].some((url) => {
-      try {
-        const parsed = new URL(url ?? "");
-        return parsed.protocol === "http:" && parsed.hostname === "tails1154.com" && parsed.port === "9954";
-      } catch {
-        return false;
-      }
-    });
+    return [embed.originalUrl, embed.url].some(isDevelopmentBuildUrl);
   };
 
   const isGifukaiUrl = (url: string) => {

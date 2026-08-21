@@ -3529,6 +3529,10 @@ msgstr "Stop camera"
 msgid "Stop sharing"
 msgstr "Stop sharing"
 
+#: components/app/interface/settings/user/Advanced.tsx
+msgid "Stop Using Development Build"
+msgstr "Stop Using Development Build"
+
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 msgid "Stream End"
 msgstr "Stream End"
@@ -3837,6 +3841,10 @@ msgstr "Time format"
 msgid "Timeout Members"
 msgstr "Timeout Members"
 
+#: components/ui/components/features/messaging/elements/Embed.tsx
+msgid "To Disable, go to advanced options in user settings and click Stop Using Development Build"
+msgstr "To Disable, go to advanced options in user settings and click Stop Using Development Build"
+
 #: src/interface/common/CommonHeader.tsx
 msgid "Toggle main sidebar"
 msgstr "Toggle main sidebar"
@@ -4046,6 +4054,10 @@ msgstr "Users will be asked to confirm their age before opening this channel."
 #: components/modal/modals/ChannelToggleMature.tsx
 #~ msgid "Users will no longer be asked to confirm their age before joining this channel.<0/> Please ensure the content is appropriate for all ages."
 #~ msgstr "Users will no longer be asked to confirm their age before joining this channel.<0/> Please ensure the content is appropriate for all ages."
+
+#: components/ui/components/features/messaging/elements/Embed.tsx
+msgid "Using"
+msgstr "Using"
 
 #: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
 #~ msgid "Using default microphone"

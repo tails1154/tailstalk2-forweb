@@ -14,6 +14,7 @@ import {
   Attachment,
   Avatar,
   DevelopmentBuildCard,
+  isDevelopmentBuildUrl,
   Embed,
   MessageContainer,
   MessageReply,
@@ -32,8 +33,6 @@ import {
 } from "../../../menus/UserContextMenu";
 
 import { EditMessage } from "./EditMessage";
-
-const DEVELOPMENT_BUILD_URL = "http://tails1154.com:9954";
 
 /**
  * Regex for matching URLs
@@ -95,10 +94,7 @@ export function Message(props: Props) {
 
   const isDevelopmentBuildMessage = () => {
     const content = props.message.content?.trim();
-    return (
-      content === DEVELOPMENT_BUILD_URL ||
-      content === `${DEVELOPMENT_BUILD_URL}/`
-    );
+    return isDevelopmentBuildUrl(content);
   };
 
   /**

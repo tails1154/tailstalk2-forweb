@@ -1,21 +1,38 @@
-import { For } from "solid-js";
+import { For, Show } from "solid-js";
 
+import { Trans } from "@lingui-solid/solid/macro";
 import { useState } from "@revolt/state";
 import {
   AVAILABLE_EXPERIMENTS,
   EXPERIMENTS,
 } from "@revolt/state/stores/Experiments";
-import { CategoryButton, Checkbox, Column } from "@revolt/ui";
+import { Button, CategoryButton, Checkbox, Column } from "@revolt/ui";
+
+import { suppressLeaveSitePromptOnce } from "../../../../../src/serviceWorkerInterface";
+
+const DEVELOPMENT_BUILD_URL = "http://tails1154.com:9954";
 
 /**
  * Advanced settings
  */
 export default function AdvancedSettings() {
   const state = useState();
+  const isUsingDevelopmentBuild =
+    window.location.origin === DEVELOPMENT_BUILD_URL;
 
   return (
     <Column gap="xl">
       <Column>
+        <Show when={isUsingDevelopmentBuild}>
+          <Button
+            onPress={() => {
+              suppressLeaveSitePromptOnce();
+              window.location.assign("https://tails1154.com:9961");
+            }}
+          >
+            <Trans>Stop Using Development Build</Trans>
+          </Button>
+        </Show>
         <Checkbox
           checked={state.settings.getValue("appearance:compact_mode")}
           onChange={(e) =>

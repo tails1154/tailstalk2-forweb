@@ -31,6 +31,8 @@ interface DiscoverListing {
   members: number;
 }
 
+const PUBLIC_INVITE_BASE = "https://tails1154.com:9961/invite/";
+
 async function fetchListings(query?: string): Promise<DiscoverListing[]> {
   const params = query ? `?query=${encodeURIComponent(query)}` : "";
   const controller = new AbortController();
@@ -60,6 +62,11 @@ function parseInviteCode(url: string): string | null {
     // the full invite URL.
     return value;
   }
+}
+
+function canonicalInviteUrl(value: string): string {
+  const code = parseInviteCode(value);
+  return code ? `${PUBLIC_INVITE_BASE}${encodeURIComponent(code)}` : value;
 }
 
 export function Discover() {
@@ -92,7 +99,7 @@ export function Discover() {
       openModal({ type: "invite", invite });
     } catch {
       // fallback: just navigate to invite URL
-      window.open(listing.invite);
+      window.open(canonicalInviteUrl(listing.invite));
     }
   }
 

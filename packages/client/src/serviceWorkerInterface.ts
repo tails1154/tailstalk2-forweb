@@ -17,6 +17,10 @@ export { pendingUpdate };
 
 let suppressLeaveSitePrompt = false;
 
+export function suppressLeaveSitePromptOnce() {
+  suppressLeaveSitePrompt = true;
+}
+
 export function isLeaveSitePromptSuppressed() {
   return suppressLeaveSitePrompt;
 }
