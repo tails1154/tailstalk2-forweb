@@ -1,5 +1,6 @@
 import { JSX, Match, Show, Switch, createEffect, createMemo, createSignal } from "solid-js";
 
+import { Trans } from "@lingui-solid/solid/macro";
 import { Server } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
@@ -94,14 +95,14 @@ const Interface = (props: { children: JSX.Element }) => {
         <Show when={showDownloadBanner()}>
           <DownloadBanner>
             <BannerText>
-              You can download the Desktop Version of TailsTalk here{" "}
+              <Trans>You can download the Desktop Version of TailsTalk here</Trans>{" "}
             </BannerText>
             <DownloadButton
               href="https://github.com/tails1154/tailstalk2-fordesktop/releases"
               target="_blank"
               rel="noreferrer"
             >
-              Download
+              <Trans>Download</Trans>
             </DownloadButton>
             <CloseButton onClick={dismissBanner}>✕</CloseButton>
           </DownloadBanner>

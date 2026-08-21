@@ -817,8 +817,12 @@ msgid "Check your mail!"
 msgstr "Sprawdź swojego emaila!"
 
 #: components/modal/modals/TransferServerOwnership.tsx
-msgid "Choose a current member to become the new owner. You will lose ownership and may lose access to server settings."
+msgid "Choose a current member to become the new owner. This requires five confirmations and MFA verification."
 msgstr ""
+
+#: components/modal/modals/TransferServerOwnership.tsx
+#~ msgid "Choose a current member to become the new owner. You will lose ownership and may lose access to server settings."
+#~ msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Choose a username"
@@ -1530,6 +1534,10 @@ msgstr ""
 msgid "Done"
 msgstr "Gotowe"
 
+#: src/Interface.tsx
+msgid "Download"
+msgstr ""
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 #~ msgid "Download and apply this palette."
 #~ msgstr ""
@@ -1787,6 +1795,14 @@ msgstr ""
 msgid "Feedback"
 msgstr "Opinia"
 
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "FINAL CONFIRMATION: Pressing the button will start MFA verification and transfer ownership after it succeeds."
+msgstr ""
+
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "FINAL WARNING: Verify the selected member carefully. The new owner will control this server."
+msgstr ""
+
 #: src/interface/Home.tsx
 #~ msgid "Find a community based on your hobbies or interests."
 #~ msgstr "Znajdź społeczność w oparciu o własne hobby lub zainteresowania."
@@ -1962,6 +1978,10 @@ msgstr "Strona główna"
 #: src/interface/channels/AgeGate.tsx
 #~ msgid "I confirm that I am at least 18 years old."
 #~ msgstr "Potwierdzam, że mam przynajmniej 18 lat."
+
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "I UNDERSTAND — CONFIRM NEXT WARNING"
+msgstr ""
 
 #: components/modal/modals/LinkWarning.tsx
 msgid "I understand the consequences"
@@ -3191,6 +3211,7 @@ msgid "Select a member"
 msgstr ""
 
 #: components/modal/modals/TransferServerOwnership.tsx
+#: components/modal/modals/TransferServerOwnership.tsx
 msgid "Select a member first."
 msgstr ""
 
@@ -3836,7 +3857,6 @@ msgstr ""
 msgid "Traditional (DD/MM/YYYY)"
 msgstr ""
 
-#: components/modal/modals/TransferServerOwnership.tsx
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Transfer ownership"
 msgstr ""
@@ -4125,6 +4145,18 @@ msgstr ""
 msgid "Want to change username?"
 msgstr ""
 
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "WARNING: After the transfer, you will no longer be the server owner and this action cannot be undone from this dialog."
+msgstr ""
+
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "WARNING: Ownership transfer is a serious account action. Do not continue unless you intentionally want to give this server away."
+msgstr ""
+
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "WARNING: You may lose access to owner-only server settings immediately after the transfer."
+msgstr ""
+
 #: components/auth/src/flows/FlowCheck.tsx
 msgid "We've sent you a verification email. Please allow up to 10 minutes for it to arrive."
 msgstr "Wysłaliśmy wiadomość weryfikacyjną. Proszę poczekaj do 10 minut na jej nadejście."
@@ -4246,6 +4278,10 @@ msgstr ""
 #: src/interface/Home.tsx
 #~ msgid "You can also right-click the user icon in the top left, or left click it if you're already home."
 #~ msgstr "Możesz również kliknąć prawym przyciskiem myszy na ikonę użytkownika w lewym górnym rogu lub kliknąć ją lewym przyciskiem myszy, jeśli jesteś już na stronie głównej."
+
+#: src/Interface.tsx
+msgid "You can download the Desktop Version of TailsTalk here"
+msgstr ""
 
 #: components/modal/modals/DeleteChannel.tsx
 msgid "You can re-open it later, but it will disappear on both sides."
