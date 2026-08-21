@@ -1550,6 +1550,10 @@ msgstr ""
 msgid "Drugs or illegal goods"
 msgstr ""
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Each question needs an id, prompt, options, and a role_id on every option. Set multiple to true to allow more than one answer."
+msgstr ""
+
 #. placeholder {0}: props.member.displayName
 #: components/modal/modals/UserProfileRoles.tsx
 msgid "Edit {0}'s roles"
@@ -2851,6 +2855,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Publish to theme store"
+msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Questions (JSON)"
 msgstr ""
 
 #: components/modal/modals/ReportContent.tsx

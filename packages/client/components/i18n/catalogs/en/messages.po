@@ -1550,6 +1550,10 @@ msgstr "Download backup"
 msgid "Drugs or illegal goods"
 msgstr "Drugs or illegal goods"
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Each question needs an id, prompt, options, and a role_id on every option. Set multiple to true to allow more than one answer."
+msgstr "Each question needs an id, prompt, options, and a role_id on every option. Set multiple to true to allow more than one answer."
+
 #. placeholder {0}: props.member.displayName
 #: components/modal/modals/UserProfileRoles.tsx
 msgid "Edit {0}'s roles"
@@ -2852,6 +2856,10 @@ msgstr "Provided email or password is wrong."
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Publish to theme store"
 msgstr "Publish to theme store"
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Questions (JSON)"
+msgstr "Questions (JSON)"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"

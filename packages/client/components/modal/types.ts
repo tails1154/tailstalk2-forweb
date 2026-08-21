@@ -244,7 +244,14 @@ export type Modals =
         title: string;
         message: string;
         rules: string;
+        questions: {
+          id: string;
+          prompt: string;
+          multiple: boolean;
+          options: { id: string; label: string; role_id: string }[];
+        }[];
       };
+      onComplete?: () => void;
     }
   | {
       type: "server_identity";

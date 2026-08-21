@@ -179,13 +179,17 @@ const Server: Component = () => {
   createEffect(() => {
     const current = server();
     if (!current || shownOnboarding.has(current.id)) return;
-    shownOnboarding.add(current.id);
-    client().api.get(`/servers/${current.id}/onboarding`).then((onboarding) => {
-      const settings = onboarding as { enabled: boolean; title: string; message: string; rules: string };
-      const key = `tailstalk2:onboarding:${client().user?.id}:${current.id}`;
+    client().api.get(`/servers/${current.id}/onboarding` as never).then((onboarding) => {
+      shownOnboarding.add(current.id);
+      const settings = onboarding as { enabled: boolean; title: string; message: string; rules: string; questions: unknown[] };
+      const key = `tailstalk2:onboarding:v2:${client().user?.id}:${current.id}`;
       if (settings.enabled && !localStorage.getItem(key)) {
-        localStorage.setItem(key, "1");
-        openModal({ type: "server_onboarding", server: current, onboarding: settings });
+        openModal({
+          type: "server_onboarding",
+          server: current,
+          onboarding: settings as never,
+          onComplete: () => localStorage.setItem(key, "1"),
+        });
       }
     }).catch(() => undefined);
   });

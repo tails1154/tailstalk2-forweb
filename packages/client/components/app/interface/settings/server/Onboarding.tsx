@@ -14,7 +14,17 @@ type ServerOnboarding = {
   title: string;
   message: string;
   rules: string;
+  questions: OnboardingQuestion[];
 };
+
+type OnboardingQuestion = {
+  id: string;
+  prompt: string;
+  multiple: boolean;
+  options: { id: string; label: string; role_id: string }[];
+};
+
+const emptyQuestions = "[]";
 
 export default function ServerOnboardingSettings(props: ServerSettingsProps) {
   const { t } = useLingui();
@@ -22,13 +32,14 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
   const path = `/servers/${props.server.id}/onboarding`;
   const settings = useQuery(() => ({
     queryKey: ["server-onboarding", props.server.id],
-    queryFn: () => client().api.get(path) as Promise<ServerOnboarding>,
+    queryFn: () => client().api.get(path as never) as Promise<ServerOnboarding>,
   }));
   const group = createFormGroup({
     enabled: createFormControl(false),
     title: createFormControl(""),
     message: createFormControl(""),
     rules: createFormControl(""),
+    questions: createFormControl(emptyQuestions),
   });
 
   createEffect(() => {
@@ -38,18 +49,24 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
       group.controls.title.setValue(value.title);
       group.controls.message.setValue(value.message);
       group.controls.rules.setValue(value.rules);
+      group.controls.questions.setValue(
+        JSON.stringify(value.questions ?? [], null, 2),
+      );
     }
   });
 
   const save = useMutation(() => ({
-    mutationFn: () =>
-      client().api.patch(path, {
+    mutationFn: () => {
+      const questions = JSON.parse(group.controls.questions.value) as OnboardingQuestion[];
+      return client().api.patch(path as never, {
         enabled: group.controls.enabled.value,
         title: group.controls.title.value.trim(),
         message: group.controls.message.value.trim(),
         rules: group.controls.rules.value.trim(),
-      }),
-    onSuccess: () => group.markAsPristine(),
+        questions,
+      } as never);
+    },
+    onSuccess: () => undefined,
   }));
 
   function reset() {
@@ -58,9 +75,16 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
     group.controls.title.setValue(value?.title ?? "");
     group.controls.message.setValue(value?.message ?? "");
     group.controls.rules.setValue(value?.rules ?? "");
+    group.controls.questions.setValue(
+      JSON.stringify(value?.questions ?? [], null, 2),
+    );
   }
 
-  const submit = Form2.useSubmitHandler(group, () => save.mutateAsync(), reset);
+  const submit = Form2.useSubmitHandler(
+    group,
+    () => save.mutateAsync().then(() => undefined),
+    reset,
+  );
 
   return (
     <Column gap="xl">
@@ -77,6 +101,8 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
             <Form2.TextField name="onboarding-title" control={group.controls.title} label={t`Welcome title`} maxlength={80} />
             <Form2.TextField name="onboarding-message" control={group.controls.message} label={t`Welcome message`} rows={4} maxlength={2000} />
             <Form2.TextField name="onboarding-rules" control={group.controls.rules} label={t`Server rules`} rows={6} maxlength={5000} />
+            <Form2.TextField name="onboarding-questions" control={group.controls.questions} label={t`Questions (JSON)`} rows={12} />
+            <Text><Trans>Each question needs an id, prompt, options, and a role_id on every option. Set multiple to true to allow more than one answer.</Trans></Text>
             <Row>
               <Form2.Reset group={group} onReset={reset} />
               <Form2.Submit group={group} requireDirty><Trans>Save</Trans></Form2.Submit>
