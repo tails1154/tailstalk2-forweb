@@ -384,6 +384,10 @@ msgstr "Add a new friend"
 msgid "Add account"
 msgstr "Add account"
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Add answer"
+msgstr "Add answer"
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Add friend"
 msgstr "Add friend"
@@ -400,6 +404,10 @@ msgstr "Add new members to the group"
 #: src/interface/channels/text/Composition.tsx
 #~ msgid "Add option"
 #~ msgstr "Add option"
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Add question"
+msgstr "Add question"
 
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Add status text"
@@ -445,6 +453,10 @@ msgstr "All Messages"
 msgid "Allow members to change name and avatar per-message"
 msgstr "Allow members to change name and avatar per-message"
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Allow members to choose more than one answer"
+msgstr "Allow members to choose more than one answer"
+
 #: src/interface/channels/text/Composition.tsx
 #~ msgid "Allow multiple selections"
 #~ msgstr "Allow multiple selections"
@@ -481,6 +493,14 @@ msgstr "An internal error occurred. ({0})"
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Analytics"
 msgstr "Analytics"
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Announcements"
+msgstr "Announcements"
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Answer"
+msgstr "Answer"
 
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Appearance"
@@ -823,6 +843,10 @@ msgstr "Choose a current member to become the new owner. This requires five conf
 #: components/modal/modals/TransferServerOwnership.tsx
 #~ msgid "Choose a current member to become the new owner. You will lose ownership and may lose access to server settings."
 #~ msgstr "Choose a current member to become the new owner. You will lose ownership and may lose access to server settings."
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Choose a role"
+msgstr "Choose a role"
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Choose a username"
@@ -1353,6 +1377,10 @@ msgstr "Delete Account"
 msgid "Delete and pin messages sent by other members"
 msgstr "Delete and pin messages sent by other members"
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Delete answer"
+msgstr "Delete answer"
+
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Delete Bot"
 msgstr "Delete Bot"
@@ -1383,6 +1411,10 @@ msgstr "Delete message"
 #: components/modal/modals/BanMember.tsx
 msgid "Delete Message History"
 msgstr "Delete Message History"
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Delete question"
+msgstr "Delete question"
 
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
 msgid "Delete Role"
@@ -1551,8 +1583,8 @@ msgid "Drugs or illegal goods"
 msgstr "Drugs or illegal goods"
 
 #: components/app/interface/settings/server/Onboarding.tsx
-msgid "Each question needs an id, prompt, options, and a role_id on every option. Set multiple to true to allow more than one answer."
-msgstr "Each question needs an id, prompt, options, and a role_id on every option. Set multiple to true to allow more than one answer."
+#~ msgid "Each question needs an id, prompt, options, and a role_id on every option. Set multiple to true to allow more than one answer."
+#~ msgstr "Each question needs an id, prompt, options, and a role_id on every option. Set multiple to true to allow more than one answer."
 
 #. placeholder {0}: props.member.displayName
 #: components/modal/modals/UserProfileRoles.tsx
@@ -1956,6 +1988,10 @@ msgstr "Hello!"
 #: components/app/interface/settings/user/Language.tsx
 msgid "Help contribute to an existing or new language"
 msgstr "Help contribute to an existing or new language"
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Help members pick the roles that fit them."
+msgstr "Help members pick the roles that fit them."
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Helped translate TailsTalk 2"
@@ -2569,6 +2605,10 @@ msgstr "No feature requests"
 msgid "No permissions set yet"
 msgstr "No permissions set yet"
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "No questions yet. Add one if members should choose roles during onboarding."
+msgstr "No questions yet. Add one if members should choose roles during onboarding."
+
 #: src/interface/Discover.tsx
 #~ msgid "No servers found."
 #~ msgstr "No servers found."
@@ -2858,8 +2898,17 @@ msgid "Publish to theme store"
 msgstr "Publish to theme store"
 
 #: components/app/interface/settings/server/Onboarding.tsx
-msgid "Questions (JSON)"
-msgstr "Questions (JSON)"
+msgid "Question"
+msgstr "Question"
+
+#. placeholder {0}: questionIndex() + 1
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Question {0}"
+msgstr "Question {0}"
+
+#: components/app/interface/settings/server/Onboarding.tsx
+#~ msgid "Questions (JSON)"
+#~ msgstr "Questions (JSON)"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"
@@ -3125,6 +3174,14 @@ msgstr "Role Icon"
 msgid "Role Name"
 msgstr "Role Name"
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Role questions"
+msgstr "Role questions"
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Role to assign"
+msgstr "Role to assign"
+
 #: components/ui/components/features/profiles/ProfileRoles.tsx
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Roles"
@@ -3373,9 +3430,12 @@ msgid "Server Roles"
 msgstr "Server Roles"
 
 #: components/modal/modals/ServerOnboarding.tsx
-#: components/app/interface/settings/server/Onboarding.tsx
 msgid "Server rules"
 msgstr "Server rules"
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Server rules (one per line)"
+msgstr "Server rules (one per line)"
 
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Sessions"
@@ -3424,8 +3484,8 @@ msgid "Show corrections and suggestions as you type."
 msgstr "Show corrections and suggestions as you type."
 
 #: components/app/interface/settings/server/Onboarding.tsx
-msgid "Show new members a welcome message and server rules when they first join."
-msgstr "Show new members a welcome message and server rules when they first join."
+#~ msgid "Show new members a welcome message and server rules when they first join."
+#~ msgstr "Show new members a welcome message and server rules when they first join."
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
 msgid "Show Others"
@@ -4203,6 +4263,10 @@ msgid "Welcome message"
 msgstr "Welcome message"
 
 #: components/app/interface/settings/server/Onboarding.tsx
+msgid "Welcome new members, share your rules, and let them choose roles before they enter the server."
+msgstr "Welcome new members, share your rules, and let them choose roles before they enter the server."
+
+#: components/app/interface/settings/server/Onboarding.tsx
 msgid "Welcome title"
 msgstr "Welcome title"
 
@@ -4230,6 +4294,10 @@ msgstr "What's New"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Whether other users can edit these settings"
 msgstr "Whether other users can edit these settings"
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Which topics are you interested in?"
+msgstr "Which topics are you interested in?"
 
 #. placeholder {0}: names.join(", ")
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx

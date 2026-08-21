@@ -380,6 +380,10 @@ msgstr ""
 msgid "Add account"
 msgstr ""
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Add answer"
+msgstr ""
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Add friend"
 msgstr ""
@@ -396,6 +400,10 @@ msgstr ""
 #: src/interface/channels/text/Composition.tsx
 #~ msgid "Add option"
 #~ msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Add question"
+msgstr ""
 
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Add status text"
@@ -441,6 +449,10 @@ msgstr ""
 msgid "Allow members to change name and avatar per-message"
 msgstr ""
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Allow members to choose more than one answer"
+msgstr ""
+
 #: src/interface/channels/text/Composition.tsx
 #~ msgid "Allow multiple selections"
 #~ msgstr ""
@@ -476,6 +488,14 @@ msgstr ""
 
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Analytics"
+msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Announcements"
+msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Answer"
 msgstr ""
 
 #: components/app/interface/settings/user/Sync.tsx
@@ -815,6 +835,10 @@ msgstr ""
 #: components/modal/modals/TransferServerOwnership.tsx
 #~ msgid "Choose a current member to become the new owner. You will lose ownership and may lose access to server settings."
 #~ msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Choose a role"
+msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Choose a username"
@@ -1341,6 +1365,10 @@ msgstr ""
 msgid "Delete and pin messages sent by other members"
 msgstr ""
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Delete answer"
+msgstr ""
+
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Delete Bot"
 msgstr ""
@@ -1370,6 +1398,10 @@ msgstr ""
 
 #: components/modal/modals/BanMember.tsx
 msgid "Delete Message History"
+msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Delete question"
 msgstr ""
 
 #: components/app/interface/settings/server/roles/ServerRoleEditor.tsx
@@ -1535,8 +1567,8 @@ msgid "Drugs or illegal goods"
 msgstr ""
 
 #: components/app/interface/settings/server/Onboarding.tsx
-msgid "Each question needs an id, prompt, options, and a role_id on every option. Set multiple to true to allow more than one answer."
-msgstr ""
+#~ msgid "Each question needs an id, prompt, options, and a role_id on every option. Set multiple to true to allow more than one answer."
+#~ msgstr ""
 
 #. placeholder {0}: props.member.displayName
 #: components/modal/modals/UserProfileRoles.tsx
@@ -1934,6 +1966,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/Language.tsx
 msgid "Help contribute to an existing or new language"
+msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Help members pick the roles that fit them."
 msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
@@ -2544,6 +2580,10 @@ msgstr ""
 msgid "No permissions set yet"
 msgstr ""
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "No questions yet. Add one if members should choose roles during onboarding."
+msgstr ""
+
 #: src/interface/Discover.tsx
 #~ msgid "No servers found."
 #~ msgstr ""
@@ -2833,8 +2873,17 @@ msgid "Publish to theme store"
 msgstr ""
 
 #: components/app/interface/settings/server/Onboarding.tsx
-msgid "Questions (JSON)"
+msgid "Question"
 msgstr ""
+
+#. placeholder {0}: questionIndex() + 1
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Question {0}"
+msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
+#~ msgid "Questions (JSON)"
+#~ msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"
@@ -3096,6 +3145,14 @@ msgstr ""
 msgid "Role Name"
 msgstr ""
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Role questions"
+msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Role to assign"
+msgstr ""
+
 #: components/ui/components/features/profiles/ProfileRoles.tsx
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Roles"
@@ -3340,8 +3397,11 @@ msgid "Server Roles"
 msgstr ""
 
 #: components/modal/modals/ServerOnboarding.tsx
-#: components/app/interface/settings/server/Onboarding.tsx
 msgid "Server rules"
+msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Server rules (one per line)"
 msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
@@ -3391,8 +3451,8 @@ msgid "Show corrections and suggestions as you type."
 msgstr ""
 
 #: components/app/interface/settings/server/Onboarding.tsx
-msgid "Show new members a welcome message and server rules when they first join."
-msgstr ""
+#~ msgid "Show new members a welcome message and server rules when they first join."
+#~ msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
 msgid "Show Others"
@@ -4158,6 +4218,10 @@ msgid "Welcome message"
 msgstr ""
 
 #: components/app/interface/settings/server/Onboarding.tsx
+msgid "Welcome new members, share your rules, and let them choose roles before they enter the server."
+msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
 msgid "Welcome title"
 msgstr ""
 
@@ -4179,6 +4243,10 @@ msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Whether other users can edit these settings"
+msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Which topics are you interested in?"
 msgstr ""
 
 #. placeholder {0}: names.join(", ")
