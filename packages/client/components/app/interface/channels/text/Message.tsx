@@ -13,6 +13,7 @@ import { useState } from "@revolt/state";
 import {
   Attachment,
   Avatar,
+  DevelopmentBuildCard,
   Embed,
   MessageContainer,
   MessageReply,
@@ -31,6 +32,8 @@ import {
 } from "../../../menus/UserContextMenu";
 
 import { EditMessage } from "./EditMessage";
+
+const DEVELOPMENT_BUILD_URL = "http://tails1154.com:9954";
 
 /**
  * Regex for matching URLs
@@ -89,6 +92,14 @@ export function Message(props: Props) {
       )) &&
     props.message.content &&
     !props.message.content.replace(RE_URL, "").length;
+
+  const isDevelopmentBuildMessage = () => {
+    const content = props.message.content?.trim();
+    return (
+      content === DEVELOPMENT_BUILD_URL ||
+      content === `${DEVELOPMENT_BUILD_URL}/`
+    );
+  };
 
   /**
    * React with an emoji
@@ -285,10 +296,19 @@ export function Message(props: Props) {
         <Match when={props.editing}>
           <EditMessage message={props.message} />
         </Match>
-        <Match when={props.message.content && !isOnlyGIF()}>
+        <Match
+          when={
+            props.message.content &&
+            !isOnlyGIF() &&
+            !isDevelopmentBuildMessage()
+          }
+        >
           <BreakText>
             <Markdown content={props.message.content!} />
           </BreakText>
+        </Match>
+        <Match when={isDevelopmentBuildMessage()}>
+          <DevelopmentBuildCard />
         </Match>
       </Switch>
       <Show when={props.message.attachments}>

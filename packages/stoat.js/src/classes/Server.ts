@@ -391,7 +391,10 @@ export class Server {
    * Edit a server
    * @param data Changes
    */
-  async edit(data: DataEditServer): Promise<void> {
+  async edit(
+    data: DataEditServer,
+    options?: { mfaTicket?: string },
+  ): Promise<void> {
     this.#collection.updateUnderlyingObject(
       this.id,
       hydrate(
@@ -399,6 +402,9 @@ export class Server {
         await this.#collection.client.api.patch(
           `/servers/${this.id as ""}`,
           data,
+          options?.mfaTicket
+            ? { headers: { "X-MFA-Ticket": options.mfaTicket } }
+            : undefined,
         ),
         this.#collection.client,
         false,

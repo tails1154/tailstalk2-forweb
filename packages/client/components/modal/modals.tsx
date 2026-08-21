@@ -3,10 +3,10 @@ import { mergeProps, splitProps } from "solid-js";
 import { CONFIGURATION } from "@revolt/common";
 
 import { type ActiveModal } from ".";
+import { AccountSwitcherModal } from "./modals/AccountSwitcher";
 import { AddBotModal } from "./modals/AddBot";
 import { AddFriendModal } from "./modals/AddFriend";
 import { AddMembersToGroupModal } from "./modals/AddMembersToGroup";
-import { AccountSwitcherModal } from "./modals/AccountSwitcher";
 import { BanMemberModal } from "./modals/BanMember";
 import { BanNonMemberModal } from "./modals/BanNonMember";
 import { ChangelogModal } from "./modals/Changelog";
@@ -60,6 +60,7 @@ import { SettingsModal } from "./modals/Settings";
 import { SignOutSessionsModal } from "./modals/SignOutSessions";
 import { SignedOutModal } from "./modals/SignedOut";
 import { SourceCodeModal } from "./modals/SourceCode";
+import { TransferServerOwnershipModal } from "./modals/TransferServerOwnership";
 import { UserProfileModal } from "./modals/UserProfile";
 import { UserProfileMutualFriendsModal } from "./modals/UserProfileMutualFriends";
 import { UserProfileMutualGroupsModal } from "./modals/UserProfileMutualGroups";
@@ -134,6 +135,8 @@ export function RenderModal(props: ActiveModal & { onClose: () => void }) {
       return <DeleteRoleModal {...modalProps} />;
     case "delete_server":
       return <DeleteServerModal {...modalProps} />;
+    case "transfer_server_ownership":
+      return <TransferServerOwnershipModal {...modalProps} />;
     case "edit_email":
       return <EditEmailModal {...modalProps} />;
     case "edit_password":

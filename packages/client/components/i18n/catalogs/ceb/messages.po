@@ -686,6 +686,7 @@ msgstr ""
 msgid "Bypasses slowmode in channels"
 msgstr ""
 
+#: components/modal/modals/TransferServerOwnership.tsx
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/ServerIdentity.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
@@ -814,6 +815,10 @@ msgstr "Mga Channel"
 #: components/auth/src/flows/FlowCheck.tsx
 msgid "Check your mail!"
 msgstr "Tan-awa ang imong mail!"
+
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "Choose a current member to become the new owner. You will lose ownership and may lose access to server settings."
+msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Choose a username"
@@ -1419,6 +1424,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/bots/MyBots.tsx
 msgid "Developer Documentation"
+msgstr ""
+
+#: components/ui/components/features/messaging/elements/Embed.tsx
+msgid "Development Build"
 msgstr ""
 
 #: components/app/interface/settings/user/Account.tsx
@@ -2197,6 +2206,10 @@ msgstr ""
 msgid "Loading feature requests..."
 msgstr ""
 
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "Loading members…"
+msgstr ""
+
 #: src/interface/Discover.tsx
 msgid "Loading..."
 msgstr ""
@@ -2497,6 +2510,10 @@ msgstr ""
 #. placeholder {0}: dayjs(decodeTime(props.lastId()!)).fromNow()
 #: components/ui/components/features/messaging/bars/NewMessages.tsx
 msgid "New messages since {0}"
+msgstr ""
+
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "New owner"
 msgstr ""
 
 #: components/modal/modals/EditPassword.tsx
@@ -3169,6 +3186,14 @@ msgstr ""
 msgid "See which members have earned the most XP in this server."
 msgstr ""
 
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "Select a member"
+msgstr ""
+
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "Select a member first."
+msgstr ""
+
 #: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
 msgid "Select audio input"
 msgstr ""
@@ -3811,6 +3836,15 @@ msgstr ""
 msgid "Traditional (DD/MM/YYYY)"
 msgstr ""
 
+#: components/modal/modals/TransferServerOwnership.tsx
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Transfer ownership"
+msgstr ""
+
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "Transfer server ownership"
+msgstr ""
+
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "Trending GIFs"
 msgstr ""
@@ -3909,6 +3943,10 @@ msgstr ""
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Upload Files"
 msgstr "Pag-upload sa mga File."
+
+#: components/ui/components/features/messaging/elements/Embed.tsx
+msgid "Use"
+msgstr ""
 
 #: components/modal/modals/JoinServer.tsx
 msgid "Use a code or invite link"
@@ -4273,6 +4311,11 @@ msgstr ""
 #: components/ui/components/features/messaging/composition/MessageBox.tsx
 msgid "You don't have permission to send messages in this channel."
 msgstr "Dili ka gitugotan nga magpadala og mga mensahe diriang channel."
+
+#: components/auth/src/flows/FlowLogin.tsx
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "You don't have to put @cats.angletonisd.net in this box or your ID is invalid. Please remove it"
+msgstr ""
 
 #: components/i18n/errors.ts
 msgid "You have been locked out for entering a wrong password multiple times. Please wait a couple minutes and try again."

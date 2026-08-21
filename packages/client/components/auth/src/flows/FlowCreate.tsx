@@ -5,13 +5,25 @@ import { CONFIGURATION } from "@revolt/common";
 import { useModals } from "@revolt/modal";
 import { useNavigate, useParams } from "@revolt/routing";
 import { Button, Column, Dialog, Row, Text, iconSize } from "@revolt/ui";
+import { styled } from "styled-system/jsx";
 
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
 import { createSignal, Show } from "solid-js";
 import { FlowTitle } from "./Flow";
 import { setFlowCheckEmail } from "./FlowCheck";
-import { Fields, Form } from "./Form";
+import { Fields, Form, isInvalidStudentId } from "./Form";
+
+const AccountWarning = styled("div", {
+  base: {
+    padding: "12px 16px",
+    borderRadius: "12px",
+    color: "var(--md-sys-color-on-error-container)",
+    background: "var(--md-sys-color-error-container)",
+    fontSize: "0.9em",
+    lineHeight: "1.4",
+  },
+});
 
 /**
  * Flow for creating a new account
@@ -23,6 +35,7 @@ export default function FlowCreate() {
   const { code } = useParams();
   const modals = useModals();
   const [aisdChoice, setAisdChoice] = createSignal<boolean | null>(null);
+  const [studentIdError, setStudentIdError] = createSignal(false);
   const isAisdStudent = () => aisdChoice() === true;
   const { login } = useClientLifecycle();
 
@@ -32,6 +45,11 @@ export default function FlowCreate() {
    */
   async function create(data: FormData) {
     const studentId = (data.get("student-id") as string | null)?.trim();
+    if (isAisdStudent() && isInvalidStudentId(studentId ?? "")) {
+      setStudentIdError(true);
+      return;
+    }
+    setStudentIdError(false);
     const email = isAisdStudent()
       ? `${studentId}@cats.angletonisd.net`
       : (data.get("email") as string);
@@ -102,6 +120,11 @@ export default function FlowCreate() {
               "new-password",
             ]}
           />
+          <Show when={studentIdError()}>
+            <AccountWarning role="alert">
+              <Trans>You don't have to put @cats.angletonisd.net in this box or your ID is invalid. Please remove it</Trans>
+            </AccountWarning>
+          </Show>
           <Show when={isInviteOnly()}>
             <Fields fields={[{ field: "invite", value: code }]} />
           </Show>

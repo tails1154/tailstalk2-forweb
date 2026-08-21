@@ -132,6 +132,10 @@ export type Modals =
       server: Server;
     }
   | {
+      type: "transfer_server_ownership";
+      server: Server;
+    }
+  | {
       type: "delete_role";
       role: ServerRole;
       cb: () => void;

@@ -18,11 +18,11 @@ import { ColouredText } from "@revolt/ui";
 
 import { SettingsConfiguration } from ".";
 import { ChannelPermissionsEditor } from "./channel/permissions/ChannelPermissionsEditor";
-import Overview from "./server/Overview";
 import ServerAnalyticsSettings from "./server/Analytics";
-import ServerOnboardingSettings from "./server/Onboarding";
-import ServerLeaderboard from "./server/Leaderboard";
 import ServerBackupSettings from "./server/Backup";
+import ServerLeaderboard from "./server/Leaderboard";
+import ServerOnboardingSettings from "./server/Onboarding";
+import Overview from "./server/Overview";
 import ServerXPSettings from "./server/XP";
 import { ListServerBans } from "./server/bans/ListBans";
 import { EmojiList } from "./server/emojis/EmojiList";
@@ -201,6 +201,16 @@ const Config: SettingsConfiguration<Server> = {
         {
           hidden: !(server.ownerId === user()?.id),
           entries: [
+            {
+              icon: <BiSolidGroup size={20} />,
+              title: <Trans>Transfer ownership</Trans>,
+              onClick() {
+                openModal({
+                  type: "transfer_server_ownership",
+                  server,
+                });
+              },
+            },
             {
               icon: (
                 <BiSolidTrash size={20} color="var(--md-sys-color-error)" />

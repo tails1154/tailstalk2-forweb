@@ -97,7 +97,7 @@ const Interface = (props: { children: JSX.Element }) => {
               You can download the Desktop Version of TailsTalk here{" "}
             </BannerText>
             <DownloadButton
-              href="https://tails1154.com:9782/tailstalk/download.html"
+              href="https://github.com/tailstalk2-fordesktop/releases"
               target="_blank"
               rel="noreferrer"
             >

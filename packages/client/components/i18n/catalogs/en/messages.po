@@ -686,6 +686,7 @@ msgstr "Bypass Slowmode"
 msgid "Bypasses slowmode in channels"
 msgstr "Bypasses slowmode in channels"
 
+#: components/modal/modals/TransferServerOwnership.tsx
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/ServerIdentity.tsx
 #: components/modal/modals/ScreenShareSettings.tsx
@@ -814,6 +815,10 @@ msgstr "Channels"
 #: components/auth/src/flows/FlowCheck.tsx
 msgid "Check your mail!"
 msgstr "Check your mail!"
+
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "Choose a current member to become the new owner. You will lose ownership and may lose access to server settings."
+msgstr "Choose a current member to become the new owner. You will lose ownership and may lose access to server settings."
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Choose a username"
@@ -1420,6 +1425,10 @@ msgstr "Desktop"
 #: components/app/interface/settings/user/bots/MyBots.tsx
 msgid "Developer Documentation"
 msgstr "Developer Documentation"
+
+#: components/ui/components/features/messaging/elements/Embed.tsx
+msgid "Development Build"
+msgstr "Development Build"
 
 #: components/app/interface/settings/user/Account.tsx
 msgid "Disable Account"
@@ -2197,6 +2206,10 @@ msgstr "Loading Discovery submissions..."
 msgid "Loading feature requests..."
 msgstr "Loading feature requests..."
 
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "Loading members…"
+msgstr "Loading members…"
+
 #: src/interface/Discover.tsx
 msgid "Loading..."
 msgstr "Loading..."
@@ -2498,6 +2511,10 @@ msgstr "NEW"
 #: components/ui/components/features/messaging/bars/NewMessages.tsx
 msgid "New messages since {0}"
 msgstr "New messages since {0}"
+
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "New owner"
+msgstr "New owner"
 
 #: components/modal/modals/EditPassword.tsx
 #: components/auth/src/flows/Form.tsx
@@ -3169,6 +3186,14 @@ msgstr "See an overview of activity and membership in your server."
 msgid "See which members have earned the most XP in this server."
 msgstr "See which members have earned the most XP in this server."
 
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "Select a member"
+msgstr "Select a member"
+
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "Select a member first."
+msgstr "Select a member first."
+
 #: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
 msgid "Select audio input"
 msgstr "Select audio input"
@@ -3811,6 +3836,15 @@ msgstr "Total messages"
 msgid "Traditional (DD/MM/YYYY)"
 msgstr "Traditional (DD/MM/YYYY)"
 
+#: components/modal/modals/TransferServerOwnership.tsx
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Transfer ownership"
+msgstr "Transfer ownership"
+
+#: components/modal/modals/TransferServerOwnership.tsx
+msgid "Transfer server ownership"
+msgstr "Transfer server ownership"
+
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "Trending GIFs"
 msgstr "Trending GIFs"
@@ -3909,6 +3943,10 @@ msgstr "Until I turn it back on"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Upload Files"
 msgstr "Upload Files"
+
+#: components/ui/components/features/messaging/elements/Embed.tsx
+msgid "Use"
+msgstr "Use"
 
 #: components/modal/modals/JoinServer.tsx
 msgid "Use a code or invite link"
@@ -4273,6 +4311,11 @@ msgstr "You do not have permission to do this."
 #: components/ui/components/features/messaging/composition/MessageBox.tsx
 msgid "You don't have permission to send messages in this channel."
 msgstr "You don't have permission to send messages in this channel."
+
+#: components/auth/src/flows/FlowLogin.tsx
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "You don't have to put @cats.angletonisd.net in this box or your ID is invalid. Please remove it"
+msgstr "You don't have to put @cats.angletonisd.net in this box or your ID is invalid. Please remove it"
 
 #: components/i18n/errors.ts
 msgid "You have been locked out for entering a wrong password multiple times. Please wait a couple minutes and try again."

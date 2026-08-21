@@ -3,6 +3,10 @@ export { BlockedMessage } from "./BlockedMessage";
 export { MessageContainer } from "./Container";
 export { ConversationStart } from "./ConversationStart";
 export { Embed } from "./Embed";
+export {
+  DEVELOPMENT_BUILD_URL,
+  DevelopmentBuildCard,
+} from "./Embed";
 export { FileInfo } from "./FileInfo";
 export { MessageDivider } from "./MessageDivider";
 export { MessageReply } from "./MessageReply";

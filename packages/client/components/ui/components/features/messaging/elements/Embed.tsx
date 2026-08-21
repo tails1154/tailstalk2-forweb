@@ -8,17 +8,53 @@ import {
   WebsiteEmbed,
 } from "stoat.js";
 import { css } from "styled-system/css";
+import { styled } from "styled-system/jsx";
 
+import { Trans } from "@lingui-solid/solid/macro";
 import { useModals } from "@revolt/modal";
+import { Button, Column, Text } from "@revolt/ui";
 import { SizedContent } from "@revolt/ui/components/utils";
 
 import { TextEmbed } from "./TextEmbed";
+
+export const DEVELOPMENT_BUILD_URL = "http://tails1154.com:9954";
+
+export function DevelopmentBuildCard() {
+  return (
+    <DevelopmentBuildCardContainer>
+      <Column gap="xs">
+        <Text class="title" size="medium">
+          <Trans>Development Build</Trans>
+        </Text>
+        <Text class="body" size="small">
+          {DEVELOPMENT_BUILD_URL}
+        </Text>
+      </Column>
+      <Button onPress={() => window.location.assign(DEVELOPMENT_BUILD_URL)}>
+        <Trans>Use</Trans>
+      </Button>
+    </DevelopmentBuildCardContainer>
+  );
+}
 
 /**
  * Render a given embed
  */
 export function Embed(props: { embed: MessageEmbed }) {
   const { openModal } = useModals();
+
+  const isDevelopmentBuild = () => {
+    if (props.embed.type !== "Website") return false;
+    const embed = props.embed as WebsiteEmbed;
+    return [embed.originalUrl, embed.url].some((url) => {
+      try {
+        const parsed = new URL(url ?? "");
+        return parsed.protocol === "http:" && parsed.hostname === "tails1154.com" && parsed.port === "9954";
+      } catch {
+        return false;
+      }
+    });
+  };
 
   const isGifukaiUrl = (url: string) => {
     try {
@@ -57,6 +93,9 @@ export function Embed(props: { embed: MessageEmbed }) {
 
   return (
     <Switch fallback={`Could not render ${props.embed.type}!`}>
+      <Match when={isDevelopmentBuild()}>
+        <DevelopmentBuildCard />
+      </Match>
       <Match when={image()}>
         <SizedContent width={image()!.width} height={image()!.height}>
           <img
@@ -111,3 +150,16 @@ export function Embed(props: { embed: MessageEmbed }) {
     </Switch>
   );
 }
+
+const DevelopmentBuildCardContainer = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "16px",
+    padding: "14px 16px",
+    borderLeft: "4px solid var(--md-sys-color-primary)",
+    borderRadius: "8px",
+    background: "var(--md-sys-color-surface-container)",
+  },
+});

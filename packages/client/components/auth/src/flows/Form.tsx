@@ -58,7 +58,7 @@ const useFieldConfiguration = () => {
     },
     "student-id": {
       minLength: 1,
-      pattern: "[^\\s@]+",
+      pattern: "[^\\s]+",
       type: "text" as const,
       autocomplete: "username",
       name: () => t`Student ID`,
@@ -89,6 +89,10 @@ interface FieldProps {
    * Fields to gather
    */
   fields: (Field | FieldPreset)[];
+}
+
+export function isInvalidStudentId(value: string) {
+  return !value || /\s|@/u.test(value);
 }
 
 interface FieldPreset {
