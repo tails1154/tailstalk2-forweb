@@ -38,6 +38,7 @@ import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
 import MdChevronRight from "@material-design-icons/svg/filled/chevron_right.svg?component-solid";
 
+import MdReplay from "@material-symbols/svg-400/outlined/replay-fill.svg?component-solid";
 import MdSettings from "@material-symbols/svg-400/outlined/settings-fill.svg?component-solid";
 
 import { SidebarBase } from "./common";
@@ -62,6 +63,11 @@ interface Props {
    * Open server settings modal
    */
   openServerSettings: () => void;
+
+  /**
+   * Reopen server onboarding for the current member
+   */
+  openServerOnboarding?: () => void;
 
   /**
    * Menu generator
@@ -201,6 +207,7 @@ export const ServerSidebar = (props: Props) => {
               canManageServer={canManageServer()}
               openServerInfo={props.openServerInfo}
               openServerSettings={props.openServerSettings}
+              openServerOnboarding={props.openServerOnboarding}
             />
           </Header>
         }
@@ -218,6 +225,7 @@ export const ServerSidebar = (props: Props) => {
               canManageServer={canManageServer()}
               openServerInfo={props.openServerInfo}
               openServerSettings={props.openServerSettings}
+              openServerOnboarding={props.openServerOnboarding}
             />
           </Header>
         </Match>
@@ -256,10 +264,14 @@ export const ServerSidebar = (props: Props) => {
  * Server Information
  */
 function ServerInfo(
-  props: Pick<Props, "server" | "openServerInfo" | "openServerSettings"> & {
+  props: Pick<
+    Props,
+    "server" | "openServerInfo" | "openServerSettings" | "openServerOnboarding"
+  > & {
     canManageServer: boolean;
   },
 ) {
+  const { t } = useLingui();
   return (
     <Row align grow minWidth={0}>
       <ServerBadge flags={props.server.flags} />
@@ -275,6 +287,19 @@ function ServerInfo(
         >
           <MdSettings {...symbolSize(24)} />
         </IconButton>
+      </Show>
+      <Show when={props.openServerOnboarding}>
+        <Tooltip placement="bottom" content={t`Redo onboarding`}>
+          <IconButton
+            size="xs"
+            width="narrow"
+            variant={props.server.banner ? "_header" : "standard"}
+            aria-label={t`Redo onboarding`}
+            onPress={props.openServerOnboarding}
+          >
+            <MdReplay {...symbolSize(24)} />
+          </IconButton>
+        </Tooltip>
       </Show>
     </Row>
   );

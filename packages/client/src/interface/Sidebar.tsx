@@ -6,6 +6,7 @@ import {
   Switch,
   createEffect,
   createMemo,
+  createSignal,
 } from "solid-js";
 
 import { Channel, Server as ServerI } from "stoat.js";
@@ -170,6 +171,14 @@ const Server: Component = () => {
   const params = useSmartParams();
   const client = useClient();
   const shownOnboarding = new Set<string>();
+  const [onboarding, setOnboarding] = createSignal<{
+    enabled: boolean;
+    completed: boolean;
+    title: string;
+    message: string;
+    rules: string;
+    questions: unknown[];
+  }>();
 
   /**
    * Resolve the server
@@ -192,6 +201,7 @@ const Server: Component = () => {
           rules: string;
           questions: unknown[];
         };
+        setOnboarding(settings);
         if (settings.enabled && !settings.completed) {
           openModal({
             type: "server_onboarding",
@@ -202,6 +212,18 @@ const Server: Component = () => {
       })
       .catch(() => undefined);
   });
+
+  function openServerOnboarding() {
+    const current = server();
+    const settings = onboarding();
+    if (!current || !settings?.enabled) return;
+
+    openModal({
+      type: "server_onboarding",
+      server: current,
+      onboarding: settings as never,
+    });
+  }
 
   /**
    * Open the server information modal
@@ -231,6 +253,9 @@ const Server: Component = () => {
         channelId={params().channelId}
         openServerInfo={openServerInfo}
         openServerSettings={openServerSettings}
+        openServerOnboarding={
+          onboarding()?.enabled ? openServerOnboarding : undefined
+        }
         menuGenerator={(target) => ({
           contextMenu: () =>
             target instanceof Channel ? (

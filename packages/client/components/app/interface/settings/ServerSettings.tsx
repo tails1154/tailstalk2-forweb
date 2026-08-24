@@ -19,7 +19,6 @@ import { ColouredText } from "@revolt/ui";
 import { SettingsConfiguration } from ".";
 import { ChannelPermissionsEditor } from "./channel/permissions/ChannelPermissionsEditor";
 import ServerAnalyticsSettings from "./server/Analytics";
-import ServerBackupSettings from "./server/Backup";
 import ServerLeaderboard from "./server/Leaderboard";
 import ServerOnboardingSettings from "./server/Onboarding";
 import Overview from "./server/Overview";
@@ -83,8 +82,6 @@ const Config: SettingsConfiguration<Server> = {
         return <ServerOnboardingSettings server={server} />;
       case "leaderboard":
         return <ServerLeaderboard server={server} />;
-      case "backup":
-        return <ServerBackupSettings server={server} />;
       case "emojis":
         return <EmojiList server={server} />;
       case "roles":
@@ -150,11 +147,6 @@ const Config: SettingsConfiguration<Server> = {
               id: "leaderboard",
               icon: <BiSolidGroup size={20} />,
               title: <Trans>Leaderboard</Trans>,
-            },
-            {
-              id: "backup",
-              icon: <BiSolidInfoCircle size={20} />,
-              title: <Trans>Backup and restore</Trans>,
             },
             {
               id: "onboarding",

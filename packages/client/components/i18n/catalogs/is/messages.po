@@ -2997,6 +2997,10 @@ msgstr "Endurheimtarkóði"
 msgid "Recovery Codes"
 msgstr ""
 
+#: components/app/interface/settings/server/Onboarding.tsx
+msgid "Redo onboarding"
+msgstr ""
+
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Reduced"
 #~ msgstr ""
