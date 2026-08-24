@@ -9,7 +9,7 @@ import type { API } from "stoat-api";
  */
 export async function requestClientJson<T>(
   api: API,
-  method: "POST" | "PATCH" | "DELETE",
+  method: "GET" | "POST" | "PATCH" | "DELETE",
   path: string,
   body?: unknown,
 ): Promise<T> {

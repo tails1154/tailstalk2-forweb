@@ -10,6 +10,7 @@ import {
   Text,
   TextField,
   main,
+  useSnackbar,
 } from "@revolt/ui";
 import { css } from "styled-system/css";
 import { styled } from "styled-system/jsx";
@@ -30,6 +31,7 @@ type VideoPost = {
 export function Videos() {
   const { t } = useLingui();
   const client = useClient();
+  const snackbar = useSnackbar();
   const [caption, setCaption] = createSignal("");
   const [file, setFile] = createSignal<File>();
   const [busy, setBusy] = createSignal(false);
@@ -46,11 +48,19 @@ export function Videos() {
       const last = videos().at(-1);
       const query = new URLSearchParams({ limit: "20" });
       if (last) query.set("before", last.created_at);
-      const next = (await client().api.get(
-        `/videos?${query.toString()}` as never,
-      )) as VideoPost[];
+      const next = await requestClientJson<VideoPost[]>(
+        client().api,
+        "GET",
+        `/videos?${query.toString()}`,
+      );
       setVideos((current) => [...current, ...next]);
       setHasMore(next.length === 20);
+    } catch {
+      snackbar.show({
+        message: t`Unable to load videos right now. Please try again.`,
+        placement: "bottom",
+        closeable: true,
+      });
     } finally {
       setLoading(false);
     }
@@ -90,6 +100,12 @@ export function Videos() {
       setCaption("");
       setFile(undefined);
       setVideos((current) => [post, ...current]);
+    } catch {
+      snackbar.show({
+        message: t`Unable to post this video right now. Please try again.`,
+        placement: "bottom",
+        closeable: true,
+      });
     } finally {
       setBusy(false);
     }
@@ -160,7 +176,7 @@ export function Videos() {
                   <video
                     controls
                     preload="metadata"
-                    src={`${client().configuration?.features.autumn.url}/attachments/${video.attachment_id}`}
+                    src={`${client().configuration?.features.autumn.url}/attachments/${video.attachment_id}/original`}
                   />
                   <Text class="title" size="medium">
                     {video.author_name}

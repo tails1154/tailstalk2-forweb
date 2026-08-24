@@ -876,6 +876,10 @@ msgstr ""
 msgid "Choose username"
 msgstr ""
 
+#: src/interface/Videos.tsx
+msgid "Choose video"
+msgstr ""
+
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Clear status"
 msgstr ""
@@ -2262,8 +2266,8 @@ msgid "Loading members…"
 msgstr ""
 
 #: src/interface/Videos.tsx
-msgid "Loading videos…"
-msgstr ""
+#~ msgid "Loading videos…"
+#~ msgstr ""
 
 #: src/interface/Discover.tsx
 msgid "Loading..."
@@ -3971,6 +3975,14 @@ msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Unable to load the theme store right now."
+msgstr ""
+
+#: src/interface/Videos.tsx
+msgid "Unable to load videos right now. Please try again."
+msgstr ""
+
+#: src/interface/Videos.tsx
+msgid "Unable to post this video right now. Please try again."
 msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx

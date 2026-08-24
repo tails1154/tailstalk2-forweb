@@ -884,6 +884,10 @@ msgstr "Choose the look and feel of TailsTalk 2. Your choice is saved automatica
 msgid "Choose username"
 msgstr "Choose username"
 
+#: src/interface/Videos.tsx
+msgid "Choose video"
+msgstr "Choose video"
+
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Clear status"
 msgstr "Clear status"
@@ -2287,8 +2291,8 @@ msgid "Loading members…"
 msgstr "Loading members…"
 
 #: src/interface/Videos.tsx
-msgid "Loading videos…"
-msgstr "Loading videos…"
+#~ msgid "Loading videos…"
+#~ msgstr "Loading videos…"
 
 #: src/interface/Discover.tsx
 msgid "Loading..."
@@ -4013,6 +4017,14 @@ msgstr "Unable to load feature requests right now."
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Unable to load the theme store right now."
 msgstr "Unable to load the theme store right now."
+
+#: src/interface/Videos.tsx
+msgid "Unable to load videos right now. Please try again."
+msgstr "Unable to load videos right now. Please try again."
+
+#: src/interface/Videos.tsx
+msgid "Unable to post this video right now. Please try again."
+msgstr "Unable to post this video right now. Please try again."
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Unable to remove this theme right now."
