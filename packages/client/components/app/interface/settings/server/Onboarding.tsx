@@ -23,6 +23,7 @@ import {
   iconSize,
 } from "@revolt/ui";
 import { useMutation, useQuery } from "@tanstack/solid-query";
+import { requestClientJson } from "../../../../client/customApi";
 import { ServerSettingsProps } from "../ServerSettings";
 
 type OnboardingQuestion = {
@@ -100,15 +101,17 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
         return Promise.reject(error);
       }
 
-      return client().api.patch(
-        path() as never,
+      return requestClientJson<ServerOnboarding>(
+        client().api,
+        "PATCH",
+        path(),
         {
           enabled: group.controls.enabled.value,
           title: group.controls.title.value.trim(),
           message: group.controls.message.value.trim(),
           rules: group.controls.rules.value.trim(),
           questions: questions(),
-        } as never,
+        },
       );
     },
     onError: showError,
