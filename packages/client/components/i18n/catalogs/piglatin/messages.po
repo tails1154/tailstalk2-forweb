@@ -1444,6 +1444,15 @@ msgstr ""
 msgid "Delete theme"
 msgstr ""
 
+#: src/interface/Videos.tsx
+msgid "Delete this video?"
+msgstr ""
+
+#: src/interface/Videos.tsx
+#: src/interface/Videos.tsx
+msgid "Delete video"
+msgstr ""
+
 #: components/app/interface/settings/user/FeatureRequests.tsx
 msgid "Denied"
 msgstr ""
@@ -4006,6 +4015,10 @@ msgstr ""
 msgid "Unable to create a server backup."
 msgstr ""
 
+#: src/interface/Videos.tsx
+msgid "Unable to delete this video right now. Please try again."
+msgstr ""
+
 #: src/interface/Discover.tsx
 msgid "Unable to load Discovery right now. Please try again."
 msgstr ""
@@ -4216,6 +4229,10 @@ msgstr ""
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Video"
 msgstr "Ideovay"
+
+#: src/interface/Videos.tsx
+msgid "Video deleted."
+msgstr ""
 
 #: src/interface/Videos.tsx
 msgid "Video feed"

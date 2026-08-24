@@ -1444,6 +1444,15 @@ msgstr "Delete Server"
 msgid "Delete theme"
 msgstr "Delete theme"
 
+#: src/interface/Videos.tsx
+msgid "Delete this video?"
+msgstr "Delete this video?"
+
+#: src/interface/Videos.tsx
+#: src/interface/Videos.tsx
+msgid "Delete video"
+msgstr "Delete video"
+
 #: components/app/interface/settings/user/FeatureRequests.tsx
 msgid "Denied"
 msgstr "Denied"
@@ -4006,6 +4015,10 @@ msgstr "Trending GIFs"
 msgid "Unable to create a server backup."
 msgstr "Unable to create a server backup."
 
+#: src/interface/Videos.tsx
+msgid "Unable to delete this video right now. Please try again."
+msgstr "Unable to delete this video right now. Please try again."
+
 #: src/interface/Discover.tsx
 msgid "Unable to load Discovery right now. Please try again."
 msgstr "Unable to load Discovery right now. Please try again."
@@ -4216,6 +4229,10 @@ msgstr "Version:"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Video"
 msgstr "Video"
+
+#: src/interface/Videos.tsx
+msgid "Video deleted."
+msgstr "Video deleted."
 
 #: src/interface/Videos.tsx
 msgid "Video feed"

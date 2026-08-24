@@ -15,6 +15,7 @@ import {
 import { css } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
+import MdDelete from "@material-symbols/svg-400/outlined/delete.svg?component-solid";
 import MdMovie from "@material-symbols/svg-400/outlined/movie-fill.svg?component-solid";
 
 import { requestClientJson } from "../../components/client/customApi";
@@ -111,6 +112,29 @@ export function Videos() {
     }
   }
 
+  async function remove(video: VideoPost) {
+    if (!window.confirm(t`Delete this video?`)) return;
+    try {
+      await requestClientJson<void>(
+        client().api,
+        "DELETE",
+        `/videos/${video.id}`,
+      );
+      setVideos((current) => current.filter((item) => item.id !== video.id));
+      snackbar.show({
+        message: t`Video deleted.`,
+        placement: "bottom",
+        closeable: true,
+      });
+    } catch {
+      snackbar.show({
+        message: t`Unable to delete this video right now. Please try again.`,
+        placement: "bottom",
+        closeable: true,
+      });
+    }
+  }
+
   return (
     <Page>
       <Header placement="primary">
@@ -176,13 +200,30 @@ export function Videos() {
                   <video
                     controls
                     preload="metadata"
+                    playsInline
                     src={`${client().configuration?.features.autumn.url}/attachments/${video.attachment_id}/original`}
+                    onError={(event) => {
+                      const element = event.currentTarget;
+                      if (element.src.endsWith("/original")) {
+                        element.src = element.src.slice(0, -"/original".length);
+                      }
+                    }}
                   />
                   <Text class="title" size="medium">
                     {video.author_name}
                   </Text>
                   <Show when={video.caption}>
                     <Text>{video.caption}</Text>
+                  </Show>
+                  <Show when={video.author_id === client().user?.id}>
+                    <Button
+                      variant="outlined"
+                      onPress={() => void remove(video)}
+                      aria-label={t`Delete video`}
+                    >
+                      <MdDelete />
+                      <Trans>Delete video</Trans>
+                    </Button>
                   </Show>
                 </VideoCard>
               )}
