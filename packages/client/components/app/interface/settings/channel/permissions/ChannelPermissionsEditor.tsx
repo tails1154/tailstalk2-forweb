@@ -417,6 +417,14 @@ export function ChannelPermissionsEditor(props: Props) {
         Any: t`Mention specific roles`,
       },
     },
+    {
+      key: "PingEveryoneAndRoles",
+      value: 2n ** 41n,
+      title: t`Ping everyone and all roles`,
+      description: {
+        Any: t`Allow @everyone, @here, and role pings`,
+      },
+    },
   ];
 
   /**

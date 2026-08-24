@@ -450,6 +450,10 @@ msgid "All Messages"
 msgstr "모든 메시지"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Allow @everyone, @here, and role pings"
+msgstr ""
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Allow members to change name and avatar per-message"
 msgstr ""
 
@@ -2814,6 +2818,10 @@ msgstr "사람들이 나를 찾을 수 있는 사용자 이름을 선택하세�
 
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Pin message"
+msgstr ""
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Ping everyone and all roles"
 msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx

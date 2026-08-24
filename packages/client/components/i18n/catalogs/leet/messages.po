@@ -450,6 +450,10 @@ msgid "All Messages"
 msgstr "4LL M3554635"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Allow @everyone, @here, and role pings"
+msgstr ""
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Allow members to change name and avatar per-message"
 msgstr ""
 
@@ -2814,6 +2818,10 @@ msgstr "P1CK 4 U532N4M3 7H47 Y0U W4N7 P30PL3 70 83 48L3 70 F1ND Y0U 8Y. 7H15 C4N
 
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Pin message"
+msgstr ""
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Ping everyone and all roles"
 msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx

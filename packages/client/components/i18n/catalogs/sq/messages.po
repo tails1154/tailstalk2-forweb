@@ -450,6 +450,10 @@ msgid "All Messages"
 msgstr "Të githa mesazhet"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Allow @everyone, @here, and role pings"
+msgstr ""
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Allow members to change name and avatar per-message"
 msgstr ""
 
@@ -2814,6 +2818,10 @@ msgstr "Zgjidhni një emër me të cilin dëshironi që njerëzit të mund t'ju 
 
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Pin message"
+msgstr ""
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Ping everyone and all roles"
 msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx

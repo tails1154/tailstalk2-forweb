@@ -450,6 +450,10 @@ msgid "All Messages"
 msgstr "All Messages"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Allow @everyone, @here, and role pings"
+msgstr "Allow @everyone, @here, and role pings"
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Allow members to change name and avatar per-message"
 msgstr "Allow members to change name and avatar per-message"
 
@@ -2815,6 +2819,10 @@ msgstr "Pick a username that you want people to be able to find you by. This can
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Pin message"
 msgstr "Pin message"
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Ping everyone and all roles"
+msgstr "Ping everyone and all roles"
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Platform Moderator"
