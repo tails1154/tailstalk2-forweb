@@ -1,4 +1,12 @@
-import { Component, JSX, Match, Show, Switch, createEffect, createMemo } from "solid-js";
+import {
+  Component,
+  JSX,
+  Match,
+  Show,
+  Switch,
+  createEffect,
+  createMemo,
+} from "solid-js";
 
 import { Channel, Server as ServerI } from "stoat.js";
 import { css } from "styled-system/css";
@@ -54,9 +62,7 @@ export const Sidebar = (props: {
         setServerOrder={state.ordering.setServerOrder}
         unreadConversations={state.ordering
           .orderedConversations(client())
-          .filter(
-            (channel) => channel.unread,
-          )}
+          .filter((channel) => channel.unread)}
         user={user()!}
         selectedServer={() => params.server}
         onCreateOrJoinServer={() =>
@@ -67,12 +73,7 @@ export const Sidebar = (props: {
         }
         menuGenerator={props.menuGenerator}
       />
-      <Show
-        when={
-          sidebarOpen() &&
-          !location.pathname.startsWith("/discover")
-        }
-      >
+      <Show when={sidebarOpen() && !location.pathname.startsWith("/discover")}>
         <Show when={isPhone()}>
           <div
             class={backdrop}
@@ -179,19 +180,27 @@ const Server: Component = () => {
   createEffect(() => {
     const current = server();
     if (!current || shownOnboarding.has(current.id)) return;
-    client().api.get(`/servers/${current.id}/onboarding` as never).then((onboarding) => {
-      shownOnboarding.add(current.id);
-      const settings = onboarding as { enabled: boolean; title: string; message: string; rules: string; questions: unknown[] };
-      const key = `tailstalk2:onboarding:v2:${client().user?.id}:${current.id}`;
-      if (settings.enabled && !localStorage.getItem(key)) {
-        openModal({
-          type: "server_onboarding",
-          server: current,
-          onboarding: settings as never,
-          onComplete: () => localStorage.setItem(key, "1"),
-        });
-      }
-    }).catch(() => undefined);
+    client()
+      .api.get(`/servers/${current.id}/onboarding` as never)
+      .then((onboarding) => {
+        shownOnboarding.add(current.id);
+        const settings = onboarding as {
+          enabled: boolean;
+          completed: boolean;
+          title: string;
+          message: string;
+          rules: string;
+          questions: unknown[];
+        };
+        if (settings.enabled && !settings.completed) {
+          openModal({
+            type: "server_onboarding",
+            server: current,
+            onboarding: settings as never,
+          });
+        }
+      })
+      .catch(() => undefined);
   });
 
   /**

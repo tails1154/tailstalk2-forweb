@@ -9,7 +9,6 @@ import {
 import { Button, CategoryButton, Checkbox, Column } from "@revolt/ui";
 
 import { suppressLeaveSitePromptOnce } from "../../../../../src/serviceWorkerInterface";
-import { setBrowserRpcEnabled } from "../../../../../src/browserRpc";
 
 const DEVELOPMENT_BUILD_URL = "http://tails1154.com:9954";
 
@@ -65,29 +64,6 @@ export default function AdvancedSettings() {
           Show admin panel shortcuts in context menus
         </Checkbox>
       </Column>
-      <CategoryButton.Group>
-        <CategoryButton
-          action={
-            <Checkbox
-              checked={state.settings.getValue("advanced:website_rpc")}
-              onChange={(event) => {
-                const enabled = event.currentTarget.checked;
-                state.settings.setValue("advanced:website_rpc", enabled);
-                setBrowserRpcEnabled(enabled);
-              }}
-            />
-          }
-          description={
-            <Trans>
-              Share the webpage you are viewing through the TailsTalk 2 helper
-              extension. You can turn this off at any time.
-            </Trans>
-          }
-          onClick={() => void 0}
-        >
-          <Trans>Website activity RPC</Trans>
-        </CategoryButton>
-      </CategoryButton.Group>
       <CategoryButton.Group>
         <For each={AVAILABLE_EXPERIMENTS}>
           {(key) => (

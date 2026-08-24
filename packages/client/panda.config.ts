@@ -49,10 +49,10 @@ export default defineConfig({
             background: "transparent",
           },
           "5%": {
-            background: "var(--md-sys-color-primary-container)",
+            background: "var(--highlight-message-background, var(--md-sys-color-primary-container))",
           },
           "95%": {
-            background: "var(--md-sys-color-primary-container)",
+            background: "var(--highlight-message-background, var(--md-sys-color-primary-container))",
           },
           "100%": {
             background: "transparent",

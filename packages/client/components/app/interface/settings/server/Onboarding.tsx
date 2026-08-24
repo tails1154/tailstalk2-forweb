@@ -41,7 +41,24 @@ type ServerOnboarding = {
   questions: OnboardingQuestion[];
 };
 
-const createId = () => crypto.randomUUID();
+const createId = () => {
+  if (typeof globalThis.crypto?.randomUUID === "function") {
+    return globalThis.crypto.randomUUID();
+  }
+
+  if (typeof globalThis.crypto?.getRandomValues === "function") {
+    const bytes = new Uint8Array(16);
+    globalThis.crypto.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    const hex = [...bytes].map((byte) => byte.toString(16).padStart(2, "0"));
+    return `${hex.slice(0, 4).join("")}-${hex.slice(4, 6).join("")}-${hex
+      .slice(6, 8)
+      .join("")}-${hex.slice(8, 10).join("")}-${hex.slice(10).join("")}`;
+  }
+
+  return `onboarding-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+};
 
 export default function ServerOnboardingSettings(props: ServerSettingsProps) {
   const { t } = useLingui();
@@ -118,11 +135,9 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
   }));
 
   function updateQuestion(index: number, patch: Partial<OnboardingQuestion>) {
-    replaceQuestions(
-      questions().map((question, itemIndex) =>
-        itemIndex === index ? { ...question, ...patch } : question,
-      ),
-    );
+    const next = questions();
+    Object.assign(next[index], patch);
+    replaceQuestions([...next]);
   }
 
   function addOption(questionIndex: number) {
@@ -141,10 +156,10 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
     patch: Partial<OnboardingQuestion["options"][number]>,
   ) {
     const question = questions()[questionIndex];
+    const option = question.options[optionIndex];
+    Object.assign(option, patch);
     updateQuestion(questionIndex, {
-      options: question.options.map((option, itemIndex) =>
-        itemIndex === optionIndex ? { ...option, ...patch } : option,
-      ),
+      options: [...question.options],
     });
   }
 

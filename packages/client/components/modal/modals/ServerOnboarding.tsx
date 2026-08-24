@@ -1,10 +1,9 @@
 import { For, Show, createSignal } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
-import { Server } from "stoat.js";
 
-import { Checkbox, Column, Dialog, DialogProps, Text } from "@revolt/ui";
 import { useClient } from "@revolt/client";
+import { Checkbox, Column, Dialog, DialogProps, Text } from "@revolt/ui";
 import { useMutation } from "@tanstack/solid-query";
 import { useModals } from "..";
 
@@ -42,12 +41,21 @@ export function ServerOnboardingModal(
     setAnswers({ ...answers(), [questionId]: next });
   }
 
+  function closeOnboarding() {
+    props.onClose();
+  }
+
   return (
     <Dialog
       show={props.show}
-      onClose={props.onClose}
+      onClose={closeOnboarding}
       title={props.onboarding.title || props.server.name}
-      actions={[{ text: <Trans>Continue</Trans>, onClick: () => complete.mutateAsync().then(() => undefined) }]}
+      actions={[
+        {
+          text: <Trans>Continue</Trans>,
+          onClick: () => complete.mutateAsync().then(() => undefined),
+        },
+      ]}
       isDisabled={complete.isPending}
     >
       <Column gap="md">
@@ -55,18 +63,26 @@ export function ServerOnboardingModal(
           <Text>{props.onboarding.message}</Text>
         </Show>
         <Show when={rules().length}>
-          <Text class="title" size="medium"><Trans>Server rules</Trans></Text>
+          <Text class="title" size="medium">
+            <Trans>Server rules</Trans>
+          </Text>
           <For each={rules()}>{(rule) => <Text>• {rule}</Text>}</For>
         </Show>
         <For each={questions()}>
           {(question) => (
             <Column gap="sm">
-              <Text class="title" size="medium">{question.prompt}</Text>
+              <Text class="title" size="medium">
+                {question.prompt}
+              </Text>
               <For each={question.options}>
                 {(option) => (
                   <Checkbox
-                    checked={answers()[question.id]?.includes(option.id) ?? false}
-                    onChange={() => select(question.id, option.id, question.multiple)}
+                    checked={
+                      answers()[question.id]?.includes(option.id) ?? false
+                    }
+                    onChange={() =>
+                      select(question.id, option.id, question.multiple)
+                    }
                   >
                     {option.label}
                   </Checkbox>

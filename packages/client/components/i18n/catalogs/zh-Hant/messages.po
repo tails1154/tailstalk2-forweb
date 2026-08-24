@@ -318,6 +318,10 @@ msgid "7 days"
 msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "A blocky grass, dirt, and diamond-inspired theme."
+msgstr ""
+
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "A custom palette from the theme store."
 msgstr ""
 
@@ -2441,6 +2445,10 @@ msgstr ""
 msgid "Messaging"
 msgstr ""
 
+#: components/app/interface/settings/user/themes/ThemesMenu.tsx
+msgid "Minecraft"
+msgstr ""
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Minimise to Tray"
 msgstr ""
@@ -3459,8 +3467,8 @@ msgid "Share screen"
 msgstr ""
 
 #: components/app/interface/settings/user/Advanced.tsx
-msgid "Share the webpage you are viewing through the TailsTalk 2 helper extension. You can turn this off at any time."
-msgstr ""
+#~ msgid "Share the webpage you are viewing through the TailsTalk 2 helper extension. You can turn this off at any time."
+#~ msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Show corrections and suggestions as you type."
@@ -4230,8 +4238,8 @@ msgid "Webhooks"
 msgstr ""
 
 #: components/app/interface/settings/user/Advanced.tsx
-msgid "Website activity RPC"
-msgstr ""
+#~ msgid "Website activity RPC"
+#~ msgstr ""
 
 #: components/app/interface/settings/server/Onboarding.tsx
 msgid "Welcome message"

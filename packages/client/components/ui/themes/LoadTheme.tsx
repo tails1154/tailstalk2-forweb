@@ -50,7 +50,8 @@ const tailsTalk2Colors = {
   "--brand-presence-busy": "#ef4444",
   "--brand-presence-focus": "#06b6d4",
   "--brand-presence-invisible": "#64748b",
-  "--gradient-primary": "linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #2563eb 100%)",
+  "--gradient-primary":
+    "linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #2563eb 100%)",
   "--gradient-subtle": "linear-gradient(135deg, #0e2a3a 0%, #1a1d2e 100%)",
 } as const;
 
@@ -93,10 +94,52 @@ const discordColors = {
   "--gradient-subtle": "linear-gradient(135deg, #383a40 0%, #2b2d31 100%)",
 } as const;
 
+const minecraftColors = {
+  "--md-sys-color-surface-dim": "#101510",
+  "--md-sys-color-surface": "#1b241b",
+  "--md-sys-color-surface-bright": "#2b3a2b",
+  "--md-sys-color-surface-container-lowest": "#0b100b",
+  "--md-sys-color-surface-container-low": "#162016",
+  "--md-sys-color-surface-container": "#1b241b",
+  "--md-sys-color-surface-container-high": "#253125",
+  "--md-sys-color-surface-container-highest": "#2b3a2b",
+  "--md-sys-color-on-surface": "#e8f5e0",
+  "--md-sys-color-on-surface-variant": "#b7c9ae",
+  "--md-sys-color-outline": "#78906f",
+  "--md-sys-color-outline-variant": "#40533d",
+  "--md-sys-color-primary": "#55c93f",
+  "--md-sys-color-on-primary": "#071006",
+  "--md-sys-color-primary-container": "#2f7428",
+  "--md-sys-color-on-primary-container": "#e8f5e0",
+  "--md-sys-color-secondary": "#c58b4b",
+  "--md-sys-color-on-secondary": "#160d05",
+  "--md-sys-color-secondary-container": "#704a25",
+  "--md-sys-color-on-secondary-container": "#ffe9ca",
+  "--md-sys-color-tertiary": "#5bb7d8",
+  "--md-sys-color-on-tertiary": "#061116",
+  "--md-sys-color-tertiary-container": "#24566a",
+  "--md-sys-color-on-tertiary-container": "#d2f2ff",
+  "--md-sys-color-error": "#ffb4ab",
+  "--md-sys-color-on-error": "#210b08",
+  "--md-sys-color-error-container": "#7d2a20",
+  "--md-sys-color-on-error-container": "#ffdad6",
+  "--brand-presence-online": "#55c93f",
+  "--brand-presence-idle": "#f2b84b",
+  "--brand-presence-busy": "#e85d4a",
+  "--brand-presence-focus": "#5bb7d8",
+  "--brand-presence-invisible": "#78906f",
+  "--gradient-primary": "linear-gradient(135deg, #55c93f 0%, #5bb7d8 100%)",
+  "--gradient-subtle":
+    "repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.08) 0 1px, transparent 1px 32px), repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 32px), linear-gradient(to bottom, #5fcf45 0 16%, #76502f 16% 100%)",
+  "--minecraft-block-shadow": "#3f2b1b",
+} as const;
+
 function createTriplets(colors: Record<string, string>) {
   return Object.fromEntries(
     Object.entries(colors)
-      .filter(([key, value]) => key.includes("md-sys-color") && value.startsWith("#"))
+      .filter(
+        ([key, value]) => key.includes("md-sys-color") && value.startsWith("#"),
+      )
       .map(([key, value]) => [
         key.replace("md-sys-color", "mdui-color"),
         hexToRgbTriplet(value),
@@ -135,6 +178,7 @@ function createCustomColours(theme: NonNullable<SelectedTheme["custom"]>) {
     "--md-sys-color-on-tertiary": theme.onSurface,
     "--md-sys-color-tertiary-container": theme.surfaceHigh,
     "--md-sys-color-on-tertiary-container": theme.onSurface,
+    "--highlight-message-background": theme.primary,
     "--md-sys-color-error": "#f87171",
     "--md-sys-color-on-error": "#ffffff",
     "--gradient-primary": theme.gradient,
@@ -154,14 +198,28 @@ export function LoadTheme() {
     FONTS[state.theme.interfaceFont].load();
     MONOSPACE_FONTS[state.theme.monospaceFont].load();
 
-    const colourVariables =
-      activeTheme.custom
-        ? createCustomColours(activeTheme.custom)
-        : activeTheme.preset === "stoat"
+    const colourVariables = activeTheme.custom
+      ? createCustomColours(activeTheme.custom)
+      : activeTheme.preset === "stoat"
         ? createMaterialColourVariables(activeTheme, "--md-sys-color-")
         : activeTheme.preset === "discord"
           ? discordColors
-          : createTailsTalk2Colours(activeTheme.darkMode);
+          : activeTheme.preset === "minecraft"
+            ? minecraftColors
+            : createTailsTalk2Colours(activeTheme.darkMode);
+    const webVariables =
+      activeTheme.preset === "minecraft"
+        ? {
+            "--borderRadius-xs": "0px",
+            "--borderRadius-sm": "0px",
+            "--borderRadius-md": "0px",
+            "--borderRadius-lg": "0px",
+            "--borderRadius-li": "0px",
+            "--borderRadius-xl": "0px",
+            "--borderRadius-xli": "0px",
+            "--borderRadius-xxl": "0px",
+          }
+        : {};
     const triplets = createTriplets(colourVariables);
 
     for (const [key, value] of Object.entries({
@@ -175,6 +233,7 @@ export function LoadTheme() {
         {},
       ),
       ...createTailsTalk2WebVariables(activeTheme),
+      ...webVariables,
       ...colourVariables,
       ...triplets,
     })) {

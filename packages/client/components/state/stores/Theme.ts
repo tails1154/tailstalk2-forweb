@@ -15,7 +15,7 @@ export type TypeTheme = {
   /**
    * Base theme preset
    */
-  preset: "tailstalk2" | "stoat" | "discord" | "custom";
+  preset: "tailstalk2" | "stoat" | "discord" | "minecraft" | "custom";
 
   /** User-created palettes kept in the local theme library. */
   customThemes: CustomTheme[];
@@ -179,7 +179,11 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
     }
 
     const preset = (input as { preset?: unknown }).preset;
-    if (["tailstalk2", "stoat", "discord", "custom"].includes(preset!)) {
+    if (
+      ["tailstalk2", "stoat", "discord", "minecraft", "custom"].includes(
+        preset!,
+      )
+    ) {
       data.preset = preset as TypeTheme["preset"];
     } else if (preset === "you" || preset === "neutral") {
       // Migrate the former Material You presets to Stoat.
@@ -190,20 +194,21 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
       typeof value === "string" && /^#[0-9a-f]{6}$/i.test(value);
     if (Array.isArray(input.customThemes)) {
       data.customThemes = input.customThemes
-        .filter((theme): theme is CustomTheme =>
-          !!theme &&
-          typeof theme.id === "string" &&
-          typeof theme.name === "string" &&
-          (typeof theme.description === "undefined" ||
-            typeof theme.description === "string") &&
-          isHex(theme.primary) &&
-          isHex(theme.secondary) &&
-          isHex(theme.background) &&
-          isHex(theme.surface) &&
-          isHex(theme.surfaceHigh) &&
-          isHex(theme.onSurface) &&
-          typeof theme.gradient === "string" &&
-          /^linear-gradient\(/.test(theme.gradient),
+        .filter(
+          (theme): theme is CustomTheme =>
+            !!theme &&
+            typeof theme.id === "string" &&
+            typeof theme.name === "string" &&
+            (typeof theme.description === "undefined" ||
+              typeof theme.description === "string") &&
+            isHex(theme.primary) &&
+            isHex(theme.secondary) &&
+            isHex(theme.background) &&
+            isHex(theme.surface) &&
+            isHex(theme.surfaceHigh) &&
+            isHex(theme.onSurface) &&
+            typeof theme.gradient === "string" &&
+            /^linear-gradient\(/.test(theme.gradient),
         )
         .slice(0, 100);
     }
@@ -277,6 +282,7 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
       case "tailstalk2":
       case "stoat":
       case "discord":
+      case "minecraft":
         return {
           blur: opts.blur,
           interfaceFont: opts.interfaceFont,
@@ -304,7 +310,8 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
             messageSize: opts.messageSize,
             messageGroupSpacing: opts.messageGroupSpacing,
             preset: "custom",
-            darkMode: opts.mode === "dark" ||
+            darkMode:
+              opts.mode === "dark" ||
               (opts.mode === "system" && this.prefersDark()),
             accent: custom.primary,
             contrast: opts.m3Contrast,
@@ -319,7 +326,8 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
           messageSize: opts.messageSize,
           messageGroupSpacing: opts.messageGroupSpacing,
           preset: "tailstalk2",
-          darkMode: opts.mode === "dark" ||
+          darkMode:
+            opts.mode === "dark" ||
             (opts.mode === "system" && this.prefersDark()),
           accent: opts.m3Accent,
           contrast: opts.m3Contrast,
@@ -364,14 +372,19 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
   }
 
   setCustomTheme(theme: CustomTheme) {
-    const themes = this.get().customThemes.filter((entry) => entry.id !== theme.id);
+    const themes = this.get().customThemes.filter(
+      (entry) => entry.id !== theme.id,
+    );
     this.set("customThemes", [...themes, theme]);
     this.set("customThemeId", theme.id);
     this.set("preset", "custom");
   }
 
   removeCustomTheme(id: string) {
-    this.set("customThemes", this.get().customThemes.filter((theme) => theme.id !== id));
+    this.set(
+      "customThemes",
+      this.get().customThemes.filter((theme) => theme.id !== id),
+    );
     if (this.get().customThemeId === id) {
       this.set("customThemeId", undefined);
       this.setPreset("tailstalk2");
