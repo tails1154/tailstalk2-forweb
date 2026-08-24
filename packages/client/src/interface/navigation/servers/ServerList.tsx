@@ -17,7 +17,7 @@ import MdAdd from "@material-design-icons/svg/filled/add.svg?component-solid";
 import MdExplore from "@material-design-icons/svg/filled/explore.svg?component-solid";
 import MdHome from "@material-design-icons/svg/filled/home.svg?component-solid";
 import MdSettings from "@material-design-icons/svg/filled/settings.svg?component-solid";
-import MdMovie from "@material-symbols/svg-400/outlined/movie-fill.svg?component-solid";
+import MdPost from "@material-symbols/svg-400/outlined/article.svg?component-solid";
 
 import { Tooltip } from "../../../../components/ui/components/floating";
 import { Draggable } from "../../../../components/ui/components/utils/Draggable";
@@ -312,14 +312,15 @@ export const ServerList = (props: Props) => {
       <Shadow>
         <div />
       </Shadow>
-      <Tooltip placement="right" content={t`Videos`}>
+      <Tooltip placement="right" content={t`Tailslets`}>
         <a
-          href="/videos"
+          href="/tailslets"
           class={entryContainer({
-            indicator: location.pathname === "/videos" ? "selected" : undefined,
+            indicator:
+              location.pathname === "/tailslets" ? "selected" : undefined,
           })}
         >
-          <Avatar size={42} fallback={<MdMovie />} interactive />
+          <Avatar size={42} fallback={<MdPost />} interactive />
         </a>
       </Tooltip>
       <Tooltip placement="right" content="Settings">

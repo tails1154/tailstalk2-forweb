@@ -54,6 +54,7 @@ import { Discover } from "./interface/Discover";
 import { Friends } from "./interface/Friends";
 import { HomePage } from "./interface/Home";
 import { ServerHome } from "./interface/ServerHome";
+import { Tailslets } from "./interface/Tailslets";
 import { Videos } from "./interface/Videos";
 import { ChannelPage } from "./interface/channels/ChannelPage";
 import {
@@ -275,6 +276,7 @@ render(
             <Route path="/bot/:code" component={BotRedirect} />
             <Route path="/friends" component={Friends} />
             <Route path="/videos" component={Videos} />
+            <Route path="/tailslets" component={Tailslets} />
             <Route path="/server/:server/*">
               <Route path="/channel/:channel/*" component={ChannelPage} />
               <Route path="/*" component={ServerHome} />

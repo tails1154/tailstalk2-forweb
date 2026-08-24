@@ -1440,8 +1440,17 @@ msgstr "Удалить роль"
 msgid "Delete Server"
 msgstr ""
 
+#: src/interface/Tailslets.tsx
+#: src/interface/Tailslets.tsx
+msgid "Delete Tailslet"
+msgstr ""
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Delete theme"
+msgstr ""
+
+#: src/interface/Tailslets.tsx
+msgid "Delete this Tailslet?"
 msgstr ""
 
 #: src/interface/Videos.tsx
@@ -2654,6 +2663,10 @@ msgstr ""
 msgid "No servers or bots found."
 msgstr ""
 
+#: src/interface/Tailslets.tsx
+msgid "No Tailslets have been posted yet."
+msgstr ""
+
 #: src/interface/Videos.tsx
 msgid "No videos have been posted yet."
 msgstr ""
@@ -2945,6 +2958,10 @@ msgstr ""
 #: components/app/interface/settings/user/OAuth.tsx
 #~ msgid "Public client (requires PKCE)"
 #~ msgstr ""
+
+#: src/interface/Tailslets.tsx
+msgid "Publish Tailslet"
+msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Publish to theme store"
@@ -3533,6 +3550,10 @@ msgstr ""
 #~ msgid "Share link copied to your clipboard."
 #~ msgstr ""
 
+#: src/interface/Tailslets.tsx
+msgid "Share quick updates with your TailsTalk 2 account."
+msgstr ""
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Share screen"
 msgstr ""
@@ -3745,6 +3766,16 @@ msgstr ""
 
 #: components/app/interface/settings/server/Overview.tsx
 msgid "System message channels"
+msgstr ""
+
+#: src/interface/Tailslets.tsx
+msgid "Tailslet deleted."
+msgstr ""
+
+#: src/interface/Tailslets.tsx
+#: src/interface/Tailslets.tsx
+#: src/interface/navigation/servers/ServerList.tsx
+msgid "Tailslets"
 msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
@@ -4015,6 +4046,10 @@ msgstr ""
 msgid "Unable to create a server backup."
 msgstr ""
 
+#: src/interface/Tailslets.tsx
+msgid "Unable to delete this Tailslet right now. Please try again."
+msgstr ""
+
 #: src/interface/Videos.tsx
 msgid "Unable to delete this video right now. Please try again."
 msgstr ""
@@ -4027,6 +4062,10 @@ msgstr ""
 msgid "Unable to load feature requests right now."
 msgstr ""
 
+#: src/interface/Tailslets.tsx
+msgid "Unable to load Tailslets right now. Please try again."
+msgstr ""
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Unable to load the theme store right now."
 msgstr ""
@@ -4037,6 +4076,10 @@ msgstr ""
 
 #: src/interface/Videos.tsx
 msgid "Unable to post this video right now. Please try again."
+msgstr ""
+
+#: src/interface/Tailslets.tsx
+msgid "Unable to publish this Tailslet right now. Please try again."
 msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
@@ -4377,6 +4420,10 @@ msgstr ""
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Welcome!"
 msgstr "Добро пожаловать!"
+
+#: src/interface/Tailslets.tsx
+msgid "What do you want to share?"
+msgstr ""
 
 #: components/modal/modals/Changelog.tsx
 msgid "What's new"
