@@ -3,13 +3,13 @@
  */
 import "./sentry";
 
-import { JSX, Show, createSignal, onCleanup, onMount } from "solid-js";
+import { createSignal, JSX, onCleanup, onMount, Show } from "solid-js";
 import { render } from "solid-js/web";
 
+import { Trans } from "@lingui-solid/solid/macro";
 import { attachDevtoolsOverlay } from "@solid-devtools/overlay";
 import { Navigate, Route, Router, useParams } from "@solidjs/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/solid-query";
-import { Trans } from "@lingui-solid/solid/macro";
 import "material-symbols";
 import "mdui/mdui.css";
 import { PublicBot, PublicChannelInvite } from "stoat.js";
@@ -35,13 +35,13 @@ import { KeybindContext } from "@revolt/keybinds";
 import { ModalContext, ModalRenderer, useModals } from "@revolt/modal";
 import { VoiceContext } from "@revolt/rtc";
 import { StateContext, SyncWorker, useState } from "@revolt/state";
-import { styled } from "styled-system/jsx";
 import {
   FloatingManager,
   LoadTheme,
   SnackbarController,
   SnackbarProvider,
 } from "@revolt/ui";
+import { styled } from "styled-system/jsx";
 
 /* @refresh reload */
 import "@revolt/ui/styles";
@@ -54,6 +54,7 @@ import { Discover } from "./interface/Discover";
 import { Friends } from "./interface/Friends";
 import { HomePage } from "./interface/Home";
 import { ServerHome } from "./interface/ServerHome";
+import { Videos } from "./interface/Videos";
 import { ChannelPage } from "./interface/channels/ChannelPage";
 import {
   isLeaveSitePromptSuppressed,
@@ -134,8 +135,12 @@ function LevelUpOverlay() {
     <Show when={level()}>
       {(currentLevel) => (
         <LevelUpCard role="status">
-          <strong><Trans>Level up!</Trans></strong>
-          <span><Trans>You reached level {currentLevel()}!</Trans></span>
+          <strong>
+            <Trans>Level up!</Trans>
+          </strong>
+          <span>
+            <Trans>You reached level {currentLevel()}!</Trans>
+          </span>
         </LevelUpCard>
       )}
     </Show>
@@ -269,6 +274,7 @@ render(
             <Route path="/invite/:code" component={InviteRedirect} />
             <Route path="/bot/:code" component={BotRedirect} />
             <Route path="/friends" component={Friends} />
+            <Route path="/videos" component={Videos} />
             <Route path="/server/:server/*">
               <Route path="/channel/:channel/*" component={ChannelPage} />
               <Route path="/*" component={ServerHome} />

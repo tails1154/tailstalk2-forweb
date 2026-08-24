@@ -606,8 +606,8 @@ msgid "Background"
 msgstr "Background"
 
 #: components/app/interface/settings/ServerSettings.tsx
-msgid "Backup and restore"
-msgstr "Backup and restore"
+#~ msgid "Backup and restore"
+#~ msgstr "Backup and restore"
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Badges"
@@ -759,6 +759,10 @@ msgstr "Cannot delete account until servers are deleted or transferred"
 #: components/i18n/errors.ts
 msgid "Cannot edit this message."
 msgstr "Cannot edit this message."
+
+#: src/interface/Videos.tsx
+msgid "Caption"
+msgstr "Caption"
 
 #: components/modal/modals/EditUsername.tsx
 #: components/modal/modals/EditPassword.tsx
@@ -2282,6 +2286,10 @@ msgstr "Loading feature requests..."
 msgid "Loading members…"
 msgstr "Loading members…"
 
+#: src/interface/Videos.tsx
+msgid "Loading videos…"
+msgstr "Loading videos…"
+
 #: src/interface/Discover.tsx
 msgid "Loading..."
 msgstr "Loading..."
@@ -2633,6 +2641,10 @@ msgstr "No questions yet. Add one if members should choose roles during onboardi
 msgid "No servers or bots found."
 msgstr "No servers or bots found."
 
+#: src/interface/Videos.tsx
+msgid "No videos have been posted yet."
+msgstr "No videos have been posted yet."
+
 #: components/app/interface/settings/server/Leaderboard.tsx
 msgid "No XP has been earned yet."
 msgstr "No XP has been earned yet."
@@ -2872,6 +2884,14 @@ msgstr "Please select a method to authenticate your request."
 msgid "Please select a reason"
 msgstr "Please select a reason"
 
+#: src/interface/Videos.tsx
+msgid "Post a video"
+msgstr "Post a video"
+
+#: src/interface/Videos.tsx
+msgid "Post video"
+msgstr "Post video"
+
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Powered by RNNoise"
 msgstr "Powered by RNNoise"
@@ -2997,7 +3017,8 @@ msgstr "Recovery Code"
 msgid "Recovery Codes"
 msgstr "Recovery Codes"
 
-#: components/app/interface/settings/server/Onboarding.tsx
+#: src/interface/navigation/channels/ServerSidebar.tsx
+#: src/interface/navigation/channels/ServerSidebar.tsx
 msgid "Redo onboarding"
 msgstr "Redo onboarding"
 
@@ -3502,6 +3523,10 @@ msgstr "Share camera or screen in voice call"
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Share screen"
 msgstr "Share screen"
+
+#: src/interface/Videos.tsx
+msgid "Share short videos with your TailsTalk 2 account."
+msgstr "Share short videos with your TailsTalk 2 account."
 
 #: components/app/interface/settings/user/Advanced.tsx
 #~ msgid "Share the webpage you are viewing through the TailsTalk 2 helper extension. You can turn this off at any time."
@@ -4179,6 +4204,15 @@ msgstr "Version:"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Video"
 msgstr "Video"
+
+#: src/interface/Videos.tsx
+msgid "Video feed"
+msgstr "Video feed"
+
+#: src/interface/Videos.tsx
+#: src/interface/navigation/servers/ServerList.tsx
+msgid "Videos"
+msgstr "Videos"
 
 #: components/modal/modals/SourceCode.tsx
 msgid "View backend source code"

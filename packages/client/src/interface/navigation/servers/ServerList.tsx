@@ -1,6 +1,6 @@
 import { Accessor, For, JSX, Show, createMemo, createSignal } from "solid-js";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { Channel, Server, User } from "stoat.js";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
@@ -9,7 +9,7 @@ import { useClient } from "@revolt/client";
 import { CONFIGURATION } from "@revolt/common";
 import { KeybindAction, createKeybind } from "@revolt/keybinds";
 import { useModals } from "@revolt/modal";
-import { useNavigate } from "@revolt/routing";
+import { useLocation, useNavigate } from "@revolt/routing";
 import { useState } from "@revolt/state";
 import { Avatar, Column, Text, Time, Unreads, UserStatus } from "@revolt/ui";
 
@@ -17,6 +17,7 @@ import MdAdd from "@material-design-icons/svg/filled/add.svg?component-solid";
 import MdExplore from "@material-design-icons/svg/filled/explore.svg?component-solid";
 import MdHome from "@material-design-icons/svg/filled/home.svg?component-solid";
 import MdSettings from "@material-design-icons/svg/filled/settings.svg?component-solid";
+import MdMovie from "@material-symbols/svg-400/outlined/movie-fill.svg?component-solid";
 
 import { Tooltip } from "../../../../components/ui/components/floating";
 import { Draggable } from "../../../../components/ui/components/utils/Draggable";
@@ -65,9 +66,11 @@ interface Props {
  * Server list sidebar component
  */
 export const ServerList = (props: Props) => {
+  const { t } = useLingui();
   const state = useState();
   const client = useClient();
   const navigate = useNavigate();
+  const location = useLocation();
   const { openModal } = useModals();
 
   const navigateServer = (byOffset: number) => {
@@ -309,6 +312,16 @@ export const ServerList = (props: Props) => {
       <Shadow>
         <div />
       </Shadow>
+      <Tooltip placement="right" content={t`Videos`}>
+        <a
+          href="/videos"
+          class={entryContainer({
+            indicator: location.pathname === "/videos" ? "selected" : undefined,
+          })}
+        >
+          <Avatar size={42} fallback={<MdMovie />} interactive />
+        </a>
+      </Tooltip>
       <Tooltip placement="right" content="Settings">
         <a
           class={entryContainer()}

@@ -606,8 +606,8 @@ msgid "Background"
 msgstr ""
 
 #: components/app/interface/settings/ServerSettings.tsx
-msgid "Backup and restore"
-msgstr ""
+#~ msgid "Backup and restore"
+#~ msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Badges"
@@ -758,6 +758,10 @@ msgstr "Nuk mund të fshihet llogaria derisa serverat të fshihen ose transferoh
 
 #: components/i18n/errors.ts
 msgid "Cannot edit this message."
+msgstr ""
+
+#: src/interface/Videos.tsx
+msgid "Caption"
 msgstr ""
 
 #: components/modal/modals/EditUsername.tsx
@@ -2282,6 +2286,10 @@ msgstr ""
 msgid "Loading members…"
 msgstr ""
 
+#: src/interface/Videos.tsx
+msgid "Loading videos…"
+msgstr ""
+
 #: src/interface/Discover.tsx
 msgid "Loading..."
 msgstr ""
@@ -2633,6 +2641,10 @@ msgstr ""
 msgid "No servers or bots found."
 msgstr ""
 
+#: src/interface/Videos.tsx
+msgid "No videos have been posted yet."
+msgstr ""
+
 #: components/app/interface/settings/server/Leaderboard.tsx
 msgid "No XP has been earned yet."
 msgstr ""
@@ -2872,6 +2884,14 @@ msgstr "Ju lutemi zgjidhni një metodë për të vërtetuar kërkesën tuaj."
 msgid "Please select a reason"
 msgstr ""
 
+#: src/interface/Videos.tsx
+msgid "Post a video"
+msgstr ""
+
+#: src/interface/Videos.tsx
+msgid "Post video"
+msgstr ""
+
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Powered by RNNoise"
 msgstr ""
@@ -2997,7 +3017,8 @@ msgstr "Kodi i rikuperimit"
 msgid "Recovery Codes"
 msgstr ""
 
-#: components/app/interface/settings/server/Onboarding.tsx
+#: src/interface/navigation/channels/ServerSidebar.tsx
+#: src/interface/navigation/channels/ServerSidebar.tsx
 msgid "Redo onboarding"
 msgstr ""
 
@@ -3501,6 +3522,10 @@ msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Share screen"
+msgstr ""
+
+#: src/interface/Videos.tsx
+msgid "Share short videos with your TailsTalk 2 account."
 msgstr ""
 
 #: components/app/interface/settings/user/Advanced.tsx
@@ -4179,6 +4204,15 @@ msgstr ""
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Video"
 msgstr "Video"
+
+#: src/interface/Videos.tsx
+msgid "Video feed"
+msgstr ""
+
+#: src/interface/Videos.tsx
+#: src/interface/navigation/servers/ServerList.tsx
+msgid "Videos"
+msgstr ""
 
 #: components/modal/modals/SourceCode.tsx
 msgid "View backend source code"
