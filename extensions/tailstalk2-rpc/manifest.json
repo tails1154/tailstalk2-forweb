@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "TailsTalk 2 Website RPC",
+  "version": "1.0.0",
+  "description": "Shares the current webpage as TailsTalk 2 activity.",
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

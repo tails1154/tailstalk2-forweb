@@ -80,6 +80,11 @@ interface SettingsDefinition {
    * Whether to include admin panel links in context menus
    */
   "advanced:admin_panel": boolean;
+
+  /**
+   * Whether the browser RPC extension may share page activity
+   */
+  "advanced:website_rpc": boolean;
 }
 
 /**
@@ -108,6 +113,7 @@ const EXPECTED_TYPES: { [K in keyof SettingsDefinition]: ValueType<K> } = {
   "appearance:compact_mode": "boolean",
   "advanced:copy_id": "boolean",
   "advanced:admin_panel": "boolean",
+  "advanced:website_rpc": "boolean",
 };
 
 /**
@@ -151,6 +157,7 @@ export class Settings extends AbstractStore<"settings", TypeSettings> {
       "appearance:compact_mode": false,
       "advanced:copy_id": false,
       "advanced:admin_panel": false,
+      "advanced:website_rpc": true,
     };
   }
 

@@ -81,8 +81,26 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
   });
 
   const save = useMutation(() => ({
-    mutationFn: () =>
-      client().api.patch(
+    mutationFn: () => {
+      const invalidQuestion = questions().some(
+        (question) =>
+          !question.prompt.trim() ||
+          question.options.length === 0 ||
+          question.options.some(
+            (option) =>
+              !option.label.trim() ||
+              !option.role_id ||
+              option.role_id === props.server.id,
+          ),
+      );
+      if (invalidQuestion) {
+        const error = new Error(
+          t`Each onboarding question needs a prompt and every answer needs a label and a non-default role.`,
+        );
+        return Promise.reject(error);
+      }
+
+      return client().api.patch(
         path() as never,
         {
           enabled: group.controls.enabled.value,
@@ -91,7 +109,8 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
           rules: group.controls.rules.value.trim(),
           questions: questions(),
         } as never,
-      ),
+      );
+    },
     onError: showError,
   }));
 
@@ -293,7 +312,11 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
                                   <MenuItem value="">
                                     <Trans>Choose a role</Trans>
                                   </MenuItem>
-                                  <For each={props.server.orderedRoles}>
+                                  <For
+                                    each={props.server.orderedRoles.filter(
+                                      (role) => role.id !== props.server.id,
+                                    )}
+                                  >
                                     {(role) => (
                                       <MenuItem value={role.id}>
                                         {role.name}

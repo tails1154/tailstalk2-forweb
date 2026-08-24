@@ -10,6 +10,8 @@ REMOTE_COMPOSE_DIR="/home/tails1154/stoat"
 LOCAL_DIST="packages/client/dist"
 LOCAL_VERSION="packages/client/public/tailstalk2.version"
 LOCAL_VERSION_CGI="scripts/tailstalk2_version.py"
+LOCAL_RPC_DIR="extensions/tailstalk2-rpc"
+RPC_VERSION="1.0.0"
 CONTAINER="stoat-web-1"
 
 echo "=== Compiling translations ==="
@@ -30,10 +32,21 @@ pnpm --filter client exec vite build
 echo "=== Taring dist ==="
 tar czf /tmp/stoat-dist.tar.gz -C "$LOCAL_DIST" .
 
+echo "=== Packaging browser RPC extension ==="
+test -f "$LOCAL_RPC_DIR/manifest.json"
+test -f "$LOCAL_RPC_DIR/update.xml"
+rm -f "/tmp/tailstalk2-rpc-${RPC_VERSION}.zip"
+(
+  cd "$LOCAL_RPC_DIR"
+  zip -qr "/tmp/tailstalk2-rpc-${RPC_VERSION}.zip" .
+)
+
 echo "=== Uploading to $REMOTE_HOST ==="
 scp -P "$REMOTE_PORT" /tmp/stoat-dist.tar.gz "$REMOTE_USER@$REMOTE_HOST:/tmp/"
 scp -P "$REMOTE_PORT" "$LOCAL_VERSION" "$REMOTE_USER@$REMOTE_HOST:/tmp/tailstalk2.version"
 scp -P "$REMOTE_PORT" "$LOCAL_VERSION_CGI" "$REMOTE_USER@$REMOTE_HOST:/tmp/tailstalk2_version.py"
+scp -P "$REMOTE_PORT" "/tmp/tailstalk2-rpc-${RPC_VERSION}.zip" "$REMOTE_USER@$REMOTE_HOST:/tmp/"
+scp -P "$REMOTE_PORT" "$LOCAL_RPC_DIR/update.xml" "$REMOTE_USER@$REMOTE_HOST:/tmp/tailstalk2-rpc-update.xml"
 
 echo "=== Deploying on remote ==="
 ssh -p "$REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" "
@@ -47,11 +60,17 @@ ssh -p "$REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" "
   mkdir -p /home/tails1154/ecraft
   cp /tmp/tailstalk2.version /home/tails1154/ecraft/tailstalk2.version
   install -m 755 /tmp/tailstalk2_version.py /home/tails1154/ecraft/cgi-bin/tailstalk2_version.py
+  mkdir -p /home/tails1154/ecraft/tailstalk2-rpc
+  install -m 644 /tmp/tailstalk2-rpc-${RPC_VERSION}.zip /home/tails1154/ecraft/tailstalk2-rpc/tailstalk2-rpc-${RPC_VERSION}.zip
+  install -m 644 /tmp/tailstalk2-rpc-update.xml /home/tails1154/ecraft/tailstalk2-rpc/update.xml
   rm -rf /tmp/stoat-dist /tmp/stoat-dist.tar.gz
   rm -f /tmp/tailstalk2_version.py
   rm -f /tmp/tailstalk2.version
+  rm -f /tmp/tailstalk2-rpc-${RPC_VERSION}.zip
+  rm -f /tmp/tailstalk2-rpc-update.xml
 "
 
 rm -f /tmp/stoat-dist.tar.gz
+rm -f "/tmp/tailstalk2-rpc-${RPC_VERSION}.zip"
 
 echo "=== Done ==="

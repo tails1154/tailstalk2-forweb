@@ -1587,6 +1587,10 @@ msgid "Drugs or illegal goods"
 msgstr ""
 
 #: components/app/interface/settings/server/Onboarding.tsx
+msgid "Each onboarding question needs a prompt and every answer needs a label and a non-default role."
+msgstr ""
+
+#: components/app/interface/settings/server/Onboarding.tsx
 #~ msgid "Each question needs an id, prompt, options, and a role_id on every option. Set multiple to true to allow more than one answer."
 #~ msgstr ""
 
@@ -3487,6 +3491,10 @@ msgstr ""
 msgid "Share screen"
 msgstr ""
 
+#: components/app/interface/settings/user/Advanced.tsx
+msgid "Share the webpage you are viewing through the TailsTalk 2 helper extension. You can turn this off at any time."
+msgstr ""
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Show corrections and suggestions as you type."
 msgstr ""
@@ -4265,6 +4273,10 @@ msgstr ""
 #: components/app/interface/settings/ChannelSettings.tsx
 msgid "Webhooks"
 msgstr "Webhook"
+
+#: components/app/interface/settings/user/Advanced.tsx
+msgid "Website activity RPC"
+msgstr ""
 
 #: components/app/interface/settings/server/Onboarding.tsx
 msgid "Welcome message"

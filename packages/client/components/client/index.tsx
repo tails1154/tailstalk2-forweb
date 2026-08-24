@@ -15,6 +15,7 @@ import { fetchLatestChangelog } from "@revolt/modal/modals/Changelog";
 import { State } from "@revolt/state";
 
 import ClientController from "./Controller";
+import { startBrowserRpc } from "../../src/browserRpc";
 
 export type { default as ClientController } from "./Controller";
 
@@ -32,6 +33,7 @@ export function ClientContext(props: { state: State; children: JSXElement }) {
   // eslint-disable-next-line solid/reactivity
   const controller = new ClientController(props.state);
   onCleanup(() => controller.dispose());
+  onCleanup(startBrowserRpc(() => controller.getCurrentClient()));
 
   let fetchedChangelog = false;
   createEffect(
