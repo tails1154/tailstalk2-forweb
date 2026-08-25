@@ -683,6 +683,14 @@ msgstr ""
 #~ msgid "Browser Noise Supression"
 #~ msgstr ""
 
+#: components/modal/modals/CreateChannel.tsx
+msgid "Bug reports"
+msgstr ""
+
+#: src/interface/channels/text/TextChannel.tsx
+msgid "Bug reports forum"
+msgstr ""
+
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Bug Tracker"
 msgstr "Баг трекер"
@@ -1544,6 +1552,10 @@ msgstr ""
 msgid "Discovery submissions"
 msgstr ""
 
+#: src/interface/channels/text/TextChannel.tsx
+msgid "Discussion forum"
+msgstr ""
+
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Display & Text"
 #~ msgstr ""
@@ -1921,6 +1933,10 @@ msgstr ""
 msgid "For 8 hours"
 msgstr ""
 
+#: components/modal/modals/CreateChannel.tsx
+msgid "Forum Channel"
+msgstr ""
+
 #: src/interface/Friends.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
 msgid "Friends"
@@ -1929,6 +1945,10 @@ msgstr "Друзья"
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Fruit Salad"
 #~ msgstr ""
+
+#: components/modal/modals/CreateChannel.tsx
+msgid "General discussion"
+msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Generate a new token if it gets lost or compromised"
@@ -3652,6 +3672,10 @@ msgstr "Говорить"
 msgid "Spellchecker"
 msgstr ""
 
+#: src/interface/channels/text/TextChannel.tsx
+msgid "Start a discussion by posting a message in this forum."
+msgstr ""
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Start camera"
 msgstr ""
@@ -3730,6 +3754,14 @@ msgstr ""
 
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Suggest new TailsTalk 2 features on GitHub discussions."
+msgstr ""
+
+#: components/modal/modals/CreateChannel.tsx
+msgid "Suggestions"
+msgstr ""
+
+#: src/interface/channels/text/TextChannel.tsx
+msgid "Suggestions forum"
 msgstr ""
 
 #: src/interface/Home.tsx
@@ -4282,7 +4314,6 @@ msgid "Video feed"
 msgstr ""
 
 #: src/interface/Videos.tsx
-#: src/interface/navigation/servers/ServerList.tsx
 msgid "Videos"
 msgstr ""
 

@@ -79,7 +79,7 @@ export function ChannelHeader(props: Props) {
           }
         >
           <HeaderIcon>
-            <Symbol>grid_3x3</Symbol>
+            <Symbol>{props.channel.isForum ? "forum" : "grid_3x3"}</Symbol>
           </HeaderIcon>
           <NonBreakingText
             class={typography({ class: "title", size: "medium" })}

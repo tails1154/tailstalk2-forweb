@@ -1,4 +1,5 @@
 import { createFormControl, createFormGroup } from "solid-forms";
+import { Show } from "solid-js";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 
@@ -21,6 +22,7 @@ export function CreateChannelModal(
   const group = createFormGroup({
     name: createFormControl("", { required: true }),
     type: createFormControl("Text"),
+    forum: createFormControl("general"),
   });
 
   async function onSubmit() {
@@ -28,7 +30,10 @@ export function CreateChannelModal(
       const channel = await props.server.createChannel({
         type: group.controls.type.value as "Text" | "Voice",
         name: group.controls.name.value,
-      });
+        ...(group.controls.type.value === "Forum"
+          ? { forum: group.controls.forum.value }
+          : {}),
+      } as never);
 
       if (props.cb) {
         props.cb(channel);
@@ -80,7 +85,24 @@ export function CreateChannelModal(
             <Radio2.Option value="Voice">
               <Trans>Voice Channel</Trans>
             </Radio2.Option>
+            <Radio2.Option value="Forum">
+              <Trans>Forum Channel</Trans>
+            </Radio2.Option>
           </Form2.Radio>
+
+          <Show when={group.controls.type.value === "Forum"}>
+            <Form2.Radio control={group.controls.forum}>
+              <Radio2.Option value="general">
+                <Trans>General discussion</Trans>
+              </Radio2.Option>
+              <Radio2.Option value="suggestions">
+                <Trans>Suggestions</Trans>
+              </Radio2.Option>
+              <Radio2.Option value="bug_reports">
+                <Trans>Bug reports</Trans>
+              </Radio2.Option>
+            </Form2.Radio>
+          </Show>
         </Column>
       </form>
     </Dialog>

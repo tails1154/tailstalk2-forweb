@@ -12,6 +12,9 @@ import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 import { decodeTime, ulid } from "ulid";
 
+import { Trans } from "@lingui-solid/solid/macro";
+
+import MdForum from "@material-symbols/svg-400/outlined/forum.svg?component-solid";
 import { DraftMessages, Messages } from "@revolt/app";
 import { useClient } from "@revolt/client";
 import { Keybind, KeybindAction, createKeybind } from "@revolt/keybinds";
@@ -25,6 +28,7 @@ import {
   Text,
   TypingIndicator,
   main,
+  typography,
 } from "@revolt/ui";
 import { VoiceChannelCallCardMount } from "@revolt/ui/components/features/voice/callCard/VoiceCallCard";
 
@@ -80,11 +84,7 @@ export function TextChannel(props: ChannelPageProps) {
   let atEndRef: (() => boolean) | undefined;
 
   const acknowledgeIfAtEnd = () => {
-    if (
-      document.hasFocus() &&
-      atEndRef?.() &&
-      props.channel.lastMessageId
-    ) {
+    if (document.hasFocus() && atEndRef?.() && props.channel.lastMessageId) {
       props.channel.ack();
     }
   };
@@ -192,6 +192,30 @@ export function TextChannel(props: ChannelPageProps) {
             }
           >
             <VoiceChannelCallCardMount channel={props.channel} />
+          </Show>
+
+          <Show when={props.channel.isForum}>
+            <ForumBanner>
+              <MdForum />
+              <div>
+                <ForumTitle>
+                  <Show when={props.channel.forumCategory === "suggestions"}>
+                    <Trans>Suggestions forum</Trans>
+                  </Show>
+                  <Show when={props.channel.forumCategory === "bug_reports"}>
+                    <Trans>Bug reports forum</Trans>
+                  </Show>
+                  <Show when={props.channel.forumCategory === "general"}>
+                    <Trans>Discussion forum</Trans>
+                  </Show>
+                </ForumTitle>
+                <ForumDescription>
+                  <Trans>
+                    Start a discussion by posting a message in this forum.
+                  </Trans>
+                </ForumDescription>
+              </div>
+            </ForumBanner>
           </Show>
 
           <Messages
@@ -306,6 +330,33 @@ const Content = styled("div", {
     flexGrow: 1,
     minWidth: 0,
     minHeight: 0,
+  },
+});
+
+const ForumBanner = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "flex-start",
+    gap: "var(--gap-md)",
+    margin: "var(--gap-md) var(--gap-lg) 0",
+    padding: "var(--gap-lg)",
+    borderRadius: "var(--borderRadius-md)",
+    background: "var(--md-sys-color-surface-container)",
+    color: "var(--md-sys-color-on-surface)",
+  },
+});
+
+const ForumTitle = styled("div", {
+  base: {
+    ...typography.raw({ class: "title", size: "medium" }),
+  },
+});
+
+const ForumDescription = styled("div", {
+  base: {
+    marginTop: "var(--gap-xs)",
+    ...typography.raw({ class: "body", size: "small" }),
+    color: "var(--md-sys-color-on-surface-variant)",
   },
 });
 

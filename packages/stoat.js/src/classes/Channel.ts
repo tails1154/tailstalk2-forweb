@@ -126,6 +126,20 @@ export class Channel {
   }
 
   /**
+   * Forum purpose for this channel, if configured.
+   */
+  get forumCategory(): string | undefined {
+    return this.#collection.getUnderlyingObject(this.id).forum;
+  }
+
+  /**
+   * Whether this is a forum-mode text channel.
+   */
+  get isForum(): boolean {
+    return !!this.forumCategory;
+  }
+
+  /**
    * Channel icon
    */
   get icon(): File | undefined {
