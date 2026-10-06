@@ -272,7 +272,9 @@ render(
             <Route path="/dev" component={DevelopmentPage} />
             <Route path="/discover/*" component={Discover} />
             <Route path="/settings" component={SettingsRedirect} />
+            <Route path="/app" component={HomePage} />
             <Route path="/invite/:code" component={InviteRedirect} />
+            <Route path="/:code" component={InviteRedirect} />
             <Route path="/bot/:code" component={BotRedirect} />
             <Route path="/friends" component={Friends} />
             <Route path="/videos" component={Videos} />

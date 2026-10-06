@@ -19,6 +19,7 @@ import MdPassword from "@material-design-icons/svg/outlined/password.svg?compone
 import MdVerifiedUser from "@material-design-icons/svg/outlined/verified_user.svg?component-solid";
 
 import { useSettingsNavigation } from "../Settings";
+import { suppressLeaveSitePromptOnce } from "../../../../../src/serviceWorkerInterface";
 
 import { UserSummary } from "./account/index";
 
@@ -275,7 +276,10 @@ function ManageAccount() {
    */
   function disableAccount() {
     mfaFlow(mfa.data!).then((ticket) =>
-      ticket!.disableAccount().then(() => logout()),
+      ticket!.disableAccount().then(() => {
+        suppressLeaveSitePromptOnce();
+        logout();
+      }),
     );
   }
 
@@ -284,7 +288,10 @@ function ManageAccount() {
    */
   function deleteAccount() {
     mfaFlow(mfa.data!).then((ticket) =>
-      ticket!.deleteAccount().then(() => logout()),
+      ticket!.deleteAccount().then(() => {
+        suppressLeaveSitePromptOnce();
+        logout();
+      }),
     );
   }
 

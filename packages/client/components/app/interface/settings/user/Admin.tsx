@@ -66,6 +66,7 @@ interface AdminReport {
   author_name: string;
   content_type: string;
   content_id: string;
+  message_content?: string;
   content_name: string;
   report_reason: string;
   additional_context: string;
@@ -469,6 +470,11 @@ function ReportsTab(props: { password: string }) {
                     <Show when={r.additional_context}>
                       <Text class={typography({ class: "label", size: "small" })}>
                         Context: {r.additional_context}
+                      </Text>
+                    </Show>
+                    <Show when={r.message_content}>
+                      <Text class={typography({ class: "body", size: "small" })}>
+                        Message: {r.message_content}
                       </Text>
                     </Show>
                     <Show when={!isLoading(r.id) && r.status === "Created"}>

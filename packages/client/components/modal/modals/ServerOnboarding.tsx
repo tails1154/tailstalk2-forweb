@@ -6,6 +6,7 @@ import { useClient } from "@revolt/client";
 import { Checkbox, Column, Dialog, DialogProps, Text } from "@revolt/ui";
 import { useMutation } from "@tanstack/solid-query";
 import { useModals } from "..";
+import { requestClientJson } from "../../client/customApi";
 
 import { Modals } from "../types";
 
@@ -20,9 +21,11 @@ export function ServerOnboardingModal(
 
   const complete = useMutation(() => ({
     mutationFn: () =>
-      client().api.post(
-        `/servers/${props.server.id}/onboarding/complete` as never,
-        { answers: answers() } as never,
+      requestClientJson(
+        client().api,
+        "POST",
+        `/servers/${props.server.id}/onboarding/complete`,
+        { answers: answers() },
       ),
     onSuccess: () => {
       props.onComplete?.();

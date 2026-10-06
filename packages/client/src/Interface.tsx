@@ -1,4 +1,4 @@
-import { JSX, Match, Show, Switch, createEffect, createMemo, createSignal } from "solid-js";
+import { ErrorBoundary, JSX, Match, Show, Switch, createEffect, createMemo, createSignal } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { Server } from "stoat.js";
@@ -149,7 +149,9 @@ const Interface = (props: { children: JSX.Element }) => {
         </Switch>
 
         <NotificationsWorker />
-        <WarningOverlay />
+        <ErrorBoundary fallback={null}>
+          <WarningOverlay />
+        </ErrorBoundary>
       </div>
     </MessageCache>
   );

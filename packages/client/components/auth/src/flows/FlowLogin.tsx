@@ -43,7 +43,6 @@ export default function FlowLogin() {
   const { lifecycle, isLoggedIn, login, selectUsername } = useClientLifecycle();
   const [aisdChoice, setAisdChoice] = createSignal<boolean | null>(null);
   const [studentIdError, setStudentIdError] = createSignal(false);
-
   /**
    * Log into account
    * @param data Form Data
@@ -144,7 +143,7 @@ export default function FlowLogin() {
         }
       >
         <Match when={isLoggedIn()}>
-          <Navigate href={state.layout.popNextPath() ?? "/app"} />
+          <Navigate href={state.layout.popNextPath() ?? "/"} />
         </Match>
         <Match when={lifecycle.state() === State.LoggingIn}>
           <CircularProgress />

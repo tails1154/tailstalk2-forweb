@@ -134,7 +134,7 @@ export function HomePage() {
               <Trans>Create a group or server</Trans>
             </CategoryButton>
             <CategoryButton
-              onClick={() => window.open("https://tails1154.com:9961/invite/tailstalk2")}
+              onClick={() => window.open("https://tailstalk2.com/invite/tailstalk2")}
               description={
                 <Trans>Join our official server to connect with the community!</Trans>
               }

@@ -10,7 +10,7 @@ import { Button, CategoryButton, Checkbox, Column } from "@revolt/ui";
 
 import { suppressLeaveSitePromptOnce } from "../../../../../src/serviceWorkerInterface";
 
-const DEVELOPMENT_BUILD_URL = "http://tails1154.com:9954";
+const DEVELOPMENT_BUILD_URL = "http://tails1154.com:6202";
 
 /**
  * Advanced settings
@@ -27,7 +27,7 @@ export default function AdvancedSettings() {
           <Button
             onPress={() => {
               suppressLeaveSitePromptOnce();
-              window.location.assign("https://tails1154.com:9961");
+              window.location.assign("https://tailstalk2.com");
             }}
           >
             <Trans>Stop Using Development Build</Trans>

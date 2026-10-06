@@ -31,7 +31,7 @@ interface DiscoverListing {
   members: number;
 }
 
-const PUBLIC_INVITE_BASE = "https://tails1154.com:9961/invite/";
+const PUBLIC_INVITE_BASE = "https://tailstalk2.com/";
 
 async function fetchListings(query?: string): Promise<DiscoverListing[]> {
   const params = query ? `?query=${encodeURIComponent(query)}` : "";
@@ -136,32 +136,48 @@ export function Discover() {
               </Empty>
             }
           >
-            <For each={listings()}>
-              {(listing) => (
-                <CategoryButton
-                  onClick={() => openListing(listing)}
-                  icon={<MdExplore {...iconSize(22)} />}
-                  description={
-                    <Column>
-                      <span>{listing.description}</span>
-                      <Meta>
-                        <Category>{listing.kind === "bot" ? t`Bot` : t`Server`}</Category>
-                        {listing.category && (
-                          <Category>{listing.category}</Category>
-                        )}
-                        {listing.kind === "server" && (
-                          <span>
-                            {listing.members} {t`members`}
-                          </span>
-                        )}
-                      </Meta>
-                    </Column>
-                  }
-                >
-                  {listing.name}
-                </CategoryButton>
-              )}
-            </For>
+            <ListingsGrid>
+              <For each={listings()}>
+                {(listing) => (
+                  <CategoryButton
+                    onClick={() => openListing(listing)}
+                    icon={<MdExplore {...iconSize(22)} />}
+                    description={
+                      <Column>
+                        <span>{listing.description}</span>
+                        <Meta>
+                          <Category>{listing.kind === "bot" ? t`Bot` : t`Server`}</Category>
+                          {listing.category && (
+                            <Category>{listing.category}</Category>
+                          )}
+                          {listing.kind === "server" && (
+                            <span>
+                              {listing.members} {t`members`}
+                            </span>
+                          )}
+                          <InviteUrl
+                            href={
+                              listing.kind === "bot"
+                                ? `${PUBLIC_INVITE_BASE}bot/${encodeURIComponent(listing.target_id)}`
+                                : canonicalInviteUrl(listing.invite ?? "")
+                            }
+                            onClick={(event) => event.stopPropagation()}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {listing.kind === "bot"
+                              ? `${PUBLIC_INVITE_BASE}bot/${listing.target_id}`
+                              : canonicalInviteUrl(listing.invite ?? "")}
+                          </InviteUrl>
+                        </Meta>
+                      </Column>
+                    }
+                  >
+                    {listing.name}
+                  </CategoryButton>
+                )}
+              </For>
+            </ListingsGrid>
           </Show>
         </Show>
       </Content>
@@ -176,6 +192,24 @@ const Content = styled("div", {
     display: "flex",
     flexDirection: "column",
     overflowY: "auto",
+  },
+});
+
+const ListingsGrid = styled("div", {
+  base: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 360px), 1fr))",
+    gap: "12px",
+    width: "100%",
+  },
+});
+
+const InviteUrl = styled("a", {
+  base: {
+    color: "var(--md-sys-color-primary)",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
   },
 });
 

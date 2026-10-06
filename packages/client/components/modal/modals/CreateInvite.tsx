@@ -10,7 +10,7 @@ import { Dialog, DialogProps } from "@revolt/ui";
 import { useModals } from "..";
 import { Modals } from "../types";
 
-const PUBLIC_INVITE_BASE = "https://tails1154.com:9961/invite/";
+const PUBLIC_INVITE_BASE = "https://tailstalk2.com/";
 
 /**
  * Code block which displays invite
@@ -46,7 +46,7 @@ export function CreateInviteModal(
         .then(({ _id }) =>
           setLink(
             CONFIGURATION.IS_STOAT
-              ? `https://stt.gg/${_id}`
+              ? `https://tailstalk2.com/${_id}`
               : `${PUBLIC_INVITE_BASE}${_id}`,
           ),
         ),

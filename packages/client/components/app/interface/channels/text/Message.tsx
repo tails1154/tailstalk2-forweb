@@ -13,6 +13,7 @@ import { useState } from "@revolt/state";
 import {
   Attachment,
   Avatar,
+  Button,
   DevelopmentBuildCard,
   isDevelopmentBuildUrl,
   Embed,
@@ -307,6 +308,9 @@ export function Message(props: Props) {
           <DevelopmentBuildCard />
         </Match>
       </Switch>
+      <Show when={props.message.poll}>
+        <PollCard message={props.message} />
+      </Show>
       <Show when={props.message.attachments}>
         <For each={props.message.attachments}>
           {(attachment) => (
@@ -336,6 +340,90 @@ export function Message(props: Props) {
   );
 }
 
+function PollCard(props: { message: MessageInterface }) {
+  const client = useClient();
+  const poll = () => props.message.poll!;
+  const [busy, setBusy] = createSignal(false);
+
+  async function pollRequest(path: string, body?: unknown) {
+    const api = client().api;
+    const baseURL = api.config.baseURL.endsWith("/")
+      ? api.config.baseURL
+      : `${api.config.baseURL}/`;
+    const response = await fetch(
+      new URL(path.replace(/^\/+/, ""), baseURL),
+      {
+      method: "POST",
+      headers: {
+        ...api.config.headers,
+        ...(body ? { "Content-Type": "application/json" } : {}),
+      },
+      body: body ? JSON.stringify(body) : undefined,
+      },
+    );
+    if (!response.ok) throw new Error(`Poll request failed (${response.status})`);
+    return response.json();
+  }
+
+  async function vote(optionId: string, selected: boolean) {
+    if (busy() || poll().closed) return;
+    setBusy(true);
+    try {
+      await pollRequest(
+        `/channels/${props.message.channelId}/messages/${props.message.id}/poll/vote`,
+        { option_id: optionId, selected },
+      );
+      await props.message.channel?.fetchMessage(props.message.id);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function close() {
+    if (busy() || poll().closed) return;
+    setBusy(true);
+    try {
+      await pollRequest(
+        `/channels/${props.message.channelId}/messages/${props.message.id}/poll/close`,
+      );
+      await props.message.channel?.fetchMessage(props.message.id);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <PollBox>
+      <PollQuestion>{poll().question}</PollQuestion>
+      <For each={poll().options}>
+        {(option) => {
+          const voters = () => poll().votes?.[option.id] ?? [];
+          const selected = () => voters().includes(client().user!.id);
+          return (
+            <Button
+              variant={selected() ? "filled" : "tonal"}
+              isDisabled={busy() || poll().closed}
+              onPress={() => vote(option.id, !selected())}
+            >
+              {option.text} · {voters().length}
+            </Button>
+          );
+        }}
+      </For>
+      <Show
+        when={
+          !poll().closed &&
+          props.message.authorId === client().user?.id
+        }
+      >
+        <Button variant="text" isDisabled={busy()} onPress={close}>
+          Close poll
+        </Button>
+      </Show>
+    </PollBox>
+  );
+}
+
 /**
  * New user indicator
  */
@@ -343,6 +431,23 @@ const NewUser = styled("div", {
   base: {
     fill: "var(--md-sys-color-primary)",
   },
+});
+
+const PollBox = styled("div", {
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "var(--gap-sm)",
+    maxWidth: "min(420px, 100%)",
+    padding: "14px",
+    marginBlock: "8px",
+    borderRadius: "12px",
+    background: "var(--md-sys-color-surface-container-high)",
+  },
+});
+
+const PollQuestion = styled("div", {
+  base: { fontWeight: 700, marginBlockEnd: "4px" },
 });
 
 /**

@@ -1,4 +1,4 @@
-import { Show, createSignal, onMount } from "solid-js";
+import { For, Show, createSignal, onMount } from "solid-js";
 import { Portal } from "solid-js/web";
 
 import { styled } from "styled-system/jsx";

@@ -11,6 +11,7 @@ import { decodeTime } from "ulid";
 
 import type { Client } from "../Client.js";
 import type { MessageCollection } from "../collections/MessageCollection.js";
+import type { HydratedMessage } from "../hydration/message.js";
 import { MessageFlags } from "../hydration/message.js";
 
 import type { Channel } from "./Channel.js";
@@ -88,6 +89,11 @@ export class Message {
     return this.#collection.client.channels.get(
       this.#collection.getUnderlyingObject(this.id).channelId,
     );
+  }
+
+  /** Native poll attached to this message, if present. */
+  get poll(): HydratedMessage["poll"] {
+    return this.#collection.getUnderlyingObject(this.id).poll;
   }
 
   /**

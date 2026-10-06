@@ -23,7 +23,7 @@ export default function FlowHome() {
       fallback={
         <>
           <Show when={isLoggedIn()}>
-            <Navigate href={state.layout.popNextPath() ?? "/app"} />
+            <Navigate href={state.layout.popNextPath() ?? "/"} />
           </Show>
 
           <Column gap="xl">

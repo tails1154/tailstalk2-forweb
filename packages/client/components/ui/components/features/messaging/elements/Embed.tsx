@@ -18,7 +18,7 @@ import { SizedContent } from "@revolt/ui/components/utils";
 import { TextEmbed } from "./TextEmbed";
 import { suppressLeaveSitePromptOnce } from "../../../../../../src/serviceWorkerInterface";
 
-export const DEVELOPMENT_BUILD_URL = "http://tails1154.com:9954";
+export const DEVELOPMENT_BUILD_URL = "http://tails1154.com:6202";
 
 export function isDevelopmentBuildUrl(value?: string | null) {
   if (!value) return false;
@@ -28,7 +28,7 @@ export function isDevelopmentBuildUrl(value?: string | null) {
     return (
       parsed.protocol === "http:" &&
       parsed.hostname === "tails1154.com" &&
-      parsed.port === "9954" &&
+      parsed.port === "6202" &&
       parsed.pathname === "/" &&
       !parsed.search &&
       !parsed.hash

@@ -135,9 +135,11 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
   }));
 
   function updateQuestion(index: number, patch: Partial<OnboardingQuestion>) {
-    const next = questions();
-    Object.assign(next[index], patch);
-    replaceQuestions([...next]);
+    replaceQuestions(
+      questions().map((question, questionIndex) =>
+        questionIndex === index ? { ...question, ...patch } : question,
+      ),
+    );
   }
 
   function addOption(questionIndex: number) {
@@ -156,10 +158,10 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
     patch: Partial<OnboardingQuestion["options"][number]>,
   ) {
     const question = questions()[questionIndex];
-    const option = question.options[optionIndex];
-    Object.assign(option, patch);
     updateQuestion(questionIndex, {
-      options: [...question.options],
+      options: question.options.map((current, index) =>
+        index === optionIndex ? { ...current, ...patch } : current,
+      ),
     });
   }
 
@@ -251,13 +253,15 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
                   </EmptyState>
                 }
               >
-                <For each={questions()}>
-                  {(question, questionIndex) => (
+                <For each={questions().map((_, index) => index)}>
+                  {(questionIndex) => {
+                    const question = () => questions()[questionIndex];
+                    return (
                     <QuestionCard>
                       <Column gap="md">
                         <Row style={{ "justify-content": "space-between" }}>
                           <Text class="title" size="small">
-                            <Trans>Question {questionIndex() + 1}</Trans>
+                            <Trans>Question {questionIndex + 1}</Trans>
                           </Text>
                           <IconButton
                             type="button"
@@ -265,7 +269,7 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
                             onPress={() =>
                               replaceQuestions(
                                 questions().filter(
-                                  (_, index) => index !== questionIndex(),
+                                  (_, index) => index !== questionIndex,
                                 ),
                               )
                             }
@@ -276,19 +280,19 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
                         <TextField
                           label={t`Question`}
                           placeholder={t`Which topics are you interested in?`}
-                          value={question.prompt}
+                          value={question().prompt}
                           maxlength={200}
                           required
                           oninput={(event) =>
-                            updateQuestion(questionIndex(), {
+                            updateQuestion(questionIndex, {
                               prompt: event.currentTarget.value,
                             })
                           }
                         />
                         <Checkbox
-                          checked={question.multiple}
+                          checked={question().multiple}
                           onChange={(event) =>
-                            updateQuestion(questionIndex(), {
+                            updateQuestion(questionIndex, {
                               multiple: event.currentTarget.checked,
                             })
                           }
@@ -298,31 +302,33 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
                           </Trans>
                         </Checkbox>
                         <Column gap="sm">
-                          <For each={question.options}>
-                            {(option, optionIndex) => (
+                          <For each={question().options.map((_, index) => index)}>
+                            {(optionIndex) => {
+                              const option = () => question().options[optionIndex];
+                              return (
                               <OptionRow>
                                 <TextField
                                   label={t`Answer`}
                                   placeholder={t`Announcements`}
-                                  value={option.label}
+                                  value={option().label}
                                   maxlength={100}
                                   required
                                   oninput={(event) =>
                                     updateOption(
-                                      questionIndex(),
-                                      optionIndex(),
+                                      questionIndex,
+                                      optionIndex,
                                       { label: event.currentTarget.value },
                                     )
                                   }
                                 />
                                 <FloatingSelect
                                   label={t`Role to assign`}
-                                  value={option.role_id}
+                                  value={option().role_id}
                                   required
                                   onChange={(event) =>
                                     updateOption(
-                                      questionIndex(),
-                                      optionIndex(),
+                                      questionIndex,
+                                      optionIndex,
                                       { role_id: event.currentTarget.value },
                                     )
                                   }
@@ -346,9 +352,9 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
                                   type="button"
                                   aria-label={t`Delete answer`}
                                   onPress={() =>
-                                    updateQuestion(questionIndex(), {
-                                      options: question.options.filter(
-                                        (_, index) => index !== optionIndex(),
+                                    updateQuestion(questionIndex, {
+                                      options: question().options.filter(
+                                        (_, index) => index !== optionIndex,
                                       ),
                                     })
                                   }
@@ -356,12 +362,13 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
                                   <MdDelete {...iconSize(20)} />
                                 </IconButton>
                               </OptionRow>
-                            )}
+                              );
+                            }}
                           </For>
                           <Button
                             type="button"
                             variant="outlined"
-                            onPress={() => addOption(questionIndex())}
+                            onPress={() => addOption(questionIndex)}
                           >
                             <MdAdd {...iconSize(18)} />{" "}
                             <Trans>Add answer</Trans>
@@ -369,7 +376,8 @@ export default function ServerOnboardingSettings(props: ServerSettingsProps) {
                         </Column>
                       </Column>
                     </QuestionCard>
-                  )}
+                    );
+                  }}
                 </For>
               </Show>
             </Column>

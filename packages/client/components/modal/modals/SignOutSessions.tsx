@@ -12,11 +12,31 @@ import { Modals } from "../types";
 export function SignOutSessionsModal(
   props: DialogProps & Modals & { type: "sign_out_sessions" },
 ) {
-  const { showError } = useModals();
+  const { mfaFlow, showError } = useModals();
 
   const signOutSessions = useMutation(() => ({
-    mutationFn: () => props.client.sessions.deleteAll(),
+    mutationFn: async () => {
+      const mfa = await props.client.account.mfa();
+      const ticket = await mfaFlow(mfa);
+      if (!ticket) return;
+
+      const config = props.client.api.config;
+      const response = await fetch(
+        `${config.baseURL}/auth/session/all?revoke_self=false`,
+        {
+          method: "DELETE",
+          headers: {
+            ...(config.headers ?? {}),
+            "X-MFA-Ticket": ticket.token,
+          },
+        },
+      );
+      if (!response.ok) {
+        throw new Error(`Unable to sign out sessions (${response.status})`);
+      }
+    },
     onError: showError,
+    onSuccess: props.onClose,
   }));
 
   return (

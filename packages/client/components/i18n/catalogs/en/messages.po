@@ -405,9 +405,9 @@ msgstr "Add friends to group"
 msgid "Add new members to the group"
 msgstr "Add new members to the group"
 
-#: src/interface/channels/text/Composition.tsx
-#~ msgid "Add option"
-#~ msgstr "Add option"
+#: components/modal/modals/CreatePoll.tsx
+msgid "Add option"
+msgstr "Add option"
 
 #: components/app/interface/settings/server/Onboarding.tsx
 msgid "Add question"
@@ -465,9 +465,9 @@ msgstr "Allow members to change name and avatar per-message"
 msgid "Allow members to choose more than one answer"
 msgstr "Allow members to choose more than one answer"
 
-#: src/interface/channels/text/Composition.tsx
-#~ msgid "Allow multiple selections"
-#~ msgstr "Allow multiple selections"
+#: components/modal/modals/CreatePoll.tsx
+msgid "Allow multiple selections"
+msgstr "Allow multiple selections"
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Allow others to add your bot to their servers from Discover"
@@ -946,6 +946,7 @@ msgstr "Client Settings"
 #: components/modal/modals/CreateWebhook.tsx
 #: components/modal/modals/CreateServer.tsx
 #: components/modal/modals/CreateRole.tsx
+#: components/modal/modals/CreatePoll.tsx
 #: components/modal/modals/CreateGroup.tsx
 #: components/modal/modals/CreateChannel.tsx
 #: components/modal/modals/CreateCategory.tsx
@@ -1157,6 +1158,7 @@ msgstr "Could not submit your bot."
 #: components/modal/modals/CreateWebhook.tsx
 #: components/modal/modals/CreateServer.tsx
 #: components/modal/modals/CreateRole.tsx
+#: components/modal/modals/CreatePoll.tsx
 #: components/modal/modals/CreateGroup.tsx
 #: components/modal/modals/CreateChannel.tsx
 #: components/modal/modals/CreateCategory.tsx
@@ -1257,11 +1259,9 @@ msgstr "Create invites for others to use"
 #~ msgid "Create OAuth application"
 #~ msgstr "Create OAuth application"
 
-#: src/interface/channels/text/Composition.tsx
-#: src/interface/channels/text/Composition.tsx
-#: src/interface/channels/text/Composition.tsx
-#~ msgid "Create poll"
-#~ msgstr "Create poll"
+#: components/modal/modals/CreatePoll.tsx
+msgid "Create poll"
+msgstr "Create poll"
 
 #: components/modal/modals/CreateRole.tsx
 #: components/app/interface/settings/server/roles/ServerRoleOverview.tsx
@@ -2165,6 +2165,10 @@ msgstr "irrelevant joke badge 2"
 msgid "ISO Standard (YYYY-MM-DD)"
 msgstr "ISO Standard (YYYY-MM-DD)"
 
+#: components/app/interface/settings/user/subscriptions/EditSubscription.tsx
+#~ msgid "It's free. It unlocks:"
+#~ msgstr "It's free. It unlocks:"
+
 #: components/modal/modals/JoinServer.tsx
 #: components/modal/modals/Invite.tsx
 msgid "Join"
@@ -2718,6 +2722,10 @@ msgstr "None"
 msgid "Not of minimum age to use the platform"
 msgstr "Not of minimum age to use the platform"
 
+#: components/app/interface/settings/user/subscriptions/EditSubscription.tsx
+#~ msgid "NOTHING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+#~ msgstr "NOTHING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+
 #: components/app/menus/ServerContextMenu.tsx
 #: components/app/menus/shared/NotificationContextMenu.tsx
 #: components/app/interface/settings/UserSettings.tsx
@@ -2834,6 +2842,10 @@ msgstr "Open server settings"
 #~ msgid "Option {0}"
 #~ msgstr "Option {0}"
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "Options"
+msgstr "Options"
+
 #: components/modal/modals/ReportContent.tsx
 msgid "Other"
 msgstr "Other"
@@ -2942,6 +2954,10 @@ msgstr "Post video"
 msgid "Powered by RNNoise"
 msgstr "Powered by RNNoise"
 
+#: components/app/interface/settings/UserSettings.tsx
+#~ msgid "Premium"
+#~ msgstr "Premium"
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Primary"
 msgstr "Primary"
@@ -2987,6 +3003,7 @@ msgstr "Publish Tailslet"
 msgid "Publish to theme store"
 msgstr "Publish to theme store"
 
+#: components/modal/modals/CreatePoll.tsx
 #: components/app/interface/settings/server/Onboarding.tsx
 msgid "Question"
 msgstr "Question"
@@ -3745,8 +3762,8 @@ msgid "Submit to Discover"
 msgstr "Submit to Discover"
 
 #: components/app/interface/settings/UserSettings.tsx
-msgid "Subscriptions"
-msgstr "Subscriptions"
+#~ msgid "Subscriptions"
+#~ msgstr "Subscriptions"
 
 #: components/app/interface/settings/user/FeatureRequests.tsx
 msgid "Suggest ideas for TailsTalk 2 and track their review status."
@@ -3834,6 +3851,11 @@ msgstr "TailsTalk 2 Founder"
 msgid "TailsTalk 2 is one of the best ways to stay connected with your friends and community, anywhere, anytime."
 msgstr "TailsTalk 2 is one of the best ways to stay connected with your friends and community, anywhere, anytime."
 
+#: components/app/interface/settings/UserSettings.tsx
+#: components/app/interface/settings/user/subscriptions/EditSubscription.tsx
+#~ msgid "TailsTalk 2 PREMIUM"
+#~ msgstr "TailsTalk 2 PREMIUM"
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "TailsTalk 2 will start in the system tray."
 msgstr "TailsTalk 2 will start in the system tray."
@@ -3870,6 +3892,10 @@ msgstr "Text"
 #: components/modal/modals/CreateChannel.tsx
 msgid "Text Channel"
 msgstr "Text Channel"
+
+#: components/app/interface/settings/user/subscriptions/EditSubscription.tsx
+#~ msgid "Thank you for supporting TailsTalk 2 by looking at this completely pointless premium page."
+#~ msgstr "Thank you for supporting TailsTalk 2 by looking at this completely pointless premium page."
 
 #: components/i18n/errors.ts
 msgid "That action had no effect."
@@ -4146,6 +4172,10 @@ msgstr "Undeafen"
 #: components/markdown/plugins/anchors.tsx
 msgid "Unknown Server"
 msgstr "Unknown Server"
+
+#: components/app/interface/settings/user/subscriptions/EditSubscription.tsx
+#~ msgid "Unlock Nothing"
+#~ msgstr "Unlock Nothing"
 
 #: components/modal/modals/ChannelToggleMature.tsx
 #~ msgid "Unmark as mature"

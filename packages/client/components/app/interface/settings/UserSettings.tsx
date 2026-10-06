@@ -26,9 +26,9 @@ import MdRateReview from "@material-design-icons/svg/outlined/rate_review.svg?co
 import MdScience from "@material-design-icons/svg/outlined/science.svg?component-solid";
 import MdSmartToy from "@material-design-icons/svg/outlined/smart_toy.svg?component-solid";
 import MdVerifiedUser from "@material-design-icons/svg/outlined/verified_user.svg?component-solid";
-import MdWorkspacePremium from "@material-design-icons/svg/outlined/workspace_premium.svg?component-solid";
 
 import { CURRENT_VERSION } from "../../../../src/version";
+import { suppressLeaveSitePromptOnce } from "../../../../src/serviceWorkerInterface";
 
 import { SettingsConfiguration } from ".";
 import { AccountCard } from "./user/_AccountCard";
@@ -44,7 +44,6 @@ import Notifications from "./user/notifications/Notifications";
 import { EditProfile } from "./user/profile";
 import { Sessions } from "./user/Sessions";
 import { AdminPanel } from "./user/Admin";
-import { EditSubscription } from "./user/subscriptions";
 import { VoiceSettings } from "./user/voice/VoiceSettings";
 
 const Config: SettingsConfiguration<{ server: Server }> = {
@@ -104,8 +103,6 @@ const Config: SettingsConfiguration<{ server: Server }> = {
         return <Feedback />;
       case "feature_requests":
         return <FeatureRequests />;
-      case "subscribe":
-        return <EditSubscription />;
       case "native":
         return <Native />;
       case "voice":
@@ -193,18 +190,6 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               id: "bots",
               icon: <MdSmartToy {...iconSize(20)} />,
               title: <Trans>My Bots</Trans>,
-            },
-          ],
-        },
-        {
-          title: <Trans>Subscriptions</Trans>,
-        //  hidden: import.meta.env.PROD,
-          hidden: true,
-          entries: [
-            {
-              id: "subscribe",
-              icon: <MdWorkspacePremium {...iconSize(20)} />,
-              title: "[premium]",
             },
           ],
         },
@@ -327,6 +312,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               ),
               onClick() {
                 pop();
+                suppressLeaveSitePromptOnce();
                 logout();
               },
             },

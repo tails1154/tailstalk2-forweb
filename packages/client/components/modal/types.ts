@@ -98,6 +98,10 @@ export type Modals =
       channel: Channel;
     }
   | {
+      type: "create_poll";
+      channel: Channel;
+    }
+  | {
       type: "create_server";
       client: Client;
     }

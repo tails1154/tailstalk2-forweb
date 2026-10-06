@@ -83,7 +83,7 @@ export function ListServerInvites(props: { server: Server }) {
         const error = await response.json().catch(() => undefined);
         throw new Error(error?.error ?? `Vanity URL request failed (${response.status})`);
       }
-      const url = `https://tails1154.com:9961/invite/${code}`;
+      const url = `https://tailstalk2.com/${code}`;
       setVanityUrl(url);
       await navigator.clipboard?.writeText(url);
       queryClient.invalidateQueries({ queryKey: ["invites", props.server.id] });

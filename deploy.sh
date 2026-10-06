@@ -13,6 +13,12 @@ LOCAL_VERSION_CGI="scripts/tailstalk2_version.py"
 LOCAL_RPC_DIR="extensions/tailstalk2-rpc"
 RPC_VERSION="1.0.0"
 CONTAINER="stoat-web-1"
+DEPLOY_TMP_DIR=".deploy-tmp"
+DIST_ARCHIVE="$DEPLOY_TMP_DIR/stoat-dist.tar.gz"
+RPC_ARCHIVE="$DEPLOY_TMP_DIR/tailstalk2-rpc-${RPC_VERSION}.zip"
+
+mkdir -p "$DEPLOY_TMP_DIR"
+trap 'rm -rf "$DEPLOY_TMP_DIR"' EXIT
 
 echo "=== Compiling translations ==="
 pnpm --filter client exec lingui compile --typescript
@@ -30,22 +36,23 @@ echo "=== Building on host ==="
 pnpm --filter client exec vite build
 
 echo "=== Taring dist ==="
-tar czf /tmp/stoat-dist.tar.gz -C "$LOCAL_DIST" .
+rm -f "$DIST_ARCHIVE"
+tar czf "$DIST_ARCHIVE" -C "$LOCAL_DIST" .
 
 echo "=== Packaging browser RPC extension ==="
 test -f "$LOCAL_RPC_DIR/manifest.json"
 test -f "$LOCAL_RPC_DIR/update.xml"
-rm -f "/tmp/tailstalk2-rpc-${RPC_VERSION}.zip"
+rm -f "$RPC_ARCHIVE"
 (
   cd "$LOCAL_RPC_DIR"
-  zip -qr "/tmp/tailstalk2-rpc-${RPC_VERSION}.zip" .
+  zip -qr "$OLDPWD/$RPC_ARCHIVE" .
 )
 
 echo "=== Uploading to $REMOTE_HOST ==="
-scp -P "$REMOTE_PORT" /tmp/stoat-dist.tar.gz "$REMOTE_USER@$REMOTE_HOST:/tmp/"
+scp -P "$REMOTE_PORT" "$DIST_ARCHIVE" "$REMOTE_USER@$REMOTE_HOST:/tmp/stoat-dist.tar.gz"
 scp -P "$REMOTE_PORT" "$LOCAL_VERSION" "$REMOTE_USER@$REMOTE_HOST:/tmp/tailstalk2.version"
 scp -P "$REMOTE_PORT" "$LOCAL_VERSION_CGI" "$REMOTE_USER@$REMOTE_HOST:/tmp/tailstalk2_version.py"
-scp -P "$REMOTE_PORT" "/tmp/tailstalk2-rpc-${RPC_VERSION}.zip" "$REMOTE_USER@$REMOTE_HOST:/tmp/"
+scp -P "$REMOTE_PORT" "$RPC_ARCHIVE" "$REMOTE_USER@$REMOTE_HOST:/tmp/tailstalk2-rpc-${RPC_VERSION}.zip"
 scp -P "$REMOTE_PORT" "$LOCAL_RPC_DIR/update.xml" "$REMOTE_USER@$REMOTE_HOST:/tmp/tailstalk2-rpc-update.xml"
 
 echo "=== Deploying on remote ==="
@@ -69,8 +76,5 @@ ssh -p "$REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" "
   rm -f /tmp/tailstalk2-rpc-${RPC_VERSION}.zip
   rm -f /tmp/tailstalk2-rpc-update.xml
 "
-
-rm -f /tmp/stoat-dist.tar.gz
-rm -f "/tmp/tailstalk2-rpc-${RPC_VERSION}.zip"
 
 echo "=== Done ==="

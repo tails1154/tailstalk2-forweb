@@ -25,6 +25,7 @@ const RE_MESSAGE_ID = /\/channel\/[A-Z0-9]{26}\/([A-Z0-9]{26})/;
 const RE_BOT_ID = /\/bot\/([A-Z0-9]{26})/;
 
 const RE_INVITE_EXACT = /^\/invite\/([\w\d]+)$/;
+const RE_ROOT_INVITE_EXACT = /^\/([a-z0-9]+)$/i;
 const RE_BOT_ID_EXACT = /^\/bot\/[A-Z0-9]{26}$/;
 
 const RE_SERVER_EXACT = /^\/server\/([A-Z0-9]{26})$/;
@@ -98,8 +99,9 @@ export function paramsFromPathname(pathname: string): GlobalParams {
 
   // Check for invite ID
   const invite = pathname.match(RE_INVITE_EXACT);
-  if (invite) {
-    params.inviteId = invite[1];
+  const rootInvite = pathname.match(RE_ROOT_INVITE_EXACT);
+  if (invite || rootInvite) {
+    params.inviteId = (invite ?? rootInvite)![1];
   }
 
   // Check for server ID

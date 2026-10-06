@@ -1,6 +1,12 @@
 import { ReactiveMap } from "@solid-primitives/map";
 import { ReactiveSet } from "@solid-primitives/set";
-import type { Embed, Interactions, Masquerade, Message } from "stoat-api";
+import type {
+  Embed,
+  Interactions,
+  Masquerade,
+  Message,
+} from "stoat-api";
+import type { Message as APIMessage } from "stoat-api";
 
 import type { Client } from "../Client.js";
 import { File } from "../classes/File.js";
@@ -30,6 +36,13 @@ export type HydratedMessage = {
   masquerade?: Masquerade;
   pinned?: boolean;
   flags?: MessageFlags;
+  poll?: {
+    question: string;
+    options: { id: string; text: string }[];
+    multiple: boolean;
+    closed: boolean;
+    votes: Record<string, string[]>;
+  };
 };
 
 export const messageHydration: Hydrate<Merge<Message>, HydratedMessage> = {
@@ -75,6 +88,8 @@ export const messageHydration: Hydrate<Merge<Message>, HydratedMessage> = {
     masquerade: (message) => message.masquerade!,
     pinned: (message) => message.pinned!,
     flags: (message) => message.flags!,
+    poll: (message) =>
+      (message as APIMessage & { poll?: HydratedMessage["poll"] }).poll,
   },
   initialHydration: () => ({
     reactions: new ReactiveMap(),

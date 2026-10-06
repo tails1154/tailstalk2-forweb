@@ -10,6 +10,7 @@ import type { Session } from "@revolt/state/stores/Auth";
 
 import type { DialogProps } from "@revolt/ui";
 import type { Modals } from "../types";
+import { suppressLeaveSitePromptOnce } from "../../../src/serviceWorkerInterface";
 
 export function AccountSwitcherModal(
   props: DialogProps & Modals & { type: "account_switcher" },
@@ -25,11 +26,14 @@ export function AccountSwitcherModal(
 
   function switchTo(account: Session) {
     closeAll();
+    suppressLeaveSitePromptOnce();
     switchAccount(account);
+    window.location.reload();
   }
 
   function addAccount() {
     closeAll();
+    suppressLeaveSitePromptOnce();
     logout(true);
     navigate("/login/auth");
   }

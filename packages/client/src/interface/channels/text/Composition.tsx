@@ -367,6 +367,10 @@ export function MessageComposition(props: Props) {
     input.click();
   }
 
+  function createPoll() {
+    openModal({ type: "create_poll", channel: props.channel });
+  }
+
   /**
    * Remove a file by its ID
    * @param fileId File ID
@@ -452,6 +456,13 @@ export function MessageComposition(props: Props) {
               <MessageBox.InlineIcon size="wide">
                 <IconButton onPress={addFile}>
                   <Symbol>add</Symbol>
+                </IconButton>
+              </MessageBox.InlineIcon>
+            </Show>
+            <Show when={props.channel.havePermission("SendMessage")}>
+              <MessageBox.InlineIcon size="wide">
+                <IconButton onPress={createPoll}>
+                  <Symbol>poll</Symbol>
                 </IconButton>
               </MessageBox.InlineIcon>
             </Show>
