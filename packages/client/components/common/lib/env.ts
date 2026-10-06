@@ -1,13 +1,13 @@
 const DEFAULT_API_URL =
   (import.meta.env.DEV ? import.meta.env.VITE_DEV_API_URL : undefined) ??
   (import.meta.env.VITE_API_URL as string) ??
-  "https://stoat.chat/api";
+  "https://tails1154.com:9961/api";
 
 export default {
   /**
    * Whether to emit additional debug information
    */
-  DEBUG: import.meta.env.DEV || true,
+  DEBUG: import.meta.env.DEV,
   /**
    * What API server to connect to by default.
    */
@@ -22,6 +22,7 @@ export default {
     "https://revolt.chat/api",
     // ... and now:
     "https://stoat.chat/api",
+    "https://tails1154.com:9961/api",
   ].includes(DEFAULT_API_URL),
   /**
    * What WS server to connect to by default.
@@ -29,7 +30,7 @@ export default {
   DEFAULT_WS_URL:
     (import.meta.env.DEV ? import.meta.env.VITE_DEV_WS_URL : undefined) ??
     (import.meta.env.VITE_WS_URL as string) ??
-    "wss://stoat.chat/events",
+    "wss://tails1154.com:9961/ws",
   /**
    * What media server to connect to by default.
    */

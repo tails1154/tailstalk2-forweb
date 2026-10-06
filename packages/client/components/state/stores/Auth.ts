@@ -69,7 +69,7 @@ export class Auth extends AbstractStore<"auth", TypeAuth> {
         typeof candidate._id !== "string" ||
         typeof candidate.token !== "string" ||
         typeof candidate.userId !== "string" ||
-        !candidate.valid
+        typeof candidate.valid !== "boolean"
       ) {
         return;
       }
@@ -77,7 +77,7 @@ export class Auth extends AbstractStore<"auth", TypeAuth> {
         _id: candidate._id,
         token: candidate.token,
         userId: candidate.userId,
-        valid: true,
+        valid: candidate.valid,
         ...(typeof candidate.username === "string"
           ? { username: candidate.username }
           : {}),

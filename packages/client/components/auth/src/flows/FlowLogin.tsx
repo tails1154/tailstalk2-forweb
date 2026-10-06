@@ -61,13 +61,11 @@ export default function FlowLogin() {
 
     if (!email || !password) return;
 
-    await login(
-      {
-        email,
-        password,
-      },
-      modals,
-    );
+    try {
+      await login({ email, password }, modals);
+    } catch (error) {
+      modals.showError(error);
+    }
   }
 
   /**

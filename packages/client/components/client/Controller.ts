@@ -185,13 +185,11 @@ class Lifecycle {
     switch (nextState) {
       case State.LoggingIn:
         this.client.api.get("/onboard/hello").then(({ onboarding }) => {
-          if (onboarding) {
-            this.transition({
-              type: TransitionType.NoUser,
-            });
-          } else {
-            this.client.connect();
-          }
+          if (onboarding) this.transition({ type: TransitionType.NoUser });
+          else this.client.connect();
+        }).catch((error) => {
+          this.#permanentError = error?.type || error?.message || "Unable to reach TailsTalk 2";
+          this.#enter(State.Error);
         });
 
         break;

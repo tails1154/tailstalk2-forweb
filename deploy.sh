@@ -13,7 +13,7 @@ LOCAL_VERSION_CGI="scripts/tailstalk2_version.py"
 LOCAL_RPC_DIR="extensions/tailstalk2-rpc"
 RPC_VERSION="1.0.0"
 CONTAINER="stoat-web-1"
-DEPLOY_TMP_DIR=".deploy-tmp"
+DEPLOY_TMP_DIR="$PWD/.deploy-tmp"
 DIST_ARCHIVE="$DEPLOY_TMP_DIR/stoat-dist.tar.gz"
 RPC_ARCHIVE="$DEPLOY_TMP_DIR/tailstalk2-rpc-${RPC_VERSION}.zip"
 
@@ -45,7 +45,7 @@ test -f "$LOCAL_RPC_DIR/update.xml"
 rm -f "$RPC_ARCHIVE"
 (
   cd "$LOCAL_RPC_DIR"
-  zip -qr "$OLDPWD/$RPC_ARCHIVE" .
+  zip -qr "$RPC_ARCHIVE" .
 )
 
 echo "=== Uploading to $REMOTE_HOST ==="

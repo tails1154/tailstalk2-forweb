@@ -1167,6 +1167,14 @@ msgstr ""
 msgid "Create"
 msgstr "ایجاد"
 
+#: components/app/interface/settings/user/bots/MyBots.tsx
+msgid "Create a bot visually with TailsBot."
+msgstr ""
+
+#: components/app/interface/settings/user/bots/MyBots.tsx
+msgid "Create a bot with TailsBot"
+msgstr ""
+
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
 msgid "Create a channel before inviting others!"
 msgstr ""
@@ -3008,7 +3016,7 @@ msgstr ""
 msgid "Question"
 msgstr ""
 
-#. placeholder {0}: questionIndex() + 1
+#. placeholder {0}: questionIndex + 1
 #: components/app/interface/settings/server/Onboarding.tsx
 msgid "Question {0}"
 msgstr ""

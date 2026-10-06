@@ -57,12 +57,17 @@ export default function FlowCreate() {
     const captcha = data.get("captcha") as string;
     const invite = data.get("invite") as string;
 
-    await api.post("/auth/account/create", {
-      email,
-      password,
-      captcha,
-      ...(invite ? { invite } : {}),
-    });
+    try {
+      await api.post("/auth/account/create", {
+        email,
+        password,
+        captcha,
+        ...(invite ? { invite } : {}),
+      });
+    } catch (error) {
+      showError(error);
+      return;
+    }
 
     const client = getClient();
     if (client.configuration && !client.configuration.features.email) {
