@@ -188,6 +188,13 @@ class Lifecycle {
           if (onboarding) this.transition({ type: TransitionType.NoUser });
           else this.client.connect();
         }).catch((error) => {
+          // Anonymous visitors can receive 401 from installations that
+          // protect the onboarding probe. That is not a client startup
+          // failure; continue with the unauthenticated connection flow.
+          if (error?.status === 401 || error?.code === 401 || error?.type === "Unauthorized") {
+            this.client.connect();
+            return;
+          }
           this.#permanentError = error?.type || error?.message || "Unable to reach TailsTalk 2";
           this.#enter(State.Error);
         });
