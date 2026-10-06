@@ -49,6 +49,15 @@ interface DiscoveryListing {
   category: string;
   members: number;
   status: string;
+  invite?: string;
+}
+
+const DISCOVERY_BASE = "https://tailstalk2.com/";
+
+function discoveryUrl(entry: DiscoveryListing) {
+  return entry.kind === "bot"
+    ? `${DISCOVERY_BASE}bot/${encodeURIComponent(entry.target_id)}`
+    : `${DISCOVERY_BASE}invite/${encodeURIComponent(entry.invite || entry.target_id)}`;
 }
 
 interface AdminStats {
@@ -290,6 +299,9 @@ function DiscoveryTab(props: { password: string }) {
                     </Row>
                     <Text class={typography({ class: "title", size: "small" })}>{entry.name}</Text>
                     <Text class={typography({ class: "body", size: "small" })}>{entry.description}</Text>
+                    <a href={discoveryUrl(entry)} target="_blank" rel="noreferrer" style={{ "word-break": "break-all" }}>
+                      {discoveryUrl(entry)}
+                    </a>
                     <Show when={entry.status === "pending"}>
                       <Row gap="sm">
                         <Button onPress={() => review(entry.id, "approve")} isDisabled={loadingId() === entry.id}>

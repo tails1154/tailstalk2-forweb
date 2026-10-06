@@ -70,6 +70,14 @@ function CreateBot() {
       >
         <Trans>Developer Documentation</Trans>
       </CategoryButton>
+      <CategoryButton
+        action="external"
+        icon={<MdSmartToy {...iconSize(22)} />}
+        onClick={() => window.open("https://bots.tailstalk2.com", "_blank")}
+        description={<Trans>Create a bot visually with TailsBot.</Trans>}
+      >
+        <Trans>Create a bot with TailsBot</Trans>
+      </CategoryButton>
     </CategoryButton.Group>
   );
 }

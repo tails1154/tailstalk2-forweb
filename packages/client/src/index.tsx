@@ -82,6 +82,10 @@ function SettingsRedirect() {
   return <PWARedirect />;
 }
 
+function RegisterRedirect() {
+  return <Navigate href="/login/create" replace />;
+}
+
 /** Keep the browser's native leave-site confirmation enabled for this app. */
 function LeaveSitePrompt() {
   onMount(() => {
@@ -267,6 +271,7 @@ render(
             <Route path="/reset/:token" component={FlowConfirmReset} />
             <Route path="/*" component={FlowHome} />
           </Route>
+          <Route path="/register" component={RegisterRedirect} />
           <Route path="/" component={Interface as never}>
             <Route path="/pwa" component={PWARedirect} />
             <Route path="/dev" component={DevelopmentPage} />
