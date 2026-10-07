@@ -184,18 +184,29 @@ class Lifecycle {
 
     switch (nextState) {
       case State.LoggingIn:
-        this.client.api.get("/onboard/hello").then(({ onboarding }) => {
-          if (onboarding) this.transition({ type: TransitionType.NoUser });
-          else this.client.connect();
-        }).catch((error) => {
-          // Anonymous visitors can receive 401 from installations that
-          // protect the onboarding probe. That is not a client startup
-          // failure; continue with the unauthenticated connection flow.
-          if (error?.status === 401 || error?.code === 401 || error?.type === "Unauthorized") {
+        void (async () => {
+          const [authHeader, authToken] = this.client.authenticationHeader;
+          const apiBase = CONFIGURATION.DEFAULT_API_URL.replace(/\/+$/, "");
+          const response = await fetch(`${apiBase}/onboard/hello`, {
+            headers: { [authHeader]: authToken },
+          });
+
+          // Some deployments require authentication for this probe. Check the
+          // HTTP status before parsing its HTML 401 body as JSON.
+          if (response.status === 401) {
             this.client.connect();
             return;
           }
-          this.#permanentError = error?.type || error?.message || "Unable to reach TailsTalk 2";
+          if (!response.ok) {
+            throw new Error(`Onboarding check failed (${response.status})`);
+          }
+
+          const { onboarding } = await response.json();
+          if (onboarding) this.transition({ type: TransitionType.NoUser });
+          else this.client.connect();
+        })().catch((error) => {
+          this.#permanentError =
+            error?.message || "Unable to check the TailsTalk 2 server";
           this.#enter(State.Error);
         });
 
@@ -414,7 +425,9 @@ class Lifecycle {
       case ConnectionState.Disconnected:
         if (this.client.events.lastError) {
           if (this.client.events.lastError.type === "revolt") {
-            // if (this.client.events.lastError.data.type == 'InvalidSession') {
+            if (this.client.events.lastError.data.type === "InvalidSession") {
+              this.#controller.state.auth.removeSession();
+            }
 
             this.transition({
               type: TransitionType.PermanentFailure,
@@ -581,11 +594,14 @@ export default class ClientController {
     }
 
     if (session.result === "Disabled") {
-      const reason = (session as any).reason || "Your account has been disabled.";
+      const reason =
+        "reason" in session && typeof session.reason === "string"
+          ? session.reason
+          : "Your account has been disabled.";
       document.cookie = "account_disabled=1; path=/; max-age=31536000";
-      const days = 3;
-      const wait = days * 24 * 60 * 60 * 1000;
-      alert(`Your account has been disabled.\n\nReason: ${reason}\n\nDo not create another account.`);
+      alert(
+        `Your account has been disabled.\n\nReason: ${reason}\n\nDo not create another account.`,
+      );
       return;
     }
 

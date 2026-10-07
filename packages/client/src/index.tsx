@@ -7,7 +7,6 @@ import { createSignal, JSX, onCleanup, onMount, Show } from "solid-js";
 import { render } from "solid-js/web";
 
 import { Trans } from "@lingui-solid/solid/macro";
-import { attachDevtoolsOverlay } from "@solid-devtools/overlay";
 import { Navigate, Route, Router, useParams } from "@solidjs/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/solid-query";
 import "material-symbols";
@@ -61,8 +60,6 @@ import {
   isLeaveSitePromptSuppressed,
   ServiceWorkerUpdatePrompt,
 } from "./serviceWorkerInterface";
-
-attachDevtoolsOverlay();
 
 /**
  * Redirect PWA start to the last active path

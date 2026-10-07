@@ -1,4 +1,14 @@
-import { ErrorBoundary, JSX, Match, Show, Switch, createEffect, createMemo, createSignal } from "solid-js";
+import {
+  ErrorBoundary,
+  JSX,
+  Match,
+  Show,
+  Switch,
+  createEffect,
+  createMemo,
+  createSignal,
+  onMount,
+} from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { Server } from "stoat.js";
@@ -10,15 +20,25 @@ import { Titlebar } from "@revolt/app/interface/desktop/Titlebar";
 import { useClient, useClientLifecycle } from "@revolt/client";
 import { State } from "@revolt/client/Controller";
 import { NotificationsWorker } from "@revolt/client/NotificationsWorker";
+import { useDevice } from "@revolt/common";
 import { useModals } from "@revolt/modal";
-import { Navigate, useBeforeLeave, useLocation } from "@revolt/routing";
+import { useBeforeLeave, useLocation } from "@revolt/routing";
 import { useState } from "@revolt/state";
 import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
 import { CircularProgress, typography } from "@revolt/ui";
-import { useDevice } from "@revolt/common";
 
-import { Sidebar } from "./interface/Sidebar";
 import { WarningOverlay } from "@revolt/app/WarningOverlay";
+import { Sidebar } from "./interface/Sidebar";
+import { suppressLeaveSitePromptOnce } from "./serviceWorkerInterface";
+
+function LoginRedirect() {
+  onMount(() => {
+    suppressLeaveSitePromptOnce();
+    window.location.replace("/login");
+  });
+
+  return <CircularProgress />;
+}
 
 /**
  * Application layout
@@ -75,8 +95,10 @@ const Interface = (props: { children: JSX.Element }) => {
     if (bannerDismissed()) return false;
     if (window.native) return false;
     const ua = navigator.userAgent;
-    return /Windows|Macintosh|Mac OS X/.test(ua) ||
-      (/Linux/.test(ua) && !/Android/.test(ua) && !/CrOS/.test(ua));
+    return (
+      /Windows|Macintosh|Mac OS X/.test(ua) ||
+      (/Linux/.test(ua) && !/Android/.test(ua) && !/CrOS/.test(ua))
+    );
   });
   const dismissBanner = () => {
     setBannerDismissed(true);
@@ -95,7 +117,9 @@ const Interface = (props: { children: JSX.Element }) => {
         <Show when={showDownloadBanner()}>
           <DownloadBanner>
             <BannerText>
-              <Trans>You can download the Desktop Version of TailsTalk here</Trans>{" "}
+              <Trans>
+                You can download the Desktop Version of TailsTalk here
+              </Trans>{" "}
             </BannerText>
             <DownloadButton
               href="https://github.com/tails1154/tailstalk2-fordesktop/releases"
@@ -110,9 +134,11 @@ const Interface = (props: { children: JSX.Element }) => {
         <Titlebar />
         <Switch fallback={<CircularProgress />}>
           <Match when={!isLoggedIn()}>
-            <Navigate href="/login" />
+            <LoginRedirect />
           </Match>
-          <Match when={lifecycle.loadedOnce() || pathname.startsWith("/discover")}>
+          <Match
+            when={lifecycle.loadedOnce() || pathname.startsWith("/discover")}
+          >
             <Layout
               disconnected={isDisconnected()}
               style={{ "flex-grow": 1, "min-height": 0 }}

@@ -1,5 +1,4 @@
 import { lingui as linguiSolidPlugin } from "@lingui-solid/vite-plugin";
-import devtools from "@solid-devtools/transform";
 import { readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { defineConfig } from "vite";
@@ -15,12 +14,11 @@ const base = process.env.BASE_PATH ?? "/";
 
 export default defineConfig({
   server: {
-    allowedHosts: ["tails1154.com"]
+    allowedHosts: ["tails1154.com"],
   },
   base,
   plugins: [
     Inspect(),
-    devtools(),
     codegenPlugin(),
     babelMacrosPlugin(),
     linguiSolidPlugin(),

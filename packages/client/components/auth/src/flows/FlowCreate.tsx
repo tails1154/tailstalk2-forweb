@@ -4,7 +4,7 @@ import { useApi, useClient, useClientLifecycle } from "@revolt/client";
 import { CONFIGURATION } from "@revolt/common";
 import { useModals } from "@revolt/modal";
 import { useNavigate, useParams } from "@revolt/routing";
-import { Button, Column, Dialog, Row, Text, iconSize } from "@revolt/ui";
+import { Button, Column, Dialog, iconSize, Row, Text } from "@revolt/ui";
 import { styled } from "styled-system/jsx";
 
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
@@ -65,7 +65,7 @@ export default function FlowCreate() {
         ...(invite ? { invite } : {}),
       });
     } catch (error) {
-      showError(error);
+      modals.showError(error);
       return;
     }
 
@@ -120,14 +120,14 @@ export default function FlowCreate() {
       <Show when={aisdChoice() !== null}>
         <Form onSubmit={create} captcha={CONFIGURATION.HCAPTCHA_SITEKEY}>
           <Fields
-            fields={[
-              isAisdStudent() ? "student-id" : "email",
-              "new-password",
-            ]}
+            fields={[isAisdStudent() ? "student-id" : "email", "new-password"]}
           />
           <Show when={studentIdError()}>
             <AccountWarning role="alert">
-              <Trans>You don't have to put @cats.angletonisd.net in this box or your ID is invalid. Please remove it</Trans>
+              <Trans>
+                You don't have to put @cats.angletonisd.net in this box or your
+                ID is invalid. Please remove it
+              </Trans>
             </AccountWarning>
           </Show>
           <Show when={isInviteOnly()}>
