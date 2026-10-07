@@ -70,7 +70,20 @@ export default function FlowCreate() {
     }
 
     const client = getClient();
-    if (client.configuration && !client.configuration.features.email) {
+    let emailVerificationRequired: boolean;
+    try {
+      // Registration can finish before the Client's background configuration
+      // request. Don't make the post-registration decision from its temporary
+      // defaults, or users may be sent to an email check that isn't enabled.
+      const configuration = await client.api.get("/");
+      client.configuration = configuration;
+      emailVerificationRequired = configuration.features.email;
+    } catch (error) {
+      modals.showError(error);
+      return;
+    }
+
+    if (!emailVerificationRequired) {
       await login(
         {
           email,
