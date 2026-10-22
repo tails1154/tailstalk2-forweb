@@ -16,6 +16,7 @@ import { Avatar, Column, Text, Time, Unreads, UserStatus } from "@revolt/ui";
 import MdAdd from "@material-design-icons/svg/filled/add.svg?component-solid";
 import MdExplore from "@material-design-icons/svg/filled/explore.svg?component-solid";
 import MdHome from "@material-design-icons/svg/filled/home.svg?component-solid";
+import MdMarkChatRead from "@material-design-icons/svg/outlined/mark_chat_read.svg?component-solid";
 import MdSettings from "@material-design-icons/svg/filled/settings.svg?component-solid";
 import MdPost from "@material-symbols/svg-400/outlined/article.svg?component-solid";
 
@@ -114,6 +115,35 @@ export const ServerList = (props: Props) => {
       .length;
   });
 
+  async function markEverythingAsRead() {
+    const unreadChannels = client()
+      .channels.toList()
+      .filter((channel) => channel.unread);
+
+    await Promise.allSettled(unreadChannels.map((channel) => channel.ack()));
+  }
+
+  async function openServer(server: Server, event: MouseEvent) {
+    // Check the server before loading its channels. Suspended servers return a
+    // typed API error; navigating afterward lets the global warning overlay
+    // present the same blocked-server experience as direct navigation.
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
+    event.preventDefault();
+    const path = state.layout.getLastActiveServerPath(server.id);
+
+    try {
+      await client().api.get(`/servers/${server.id}`, { include_channels: false });
+    } catch {
+      // The route-level ServerSuspendedOverlay handles the typed suspension
+      // response. Other errors are left to the normal route error handling.
+    }
+
+    navigate(path);
+  }
+
   // Ref for floating menu
   const [menuButton, setMenuButton] = createSignal<HTMLDivElement>();
 
@@ -146,6 +176,23 @@ export const ServerList = (props: Props) => {
             }
           />
         </a>
+        <Tooltip placement="right" content={t`Read all`}>
+          <a
+            class={entryContainer()}
+            role="button"
+            tabindex="0"
+            aria-label={t`Read all`}
+            onClick={() => void markEverythingAsRead()}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                void markEverythingAsRead();
+              }
+            }}
+          >
+            <Avatar size={42} fallback={<MdMarkChatRead />} interactive />
+          </a>
+        </Tooltip>
         <Tooltip
           placement="right"
           content={() => (
@@ -260,7 +307,10 @@ export const ServerList = (props: Props) => {
                 })}
                 use:floating={props.menuGenerator(entry.item)}
               >
-                <a href={state.layout.getLastActiveServerPath(entry.item.id)}>
+                <a
+                  href={state.layout.getLastActiveServerPath(entry.item.id)}
+                  onClick={(event) => void openServer(entry.item, event)}
+                >
                   <Avatar
                     size={42}
                     src={entry.item.iconURL}

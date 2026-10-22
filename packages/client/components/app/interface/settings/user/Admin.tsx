@@ -38,7 +38,7 @@ import {
   typography,
 } from "@revolt/ui";
 
-type Tab = "stats" | "reports" | "users" | "discovery" | "feature_requests" | "whatsnew";
+type Tab = "stats" | "reports" | "servers" | "users" | "discovery" | "feature_requests" | "whatsnew";
 
 interface DiscoveryListing {
   id: string;
@@ -81,6 +81,23 @@ interface AdminReport {
   additional_context: string;
   status: string;
   notes: string;
+  server_id?: string;
+  server_name?: string;
+}
+
+interface AdminServerChannel { id: string; name: string; channel_type: string; }
+interface AdminServerRole { id: string; name: string; }
+interface AdminServer {
+  id: string;
+  name: string;
+  owner_id: string;
+  owner_name: string;
+  member_count: number;
+  created_at: string;
+  suspended: boolean;
+  channels: AdminServerChannel[];
+  roles: AdminServerRole[];
+  invite_url?: string;
 }
 
 interface AdminUserInfo {
@@ -116,7 +133,8 @@ async function apiFetch(path: string, password: string, init?: RequestInit) {
     },
   });
   if (!res.ok) throw new Error(await res.text());
-  return res.json();
+  const text = await res.text();
+  return text ? JSON.parse(text) : undefined;
 }
 
 function formatNumber(n: number) {
@@ -124,6 +142,7 @@ function formatNumber(n: number) {
 }
 
 export function AdminPanel() {
+  const { t } = useLingui();
   const [password, setPassword] = createSignal("");
   const [authToken, setAuthToken] = createSignal("");
   const [error, setError] = createSignal("");
@@ -138,7 +157,7 @@ export function AdminPanel() {
       setAuthToken(password());
       setPassword("");
     } catch {
-      setError("Invalid admin password.");
+      setError(t`Invalid admin password.`);
     } finally {
       setLoading(false);
     }
@@ -160,13 +179,13 @@ export function AdminPanel() {
                 <Trans>Admin authentication required</Trans>
               </Text>
               <Text class={typography({ class: "body", size: "medium" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
-                Sign in to manage reports, users, and platform updates.
+                <Trans>Sign in to manage reports, users, and platform updates.</Trans>
               </Text>
             </Column>
             <Column gap="sm">
               <TextField
                 type="password"
-                placeholder="Admin password"
+                placeholder={t`Admin password`}
                 value={password()}
                 onChange={(e) => setPassword(e.currentTarget.value)}
                 onKeyDown={handleKeyDown}
@@ -198,38 +217,41 @@ export function AdminPanel() {
                   <Trans>Admin Panel</Trans>
                 </Text>
                 <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
-                  Platform overview and moderation tools
+                  <Trans>Platform overview and moderation tools</Trans>
                 </Text>
               </Column>
             </Row>
             <Button onPress={() => { setAuthToken(""); setTab("stats"); }}>
-              <MdLogout {...iconSize(16)} /> Sign out
+              <MdLogout {...iconSize(16)} /> <Trans>Sign out</Trans>
             </Button>
           </Row>
           <AdminNotice>
             <MdAdminPanelSettings {...iconSize(18)} />
             <Text class={typography({ class: "body", size: "small" })}>
-              You’re viewing the live platform workspace. Actions here affect users immediately.
+              <Trans>You’re viewing the live platform workspace. Actions here affect users immediately.</Trans>
             </Text>
           </AdminNotice>
           <TabBar>
             <TabButton active={tab() === "stats"} onClick={() => setTab("stats")}>
-              <MdDashboard {...iconSize(16)} /> Stats
+              <MdDashboard {...iconSize(16)} /> <Trans>Stats</Trans>
             </TabButton>
             <TabButton active={tab() === "reports"} onClick={() => setTab("reports")}>
-              <MdReport {...iconSize(16)} /> Reports
+              <MdReport {...iconSize(16)} /> <Trans>Reports</Trans>
+            </TabButton>
+            <TabButton active={tab() === "servers"} onClick={() => setTab("servers")}>
+              <MdDns {...iconSize(16)} /> <Trans>Servers</Trans>
             </TabButton>
             <TabButton active={tab() === "users"} onClick={() => setTab("users")}>
-              <MdPeople {...iconSize(16)} /> Users
+              <MdPeople {...iconSize(16)} /> <Trans>Users</Trans>
             </TabButton>
             <TabButton active={tab() === "discovery"} onClick={() => setTab("discovery")}>
-              <MdExplore {...iconSize(16)} /> Discovery
+              <MdExplore {...iconSize(16)} /> <Trans>Discovery</Trans>
             </TabButton>
             <TabButton active={tab() === "feature_requests"} onClick={() => setTab("feature_requests")}>
               <MdStar {...iconSize(16)} /> <Trans>Feature requests</Trans>
             </TabButton>
             <TabButton active={tab() === "whatsnew"} onClick={() => setTab("whatsnew")}>
-              <MdArrowForward {...iconSize(16)} /> What's New
+              <MdArrowForward {...iconSize(16)} /> <Trans>What's New</Trans>
             </TabButton>
           </TabBar>
           <Show when={tab() === "stats"}>
@@ -237,6 +259,9 @@ export function AdminPanel() {
           </Show>
           <Show when={tab() === "reports"}>
             <ReportsTab password={authToken()} />
+          </Show>
+          <Show when={tab() === "servers"}>
+            <ServersTab password={authToken()} />
           </Show>
           <Show when={tab() === "users"}>
             <UsersTab password={authToken()} />
@@ -322,21 +347,22 @@ function DiscoveryTab(props: { password: string }) {
 }
 
 function StatsTab(props: { password: string }) {
+  const { t } = useLingui();
   const [data] = createResource(
     () => props.password,
     (pwd) => apiFetch("/admin", pwd) as Promise<AdminStats>,
   );
 
   return (
-    <Show when={data()} fallback={<LoadingState label="Loading platform metrics..." />}>
+    <Show when={data()} fallback={<LoadingState label={t`Loading platform metrics...`} />}>
       {(s) => (
         <StatsGrid>
-          <StatCard icon={<MdPeople {...iconSize(24)} />} label="Users" value={formatNumber(s().users)} />
-          <StatCard icon={<MdDns {...iconSize(24)} />} label="Servers" value={formatNumber(s().servers)} />
-          <StatCard icon={<MdTag {...iconSize(24)} />} label="Channels" value={formatNumber(s().channels)} />
-          <StatCard icon={<MdChat {...iconSize(24)} />} label="Messages" value={formatNumber(s().messages)} />
-          <StatCard icon={<MdSmartToy {...iconSize(24)} />} label="Bots" value={formatNumber(s().bots)} />
-          <StatCard icon={<MdReport {...iconSize(24)} />} label="Reports" value={formatNumber(s().reports)} />
+          <StatCard icon={<MdPeople {...iconSize(24)} />} label={t`Users`} value={formatNumber(s().users)} />
+          <StatCard icon={<MdDns {...iconSize(24)} />} label={t`Servers`} value={formatNumber(s().servers)} />
+          <StatCard icon={<MdTag {...iconSize(24)} />} label={t`Channels`} value={formatNumber(s().channels)} />
+          <StatCard icon={<MdChat {...iconSize(24)} />} label={t`Messages`} value={formatNumber(s().messages)} />
+          <StatCard icon={<MdSmartToy {...iconSize(24)} />} label={t`Bots`} value={formatNumber(s().bots)} />
+          <StatCard icon={<MdReport {...iconSize(24)} />} label={t`Reports`} value={formatNumber(s().reports)} />
         </StatsGrid>
       )}
     </Show>
@@ -398,11 +424,13 @@ function FeatureRequestsTab(props: { password: string }) {
 }
 
 function ReportsTab(props: { password: string }) {
+  const { t } = useLingui();
   const [data, { refetch }] = createResource(
     () => props.password,
     (pwd) => apiFetch("/admin/reports", pwd) as Promise<AdminReport[]>,
   );
   const [loadingIds, setLoadingIds] = createSignal<Set<string>>(new Set());
+  const [actionError, setActionError] = createSignal("");
 
   function setLoading(id: string, loading: boolean) {
     setLoadingIds((prev) => {
@@ -415,38 +443,59 @@ function ReportsTab(props: { password: string }) {
 
   async function resolveReport(id: string) {
     setLoading(id, true);
+    setActionError("");
     try {
-      await apiFetch(`/admin/reports/${id}/resolve`, props.password, { method: "POST" });
-      refetch();
+      // The backend's JSON request guard requires ResolveReportData, even when
+      // no notes are supplied. A body-less POST is rejected before the handler.
+      await apiFetch(`/admin/reports/${id}/resolve`, props.password, {
+        method: "POST",
+        body: JSON.stringify({}),
+      });
+      await refetch();
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : t`Unable to resolve report.`);
     } finally {
       setLoading(id, false);
     }
   }
 
   async function dismissReport(id: string) {
-    const reason = prompt("Rejection reason:");
+    const reason = prompt(t`Rejection reason:`);
     if (!reason) return;
     setLoading(id, true);
+    setActionError("");
     try {
       await apiFetch(`/admin/reports/${id}/dismiss`, props.password, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ rejection_reason: reason }),
       });
-      refetch();
+      await refetch();
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : t`Unable to dismiss report.`);
     } finally {
       setLoading(id, false);
     }
   }
 
   const isLoading = (id: string) => loadingIds().has(id);
+  const groupedReports = (reports: AdminReport[]) => {
+    const groups = new Map<string, { name: string; reports: AdminReport[] }>();
+    for (const report of reports) {
+      const id = report.server_id || "platform";
+      const group = groups.get(id) || { name: report.server_name || (id === "platform" ? t`Platform / unknown server` : id), reports: [] };
+      group.reports.push(report);
+      groups.set(id, group);
+    }
+    return [...groups.values()];
+  };
 
   return (
     <Column gap="md">
       <Row gap="md" align style={{ "justify-content": "space-between" }}>
         <Column gap="xs">
-          <Text class={typography({ class: "title", size: "medium" })}>Reports</Text>
-          <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>Review community-submitted issues.</Text>
+        <Text class={typography({ class: "title", size: "medium" })}><Trans>Reports</Trans></Text>
+          <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}><Trans>Review community-submitted issues.</Trans></Text>
         </Column>
         <Button onPress={() => refetch()} isDisabled={data.loading}>
           <Show when={data.loading} fallback={<MdRefresh {...iconSize(18)} />}>
@@ -454,13 +503,21 @@ function ReportsTab(props: { password: string }) {
           </Show>
         </Button>
       </Row>
-      <Show when={data()} fallback={<LoadingState label="Loading reports..." />}>
+      <Show when={actionError()}>
+        <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-error)" }}>
+          {actionError()}
+        </Text>
+      </Show>
+      <Show when={data()} fallback={<LoadingState label={t`Loading reports...`} />}>
         {(reports) => (
-          <Show when={reports().length > 0} fallback={<EmptyState label="No reports to review" />}>
-            <For each={reports()}>
-              {(r) => (
-                <ReportCard>
-                  <Column gap="xs">
+          <Show when={reports().length > 0} fallback={<EmptyState label={t`No reports to review`} />}>
+            <For each={groupedReports(reports())}>
+              {(group) => (
+                <Column gap="sm">
+                  <Text class={typography({ class: "title", size: "small" })}><Trans>Server:</Trans> {group.name}</Text>
+                  <For each={group.reports}>{(r) => (
+                  <ReportCard>
+                    <Column gap="xs">
                     <Row gap="sm" align>
                       <Badge>{r.content_type}</Badge>
                       <Badge variant={r.status === "Created" ? "active" : "closed"}>
@@ -468,46 +525,156 @@ function ReportsTab(props: { password: string }) {
                       </Badge>
                     </Row>
                     <Text class={typography({ class: "label", size: "small" })}>
-                      Reporter: {r.author_name}
+                      <Trans>Reporter:</Trans> {r.author_name}
                     </Text>
                     <Text class={typography({ class: "label", size: "small" })}>
-                      Content: {r.content_name} ({r.content_type})
+                      <Trans>Content:</Trans> {r.content_name} ({r.content_type})
                     </Text>
                     <Text class={typography({ class: "label", size: "small" })}>
-                      ID: {r.content_id}
+                      <Trans>ID:</Trans> {r.content_id}
                     </Text>
                     <Text class={typography({ class: "label", size: "small" })}>
-                      Reason: {r.report_reason}
+                      <Trans>Reason:</Trans> {r.report_reason}
                     </Text>
                     <Show when={r.additional_context}>
                       <Text class={typography({ class: "label", size: "small" })}>
-                        Context: {r.additional_context}
+                        <Trans>Context:</Trans> {r.additional_context}
                       </Text>
                     </Show>
                     <Show when={r.message_content}>
                       <Text class={typography({ class: "body", size: "small" })}>
-                        Message: {r.message_content}
+                        <Trans>Message:</Trans> {r.message_content}
                       </Text>
                     </Show>
                     <Show when={!isLoading(r.id) && r.status === "Created"}>
                       <Row gap="sm">
                         <Button onPress={() => resolveReport(r.id)}>
-                          <MdCheckCircle {...iconSize(16)} /> Resolve
+                          <MdCheckCircle {...iconSize(16)} /> <Trans>Resolve</Trans>
                         </Button>
                         <Button onPress={() => dismissReport(r.id)}>
-                          <MdCancel {...iconSize(16)} /> Dismiss
+                          <MdCancel {...iconSize(16)} /> <Trans>Dismiss</Trans>
                         </Button>
                       </Row>
                     </Show>
                     <Show when={isLoading(r.id)}>
                       <MdHourglassEmpty {...iconSize(16)} />
                     </Show>
-                  </Column>
-                </ReportCard>
+                    </Column>
+                  </ReportCard>
+                  )}</For>
+                </Column>
               )}
             </For>
           </Show>
         )}
+      </Show>
+    </Column>
+  );
+}
+
+function ServersTab(props: { password: string }) {
+  const { t } = useLingui();
+  const [query, setQuery] = createSignal("");
+  const [servers, { refetch }] = createResource(
+    () => `${props.password}:${query()}`,
+    (key) => {
+      const [, password, search] = key.match(/^([^:]*):(.*)$/) ?? [];
+      return apiFetch(`/admin/servers${search ? `?q=${encodeURIComponent(search)}` : ""}`, password || props.password) as Promise<AdminServer[]>;
+    },
+  );
+  const [expanded, setExpanded] = createSignal<string>();
+  const [loadingId, setLoadingId] = createSignal<string>();
+  const [error, setError] = createSignal("");
+
+  async function search() {
+    setError("");
+    await refetch();
+  }
+
+  async function suspend(server: AdminServer) {
+    setLoadingId(server.id);
+    setError("");
+    try {
+      await apiFetch(`/admin/servers/${server.id}/suspend`, props.password, {
+        method: "POST",
+        body: JSON.stringify({ suspended: !server.suspended }),
+      });
+      await refetch();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : t`Unable to update server status.`);
+    } finally { setLoadingId(); }
+  }
+
+  async function remove(server: AdminServer) {
+    if (!window.confirm(t`Permanently delete ${server.name}? This cannot be undone.`)) return;
+    setLoadingId(server.id);
+    setError("");
+    try {
+      await apiFetch(`/admin/servers/${server.id}`, props.password, { method: "DELETE" });
+      await refetch();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : t`Unable to delete server.`);
+    } finally { setLoadingId(); }
+  }
+
+  async function createInvite(server: AdminServer) {
+    setLoadingId(server.id);
+    setError("");
+    try {
+      const invite = await apiFetch(`/admin/servers/${server.id}/invite`, props.password, { method: "POST" }) as { url: string };
+      await navigator.clipboard?.writeText(invite.url);
+      setError(t`Invite copied: ${invite.url}`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : t`Unable to create invite.`);
+    } finally { setLoadingId(); }
+  }
+
+  return (
+    <Column gap="md">
+      <Row gap="md" align style={{ "justify-content": "space-between" }}>
+        <Column gap="xs">
+          <Text class={typography({ class: "title", size: "medium" })}><Trans>Server management</Trans></Text>
+          <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
+            <Trans>View servers, ownership, membership, channels, and roles. Suspensions and deletions are platform-wide.</Trans>
+          </Text>
+        </Column>
+        <Button onPress={() => refetch()} isDisabled={servers.loading}><Show when={servers.loading} fallback={<MdRefresh {...iconSize(18)} />}><CircularProgress /></Show></Button>
+      </Row>
+      <Row gap="sm">
+        <TextField value={query()} onChange={(e) => setQuery(e.currentTarget.value)} onKeyDown={(e) => e.key === "Enter" && search()} placeholder={t`Search server name or ID`} />
+        <Button onPress={search} isDisabled={servers.loading}><MdSearch {...iconSize(18)} /></Button>
+      </Row>
+      <Show when={error()}><Text style={{ color: "var(--md-sys-color-error)" }}>{error()}</Text></Show>
+      <Show when={servers()} fallback={<LoadingState label={t`Loading servers...`} />}>
+        {(entries) => <Show when={entries().length} fallback={<EmptyState label={t`No servers found`} />}>
+          <For each={entries()}>{(server) => (
+            <ReportCard>
+              <Row gap="md" align style={{ "justify-content": "space-between" }}>
+                <Column gap="xs" style={{ flex: 1 }}>
+                  <Row gap="sm" align><Text class={typography({ class: "title", size: "small" })}>{server.name}</Text><Show when={server.suspended}><Badge variant="active"><Trans>Suspended</Trans></Badge></Show></Row>
+                  <Text class={typography({ class: "label", size: "small" })}><Trans>Owner:</Trans> {server.owner_name} ({server.owner_id})</Text>
+                  <Text class={typography({ class: "label", size: "small" })}>{formatNumber(server.member_count)} <Trans>members</Trans> · {server.channels.length} <Trans>channels</Trans> · {server.roles.length} <Trans>roles</Trans></Text>
+                  <Text class={typography({ class: "label", size: "small" })}><Trans>Created:</Trans> {server.created_at || server.id}</Text>
+                  <Text class={typography({ class: "label", size: "small" })}><Trans>ID:</Trans> {server.id}</Text>
+                </Column>
+                <Row gap="sm">
+                  <Button onPress={() => setExpanded(expanded() === server.id ? undefined : server.id)}>{expanded() === server.id ? <Trans>Hide details</Trans> : <Trans>Details</Trans>}</Button>
+                  <Button onPress={() => createInvite(server)} isDisabled={loadingId() === server.id}><Trans>Generate invite</Trans></Button>
+                  <Button onPress={() => suspend(server)} isDisabled={loadingId() === server.id}>{server.suspended ? <Trans>Unsuspend</Trans> : <Trans>Suspend</Trans>}</Button>
+                  <Button onPress={() => remove(server)} isDisabled={loadingId() === server.id}><MdDelete {...iconSize(16)} /> <Trans>Delete</Trans></Button>
+                </Row>
+              </Row>
+              <Show when={expanded() === server.id}>
+                <Column gap="xs" style={{ "margin-top": "var(--gap-md)" }}>
+                  <Text class={typography({ class: "label", size: "small" })}><Trans>Channels</Trans></Text>
+                  <Text class={typography({ class: "body", size: "small" })}>{server.channels.map((channel) => `${channel.name} (${channel.channel_type})`).join(", ") || t`No channels`}</Text>
+                  <Text class={typography({ class: "label", size: "small" })}><Trans>Roles</Trans></Text>
+                  <Text class={typography({ class: "body", size: "small" })}>{server.roles.map((role) => role.name || role.id).join(", ") || t`No roles`}</Text>
+                </Column>
+              </Show>
+            </ReportCard>
+          )}</For>
+        </Show>}
       </Show>
     </Column>
   );
@@ -549,7 +716,7 @@ function UsersTab(props: { password: string }) {
   }
 
   async function banUser(id: string) {
-    const reason = prompt("Ban reason (optional):");
+    const reason = prompt(t`Ban reason (optional):`);
     if (reason === null) return;
     await withLoading(id, async () => {
       await apiFetch(`/admin/users/${id}/ban`, props.password, {
@@ -569,7 +736,7 @@ function UsersTab(props: { password: string }) {
   }
 
   async function suspendUser(id: string) {
-    const hours = prompt("Suspend for how many hours?");
+    const hours = prompt(t`Suspend for how many hours?`);
     if (!hours) return;
     await withLoading(id, async () => {
       await apiFetch(`/admin/users/${id}/suspend`, props.password, {
@@ -582,7 +749,7 @@ function UsersTab(props: { password: string }) {
   }
 
   async function warnUser(id: string) {
-    const reason = prompt("Warning reason:");
+    const reason = prompt(t`Warning reason:`);
     if (!reason) return;
     await withLoading(id, async () => {
       await apiFetch(`/admin/users/${id}/warn`, props.password, {
@@ -636,12 +803,12 @@ function UsersTab(props: { password: string }) {
   return (
     <Column gap="md">
       <Column gap="xs">
-        <Text class={typography({ class: "title", size: "medium" })}>User directory</Text>
-        <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>Search accounts and take moderation actions.</Text>
+        <Text class={typography({ class: "title", size: "medium" })}><Trans>User directory</Trans></Text>
+        <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}><Trans>Search accounts and take moderation actions.</Trans></Text>
       </Column>
       <Row gap="sm">
         <TextField
-          placeholder="Search username..."
+          placeholder={t`Search username...`}
           value={query()}
           onChange={(e) => setQuery(e.currentTarget.value)}
           onKeyDown={handleSearchKeyDown}
@@ -650,8 +817,8 @@ function UsersTab(props: { password: string }) {
           <MdSearch {...iconSize(18)} />
         </Button>
       </Row>
-      <Show when={searching()}><LoadingState label="Searching users..." /></Show>
-      <Show when={!searching() && query() && results().length === 0}><EmptyState label="No users found" /></Show>
+      <Show when={searching()}><LoadingState label={t`Searching users...`} /></Show>
+      <Show when={!searching() && query() && results().length === 0}><EmptyState label={t`No users found`} /></Show>
       <For each={results()}>
         {(u) => (
           <UserCard>
@@ -665,14 +832,14 @@ function UsersTab(props: { password: string }) {
                     ID: {u.id}
                   </Text>
                   <Show when={u.privileged}>
-                    <Badge>Privileged</Badge>
+                    <Badge><Trans>Privileged</Trans></Badge>
                   </Show>
                   <Show when={isBanned(u)}>
-                    <Badge variant="active">Banned</Badge>
+                    <Badge variant="active"><Trans>Banned</Trans></Badge>
                   </Show>
                   <Show when={isSuspended(u) && !isBanned(u)}>
                     <Badge variant="active">
-                      Suspended until {u.suspended_until ? new Date(u.suspended_until).toLocaleString() : "?"}
+                      <Trans>Suspended until {u.suspended_until ? new Date(u.suspended_until).toLocaleString() : "?"}</Trans>
                     </Badge>
                   </Show>
                 </Column>
@@ -682,18 +849,18 @@ function UsersTab(props: { password: string }) {
                   </Show>
                   <Show when={!isLoading(u.id) && (isBanned(u) || isSuspended(u))}>
                     <Button onPress={() => unbanUser(u.id)}>
-                      <MdCheckCircle {...iconSize(16)} /> Unban
+                      <MdCheckCircle {...iconSize(16)} /> <Trans>Unban</Trans>
                     </Button>
                   </Show>
                   <Show when={!isLoading(u.id) && !isBanned(u) && !isSuspended(u)}>
                     <Button onPress={() => warnUser(u.id)}>
-                      <MdWarning {...iconSize(16)} /> Warn
+                      <MdWarning {...iconSize(16)} /> <Trans>Warn</Trans>
                     </Button>
                     <Button onPress={() => suspendUser(u.id)}>
-                      <MdTimer {...iconSize(16)} /> Suspend
+                      <MdTimer {...iconSize(16)} /> <Trans>Suspend</Trans>
                     </Button>
                     <Button onPress={() => banUser(u.id)}>
-                      <MdBlock {...iconSize(16)} /> Ban
+                      <MdBlock {...iconSize(16)} /> <Trans>Ban</Trans>
                     </Button>
                   </Show>
                 </Column>
@@ -703,10 +870,10 @@ function UsersTab(props: { password: string }) {
                   <Row gap="sm" align>
                     <Text class={typography({ class: "label", size: "small" })}
                       style={{ fontWeight: 600 }}>
-                      Warnings ({u.warnings.length}):
+                      <Trans>Warnings ({u.warnings.length}):</Trans>
                     </Text>
                     <Button onPress={() => clearWarnings(u.id)} disabled={isLoading(u.id)}>
-                      Clear all
+                      <Trans>Clear all</Trans>
                     </Button>
                   </Row>
                   <For each={u.warnings}>
@@ -776,6 +943,7 @@ interface WhatsNewEntry {
 }
 
 function WhatsNewTab(props: { password: string }) {
+  const { t } = useLingui();
   const [entries, setEntries] = createSignal<WhatsNewEntry[]>([]);
   const [loading, setLoading] = createSignal(true);
   const [saving, setSaving] = createSignal(false);
@@ -832,17 +1000,17 @@ function WhatsNewTab(props: { password: string }) {
     <Column gap="md">
       <Row gap="md" align>
         <Column gap="xs" style={{ flex: 1 }}>
-          <Text class={typography({ class: "title", size: "medium" })}>What's New Editor</Text>
-          <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>Publish updates that appear in the client.</Text>
+        <Text class={typography({ class: "title", size: "medium" })}><Trans>What's New Editor</Trans></Text>
+          <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}><Trans>Publish updates that appear in the client.</Trans></Text>
         </Column>
-        <Button onPress={addEntry} isDisabled={loading() || saving()}>Add Entry</Button>
+        <Button onPress={addEntry} isDisabled={loading() || saving()}><Trans>Add Entry</Trans></Button>
         <Button onPress={save} isDisabled={loading() || saving()}>
-          <Show when={saving()} fallback="Save">
+          <Show when={saving()} fallback={<Trans>Save</Trans>}>
             <CircularProgress />
           </Show>
         </Button>
       </Row>
-      <Show when={!loading()} fallback={<LoadingState label="Loading updates..." />}>
+        <Show when={!loading()} fallback={<LoadingState label={t`Loading updates...`} />}>
         <For each={entries()}>
         {(entry, i) => (
           <Column gap="sm" style={{
@@ -851,7 +1019,7 @@ function WhatsNewTab(props: { password: string }) {
             borderRadius: "var(--borderRadius-md)",
           }}>
             <Row gap="sm" align>
-              <Text class={typography({ class: "label", size: "small" })}>Title:</Text>
+              <Text class={typography({ class: "label", size: "small" })}><Trans>Title:</Trans></Text>
               <Button onPress={() => removeEntry(i())}>
                 <MdDelete {...iconSize(14)} />
               </Button>
@@ -859,15 +1027,15 @@ function WhatsNewTab(props: { password: string }) {
             <TextField
               value={entry.title}
               onChange={(e) => updateEntry(i(), "title", e.currentTarget.value)}
-              placeholder="Title"
+              placeholder={t`Title`}
             />
-            <Text class={typography({ class: "label", size: "small" })}>Body:</Text>
+            <Text class={typography({ class: "label", size: "small" })}><Trans>Body:</Trans></Text>
             <TextField
               value={entry.body}
               onChange={(e) => updateEntry(i(), "body", e.currentTarget.value)}
-              placeholder="Body (supports plain text)"
+              placeholder={t`Body (supports plain text)`}
             />
-            <Text class={typography({ class: "label", size: "small" })}>Date:</Text>
+            <Text class={typography({ class: "label", size: "small" })}><Trans>Date:</Trans></Text>
             <TextField
               type="date"
               value={entry.date}
