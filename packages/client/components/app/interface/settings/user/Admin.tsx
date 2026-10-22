@@ -585,6 +585,7 @@ function ServersTab(props: { password: string }) {
   const [expanded, setExpanded] = createSignal<string>();
   const [loadingId, setLoadingId] = createSignal<string>();
   const [error, setError] = createSignal("");
+  const [generatedInvite, setGeneratedInvite] = createSignal<string>();
 
   async function search() {
     setError("");
@@ -620,10 +621,19 @@ function ServersTab(props: { password: string }) {
   async function createInvite(server: AdminServer) {
     setLoadingId(server.id);
     setError("");
+    setGeneratedInvite();
     try {
-      const invite = await apiFetch(`/admin/servers/${server.id}/invite`, props.password, { method: "POST" }) as { url: string };
-      await navigator.clipboard?.writeText(invite.url);
-      setError(t`Invite copied: ${invite.url}`);
+      const invite = await apiFetch(`/admin/servers/${server.id}/invite`, props.password, { method: "POST" }) as { code?: string; url?: string };
+      const url = invite.code
+        ? `https://tailstalk2.com/invite/${encodeURIComponent(invite.code)}`
+        : invite.url?.replace(/tailstalk2\.com\/(?!invite\/)/, "tailstalk2.com/invite/");
+      if (!url) throw new Error(t`The server did not return an invite link.`);
+      setGeneratedInvite(url);
+      try {
+        await navigator.clipboard?.writeText(url);
+      } catch {
+        // The link remains visible when clipboard access is unavailable.
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : t`Unable to create invite.`);
     } finally { setLoadingId(); }
@@ -645,6 +655,14 @@ function ServersTab(props: { password: string }) {
         <Button onPress={search} isDisabled={servers.loading}><MdSearch {...iconSize(18)} /></Button>
       </Row>
       <Show when={error()}><Text style={{ color: "var(--md-sys-color-error)" }}>{error()}</Text></Show>
+      <Show when={generatedInvite()}>
+        {(url) => (
+          <Text>
+            <Trans>Invite link:</Trans>{" "}
+            <a href={url()} target="_blank" rel="noreferrer">{url()}</a>
+          </Text>
+        )}
+      </Show>
       <Show when={servers()} fallback={<LoadingState label={t`Loading servers...`} />}>
         {(entries) => <Show when={entries().length} fallback={<EmptyState label={t`No servers found`} />}>
           <For each={entries()}>{(server) => (

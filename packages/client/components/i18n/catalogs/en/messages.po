@@ -2256,10 +2256,13 @@ msgstr "Invite Bot"
 msgid "Invite Code"
 msgstr "Invite Code"
 
-#. placeholder {0}: invite.url
 #: components/app/interface/settings/user/Admin.tsx
-msgid "Invite copied: {0}"
-msgstr "Invite copied: {0}"
+#~ msgid "Invite copied: {0}"
+#~ msgstr "Invite copied: {0}"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Invite link:"
+msgstr "Invite link:"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Invite Others"
@@ -4223,6 +4226,10 @@ msgstr "The Material You theme from the original Stoat client."
 #: components/i18n/errors.ts
 msgid "The password is too short."
 msgstr "The password is too short."
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "The server did not return an invite link."
+msgstr "The server did not return an invite link."
 
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Theme"
