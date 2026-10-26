@@ -30,7 +30,6 @@ export type HydratedChannel = {
   rolePermissions?: Record<string, { a: bigint; d: bigint }>;
   nsfw: boolean;
   slowmode: number;
-  forum?: string;
 
   lastMessageId?: string;
 
@@ -80,8 +79,6 @@ export const channelHydration: Hydrate<Merge<APIChannel>, HydratedChannel> = {
     nsfw: (channel) => channel.nsfw || false,
     lastMessageId: (channel) => channel.last_message_id!,
     slowmode: (channel) => channel.slowmode ?? 0,
-    forum: (channel) =>
-      (channel as APIChannel & { forum?: string }).forum,
     voice: (channel) =>
       !!channel.voice ||
       channel.channel_type === "DirectMessage" ||

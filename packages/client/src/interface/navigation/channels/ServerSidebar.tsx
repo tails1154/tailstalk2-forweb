@@ -517,13 +517,7 @@ function Entry(
           attention={attentionState()}
           icon={
             <>
-              <Switch
-                fallback={
-                  <Symbol>
-                    {props.channel.isForum ? "forum" : "grid_3x3"}
-                  </Symbol>
-                }
-              >
+              <Switch fallback={<Symbol>grid_3x3</Symbol>}>
                 <Match when={props.channel.isVoice}>
                   <Symbol
                     color={inCall() ? "var(--md-sys-color-primary)" : undefined}
