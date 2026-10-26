@@ -17,7 +17,7 @@ import {
 import type { Participant, Room, RoomEvent } from 'livekit-client'
 import { Track } from 'livekit-client'
 
-import { useEnsureRoom } from '../context'
+import { useMaybeRoomContext } from '../context'
 
 /** @public */
 export type UseTracksOptions = {
@@ -59,7 +59,12 @@ export function useTracks<T extends SourcesArray = Track.Source[]>(
   ] as T,
   options: UseTracksOptions = {},
 ): Accessor<UseTracksHookReturnType<T>> {
-  const room = useEnsureRoom(options.room)
+  // Voice previews can mount before a LiveKit room exists. Treat that as an
+  // empty track list and start observing as soon as the room context appears.
+  // Throwing here made the entire client fail during the normal connecting
+  // transition.
+  const context = useMaybeRoomContext()
+  const room = () => options.room ?? context?.()
   const [trackReferences, setTrackReferences] = createSignal<TrackReference[]>([])
   const [participants, setParticipants] = createSignal<Participant[]>([])
 
@@ -68,7 +73,14 @@ export function useTracks<T extends SourcesArray = Track.Source[]>(
   })
 
   createEffect(() => {
-    const subscription = trackReferencesObservable(room(), sources_(), {
+    const currentRoom = room()
+    if (!currentRoom) {
+      setTrackReferences([])
+      setParticipants([])
+      return
+    }
+
+    const subscription = trackReferencesObservable(currentRoom, sources_(), {
       additionalRoomEvents: options.updateOnlyOn,
       onlySubscribed: options.onlySubscribed,
     }).subscribe(({ trackReferences, participants }) => {

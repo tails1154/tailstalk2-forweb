@@ -21,6 +21,19 @@ const Field = styled("input", {
   },
 });
 
+const Select = styled("select", {
+  base: {
+    width: "100%",
+    boxSizing: "border-box",
+    padding: "0.7em 0.8em",
+    borderRadius: "var(--borderRadius-md)",
+    border: "1px solid var(--secondary-header)",
+    background: "var(--background-secondary)",
+    color: "var(--foreground)",
+    fontSize: "1em",
+  },
+});
+
 const Stack = styled("div", {
   base: { display: "flex", flexDirection: "column", gap: "0.75em" },
 });
@@ -32,6 +45,7 @@ export function CreatePollModal(
   const [question, setQuestion] = createSignal("");
   const [options, setOptions] = createSignal(["", ""]);
   const [multiple, setMultiple] = createSignal(false);
+  const [duration, setDuration] = createSignal("");
   const [submitting, setSubmitting] = createSignal(false);
 
   async function submit() {
@@ -43,7 +57,12 @@ export function CreatePollModal(
     try {
       await props.channel.sendMessage({
         content: "",
-        poll: { question: cleanQuestion, options: cleanOptions, multiple: multiple() },
+        poll: {
+          question: cleanQuestion,
+          options: cleanOptions,
+          multiple: multiple(),
+          ...(duration() ? { duration: Number(duration()) } : {}),
+        },
       } as never);
       props.onClose();
     } catch (error) {
@@ -91,6 +110,16 @@ export function CreatePollModal(
         <label>
           <input type="checkbox" checked={multiple()} onChange={(event) => setMultiple(event.currentTarget.checked)} />{" "}
           <Trans>Allow multiple selections</Trans>
+        </label>
+        <label>
+          <Trans>Close voting</Trans>
+          <Select value={duration()} onChange={(event) => setDuration(event.currentTarget.value)}>
+            <option value=""><Trans>Never</Trans></option>
+            <option value="3600"><Trans>After 1 hour</Trans></option>
+            <option value="86400"><Trans>After 1 day</Trans></option>
+            <option value="259200"><Trans>After 3 days</Trans></option>
+            <option value="604800"><Trans>After 1 week</Trans></option>
+          </Select>
         </label>
       </Stack>
     </Dialog>

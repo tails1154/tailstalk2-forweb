@@ -307,7 +307,7 @@ export const schema = new Schema({
             "role-id": node.attrs.id,
             class: mention({ inEditor: true }),
           },
-          "%" + node.attrs.name,
+          "@" + node.attrs.name,
         ];
       },
     },

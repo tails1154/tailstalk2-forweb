@@ -33,7 +33,7 @@ echo "=== Building stoat.js client library ==="
 pnpm --filter stoat.js exec tsc
 
 echo "=== Building on host ==="
-pnpm --filter client exec vite build
+NODE_OPTIONS="--max-old-space-size=4096" pnpm --filter client exec vite build
 
 echo "=== Taring dist ==="
 rm -f "$DIST_ARCHIVE"

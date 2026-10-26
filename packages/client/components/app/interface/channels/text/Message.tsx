@@ -1,6 +1,14 @@
-import { For, Match, Show, Switch, createSignal, onMount } from "solid-js";
+import {
+  For,
+  Match,
+  Show,
+  Switch,
+  createSignal,
+  onCleanup,
+  onMount,
+} from "solid-js";
 
-import { useLingui } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { Message as MessageInterface, WebsiteEmbed } from "stoat.js";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
@@ -344,6 +352,27 @@ function PollCard(props: { message: MessageInterface }) {
   const client = useClient();
   const poll = () => props.message.poll!;
   const [busy, setBusy] = createSignal(false);
+  const [expired, setExpired] = createSignal(false);
+  let expiryTimeout: ReturnType<typeof setTimeout> | undefined;
+  const isClosed = () => poll().closed || expired();
+
+  function updateExpiry() {
+    const closesAt = poll().closes_at;
+    if (closesAt === undefined) return;
+
+    const remaining = closesAt - Date.now();
+    if (remaining <= 0) {
+      setExpired(true);
+      return;
+    }
+
+    // Browser timers have a finite maximum delay; recheck if the deadline is
+    // unusually far away instead of overflowing the timer.
+    expiryTimeout = setTimeout(updateExpiry, Math.min(remaining, 2_147_000_000));
+  }
+
+  onMount(updateExpiry);
+  onCleanup(() => clearTimeout(expiryTimeout));
 
   async function pollRequest(path: string, body?: unknown) {
     const api = client().api;
@@ -366,7 +395,7 @@ function PollCard(props: { message: MessageInterface }) {
   }
 
   async function vote(optionId: string, selected: boolean) {
-    if (busy() || poll().closed) return;
+    if (busy() || isClosed()) return;
     setBusy(true);
     try {
       await pollRequest(
@@ -380,7 +409,7 @@ function PollCard(props: { message: MessageInterface }) {
   }
 
   async function close() {
-    if (busy() || poll().closed) return;
+    if (busy() || isClosed()) return;
     setBusy(true);
     try {
       await pollRequest(
@@ -395,6 +424,20 @@ function PollCard(props: { message: MessageInterface }) {
   return (
     <PollBox>
       <PollQuestion>{poll().question}</PollQuestion>
+      <Show when={poll().closes_at !== undefined || isClosed()}>
+        <PollStatus>
+          <Show
+            when={isClosed()}
+            fallback={
+              <Trans>
+                Closes {new Date(poll().closes_at!).toLocaleString()}
+              </Trans>
+            }
+          >
+            <Trans>Poll closed</Trans>
+          </Show>
+        </PollStatus>
+      </Show>
       <For each={poll().options}>
         {(option) => {
           const voters = () => poll().votes?.[option.id] ?? [];
@@ -402,7 +445,7 @@ function PollCard(props: { message: MessageInterface }) {
           return (
             <Button
               variant={selected() ? "filled" : "tonal"}
-              isDisabled={busy() || poll().closed}
+              isDisabled={busy() || isClosed()}
               onPress={() => vote(option.id, !selected())}
             >
               {option.text} · {voters().length}
@@ -412,7 +455,7 @@ function PollCard(props: { message: MessageInterface }) {
       </For>
       <Show
         when={
-          !poll().closed &&
+          !isClosed() &&
           props.message.authorId === client().user?.id
         }
       >
@@ -448,6 +491,10 @@ const PollBox = styled("div", {
 
 const PollQuestion = styled("div", {
   base: { fontWeight: 700, marginBlockEnd: "4px" },
+});
+
+const PollStatus = styled("div", {
+  base: { color: "var(--md-sys-color-on-surface-variant)", fontSize: "0.85em" },
 });
 
 /**

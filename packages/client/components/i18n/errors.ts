@@ -153,6 +153,8 @@ export function useError() {
         case "NotOwner":
         case "NotPinned":
         case "NotPrivileged":
+        case "ServerSuspended":
+          return t`This server is suspended.`;
         case "ProxyError":
         case "TooManyAttachments": // todo: maybe handle these:
         case "TooManyEmbeds":

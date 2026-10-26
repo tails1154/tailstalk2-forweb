@@ -392,6 +392,10 @@ msgstr ""
 msgid "Add answer"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Add Entry"
+msgstr ""
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Add friend"
 msgstr "Προσθήκη φίλου"
@@ -411,6 +415,11 @@ msgstr ""
 
 #: components/app/interface/settings/server/Onboarding.tsx
 msgid "Add question"
+msgstr ""
+
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+msgid "Add reaction"
 msgstr ""
 
 #: src/interface/navigation/servers/UserMenu.tsx
@@ -434,6 +443,10 @@ msgstr ""
 msgid "Admin Panel"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Admin password"
+msgstr ""
+
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Advanced"
 msgstr ""
@@ -441,6 +454,22 @@ msgstr ""
 #: components/app/interface/settings/server/roles/ServerRoleOverview.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "Affects all roles and users"
+msgstr ""
+
+#: components/modal/modals/CreatePoll.tsx
+msgid "After 1 day"
+msgstr ""
+
+#: components/modal/modals/CreatePoll.tsx
+msgid "After 1 hour"
+msgstr ""
+
+#: components/modal/modals/CreatePoll.tsx
+msgid "After 1 week"
+msgstr ""
+
+#: components/modal/modals/CreatePoll.tsx
+msgid "After 3 days"
 msgstr ""
 
 #: src/interface/Friends.tsx
@@ -598,6 +627,7 @@ msgstr "Avatar"
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/auth/src/flows/FlowCreate.tsx
 #: components/auth/src/flows/FlowCheck.tsx
+#: components/app/ServerSuspendedOverlay.tsx
 msgid "Back"
 msgstr ""
 
@@ -615,6 +645,7 @@ msgstr "Εμβλήματα"
 
 #: components/modal/modals/BanNonMember.tsx
 #: components/modal/modals/BanMember.tsx
+#: components/app/interface/settings/user/Admin.tsx
 msgid "Ban"
 msgstr "Αποκλεισμός"
 
@@ -638,12 +669,20 @@ msgstr ""
 msgid "Ban Members"
 msgstr "Αποκλεισμός Μελών"
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Ban reason (optional):"
+msgstr ""
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Ban user"
 msgstr ""
 
 #: components/modal/modals/BanNonMember.tsx
 msgid "Ban User"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Banned"
 msgstr ""
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
@@ -666,10 +705,22 @@ msgstr "Αποκλεισμένα"
 msgid "Blocked User"
 msgstr "Αποκλεισμένος Χρήστης"
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Body (supports plain text)"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Body:"
+msgstr ""
+
 #: src/interface/Discover.tsx
 #: components/app/interface/channels/text/Message.tsx
 msgid "Bot"
 msgstr "Bot"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Bots"
+msgstr ""
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Browser"
@@ -684,12 +735,12 @@ msgstr ""
 #~ msgstr ""
 
 #: components/modal/modals/CreateChannel.tsx
-msgid "Bug reports"
-msgstr ""
+#~ msgid "Bug reports"
+#~ msgstr ""
 
 #: src/interface/channels/text/TextChannel.tsx
-msgid "Bug reports forum"
-msgstr ""
+#~ msgid "Bug reports forum"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Bug Tracker"
@@ -843,6 +894,12 @@ msgstr ""
 msgid "Channel Slowmode"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "channels"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+#: components/app/interface/settings/user/Admin.tsx
 #: components/app/interface/settings/server/Analytics.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Channels"
@@ -894,6 +951,10 @@ msgstr ""
 
 #: src/interface/Videos.tsx
 msgid "Choose video"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Clear all"
 msgstr ""
 
 #: src/interface/navigation/servers/UserMenu.tsx
@@ -973,9 +1034,18 @@ msgstr ""
 #~ msgid "Close poll"
 #~ msgstr ""
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "Close voting"
+msgstr ""
+
 #: components/app/interface/channels/text/Message.tsx
 #~ msgid "Closed"
 #~ msgstr ""
+
+#. placeholder {0}: new Date(poll().closes_at!).toLocaleString()
+#: components/app/interface/channels/text/Message.tsx
+msgid "Closes {0}"
+msgstr ""
 
 #: components/modal/modals/JoinServer.tsx
 msgid "Code"
@@ -1040,6 +1110,14 @@ msgstr ""
 #: components/modal/modals/ReportContent.tsx
 msgid "Content breaks one or more laws"
 msgstr "Το περιεχόμενο παραβιάζει έναν ή περισσότερους νόμους"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Content:"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Context:"
+msgstr ""
 
 #: components/modal/modals/ServerOnboarding.tsx
 #: components/modal/modals/MFAEnableTOTP.tsx
@@ -1300,6 +1378,10 @@ msgstr ""
 msgid "Created <0/>"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Created:"
+msgstr ""
+
 #: components/modal/modals/EditUsername.tsx
 #: components/modal/modals/EditPassword.tsx
 #: components/modal/modals/EditEmail.tsx
@@ -1351,6 +1433,10 @@ msgstr ""
 msgid "Date format"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Date:"
+msgstr ""
+
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 msgid "Deafen"
 msgstr ""
@@ -1386,6 +1472,7 @@ msgstr ""
 #: components/modal/modals/DeleteChannel.tsx
 #: components/modal/modals/DeleteCategory.tsx
 #: components/modal/modals/DeleteBot.tsx
+#: components/app/interface/settings/user/Admin.tsx
 msgid "Delete"
 msgstr "Διαγραφή"
 
@@ -1434,6 +1521,8 @@ msgstr ""
 msgid "Delete Invite"
 msgstr ""
 
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 #: components/modal/modals/DeleteMessage.tsx
 #: components/app/menus/MessageContextMenu.tsx
 #: components/app/menus/DraftMessageContextMenu.tsx
@@ -1508,6 +1597,10 @@ msgstr ""
 msgid "Desktop"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Details"
+msgstr ""
+
 #: components/app/interface/settings/user/bots/MyBots.tsx
 msgid "Developer Documentation"
 msgstr ""
@@ -1557,11 +1650,19 @@ msgid "Discover TailsTalk 2"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
+msgid "Discovery"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
 msgid "Discovery submissions"
 msgstr ""
 
 #: src/interface/channels/text/TextChannel.tsx
-msgid "Discussion forum"
+#~ msgid "Discussion forum"
+#~ msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Dismiss"
 msgstr ""
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
@@ -1677,6 +1778,8 @@ msgstr "Επεξεργασία ταυτότητας"
 msgid "Edit Identity"
 msgstr ""
 
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Edit message"
 msgstr "Επεξεργασία μηνύματος"
@@ -1942,8 +2045,8 @@ msgid "For 8 hours"
 msgstr ""
 
 #: components/modal/modals/CreateChannel.tsx
-msgid "Forum Channel"
-msgstr ""
+#~ msgid "Forum Channel"
+#~ msgstr ""
 
 #: src/interface/Friends.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
@@ -1955,11 +2058,15 @@ msgstr "Φίλοι"
 #~ msgstr ""
 
 #: components/modal/modals/CreateChannel.tsx
-msgid "General discussion"
-msgstr ""
+#~ msgid "General discussion"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Generate a new token if it gets lost or compromised"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Generate invite"
 msgstr ""
 
 #: components/app/interface/settings/user/Account.tsx
@@ -2068,6 +2175,10 @@ msgstr ""
 msgid "Here is your new invite code: <0>{0}</0>"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Hide details"
+msgstr ""
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
 msgid "Hide Others"
 msgstr ""
@@ -2095,6 +2206,11 @@ msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "ID copied to clipboard"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+#: components/app/interface/settings/user/Admin.tsx
+msgid "ID:"
 msgstr ""
 
 #: src/interface/navigation/servers/UserMenu.tsx
@@ -2128,6 +2244,10 @@ msgstr ""
 #~ msgid "Interface Font"
 #~ msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Invalid admin password."
+msgstr ""
+
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Invisible"
 msgstr "Αόρατος"
@@ -2144,6 +2264,14 @@ msgstr ""
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
 msgid "Invite Code"
 msgstr "Κωδικός Πρόσκλησης"
+
+#: components/app/interface/settings/user/Admin.tsx
+#~ msgid "Invite copied: {0}"
+#~ msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Invite link:"
+msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Invite Others"
@@ -2340,6 +2468,22 @@ msgstr ""
 msgid "Loading members…"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Loading platform metrics..."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Loading reports..."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Loading servers..."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Loading updates..."
+msgstr ""
+
 #: src/interface/Videos.tsx
 #~ msgid "Loading videos…"
 #~ msgstr ""
@@ -2449,6 +2593,7 @@ msgid "Mature content on TailsTalk 2 is not allowed. This channel cannot be mark
 msgstr ""
 
 #: src/interface/Discover.tsx
+#: components/app/interface/settings/user/Admin.tsx
 msgid "members"
 msgstr ""
 
@@ -2528,6 +2673,14 @@ msgstr "Εξερχόμενο Μήνυμα"
 msgid "Message was sent on another platform"
 msgstr "Το μήνυμα εστάλη από άλλη πλατφόρμα"
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Message:"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Messages"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Messaging"
 msgstr "Μυνήματα"
@@ -2552,6 +2705,11 @@ msgstr ""
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Monospace Font"
 #~ msgstr ""
+
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+msgid "More actions"
+msgstr ""
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "More Contrast"
@@ -2641,6 +2799,10 @@ msgstr ""
 #~ msgid "Neutral"
 #~ msgstr ""
 
+#: components/modal/modals/CreatePoll.tsx
+msgid "Never"
+msgstr ""
+
 #: components/ui/components/features/messaging/elements/MessageDivider.tsx
 msgid "NEW"
 msgstr ""
@@ -2672,6 +2834,10 @@ msgid "Nickname"
 msgstr "Ψευδώνυμο"
 
 #: components/app/interface/settings/user/Admin.tsx
+msgid "No channels"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
 msgid "No Discovery submissions"
 msgstr ""
 
@@ -2687,6 +2853,18 @@ msgstr ""
 msgid "No questions yet. Add one if members should choose roles during onboarding."
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "No reports to review"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "No roles"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "No servers found"
+msgstr ""
+
 #: src/interface/Discover.tsx
 #~ msgid "No servers found."
 #~ msgstr ""
@@ -2697,6 +2875,10 @@ msgstr ""
 
 #: src/interface/Tailslets.tsx
 msgid "No Tailslets have been posted yet."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "No users found"
 msgstr ""
 
 #: src/interface/Videos.tsx
@@ -2867,6 +3049,10 @@ msgstr ""
 msgid "Overview"
 msgstr "Επισκόπηση"
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Owner:"
+msgstr ""
+
 #: components/app/interface/settings/server/Page.tsx
 #~ msgid "Page description"
 #~ msgstr ""
@@ -2894,6 +3080,11 @@ msgstr ""
 msgid "Pending review"
 msgstr ""
 
+#. placeholder {0}: server.name
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Permanently delete {0}? This cannot be undone."
+msgstr ""
+
 #: components/app/interface/settings/ChannelSettings.tsx
 msgid "Permissions"
 msgstr "Άδειες"
@@ -2914,8 +3105,16 @@ msgstr ""
 msgid "Ping everyone and all roles"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Platform / unknown server"
+msgstr ""
+
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Platform Moderator"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Platform overview and moderation tools"
 msgstr ""
 
 #: components/app/interface/settings/user/notifications/Sounds.tsx
@@ -2950,6 +3149,10 @@ msgstr "Παρακαλώ διάλεξε μία μέθοδο για έλεγχο 
 msgid "Please select a reason"
 msgstr ""
 
+#: components/app/interface/channels/text/Message.tsx
+msgid "Poll closed"
+msgstr ""
+
 #: src/interface/Videos.tsx
 msgid "Post a video"
 msgstr ""
@@ -2976,6 +3179,10 @@ msgstr "Πολιτική Απορρήτου"
 
 #: components/markdown/plugins/anchors.tsx
 msgid "Private Channel"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Privileged"
 msgstr ""
 
 #: components/app/menus/UserContextMenu.tsx
@@ -3011,6 +3218,10 @@ msgstr ""
 msgid "Publish to theme store"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Publish updates that appear in the client."
+msgstr ""
+
 #: components/modal/modals/CreatePoll.tsx
 #: components/app/interface/settings/server/Onboarding.tsx
 msgid "Question"
@@ -3041,6 +3252,11 @@ msgstr ""
 msgid "React to messages with emoji"
 msgstr ""
 
+#: src/interface/navigation/servers/ServerList.tsx
+#: src/interface/navigation/servers/ServerList.tsx
+msgid "Read all"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Read Message History"
 msgstr "Ανάγνωση Ιστορικού Μηνυμάτων"
@@ -3065,6 +3281,10 @@ msgstr "Αιτία"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Reason for report"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Reason:"
 msgstr ""
 
 #: components/app/interface/settings/user/notifications/Notifications.tsx
@@ -3112,6 +3332,10 @@ msgstr ""
 #: components/app/menus/UserContextMenu.tsx
 msgid "Reject friend request"
 msgstr "Απόρριψη αιτήματος φιλίας"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Rejection reason:"
+msgstr ""
 
 #: src/interface/channels/text/TextSearchSidebar.tsx
 msgid "Relevance"
@@ -3172,6 +3396,8 @@ msgstr ""
 msgid "Rep TailsTalk 2 using Discord rich presence."
 msgstr ""
 
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Reply"
 msgstr "Απάντηση"
@@ -3196,6 +3422,16 @@ msgstr "Αναφορά server"
 #: components/app/menus/UserContextMenu.tsx
 msgid "Report user"
 msgstr "Αναφορά χρήστη"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Reporter:"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+#: components/app/interface/settings/user/Admin.tsx
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Reports"
+msgstr ""
 
 #: components/app/interface/settings/user/FeatureRequests.tsx
 msgid "Request a feature"
@@ -3237,6 +3473,10 @@ msgstr ""
 msgid "Reset Token"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Resolve"
+msgstr ""
+
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Responsibly disclosed security issues"
 msgstr ""
@@ -3255,6 +3495,10 @@ msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Revenge or underage pornography"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Review community-submitted issues."
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
@@ -3302,8 +3546,13 @@ msgstr ""
 msgid "Role to assign"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "roles"
+msgstr ""
+
 #: components/ui/components/features/profiles/ProfileRoles.tsx
 #: components/app/interface/settings/ServerSettings.tsx
+#: components/app/interface/settings/user/Admin.tsx
 msgid "Roles"
 msgstr "Ρόλοι"
 
@@ -3313,6 +3562,7 @@ msgstr "Ρόλοι"
 
 #: components/modal/modals/ServerIdentity.tsx
 #: components/modal/modals/CustomStatus.tsx
+#: components/app/interface/settings/user/Admin.tsx
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 #: components/app/interface/settings/server/XP.tsx
 #: components/app/interface/settings/server/Overview.tsx
@@ -3354,6 +3604,10 @@ msgstr ""
 msgid "Screen Share Volume"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Search accounts and take moderation actions."
+msgstr ""
+
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
 msgid "Search for GIFs..."
 msgstr ""
@@ -3367,8 +3621,20 @@ msgstr ""
 msgid "Search for users..."
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Search server name or ID"
+msgstr ""
+
 #: src/interface/Discover.tsx
 msgid "Search servers and bots..."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Search username..."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Searching users..."
 msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
@@ -3536,6 +3802,10 @@ msgstr ""
 msgid "Server Identities"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Server management"
+msgstr ""
+
 #: components/modal/modals/CreateServer.tsx
 #: components/app/interface/settings/server/Overview.tsx
 msgid "Server Name"
@@ -3555,6 +3825,15 @@ msgstr ""
 
 #: components/app/interface/settings/server/Onboarding.tsx
 msgid "Server rules (one per line)"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Server:"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Servers"
 msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
@@ -3627,8 +3906,16 @@ msgstr ""
 #~ msgid "Show send message button"
 #~ msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Sign in to manage reports, users, and platform updates."
+msgstr ""
+
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Sign into TailsTalk 2"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Sign out"
 msgstr ""
 
 #: components/auth/src/flows/FlowHome.tsx
@@ -3698,8 +3985,8 @@ msgid "Spellchecker"
 msgstr ""
 
 #: src/interface/channels/text/TextChannel.tsx
-msgid "Start a discussion by posting a message in this forum."
-msgstr ""
+#~ msgid "Start a discussion by posting a message in this forum."
+#~ msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Start camera"
@@ -3715,6 +4002,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Start with Computer"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Stats"
 msgstr ""
 
 #: components/ui/components/features/profiles/ProfileStatus.tsx
@@ -3782,12 +4073,12 @@ msgid "Suggest new TailsTalk 2 features on GitHub discussions."
 msgstr ""
 
 #: components/modal/modals/CreateChannel.tsx
-msgid "Suggestions"
-msgstr ""
+#~ msgid "Suggestions"
+#~ msgstr ""
 
 #: src/interface/channels/text/TextChannel.tsx
-msgid "Suggestions forum"
-msgstr ""
+#~ msgid "Suggestions forum"
+#~ msgstr ""
 
 #: src/interface/Home.tsx
 #~ msgid "Support the project by donating - thank you!"
@@ -3795,6 +4086,24 @@ msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Surface"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Suspend"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Suspend for how many hours?"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Suspended"
+msgstr ""
+
+#. placeholder {0}: u.suspended_until ? new Date(u.suspended_until).toLocaleString() : "?"
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Suspended until {0}"
 msgstr ""
 
 #: components/modal/modals/AccountSwitcher.tsx
@@ -3934,6 +4243,10 @@ msgstr ""
 msgid "The password is too short."
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "The server did not return an invite link."
+msgstr ""
+
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Theme"
 msgstr "Θέμα"
@@ -4045,6 +4358,11 @@ msgid "This server is about..."
 msgstr ""
 
 #: components/i18n/errors.ts
+#: components/app/ServerSuspendedOverlay.tsx
+msgid "This server is suspended."
+msgstr ""
+
+#: components/i18n/errors.ts
 msgid "This user has blocked you."
 msgstr "Αυτός ο χρήστης σε έχει αποκλείσει."
 
@@ -4071,6 +4389,14 @@ msgstr ""
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Timeout Members"
 msgstr "Timeout Μελών"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Title"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Title:"
+msgstr ""
 
 #: components/ui/components/features/messaging/elements/Embed.tsx
 msgid "To Disable, go to advanced options in user settings and click Stop Using Development Build"
@@ -4112,12 +4438,24 @@ msgstr ""
 msgid "Unable to create a server backup."
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Unable to create invite."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Unable to delete server."
+msgstr ""
+
 #: src/interface/Tailslets.tsx
 msgid "Unable to delete this Tailslet right now. Please try again."
 msgstr ""
 
 #: src/interface/Videos.tsx
 msgid "Unable to delete this video right now. Please try again."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Unable to dismiss report."
 msgstr ""
 
 #: src/interface/Discover.tsx
@@ -4152,6 +4490,10 @@ msgstr ""
 msgid "Unable to remove this theme right now."
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Unable to resolve report."
+msgstr ""
+
 #: components/app/interface/settings/server/Backup.tsx
 msgid "Unable to restore this server backup."
 msgstr ""
@@ -4160,8 +4502,16 @@ msgstr ""
 msgid "Unable to submit this feature request right now."
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Unable to update server status."
+msgstr ""
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Unable to upload this theme right now."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Unban"
 msgstr ""
 
 #: components/app/menus/UserContextMenu.tsx
@@ -4222,6 +4572,10 @@ msgstr ""
 msgid "Unsolicited advertising or spam"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Unsuspend"
+msgstr ""
+
 #: components/app/menus/ServerContextMenu.tsx
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Until I turn it back on"
@@ -4254,6 +4608,10 @@ msgstr ""
 #: components/modal/modals/BanNonMember.tsx
 #: components/modal/modals/BanMember.tsx
 msgid "User broke a certain rule…"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "User directory"
 msgstr ""
 
 #: components/app/interface/settings/server/Overview.tsx
@@ -4301,6 +4659,11 @@ msgstr "Όνομα χρήστη"
 #: components/modal/modals/AddFriend.tsx
 #~ msgid "username#1234"
 #~ msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Users"
+msgstr ""
 
 #: components/modal/modals/ChannelToggleMature.tsx
 #~ msgid "Users will be asked to confirm their age before joining this channel."
@@ -4387,6 +4750,10 @@ msgstr ""
 msgid "View Recovery Codes"
 msgstr "Προβολή Κωδικών Ανάκτησης"
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "View servers, ownership, membership, channels, and roles. Suspensions and deletions are platform-wide."
+msgstr ""
+
 #: components/modal/modals/SourceCode.tsx
 msgid "View Stoat source code"
 msgstr ""
@@ -4399,14 +4766,13 @@ msgstr ""
 msgid "Viewing older messages"
 msgstr "Βλέπεις παλαιότερα μηνύματα"
 
-#: components/app/interface/settings/UserSettings.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Voice"
 msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
-msgid "Voice & Video"
-msgstr ""
+#~ msgid "Voice & Video"
+#~ msgstr ""
 
 #: components/modal/modals/CreateChannel.tsx
 msgid "Voice Channel"
@@ -4428,6 +4794,14 @@ msgstr ""
 msgid "Want to change username?"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Warn"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Warning reason:"
+msgstr ""
+
 #: components/modal/modals/TransferServerOwnership.tsx
 msgid "WARNING: After the transfer, you will no longer be the server owner and this action cannot be undone from this dialog."
 msgstr ""
@@ -4438,6 +4812,11 @@ msgstr ""
 
 #: components/modal/modals/TransferServerOwnership.tsx
 msgid "WARNING: You may lose access to owner-only server settings immediately after the transfer."
+msgstr ""
+
+#. placeholder {0}: u.warnings.length
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Warnings ({0}):"
 msgstr ""
 
 #: components/auth/src/flows/FlowCheck.tsx
@@ -4499,7 +4878,12 @@ msgid "What's new"
 msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
+#: components/app/interface/settings/user/Admin.tsx
 msgid "What's New"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "What's New Editor"
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -4701,6 +5085,10 @@ msgstr ""
 #: components/modal/modals/Invite.tsx
 #: components/i18n/errors.ts
 msgid "You're already part of this server."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "You’re viewing the live platform workspace. Actions here affect users immediately."
 msgstr ""
 
 #: components/i18n/errors.ts

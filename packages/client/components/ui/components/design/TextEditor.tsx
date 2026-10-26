@@ -115,7 +115,7 @@ interface AutoCompleteView {
       }
     | {
         type: "user";
-        matches: MatchUser[];
+        matches: MatchMention[];
       }
     | {
         type: "role";
@@ -140,6 +140,7 @@ type MatchEmoji =
     };
 
 type MatchUser = User | ServerMember;
+type MatchMention = MatchUser | ServerRole;
 
 /**
  * Rich text editor powered by ProseMirror
@@ -315,22 +316,22 @@ export function TextEditor(props: Props) {
           break;
         }
         case "user": {
-          const matches: MatchUser[] = [];
-          const users = space.users.sort((a, b) =>
-            a.displayName!.localeCompare(b.displayName!),
-          );
-
-          let i = -1;
-          while (matches.length < 10 && i + 1 < users.length) {
-            const user = users[++i];
-            if (
+          const users = space.users.filter(
+            (user) =>
               user.displayName!.toLowerCase().includes(query) ||
               (user instanceof ServerMember &&
-                user.user?.username.toLowerCase().includes(query))
-            ) {
-              matches.push(users[i]);
-            }
-          }
+                user.user?.username.toLowerCase().includes(query)),
+          );
+          const roles = space.roles.filter((role) =>
+            role.name.toLowerCase().includes(query),
+          );
+          const matches: MatchMention[] = [...users, ...roles]
+            .sort((a, b) => {
+              const aName = a instanceof ServerRole ? a.name : a.displayName!;
+              const bName = b instanceof ServerRole ? b.name : b.displayName!;
+              return aName.localeCompare(bName);
+            })
+            .slice(0, 10);
 
           result = {
             type: "user",
@@ -491,17 +492,27 @@ export function TextEditor(props: Props) {
                     action.range.to,
                   );
 
-                  tr = tr.insert(
-                    action.range.from,
-                    schema.nodes.rfm_user_mention.createAndFill({
-                      id:
-                        match instanceof ServerMember
-                          ? match.id.user
-                          : match.id,
-                      username: match.displayName,
-                      avatar: match.animatedAvatarURL,
-                    })!,
-                  );
+                  if (match instanceof ServerRole) {
+                    tr = tr.insert(
+                      action.range.from,
+                      schema.nodes.rfm_role_mention.createAndFill({
+                        id: match.id,
+                        name: match.name,
+                      })!,
+                    );
+                  } else {
+                    tr = tr.insert(
+                      action.range.from,
+                      schema.nodes.rfm_user_mention.createAndFill({
+                        id:
+                          match instanceof ServerMember
+                            ? match.id.user
+                            : match.id,
+                        username: match.displayName,
+                        avatar: match.animatedAvatarURL,
+                      })!,
+                    );
+                  }
 
                   action.view.dispatch(tr);
 
@@ -949,7 +960,7 @@ function Suggestions(props: {
           </For>
         </Match>
         <Match when={props.state()!.result.type === "user"}>
-          <For each={props.state()!.result.matches as MatchUser[]}>
+          <For each={props.state()!.result.matches as MatchMention[]}>
             {(match, idx) => (
               <Entry
                 selected={props.state()!.selected === idx()}
@@ -957,15 +968,18 @@ function Suggestions(props: {
                 onMouseDown={(e) => e.preventDefault()} // don't lose editor focus
                 onClick={props.confirmAutoCompleteItem}
               >
-                <Avatar src={match.animatedAvatarURL} size={24} />{" "}
-                <Name>{match.displayName}</Name>
-                {match instanceof ServerMember &&
-                  match.displayName !== match.user?.username && (
-                    <>
-                      {" "}
-                      @{match.user?.username}
-                    </>
-                  )}
+                {match instanceof ServerRole ? (
+                  <Name>@{match.name}</Name>
+                ) : (
+                  <>
+                    <Avatar src={match.animatedAvatarURL} size={24} />{" "}
+                    <Name>@{match.displayName}</Name>
+                    {match instanceof ServerMember &&
+                      match.displayName !== match.user?.username && (
+                        <> @{match.user?.username}</>
+                      )}
+                  </>
+                )}
               </Entry>
             )}
           </For>

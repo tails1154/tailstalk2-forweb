@@ -17,7 +17,7 @@ import { createResizeObserver } from "@solid-primitives/resize-observer";
 import { Channel } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
-import { useVoice } from "@revolt/rtc";
+import { InRoom, useVoice } from "@revolt/rtc";
 
 import { VoiceCallCardActiveRoom } from "./VoiceCallCardActiveRoom";
 import { VoiceCallCardPiP } from "./VoiceCallCardPiP";
@@ -135,7 +135,9 @@ export function VoiceCallCardContext(props: { children: JSX.Element }) {
         <Float ref={ref} mode={mode()} onPointerDown={mouseDown}>
           <Switch>
             <Match when={mode()}>
-              <VoiceCallCardPiP />
+              <InRoom>
+                <VoiceCallCardPiP />
+              </InRoom>
             </Match>
             <Match when={channel()}>
               <VoiceCallCard channel={channel()!} />

@@ -417,6 +417,11 @@ msgstr "Add option"
 msgid "Add question"
 msgstr "Add question"
 
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+msgid "Add reaction"
+msgstr "Add reaction"
+
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Add status text"
 msgstr "Add status text"
@@ -730,12 +735,12 @@ msgstr "Browser Echo Cancellation"
 #~ msgstr "Browser Noise Supression"
 
 #: components/modal/modals/CreateChannel.tsx
-msgid "Bug reports"
-msgstr "Bug reports"
+#~ msgid "Bug reports"
+#~ msgstr "Bug reports"
 
 #: src/interface/channels/text/TextChannel.tsx
-msgid "Bug reports forum"
-msgstr "Bug reports forum"
+#~ msgid "Bug reports forum"
+#~ msgstr "Bug reports forum"
 
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Bug Tracker"
@@ -1516,6 +1521,8 @@ msgstr "Delete Channel"
 msgid "Delete Invite"
 msgstr "Delete Invite"
 
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 #: components/modal/modals/DeleteMessage.tsx
 #: components/app/menus/MessageContextMenu.tsx
 #: components/app/menus/DraftMessageContextMenu.tsx
@@ -1651,8 +1658,8 @@ msgid "Discovery submissions"
 msgstr "Discovery submissions"
 
 #: src/interface/channels/text/TextChannel.tsx
-msgid "Discussion forum"
-msgstr "Discussion forum"
+#~ msgid "Discussion forum"
+#~ msgstr "Discussion forum"
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Dismiss"
@@ -1771,6 +1778,8 @@ msgstr "Edit identity"
 msgid "Edit Identity"
 msgstr "Edit Identity"
 
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Edit message"
 msgstr "Edit message"
@@ -2036,8 +2045,8 @@ msgid "For 8 hours"
 msgstr "For 8 hours"
 
 #: components/modal/modals/CreateChannel.tsx
-msgid "Forum Channel"
-msgstr "Forum Channel"
+#~ msgid "Forum Channel"
+#~ msgstr "Forum Channel"
 
 #: src/interface/Friends.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
@@ -2049,8 +2058,8 @@ msgstr "Friends"
 #~ msgstr "Fruit Salad"
 
 #: components/modal/modals/CreateChannel.tsx
-msgid "General discussion"
-msgstr "General discussion"
+#~ msgid "General discussion"
+#~ msgstr "General discussion"
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Generate a new token if it gets lost or compromised"
@@ -2696,6 +2705,11 @@ msgstr "Missing permission"
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Monospace Font"
 #~ msgstr "Monospace Font"
+
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+msgid "More actions"
+msgstr "More actions"
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "More Contrast"
@@ -3382,6 +3396,8 @@ msgstr "Rename Session"
 msgid "Rep TailsTalk 2 using Discord rich presence."
 msgstr "Rep TailsTalk 2 using Discord rich presence."
 
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
+#: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Reply"
 msgstr "Reply"
@@ -3969,8 +3985,8 @@ msgid "Spellchecker"
 msgstr "Spellchecker"
 
 #: src/interface/channels/text/TextChannel.tsx
-msgid "Start a discussion by posting a message in this forum."
-msgstr "Start a discussion by posting a message in this forum."
+#~ msgid "Start a discussion by posting a message in this forum."
+#~ msgstr "Start a discussion by posting a message in this forum."
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Start camera"
@@ -4057,12 +4073,12 @@ msgid "Suggest new TailsTalk 2 features on GitHub discussions."
 msgstr "Suggest new TailsTalk 2 features on GitHub discussions."
 
 #: components/modal/modals/CreateChannel.tsx
-msgid "Suggestions"
-msgstr "Suggestions"
+#~ msgid "Suggestions"
+#~ msgstr "Suggestions"
 
 #: src/interface/channels/text/TextChannel.tsx
-msgid "Suggestions forum"
-msgstr "Suggestions forum"
+#~ msgid "Suggestions forum"
+#~ msgstr "Suggestions forum"
 
 #: src/interface/Home.tsx
 #~ msgid "Support the project by donating - thank you!"
@@ -4750,14 +4766,13 @@ msgstr "View TailsTalk 2 source code"
 msgid "Viewing older messages"
 msgstr "Viewing older messages"
 
-#: components/app/interface/settings/UserSettings.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Voice"
 msgstr "Voice"
 
 #: components/app/interface/settings/UserSettings.tsx
-msgid "Voice & Video"
-msgstr "Voice & Video"
+#~ msgid "Voice & Video"
+#~ msgstr "Voice & Video"
 
 #: components/modal/modals/CreateChannel.tsx
 msgid "Voice Channel"

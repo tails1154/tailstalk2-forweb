@@ -41,6 +41,7 @@ export type HydratedMessage = {
     options: { id: string; text: string }[];
     multiple: boolean;
     closed: boolean;
+    closes_at?: number;
     votes: Record<string, string[]>;
   };
 };

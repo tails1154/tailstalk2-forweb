@@ -5,7 +5,6 @@ import { Server } from "stoat.js";
 import { css } from "styled-system/css";
 
 import { useClient, useClientLifecycle } from "@revolt/client";
-import { CONFIGURATION } from "@revolt/common";
 import { useUser } from "@revolt/markdown/users";
 import { useModals } from "@revolt/modal";
 import { fetchLatestChangelog } from "@revolt/modal/modals/Changelog";
@@ -19,7 +18,6 @@ import MdCoffee from "@material-design-icons/svg/outlined/coffee.svg?component-s
 import MdLanguage from "@material-design-icons/svg/outlined/language.svg?component-solid";
 import MdLogout from "@material-design-icons/svg/outlined/logout.svg?component-solid";
 import MdMemory from "@material-design-icons/svg/outlined/memory.svg?component-solid";
-import MdMic from "@material-design-icons/svg/outlined/mic.svg?component-solid";
 import MdNotifications from "@material-design-icons/svg/outlined/notifications.svg?component-solid";
 import MdPalette from "@material-design-icons/svg/outlined/palette.svg?component-solid";
 import MdRateReview from "@material-design-icons/svg/outlined/rate_review.svg?component-solid";
@@ -44,7 +42,6 @@ import Notifications from "./user/notifications/Notifications";
 import { EditProfile } from "./user/profile";
 import { Sessions } from "./user/Sessions";
 import { AdminPanel } from "./user/Admin";
-import { VoiceSettings } from "./user/voice/VoiceSettings";
 
 const Config: SettingsConfiguration<{ server: Server }> = {
   /**
@@ -105,8 +102,6 @@ const Config: SettingsConfiguration<{ server: Server }> = {
         return <FeatureRequests />;
       case "native":
         return <Native />;
-      case "voice":
-        return <VoiceSettings />;
       case "notifications":
         return <Notifications isDesktop={!!window.native} />;
       default:
@@ -203,15 +198,6 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             //   hidden:
             //     !getController("state").experiments.isEnabled("voice_chat"),
             // },
-            {
-              id: "voice",
-              icon: <MdMic {...iconSize(20)} />,
-              title: CONFIGURATION.ENABLE_VIDEO ? (
-                <Trans>Voice & Video</Trans>
-              ) : (
-                <Trans>Voice</Trans>
-              ),
-            },
             {
             },
             // {

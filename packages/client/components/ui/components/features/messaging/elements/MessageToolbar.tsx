@@ -1,5 +1,6 @@
 import { Show } from "solid-js";
 
+import { useLingui } from "@lingui-solid/solid/macro";
 import { Message } from "stoat.js";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
@@ -24,6 +25,7 @@ export function MessageToolbar(props: { message?: Message }) {
   const user = useUser();
   const state = useState();
   const { openModal } = useModals();
+  const { t } = useLingui();
 
   // todo: a11y for buttons; tabindex
 
@@ -46,6 +48,8 @@ export function MessageToolbar(props: { message?: Message }) {
       <Show when={props.message?.channel?.havePermission("SendMessage")}>
         <div
           class={tool()}
+          title={t`Reply`}
+          aria-label={t`Reply`}
           onClick={() => state.draft.addReply(props.message!, user()!.id)}
         >
           <Ripple />
@@ -74,6 +78,8 @@ export function MessageToolbar(props: { message?: Message }) {
             <div
               ref={triggerProps.ref}
               class={tool()}
+              title={t`Add reaction`}
+              aria-label={t`Add reaction`}
               onClick={triggerProps.onClickEmoji}
             >
               <Ripple />
@@ -85,6 +91,8 @@ export function MessageToolbar(props: { message?: Message }) {
       <Show when={props.message?.author?.self}>
         <div
           class={tool()}
+          title={t`Edit message`}
+          aria-label={t`Edit message`}
           onClick={() => state.draft.setEditingMessage(props.message)}
         >
           <Ripple />
@@ -97,13 +105,15 @@ export function MessageToolbar(props: { message?: Message }) {
           props.message?.channel?.havePermission("ManageMessages")
         }
       >
-        <div class={tool()} onClick={deleteMessage}>
+        <div class={tool()} title={t`Delete message`} aria-label={t`Delete message`} onClick={deleteMessage}>
           <Ripple />
           <MdDelete {...iconSize(20)} />
         </div>
       </Show>
       <div
         class={tool()}
+        title={t`More actions`}
+        aria-label={t`More actions`}
         use:floating={{
           contextMenu: () => <MessageContextMenu message={props.message!} />,
           contextMenuHandler: "click",

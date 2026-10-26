@@ -49,6 +49,11 @@ type ScreenShareQuality = {
   contentHint: string;
 };
 
+// Keep this outside Voice as a final safety net. During app route transitions
+// Solid can briefly mount two voice contexts, and each one would otherwise be
+// able to call join_call before the other context updates its local state.
+let activeVoiceChannelId: string | undefined;
+
 class Voice {
   #settings: VoiceSettings;
 
@@ -82,6 +87,11 @@ class Voice {
   #setShowBar: Setter<boolean>;
 
   private sound: SoundController;
+
+  /** Prevent an older async join request from connecting after a newer one. */
+  private connectionGeneration = 0;
+  /** Prevent two UI entry points from starting the same join concurrently. */
+  private connectingChannelId?: string;
 
   private openModal;
   private getClient;
@@ -140,7 +150,27 @@ class Voice {
   }
 
   async connect(channel: Channel, auth?: { url: string; token: string }) {
+    // A channel can expose both the header join button and the call-card
+    // preview during a render transition. Ignore a duplicate event while the
+    // first join is already in progress instead of forcing it out.
+    const currentChannel = this.channel();
+    const currentState = this.state();
+    if (
+      currentChannel?.id === channel.id &&
+      (currentState === "CONNECTING" ||
+        currentState === "CONNECTED" ||
+        currentState === "RECONNECTING")
+    ) {
+      return;
+    }
+
+    if (this.connectingChannelId === channel.id) return;
+    if (activeVoiceChannelId === channel.id) return;
+    this.connectingChannelId = channel.id;
+    activeVoiceChannelId = channel.id;
+
     this.disconnect();
+    const generation = ++this.connectionGeneration;
 
     const room = new Room({
       audioCaptureDefaults: {
@@ -231,22 +261,71 @@ class Voice {
       }
     });
 
-    if (!auth) {
-      auth = await channel.joinCall("worldwide");
-    }
+    try {
+      if (!auth) {
+        // A second join request uses force_disconnect and removes the first
+        // LiveKit session. Do not retry here; the user can safely retry after
+        // the failed request has been surfaced.
+        auth = await channel.joinCall(
+          "worldwide",
+          currentChannel?.id !== channel.id,
+        );
+      }
 
-    await room.connect(auth.url, auth.token, {
-      autoSubscribe: false,
-    });
+      if (!auth?.url || !auth?.token) {
+        throw new Error("Voice server did not provide room credentials");
+      }
+
+      // The request may have completed after another connect/disconnect began.
+      // Never let that stale request create a second LiveKit participant.
+      if (generation !== this.connectionGeneration) {
+        room.disconnect();
+        return;
+      }
+
+      await room.connect(auth.url, auth.token, {
+        autoSubscribe: true,
+      });
+
+      if (generation !== this.connectionGeneration || this.room() !== room) {
+        room.disconnect();
+      }
+    } catch (error) {
+      room.removeAllListeners();
+      room.disconnect();
+
+      if (generation === this.connectionGeneration && this.room() === room) {
+        batch(() => {
+          this.#setState("READY");
+          this.#setRoom();
+          this.#setChannel();
+          this.vidTracks = () => [];
+        });
+        this.onErr(error);
+      }
+    } finally {
+      if (this.connectingChannelId === channel.id) {
+        this.connectingChannelId = undefined;
+      }
+      if (activeVoiceChannelId === channel.id && this.room() === undefined) {
+        activeVoiceChannelId = undefined;
+      }
+    }
   }
 
   disconnect() {
+    const hadActiveRoom =
+      this.room() !== undefined && this.state() !== "READY";
+    const disconnectedChannelId = this.channel()?.id;
+    this.connectionGeneration++;
+
     try {
       const room = this.room();
-      if (!room) return;
 
-      room.removeAllListeners();
-      room.disconnect();
+      if (room) {
+        room.removeAllListeners();
+        room.disconnect();
+      }
 
       batch(() => {
         this.#setState("READY");
@@ -256,9 +335,15 @@ class Voice {
         this.vidTracks = () => [];
       });
 
+      if (activeVoiceChannelId === disconnectedChannelId) {
+        activeVoiceChannelId = undefined;
+      }
+
       this.screenShareTracks = new Set();
 
-      this.sound.playSound("userLeaveVoice");
+      if (hadActiveRoom) {
+        this.sound.playSound("userLeaveVoice");
+      }
     } catch (e) {
       this.onErr(e);
     }

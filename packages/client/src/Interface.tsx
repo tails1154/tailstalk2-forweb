@@ -28,6 +28,7 @@ import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
 import { CircularProgress, typography } from "@revolt/ui";
 
 import { WarningOverlay } from "@revolt/app/WarningOverlay";
+import { ServerSuspendedOverlay } from "@revolt/app/ServerSuspendedOverlay";
 import { Sidebar } from "./interface/Sidebar";
 import { suppressLeaveSitePromptOnce } from "./serviceWorkerInterface";
 
@@ -178,6 +179,7 @@ const Interface = (props: { children: JSX.Element }) => {
         <ErrorBoundary fallback={null}>
           <WarningOverlay />
         </ErrorBoundary>
+        <ServerSuspendedOverlay />
       </div>
     </MessageCache>
   );
