@@ -4570,6 +4570,10 @@ msgstr "Unban"
 msgid "Unblock user"
 msgstr "Unblock user"
 
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "Uncancel subscription"
+msgstr "Uncancel subscription"
+
 #. placeholder {0}: err.type
 #: components/i18n/errors.ts
 msgid "Uncaught TailsTalk 2 error: {0}"

@@ -1,4 +1,4 @@
-import { Show, createResource, createSignal } from "solid-js";
+import { Show, createResource, createSignal, onCleanup, onMount } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 
@@ -9,11 +9,17 @@ export function SupporterSubscription() {
   const client = useClient();
   const [checkoutLoading, setCheckoutLoading] = createSignal(false);
   const [cancelLoading, setCancelLoading] = createSignal(false);
+  const [resumeLoading, setResumeLoading] = createSignal(false);
   const [account] = createResource(() =>
     (client().api as unknown as { get: (path: string) => Promise<AccountInfo> }).get(
       "/auth/account/",
     ),
   );
+
+  onMount(() => {
+    const refresh = window.setInterval(() => void account.refetch(), 30_000);
+    onCleanup(() => window.clearInterval(refresh));
+  });
 
   async function startCheckout() {
     setCheckoutLoading(true);
@@ -33,6 +39,16 @@ export function SupporterSubscription() {
       await account.refetch();
     } finally {
       setCancelLoading(false);
+    }
+  }
+
+  async function resumeSubscription() {
+    setResumeLoading(true);
+    try {
+      await client().account.resumeStripeSubscription();
+      await account.refetch();
+    } finally {
+      setResumeLoading(false);
     }
   }
 
@@ -84,6 +100,11 @@ export function SupporterSubscription() {
         <Show when={account()?.subscription && !account()?.subscription?.cancel_at_period_end}>
           <CategoryButton icon="blank" onClick={cancelSubscription} isDisabled={cancelLoading()}>
             <Trans>Cancel subscription</Trans>
+          </CategoryButton>
+        </Show>
+        <Show when={account()?.subscription?.cancel_at_period_end}>
+          <CategoryButton icon="blank" onClick={resumeSubscription} isDisabled={resumeLoading()}>
+            <Trans>Uncancel subscription</Trans>
           </CategoryButton>
         </Show>
       </Column>

@@ -58,6 +58,13 @@ export class AccountCollection {
     }).post("/auth/account/stripe/cancel");
   }
 
+  /** Resume a Stripe subscription scheduled for cancellation. */
+  async resumeStripeSubscription(): Promise<void> {
+    await (this.client.api as unknown as {
+      post: (path: string) => Promise<unknown>;
+    }).post("/auth/account/stripe/resume");
+  }
+
   /**
    * Create a MFA helper
    */
