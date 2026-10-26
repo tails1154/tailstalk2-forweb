@@ -823,8 +823,13 @@ msgstr "Kanselahin ang friend request"
 msgid "Cancel message"
 msgstr ""
 
+#: components/modal/modals/CancelPremium.tsx
 #: components/app/interface/settings/user/SupporterSubscription.tsx
 msgid "Cancel subscription"
+msgstr ""
+
+#: components/modal/modals/CancelPremium.tsx
+msgid "Cancel TailsTalk 2 Premium?"
 msgstr ""
 
 #: components/app/interface/settings/user/Account.tsx
@@ -2371,6 +2376,10 @@ msgstr "Bumalik sa simula"
 #: components/modal/modals/ChannelToggleMature.tsx
 #~ msgid "Keep as is"
 #~ msgstr ""
+
+#: components/modal/modals/CancelPremium.tsx
+msgid "Keep Premium"
+msgstr ""
 
 #: components/modal/modals/KickMember.tsx
 msgid "Kick"
@@ -5199,6 +5208,10 @@ msgstr ""
 
 #: components/i18n/errors.ts
 msgid "Your message is too long, please remove some characters and try again."
+msgstr ""
+
+#: components/modal/modals/CancelPremium.tsx
+msgid "Your Premium access and badge will remain active until the end of the current billing period. You can uncancel it later."
 msgstr ""
 
 #: components/modal/modals/MFARecovery.tsx

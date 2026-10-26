@@ -10,6 +10,7 @@ import { AddMembersToGroupModal } from "./modals/AddMembersToGroup";
 import { BanMemberModal } from "./modals/BanMember";
 import { BanNonMemberModal } from "./modals/BanNonMember";
 import { ChangelogModal } from "./modals/Changelog";
+import { CancelPremiumModal } from "./modals/CancelPremium";
 import { ChannelInfoModal } from "./modals/ChannelInfo";
 import { ChannelToggleMatureModal } from "./modals/ChannelToggleMature";
 import { CreateBotModal } from "./modals/CreateBot";
@@ -96,6 +97,8 @@ export function RenderModal(props: ActiveModal & { onClose: () => void }) {
       return <BanNonMemberModal {...modalProps} />;
     case "changelog":
       return <ChangelogModal {...modalProps} />;
+    case "cancel_premium":
+      return <CancelPremiumModal {...modalProps} />;
     case "add_members_to_group":
       return <AddMembersToGroupModal {...modalProps} />;
     case "channel_info":

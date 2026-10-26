@@ -823,9 +823,14 @@ msgstr "Cancel friend request"
 msgid "Cancel message"
 msgstr "Cancel message"
 
+#: components/modal/modals/CancelPremium.tsx
 #: components/app/interface/settings/user/SupporterSubscription.tsx
 msgid "Cancel subscription"
 msgstr "Cancel subscription"
+
+#: components/modal/modals/CancelPremium.tsx
+msgid "Cancel TailsTalk 2 Premium?"
+msgstr "Cancel TailsTalk 2 Premium?"
 
 #: components/app/interface/settings/user/Account.tsx
 msgid "Cannot delete account until servers are deleted or transferred"
@@ -2371,6 +2376,10 @@ msgstr "Jump to the beginning"
 #: components/modal/modals/ChannelToggleMature.tsx
 #~ msgid "Keep as is"
 #~ msgstr "Keep as is"
+
+#: components/modal/modals/CancelPremium.tsx
+msgid "Keep Premium"
+msgstr "Keep Premium"
 
 #: components/modal/modals/KickMember.tsx
 msgid "Kick"
@@ -5200,6 +5209,10 @@ msgstr "Your feature request was not approved."
 #: components/i18n/errors.ts
 msgid "Your message is too long, please remove some characters and try again."
 msgstr "Your message is too long, please remove some characters and try again."
+
+#: components/modal/modals/CancelPremium.tsx
+msgid "Your Premium access and badge will remain active until the end of the current billing period. You can uncancel it later."
+msgstr "Your Premium access and badge will remain active until the end of the current billing period. You can uncancel it later."
 
 #: components/modal/modals/MFARecovery.tsx
 msgid "Your recovery codes"

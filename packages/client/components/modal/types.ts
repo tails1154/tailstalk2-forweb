@@ -55,6 +55,10 @@ export type Modals =
       changelog: ChangelogResponse;
     }
   | {
+      type: "cancel_premium";
+      onConfirm: () => Promise<void>;
+    }
+  | {
       type: "channel_info";
       channel: Channel;
     }

@@ -3,10 +3,12 @@ import { Show, createResource, createSignal, onCleanup, onMount } from "solid-js
 import { Trans } from "@lingui-solid/solid/macro";
 
 import { useClient } from "@revolt/client";
+import { useModals } from "@revolt/modal";
 import { CategoryButton, Column } from "@revolt/ui";
 
 export function SupporterSubscription() {
   const client = useClient();
+  const { openModal, showError } = useModals();
   const [checkoutLoading, setCheckoutLoading] = createSignal(false);
   const [cancelLoading, setCancelLoading] = createSignal(false);
   const [resumeLoading, setResumeLoading] = createSignal(false);
@@ -32,11 +34,13 @@ export function SupporterSubscription() {
   }
 
   async function cancelSubscription() {
-    if (!window.confirm("Cancel TailsTalk 2 Premium at the end of your current billing period?")) return;
     setCancelLoading(true);
     try {
       await client().account.cancelStripeSubscription();
       await account.refetch();
+    } catch (error) {
+      showError(error);
+      throw error;
     } finally {
       setCancelLoading(false);
     }
@@ -98,7 +102,7 @@ export function SupporterSubscription() {
           </CategoryButton>
         </Show>
         <Show when={account()?.subscription && !account()?.subscription?.cancel_at_period_end}>
-          <CategoryButton icon="blank" onClick={cancelSubscription} isDisabled={cancelLoading()}>
+          <CategoryButton icon="blank" onClick={() => openModal({ type: "cancel_premium", onConfirm: cancelSubscription })} isDisabled={cancelLoading()}>
             <Trans>Cancel subscription</Trans>
           </CategoryButton>
         </Show>
