@@ -182,6 +182,18 @@ msgstr ""
 msgid "{usernames} reacted"
 msgstr ""
 
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "• More supporter perks may be added later"
+msgstr ""
+
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "• Support independent development"
+msgstr ""
+
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "• TailsTalk Supporter profile badge"
+msgstr ""
+
 #: components/ui/components/features/messaging/elements/SystemMessage.tsx
 msgid "<0/> has been added by <1/>"
 msgstr ""
@@ -811,6 +823,10 @@ msgstr "💖✨🥺,,👉👈💖✨✨✨✨🥺,,👉👈💖💖✨👉👈�
 msgid "Cancel message"
 msgstr ""
 
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "Cancel subscription"
+msgstr ""
+
 #: components/app/interface/settings/user/Account.tsx
 msgid "Cannot delete account until servers are deleted or transferred"
 msgstr "💖✨🥺,,👉👈💖✨✨✨✨🥺,,👉👈💖💖✨👉👈💖💖✨👉👈💖💖✨,👉👈💖💖✨🥺,👉👈✨✨✨,,👉👈💖💖👉👈💖💖,👉👈💖💖🥺,,,👉👈💖💖,👉👈💖💖✨🥺,👉👈💖💖,👉👈✨✨✨,,👉👈💖✨✨✨✨🥺,,👉👈💖✨✨✨✨🥺,,,,👉👈💖✨✨✨✨🥺,,,,👉👈💖💖✨,👉👈💖💖✨🥺,,👉👈💖💖✨👉👈💖💖✨🥺,👉👈✨✨✨,,👉👈💖💖✨🥺,,👉👈💖💖✨👉👈💖💖✨🥺,👉👈💖💖🥺👉👈💖💖🥺,,,👉👈✨✨✨,,👉👈💖💖✨🥺👉👈💖💖,👉👈💖💖✨,,,,👉👈💖💖✨🥺,,,👉👈💖💖,👉👈💖💖✨,,,,👉👈💖💖✨🥺👉👈✨✨✨,,👉👈💖✨✨✨✨🥺,,👉👈💖💖✨,,,,👉👈💖💖,👉👈✨✨✨,,👉👈💖💖👉👈💖💖,👉👈💖💖🥺,,,👉👈💖💖,👉👈💖💖✨🥺,👉👈💖💖,👉👈💖💖👉👈✨✨✨,,👉👈💖💖✨,👉👈💖💖✨,,,,👉👈✨✨✨,,👉👈💖💖✨🥺,👉👈💖💖✨,,,,👉👈💖✨✨✨✨🥺,,👉👈💖💖✨👉👈💖💖✨🥺👉👈💖💖,,👉👈💖💖,👉👈💖💖✨,,,,👉👈💖💖✨,,,,👉👈💖💖,👉👈💖💖👉👈"
@@ -912,6 +928,10 @@ msgstr "💖✨🥺,,👉👈💖💖,,,,👉👈💖✨✨✨✨🥺,,👉👈�
 #: components/auth/src/flows/FlowCheck.tsx
 msgid "Check your mail!"
 msgstr "💖✨🥺,,👉👈💖💖,,,,👉👈💖💖,👉👈💖✨✨✨✨🥺,,,,👉👈💖💖🥺,,👉👈✨✨✨,,👉👈💖💖✨✨,👉👈💖💖✨,👉👈💖💖✨🥺,,👉👈💖💖✨,,,,👉👈✨✨✨,,👉👈💖💖🥺,,,,👉👈💖✨✨✨✨🥺,,👉👈💖💖🥺👉👈💖💖🥺,,,👉👈✨✨✨,,,👉👈"
+
+#: src/interface/StripeReturn.tsx
+msgid "Checkout canceled"
+msgstr ""
 
 #: components/modal/modals/TransferServerOwnership.tsx
 msgid "Choose a current member to become the new owner. This requires five confirmations and MFA verification."
@@ -2845,6 +2865,10 @@ msgstr ""
 msgid "No feature requests"
 msgstr ""
 
+#: src/interface/StripeReturn.tsx
+msgid "No payment was made. You can subscribe to TailsTalk 2 Premium whenever you are ready."
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "No permissions set yet"
 msgstr ""
@@ -3489,6 +3513,10 @@ msgstr ""
 msgid "Retry sending"
 msgstr ""
 
+#: src/interface/StripeReturn.tsx
+msgid "Return to account settings"
+msgstr ""
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Return to voice channel"
 msgstr ""
@@ -4060,6 +4088,14 @@ msgstr ""
 msgid "Submit to Discover"
 msgstr ""
 
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "Subscribe to receive the TailsTalk Supporter badge with TailsTalk 2 Premium. Stripe handles payment securely; TailsTalk 2 never sees your card details."
+msgstr ""
+
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "Subscribe with Stripe"
+msgstr ""
+
 #: components/app/interface/settings/UserSettings.tsx
 #~ msgid "Subscriptions"
 #~ msgstr ""
@@ -4080,9 +4116,17 @@ msgstr ""
 #~ msgid "Suggestions forum"
 #~ msgstr ""
 
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "Support TailsTalk 2 and unlock Premium benefits."
+msgstr ""
+
 #: src/interface/Home.tsx
 #~ msgid "Support the project by donating - thank you!"
 #~ msgstr "💖✨✨✨,,,👉👈💖💖✨🥺,,👉👈💖💖✨,,👉👈💖💖✨,,👉👈💖💖✨,👉👈💖💖✨,,,,👉👈💖💖✨🥺,👉👈✨✨✨,,👉👈💖💖✨🥺,👉👈💖💖,,,,👉👈💖💖,👉👈✨✨✨,,👉👈💖💖✨,,👉👈💖💖✨,,,,👉👈💖💖✨,👉👈💖💖🥺,👉👈💖💖,👉👈💖✨✨✨✨🥺,,,,👉👈💖💖✨🥺,👉👈✨✨✨,,👉👈💖✨✨✨✨🥺,,,👉👈💖💖✨✨,👉👈✨✨✨,,👉👈💖💖👉👈💖💖✨,👉👈💖💖✨👉👈💖✨✨✨✨🥺,,👉👈💖💖✨🥺,👉👈💖💖🥺👉👈💖💖✨👉👈💖💖,,,👉👈✨✨✨,,👉👈✨✨✨✨🥺👉👈✨✨✨,,👉👈💖💖✨🥺,👉👈💖💖,,,,👉👈💖✨✨✨✨🥺,,👉👈💖💖✨👉👈💖💖🥺,,👉👈✨✨✨,,👉👈💖💖✨✨,👉👈💖💖✨,👉👈💖💖✨🥺,,👉👈✨✨✨,,,👉👈"
+
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "Supporter features:"
+msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Surface"
@@ -4168,6 +4212,10 @@ msgstr ""
 msgid "TailsTalk 2 is one of the best ways to stay connected with your friends and community, anywhere, anytime."
 msgstr ""
 
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "TailsTalk 2 Premium"
+msgstr ""
+
 #: components/app/interface/settings/UserSettings.tsx
 #: components/app/interface/settings/user/subscriptions/EditSubscription.tsx
 #~ msgid "TailsTalk 2 PREMIUM"
@@ -4213,6 +4261,10 @@ msgstr "💖✨✨✨,,,,👉👈💖💖,👉👈💖💖✨✨👉👈💖💖
 #: components/app/interface/settings/user/subscriptions/EditSubscription.tsx
 #~ msgid "Thank you for supporting TailsTalk 2 by looking at this completely pointless premium page."
 #~ msgstr ""
+
+#: src/interface/StripeReturn.tsx
+msgid "Thank you for supporting TailsTalk 2!"
+msgstr ""
 
 #: components/i18n/errors.ts
 msgid "That action had no effect."
@@ -5036,6 +5088,11 @@ msgstr "💖✨✨✨🥺,,,,👉👈💖💖✨,👉👈💖💖✨🥺,,👉�
 msgid "You don't have to put @cats.angletonisd.net in this box or your ID is invalid. Please remove it"
 msgstr ""
 
+#. placeholder {0}: subscription().tier
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "You have an active {0} subscription. Your Supporter badge is enabled.<0><1/>Your subscription is scheduled to end at the end of this billing period.</0>"
+msgstr ""
+
 #: components/i18n/errors.ts
 msgid "You have been locked out for entering a wrong password multiple times. Please wait a couple minutes and try again."
 msgstr ""
@@ -5158,6 +5215,10 @@ msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Your tails1154 account and TailsTalk 2 account are separate accounts."
+msgstr ""
+
+#: src/interface/StripeReturn.tsx
+msgid "Your TailsTalk 2 Premium subscription is being activated. You can return to the app now."
 msgstr ""
 
 #: components/i18n/errors.ts

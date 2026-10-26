@@ -25,6 +25,39 @@ export class AccountCollection {
     return (await this.client.api.get("/auth/account/")).email;
   }
 
+  /** Fetch account entitlement information. */
+  async fetchInfo(): Promise<{
+    subscription?: {
+      provider: string;
+      tier: string;
+      active_until: string;
+      cancel_at_period_end: boolean;
+    };
+  }> {
+    return (await this.client.api.get("/auth/account/")) as {
+      subscription?: {
+        provider: string;
+        tier: string;
+        active_until: string;
+        cancel_at_period_end: boolean;
+      };
+    };
+  }
+
+  /** Create a hosted Stripe Supporter checkout session. */
+  async createStripeCheckout(): Promise<{ url: string }> {
+    return (await (this.client.api as unknown as {
+      post: (path: string) => Promise<unknown>;
+    }).post("/auth/account/stripe/checkout")) as { url: string };
+  }
+
+  /** Schedule the current Stripe subscription to cancel at period end. */
+  async cancelStripeSubscription(): Promise<void> {
+    await (this.client.api as unknown as {
+      post: (path: string) => Promise<unknown>;
+    }).post("/auth/account/stripe/cancel");
+  }
+
   /**
    * Create a MFA helper
    */

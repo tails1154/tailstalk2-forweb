@@ -22,6 +22,7 @@ import { useSettingsNavigation } from "../Settings";
 import { suppressLeaveSitePromptOnce } from "../../../../../src/serviceWorkerInterface";
 
 import { UserSummary } from "./account/index";
+import { SupporterSubscription } from "./SupporterSubscription";
 
 /**
  * Account Page
@@ -39,6 +40,7 @@ export function MyAccount() {
         onEdit={() => navigate("profile")}
         showBadges
       />
+      <SupporterSubscription />
       <EditAccount />
       <MultiFactorAuth />
       <ManageAccount />
