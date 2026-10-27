@@ -1,20 +1,11 @@
 import { For, Show, splitProps } from "solid-js";
-import {
-  TrackLoop,
-  useEnsureParticipant,
-  useIsMuted,
-  useIsSpeaking,
-  useTracks,
-} from "solid-livekit-components";
-
-import { Track } from "livekit-client";
 import { Channel, VoiceParticipant } from "stoat.js";
 import { cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
 
 import { UserContextMenu } from "@revolt/app";
-import { useUser } from "@revolt/markdown/users";
-import { InRoom } from "@revolt/rtc";
+import { useUsers, useUser } from "@revolt/markdown/users";
+import { InRoom, useVoice } from "@revolt/rtc";
 
 import { Avatar, Ripple, typography } from "../../design";
 import { Row } from "../../layout";
@@ -41,14 +32,24 @@ export function VoiceChannelPreview(props: { channel: Channel }) {
  * Use API as the source of truth
  */
 function VariantLive() {
-  const tracks = useTracks(
-    [{ source: Track.Source.Camera, withPlaceholder: true }],
-    { onlySubscribed: false },
-  );
+  const voice = useVoice();
+  const users = useUsers(voice.participants);
 
   return (
     <Base>
-      <TrackLoop tracks={tracks}>{() => <ParticipantLive />}</TrackLoop>
+      <For each={users()}>
+        {(user) => (
+          <CommonUser
+            userId={user?.user?.id ?? ""}
+            speaking={false}
+            muted={!voice.microphone()}
+            deafened={voice.deafen()}
+            camera={false}
+            screenshare={false}
+            isLive
+          />
+        )}
+      </For>
     </Base>
   );
 }
@@ -65,32 +66,6 @@ function VariantPreview(props: { channel: Channel }) {
         </For>
       </Base>
     </Show>
-  );
-}
-
-/**
- * Live variant of participant
- */
-function ParticipantLive() {
-  const participant = useEnsureParticipant();
-
-  const isMuted = useIsMuted({
-    participant,
-    source: Track.Source.Microphone,
-  });
-
-  const isSpeaking = useIsSpeaking(participant);
-
-  return (
-    <CommonUser
-      userId={participant.identity}
-      speaking={isSpeaking()}
-      muted={isMuted()}
-      deafened={false}
-      camera={false}
-      screenshare={false}
-      isLive
-    />
   );
 }
 

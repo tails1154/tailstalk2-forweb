@@ -54,6 +54,19 @@ type ScreenShareQuality = {
 // able to call join_call before the other context updates its local state.
 let activeVoiceChannelId: string | undefined;
 
+const VOICE_SIGNALING_URL =
+  (import.meta.env.VITE_VOICE_URL as string | undefined) ??
+  "wss://tails1154.com:9961/vc";
+
+type VoicePeer = {
+  id: string;
+  userId: string;
+  username?: string;
+  connection: RTCPeerConnection;
+};
+
+type RemoteVoiceStream = { peerId: string; userId: string; stream: MediaStream };
+
 class Voice {
   #settings: VoiceSettings;
 
@@ -96,6 +109,11 @@ class Voice {
   private openModal;
   private getClient;
   private screenShareTracks: Set<string>;
+  private voiceSocket?: WebSocket;
+  private localVoiceStream?: MediaStream;
+  private voicePeers = new Map<string, VoicePeer>();
+  private localVoicePeerId?: string;
+  private explicitVoiceDisconnect = false;
 
   constructor(
     voiceSettings: VoiceSettings,
@@ -147,7 +165,20 @@ class Voice {
     this.getClient = useClient();
 
     this.screenShareTracks = new Set();
+
+    const [remoteStreams, setRemoteStreams] = createSignal<RemoteVoiceStream[]>([]);
+    this.remoteStreams = remoteStreams;
+    this.setRemoteStreams = setRemoteStreams;
+
+    const [participants, setParticipants] = createSignal<string[]>([]);
+    this.participants = participants;
+    this.setParticipants = setParticipants;
   }
+
+  remoteStreams: Accessor<RemoteVoiceStream[]>;
+  private setRemoteStreams: Setter<RemoteVoiceStream[]>;
+  participants: Accessor<string[]>;
+  private setParticipants: Setter<string[]>;
 
   async connect(channel: Channel, auth?: { url: string; token: string }) {
     // A channel can expose both the header join button and the call-card
@@ -168,6 +199,11 @@ class Voice {
     if (activeVoiceChannelId === channel.id) return;
     this.connectingChannelId = channel.id;
     activeVoiceChannelId = channel.id;
+
+    // TailsTalk 2 voice uses its own WebRTC mesh and signaling service. Keep
+    // this path independent from the legacy LiveKit/voice-ingress stack.
+    await this.connectCustomVoice(channel);
+    return;
 
     this.disconnect();
     const generation = ++this.connectionGeneration;
@@ -283,7 +319,7 @@ class Voice {
         return;
       }
 
-      await room.connect(auth.url, auth.token, {
+      await room.connect(auth!.url, auth!.token, {
         autoSubscribe: true,
       });
 
@@ -313,11 +349,158 @@ class Voice {
     }
   }
 
+  private async connectCustomVoice(channel: Channel) {
+    this.disconnectCustomVoice();
+    const generation = ++this.connectionGeneration;
+    this.explicitVoiceDisconnect = false;
+    this.#setChannel(channel);
+    this.#setState("CONNECTING");
+    this.#setVideo(false);
+    this.#setScreenshare(false);
+
+    try {
+      const [header, token] = this.getClient().authenticationHeader;
+      this.localVoiceStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          deviceId: this.#settings.preferredAudioInputDevice || undefined,
+          echoCancellation: this.#settings.echoCancellation,
+          noiseSuppression: this.#settings.noiseSupression === "browser",
+          autoGainControl: this.#settings.autoGainControl,
+        },
+        video: false,
+      });
+      this.localVoiceStream.getAudioTracks().forEach((track) => {
+        track.enabled = this.#settings.micOn && !this.#settings.deafen;
+      });
+
+      const socket = new WebSocket(VOICE_SIGNALING_URL);
+      this.voiceSocket = socket;
+
+      socket.addEventListener("message", (event) => {
+        try {
+          void this.handleVoiceSignal(JSON.parse(event.data as string), channel, generation).catch((error) => this.onErr(error));
+        } catch (error) {
+          this.onErr(error);
+        }
+      });
+      socket.addEventListener("close", () => {
+        if (!this.explicitVoiceDisconnect && generation === this.connectionGeneration) {
+          this.#setState("DISCONNECTED");
+        }
+      });
+
+      await new Promise<void>((resolve, reject) => {
+        socket.addEventListener("open", () => {
+          socket.send(JSON.stringify({
+            type: "join",
+            room: channel.id,
+            token: header === "X-Bot-Token" ? token : token,
+          }));
+        }, { once: true });
+        socket.addEventListener("error", () => reject(new Error("Voice signaling connection failed")), { once: true });
+        socket.addEventListener("close", () => {
+          if (this.state() === "CONNECTING") reject(new Error("Voice signaling connection closed"));
+        }, { once: true });
+      });
+    } catch (error) {
+      this.disconnectCustomVoice();
+      this.#setState("READY");
+      if (activeVoiceChannelId === channel.id) activeVoiceChannelId = undefined;
+      this.onErr(error);
+    } finally {
+      if (this.connectingChannelId === channel.id) this.connectingChannelId = undefined;
+    }
+  }
+
+  private async handleVoiceSignal(message: any, channel: Channel, generation: number) {
+    if (generation !== this.connectionGeneration) return;
+    if (message.type === "error") throw new Error(`Voice error: ${message.code}`);
+
+    if (message.type === "joined") {
+      this.localVoicePeerId = message.peer_id;
+      this.setParticipants([this.getClient().user?.id ?? "", ...message.peers.map((peer: any) => peer.user_id)].filter(Boolean));
+      this.#setState("CONNECTED");
+      for (const peer of message.peers) await this.createVoicePeer(peer, this.localVoicePeerId! < peer.peer_id);
+      this.sound.playSound("userJoinVoice");
+      return;
+    }
+
+    if (message.type === "peer_joined") {
+      this.setParticipants((ids) => [...new Set([...ids, message.user_id])]);
+      await this.createVoicePeer({ peer_id: message.peer_id, user_id: message.user_id, username: message.username }, this.localVoicePeerId! < message.peer_id);
+      this.sound.playSound("userJoinVoice");
+      return;
+    }
+
+    if (message.type === "peer_left") {
+      this.voicePeers.get(message.peer_id)?.connection.close();
+      this.voicePeers.delete(message.peer_id);
+      this.setRemoteStreams((streams) => streams.filter((stream) => stream.peerId !== message.peer_id));
+      this.setParticipants((ids) => ids.filter((id) => id !== message.user_id));
+      this.sound.playSound("userLeaveVoice");
+      return;
+    }
+
+    const peer = this.voicePeers.get(message.from);
+    if (!peer) return;
+    if (message.type === "offer") {
+      await peer.connection.setRemoteDescription(message.payload);
+      const answer = await peer.connection.createAnswer();
+      await peer.connection.setLocalDescription(answer);
+      this.sendVoiceSignal({ type: "answer", to: message.from, payload: answer });
+    } else if (message.type === "answer") {
+      await peer.connection.setRemoteDescription(message.payload);
+    } else if (message.type === "candidate" && message.payload) {
+      await peer.connection.addIceCandidate(message.payload);
+    }
+  }
+
+  private async createVoicePeer(info: { peer_id: string; user_id: string; username?: string }, initiator: boolean) {
+    if (this.voicePeers.has(info.peer_id)) return;
+    const connection = new RTCPeerConnection();
+    const peer = { id: info.peer_id, userId: info.user_id, username: info.username, connection };
+    this.voicePeers.set(info.peer_id, peer);
+    this.localVoiceStream?.getTracks().forEach((track) => connection.addTrack(track, this.localVoiceStream!));
+    connection.onicecandidate = (event) => {
+      if (event.candidate) this.sendVoiceSignal({ type: "candidate", to: info.peer_id, payload: event.candidate });
+    };
+    connection.ontrack = (event) => {
+      const stream = event.streams[0] ?? new MediaStream([event.track]);
+      this.setRemoteStreams((streams) => [
+        ...streams.filter((item) => item.peerId !== info.peer_id),
+        { peerId: info.peer_id, userId: info.user_id, stream },
+      ]);
+    };
+    if (initiator) {
+      const offer = await connection.createOffer();
+      await connection.setLocalDescription(offer);
+      this.sendVoiceSignal({ type: "offer", to: info.peer_id, payload: offer });
+    }
+  }
+
+  private sendVoiceSignal(message: object) {
+    if (this.voiceSocket?.readyState === WebSocket.OPEN) this.voiceSocket.send(JSON.stringify(message));
+  }
+
+  private disconnectCustomVoice() {
+    this.explicitVoiceDisconnect = true;
+    this.voiceSocket?.close();
+    this.voiceSocket = undefined;
+    this.voicePeers.forEach((peer) => peer.connection.close());
+    this.voicePeers.clear();
+    this.localVoiceStream?.getTracks().forEach((track) => track.stop());
+    this.localVoiceStream = undefined;
+    this.localVoicePeerId = undefined;
+    this.setRemoteStreams([]);
+    this.setParticipants([]);
+  }
+
   disconnect() {
     const hadActiveRoom =
       this.room() !== undefined && this.state() !== "READY";
     const disconnectedChannelId = this.channel()?.id;
     this.connectionGeneration++;
+    this.disconnectCustomVoice();
 
     try {
       const room = this.room();
@@ -351,8 +534,14 @@ class Voice {
 
   async toggleDeafen(fromMute?: boolean) {
     try {
-      const room = this.room();
-      if (!room) throw "invalid state";
+      if (!this.localVoiceStream && !this.room()) throw "invalid state";
+      if (!this.room()) {
+        this.#settings.deafen = !this.#settings.deafen;
+        if (fromMute) this.#settings.micOn = !this.#settings.deafen;
+        this.setRemoteStreams((streams) => [...streams]);
+        return;
+      }
+      const room = this.room()!;
       await room.localParticipant.setMicrophoneEnabled(
         (this.#settings.micOn || !!fromMute) &&
           !room.localParticipant.isMicrophoneEnabled,
@@ -378,8 +567,15 @@ class Voice {
       return;
     }
     try {
-      const room = this.room();
-      if (!room) throw "invalid state";
+      if (!this.room()) {
+        if (!this.localVoiceStream) throw "invalid state";
+        const enabled = !this.localVoiceStream.getAudioTracks().some((track) => track.enabled);
+        this.localVoiceStream.getAudioTracks().forEach((track) => (track.enabled = enabled));
+        this.#settings.micOn = enabled;
+        this.sound.playSound(enabled ? "unmute" : "mute");
+        return;
+      }
+      const room = this.room()!;
       await room.localParticipant.setMicrophoneEnabled(
         !room.localParticipant.isMicrophoneEnabled,
       );
@@ -397,6 +593,7 @@ class Voice {
   }
 
   async toggleCamera() {
+    if (!this.room()) return;
     try {
       const room = this.room();
       if (!room) throw "invalid state";
@@ -487,7 +684,7 @@ class Voice {
 
   async toggleScreenshare() {
     const room = this.room();
-    if (!room) throw "invalid state";
+    if (!room) return;
 
     if (this.screenshare()) {
       await room.localParticipant.setScreenShareEnabled(false);

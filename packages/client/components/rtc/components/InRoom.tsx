@@ -1,6 +1,4 @@
 import { JSX, Show } from "solid-js";
-import { useMaybeRoomContext } from "solid-livekit-components";
-
 import { useVoice } from "..";
 
 /**
@@ -13,13 +11,11 @@ export function InRoom(props: {
   children: JSX.Element;
   fallback?: JSX.Element;
 }) {
-  const room = useMaybeRoomContext();
   const voice = useVoice();
 
   return (
     <Show
       when={
-        room?.() &&
         voice.state() === "CONNECTED" &&
         (!props.channelId || props.channelId === voice.channel()?.id)
       }

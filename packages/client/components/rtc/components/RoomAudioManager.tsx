@@ -1,9 +1,4 @@
-import { createEffect, createMemo } from "solid-js";
-import { AudioTrack, useTracks } from "solid-livekit-components";
-
-import { getTrackReferenceId, isLocal } from "@livekit/components-core";
-import { Key } from "@solid-primitives/keyed";
-import { RemoteTrackPublication, Track } from "livekit-client";
+import { For, createEffect } from "solid-js";
 
 import { useState } from "@revolt/state";
 
@@ -13,57 +8,21 @@ export function RoomAudioManager() {
   const voice = useVoice();
   const state = useState();
 
-  const tracks = useTracks(
-    [
-      Track.Source.Microphone,
-      Track.Source.ScreenShareAudio,
-      Track.Source.Unknown,
-    ],
-    {
-      updateOnlyOn: [],
-      onlySubscribed: false,
-    },
-  );
-
-  const filteredTracks = createMemo(() =>
-    tracks().filter(
-      (track) =>
-        !isLocal(track.participant) &&
-        track.publication.kind === Track.Kind.Audio,
-    ),
-  );
-
-  createEffect(() => {
-    const tracks = filteredTracks();
-    console.info("[rtc] filtered tracks", filteredTracks());
-    for (const track of tracks) {
-      (track.publication as RemoteTrackPublication).setSubscribed(true);
-      console.info(track.publication);
-    }
-  });
-
   return (
     <div style={{ display: "none" }}>
-      <Key each={filteredTracks()} by={(item) => getTrackReferenceId(item)}>
-        {(track) => (
-          <AudioTrack
-            trackRef={track()}
-            volume={
-              state.voice.outputVolume *
-              (track().source === Track.Source.ScreenShareAudio
-                ? state.voice.getScreenShareVolume(track().participant.identity)
-                : state.voice.getUserVolume(track().participant.identity))
-            }
-            muted={
-              (track().source === Track.Source.ScreenShareAudio
-                ? state.voice.getScreenShareMuted(track().participant.identity)
-                : state.voice.getUserMuted(track().participant.identity)) ||
-              voice.deafen()
-            }
-            enableBoosting
-          />
-        )}
-      </Key>
+      <For each={voice.remoteStreams()}>
+        {(remote) => {
+          let audio: HTMLAudioElement | undefined;
+          createEffect(() => {
+            if (!audio) return;
+            audio.srcObject = remote.stream;
+            audio.volume = state.voice.outputVolume * state.voice.getUserVolume(remote.userId);
+            audio.muted = voice.deafen() || state.voice.getUserMuted(remote.userId);
+            void audio.play().catch(() => undefined);
+          });
+          return <audio ref={(element) => (audio = element)} autoplay />;
+        }}
+      </For>
     </div>
   );
 }
