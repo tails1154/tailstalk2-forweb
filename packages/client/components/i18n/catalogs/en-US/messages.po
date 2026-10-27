@@ -5599,6 +5599,12 @@ msgstr ""
 
 msgid "Upload to Gifbox"
 msgstr ""
+
+msgid "Password reset link generated and copied to your clipboard."
+msgstr ""
+
+msgid "Generate reset link"
+msgstr ""
 msgid "Your server needs at least 2 boosts to unlock a vanity URL."
 msgstr ""
 

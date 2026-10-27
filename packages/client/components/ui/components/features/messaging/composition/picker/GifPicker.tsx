@@ -1,14 +1,6 @@
-import {
-  Match,
-  Suspense,
-  Switch,
-  createContext,
-  createMemo,
-  createSignal,
-  useContext,
-} from "solid-js";
+import { Suspense, Switch, createMemo, createSignal, useContext } from "solid-js";
 
-import { Trans, useLingui } from "@lingui-solid/solid/macro";
+import { useLingui } from "@lingui-solid/solid/macro";
 import { VirtualContainer } from "@minht11/solid-virtual-container";
 import { useQuery } from "@tanstack/solid-query";
 import { styled } from "styled-system/jsx";
@@ -16,7 +8,6 @@ import { styled } from "styled-system/jsx";
 import {
   CircularProgress,
   TextField,
-  typography,
 } from "@revolt/ui/components/design";
 import { useClient } from "@revolt/client";
 
@@ -24,8 +15,6 @@ import { CompositionMediaPickerContext } from "./CompositionMediaPicker";
 import { CONFIGURATION } from "@revolt/common";
 
 const GIFBOX_API = `${new URL(CONFIGURATION.DEFAULT_API_URL).origin}/gifbox`;
-
-type GifCategory = { title: string; image: string; action: string };
 
 type GifResult = {
   url: string;
@@ -38,12 +27,12 @@ type GifboxResult = {
 };
 
 function gifUrl(result: GifboxResult) {
-  return (
+  const rawUrl =
     result.media_formats.tinywebm?.url ??
     result.media_formats.webm?.url ??
     result.media_formats.gif?.url ??
-    result.url
-  );
+    result.url;
+  return new URL(rawUrl, GIFBOX_API).toString();
 }
 
 async function fetchGifbox(path: string, headers: Record<string, string>) {
@@ -61,8 +50,6 @@ async function fetchGifbox(path: string, headers: Record<string, string>) {
     window.clearTimeout(timeout);
   }
 }
-
-const FilterContext = createContext<(value: string) => void>();
 
 export function GifPicker() {
   const { t } = useLingui();
@@ -101,9 +88,7 @@ export function GifPicker() {
       <Suspense fallback={<CircularProgress />}>
         <Switch
           fallback={
-            <FilterContext.Provider value={setFilter}>
-              <Categories headers={headers()} />
-            </FilterContext.Provider>
+            <Categories headers={headers()} />
           }
         >
           <Match when={searchQuery()}>
@@ -123,69 +108,28 @@ const Stack = styled("div", {
   },
 });
 
-type CategoryItem =
-  | {
-      /**
-       * Category entry
-       */
-      t: 0;
-      category: GifCategory;
-    }
-  | {
-      /**
-       * Trending entry
-       */
-      t: 1;
-      gif: GifResult | null;
-    };
+type RecentResponse = { results: GifboxResult[] };
 
 function Categories(props: { headers: Record<string, string> }) {
   let targetElement!: HTMLDivElement;
 
-  const trendingCategories = useQuery<GifCategory[]>(() => ({
-    queryKey: ["trendingGifCategories"],
-    queryFn: async () => {
-      const categories = (await fetchGifbox(
-        "/categories?locale=en_US",
-        props.headers,
-      )) as { title: string; image: string }[];
-      return categories.map((category) => ({
-        ...category,
-        action: category.title,
-      }));
-    },
-    retry: false,
-    staleTime: 10 * 60 * 1000,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-  }));
-
-  const trendingGif = useQuery<GifResult | null>(() => ({
-    queryKey: ["trendingGif1"],
+  const recentGifs = useQuery<GifResult[]>(() => ({
+    queryKey: ["localGifboxRecent"],
     queryFn: async () => {
       const response = (await fetchGifbox(
-        "/trending?locale=en_US&limit=1",
+        "/recent?limit=100",
         props.headers,
-      )) as { results: GifboxResult[] };
-      const result = response.results[0];
-      return result ? { url: gifUrl(result), action: "trending" } : null;
+      )) as RecentResponse;
+      return response.results.map((result) => ({ url: gifUrl(result) }));
     },
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    initialData: null,
     retry: false,
     staleTime: 10 * 60 * 1000,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
   }));
 
   const items = createMemo(() => {
-    return [
-      {
-        t: 1,
-        gif: trendingGif.data,
-      },
-      ...(trendingCategories.data?.map((category) => ({ t: 0, category })) ??
-        []),
-    ] as CategoryItem[];
+    return recentGifs.data ?? [];
   });
 
   return (
@@ -198,64 +142,29 @@ function Categories(props: { headers: Record<string, string> }) {
           Math.floor(measurements.container.cross / measurements.itemSize.cross)
         }
       >
-        {CategoryItem}
+        {RecentGifItem}
       </VirtualContainer>
     </div>
   );
 }
 
-const CategoryItem = (props: {
+const RecentGifItem = (props: {
   style: unknown;
   tabIndex: number;
-  item: CategoryItem;
+  item: GifResult;
 }) => {
-  const setFilter = useContext(FilterContext);
-
+  const { onMessage } = useContext(CompositionMediaPickerContext);
   return (
-    <Category
-      style={{
-        ...(props.style as object),
-        "background-image": `linear-gradient(to right, #0006, #0006), url("${props.item.t === 0 ? props.item.category.image : props.item.gif?.url}")`,
-      }}
-      tabIndex={props.tabIndex}
+    <Gif
+      src={props.item.url}
+      alt="Uploaded GIF"
       role="listitem"
-      onClick={() =>
-        setFilter!(props.item.t === 0 ? props.item.category.action : "trending")
-      }
-      onMouseDown={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-      }}
-    >
-      <Switch fallback={<Trans>Trending GIFs</Trans>}>
-        <Match when={props.item.t === 0}>
-          {(props.item as CategoryItem & { t: 0 }).category.title}
-        </Match>
-      </Switch>
-    </Category>
+      style={props.style as string}
+      tabIndex={props.tabIndex}
+      onClick={() => onMessage(props.item.url)}
+    />
   );
 };
-
-const Category = styled("div", {
-  base: {
-    ...typography.raw({ class: "title", size: "small" }),
-
-    width: "200px",
-    height: "120px",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-
-    color: "white",
-    display: "flex",
-    padding: "var(--gap-md)",
-
-    alignItems: "end",
-    justifyContent: "end",
-
-    cursor: "pointer",
-  },
-});
 
 function GifSearch(props: {
   query: string;

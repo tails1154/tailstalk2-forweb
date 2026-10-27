@@ -5653,6 +5653,12 @@ msgstr "Upload a GIF and copy its hosted URL for sharing."
 
 msgid "Upload to Gifbox"
 msgstr "Upload to Gifbox"
+
+msgid "Password reset link generated and copied to your clipboard."
+msgstr "Password reset link generated and copied to your clipboard."
+
+msgid "Generate reset link"
+msgstr "Generate reset link"
 msgid "Your server needs at least 2 boosts to unlock a vanity URL."
 msgstr "Your server needs at least 2 boosts to unlock a vanity URL."
 

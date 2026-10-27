@@ -1,44 +1,57 @@
 import { For, Show, createResource, createSignal, onMount } from "solid-js";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
-import { styled } from "styled-system/jsx";
 import { UserBadges } from "stoat.js";
+import { styled } from "styled-system/jsx";
 
 import MdAdminPanelSettings from "@material-design-icons/svg/outlined/admin_panel_settings.svg?component-solid";
-import MdPeople from "@material-design-icons/svg/outlined/people.svg?component-solid";
-import MdDns from "@material-design-icons/svg/outlined/dns.svg?component-solid";
-import MdTag from "@material-design-icons/svg/outlined/tag.svg?component-solid";
-import MdChat from "@material-design-icons/svg/outlined/chat.svg?component-solid";
-import MdSmartToy from "@material-design-icons/svg/outlined/smart_toy.svg?component-solid";
-import MdReport from "@material-design-icons/svg/outlined/report.svg?component-solid";
-import MdSearch from "@material-design-icons/svg/outlined/search.svg?component-solid";
+import MdArrowForward from "@material-design-icons/svg/outlined/arrow_forward.svg?component-solid";
 import MdBlock from "@material-design-icons/svg/outlined/block.svg?component-solid";
-import MdCheckCircle from "@material-design-icons/svg/outlined/check_circle.svg?component-solid";
 import MdCancel from "@material-design-icons/svg/outlined/cancel.svg?component-solid";
-import MdRefresh from "@material-design-icons/svg/outlined/refresh.svg?component-solid";
-import MdWarning from "@material-design-icons/svg/outlined/warning.svg?component-solid";
-import MdTimer from "@material-design-icons/svg/outlined/timer.svg?component-solid";
+import MdChat from "@material-design-icons/svg/outlined/chat.svg?component-solid";
+import MdCheckCircle from "@material-design-icons/svg/outlined/check_circle.svg?component-solid";
+import MdDashboard from "@material-design-icons/svg/outlined/dashboard.svg?component-solid";
 import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-solid";
+import MdDns from "@material-design-icons/svg/outlined/dns.svg?component-solid";
+import MdExplore from "@material-design-icons/svg/outlined/explore.svg?component-solid";
 import MdHourglassEmpty from "@material-design-icons/svg/outlined/hourglass_empty.svg?component-solid";
 import MdLogout from "@material-design-icons/svg/outlined/logout.svg?component-solid";
-import MdArrowForward from "@material-design-icons/svg/outlined/arrow_forward.svg?component-solid";
-import MdDashboard from "@material-design-icons/svg/outlined/dashboard.svg?component-solid";
-import MdExplore from "@material-design-icons/svg/outlined/explore.svg?component-solid";
+import MdLockReset from "@material-design-icons/svg/outlined/lock_reset.svg?component-solid";
+import MdPeople from "@material-design-icons/svg/outlined/people.svg?component-solid";
+import MdRefresh from "@material-design-icons/svg/outlined/refresh.svg?component-solid";
+import MdReport from "@material-design-icons/svg/outlined/report.svg?component-solid";
+import MdSearch from "@material-design-icons/svg/outlined/search.svg?component-solid";
+import MdSmartToy from "@material-design-icons/svg/outlined/smart_toy.svg?component-solid";
 import MdStar from "@material-design-icons/svg/outlined/star_outline.svg?component-solid";
+import MdTag from "@material-design-icons/svg/outlined/tag.svg?component-solid";
+import MdTimer from "@material-design-icons/svg/outlined/timer.svg?component-solid";
+import MdWarning from "@material-design-icons/svg/outlined/warning.svg?component-solid";
 
 import { CONFIGURATION } from "@revolt/common";
+import { useClient } from "@revolt/client";
+import { useModals } from "@revolt/modal";
 import {
   Button,
-  Column,
   CircularProgress,
+  Column,
   Row,
   Text,
   TextField,
   iconSize,
   typography,
+  useSnackbar,
 } from "@revolt/ui";
 
-type Tab = "stats" | "reports" | "servers" | "users" | "discovery" | "feature_requests" | "whatsnew";
+type Tab =
+  | "stats"
+  | "reports"
+  | "servers"
+  | "users"
+  | "discovery"
+  | "subscriptions"
+  | "gifts"
+  | "feature_requests"
+  | "whatsnew";
 
 interface DiscoveryListing {
   id: string;
@@ -69,6 +82,19 @@ interface AdminStats {
   reports: number;
 }
 
+interface AdminSubscription {
+  account_id: string;
+  email: string;
+  status: string;
+  requested_at: string;
+}
+
+interface CreatedGift {
+  id: string;
+  url: string;
+  duration_days: number;
+}
+
 interface AdminReport {
   id: string;
   author_id: string;
@@ -85,8 +111,15 @@ interface AdminReport {
   server_name?: string;
 }
 
-interface AdminServerChannel { id: string; name: string; channel_type: string; }
-interface AdminServerRole { id: string; name: string; }
+interface AdminServerChannel {
+  id: string;
+  name: string;
+  channel_type: string;
+}
+interface AdminServerRole {
+  id: string;
+  name: string;
+}
 interface AdminServer {
   id: string;
   name: string;
@@ -123,7 +156,7 @@ function authHeader(password: string) {
   return { Authorization: `Basic ${btoa(`tails1154:${password}`)}` };
 }
 
-async function apiFetch(path: string, password: string, init?: RequestInit) {
+async function apiFetch<T = unknown>(path: string, password: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${CONFIGURATION.DEFAULT_API_URL}${path}`, {
     ...init,
     headers: {
@@ -134,7 +167,7 @@ async function apiFetch(path: string, password: string, init?: RequestInit) {
   });
   if (!res.ok) throw new Error(await res.text());
   const text = await res.text();
-  return text ? JSON.parse(text) : undefined;
+  return (text ? JSON.parse(text) : undefined) as T;
 }
 
 function formatNumber(n: number) {
@@ -173,13 +206,20 @@ export function AdminPanel() {
         when={authToken()}
         fallback={
           <AuthCard>
-            <AuthIcon><MdAdminPanelSettings {...iconSize(28)} /></AuthIcon>
+            <AuthIcon>
+              <MdAdminPanelSettings {...iconSize(28)} />
+            </AuthIcon>
             <Column gap="xs">
               <Text class={typography({ class: "headline", size: "small" })}>
                 <Trans>Admin authentication required</Trans>
               </Text>
-              <Text class={typography({ class: "body", size: "medium" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
-                <Trans>Sign in to manage reports, users, and platform updates.</Trans>
+              <Text
+                class={typography({ class: "body", size: "medium" })}
+                style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+              >
+                <Trans>
+                  Sign in to manage reports, users, and platform updates.
+                </Trans>
               </Text>
             </Column>
             <Column gap="sm">
@@ -211,46 +251,92 @@ export function AdminPanel() {
         <Column gap="lg">
           <Row gap="md" align style={{ "justify-content": "space-between" }}>
             <Row gap="md" align>
-              <AdminIcon><MdAdminPanelSettings {...iconSize(28)} /></AdminIcon>
+              <AdminIcon>
+                <MdAdminPanelSettings {...iconSize(28)} />
+              </AdminIcon>
               <Column gap="xs">
                 <Text class={typography({ class: "headline", size: "small" })}>
                   <Trans>Admin Panel</Trans>
                 </Text>
-                <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
+                <Text
+                  class={typography({ class: "body", size: "small" })}
+                  style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+                >
                   <Trans>Platform overview and moderation tools</Trans>
                 </Text>
               </Column>
             </Row>
-            <Button onPress={() => { setAuthToken(""); setTab("stats"); }}>
+            <Button
+              onPress={() => {
+                setAuthToken("");
+                setTab("stats");
+              }}
+            >
               <MdLogout {...iconSize(16)} /> <Trans>Sign out</Trans>
             </Button>
           </Row>
           <AdminNotice>
             <MdAdminPanelSettings {...iconSize(18)} />
             <Text class={typography({ class: "body", size: "small" })}>
-              <Trans>You’re viewing the live platform workspace. Actions here affect users immediately.</Trans>
+              <Trans>
+                You’re viewing the live platform workspace. Actions here affect
+                users immediately.
+              </Trans>
             </Text>
           </AdminNotice>
           <TabBar>
-            <TabButton active={tab() === "stats"} onClick={() => setTab("stats")}>
+            <TabButton
+              active={tab() === "stats"}
+              onClick={() => setTab("stats")}
+            >
               <MdDashboard {...iconSize(16)} /> <Trans>Stats</Trans>
             </TabButton>
-            <TabButton active={tab() === "reports"} onClick={() => setTab("reports")}>
+            <TabButton
+              active={tab() === "reports"}
+              onClick={() => setTab("reports")}
+            >
               <MdReport {...iconSize(16)} /> <Trans>Reports</Trans>
             </TabButton>
-            <TabButton active={tab() === "servers"} onClick={() => setTab("servers")}>
+            <TabButton
+              active={tab() === "servers"}
+              onClick={() => setTab("servers")}
+            >
               <MdDns {...iconSize(16)} /> <Trans>Servers</Trans>
             </TabButton>
-            <TabButton active={tab() === "users"} onClick={() => setTab("users")}>
+            <TabButton
+              active={tab() === "users"}
+              onClick={() => setTab("users")}
+            >
               <MdPeople {...iconSize(16)} /> <Trans>Users</Trans>
             </TabButton>
-            <TabButton active={tab() === "discovery"} onClick={() => setTab("discovery")}>
+            <TabButton
+              active={tab() === "discovery"}
+              onClick={() => setTab("discovery")}
+            >
               <MdExplore {...iconSize(16)} /> <Trans>Discovery</Trans>
             </TabButton>
-            <TabButton active={tab() === "feature_requests"} onClick={() => setTab("feature_requests")}>
+            <TabButton
+              active={tab() === "subscriptions"}
+              onClick={() => setTab("subscriptions")}
+            >
+              <MdStar {...iconSize(16)} /> <Trans>Subscriptions</Trans>
+            </TabButton>
+            <TabButton
+              active={tab() === "gifts"}
+              onClick={() => setTab("gifts")}
+            >
+              <MdStar {...iconSize(16)} /> <Trans>Premium gifts</Trans>
+            </TabButton>
+            <TabButton
+              active={tab() === "feature_requests"}
+              onClick={() => setTab("feature_requests")}
+            >
               <MdStar {...iconSize(16)} /> <Trans>Feature requests</Trans>
             </TabButton>
-            <TabButton active={tab() === "whatsnew"} onClick={() => setTab("whatsnew")}>
+            <TabButton
+              active={tab() === "whatsnew"}
+              onClick={() => setTab("whatsnew")}
+            >
               <MdArrowForward {...iconSize(16)} /> <Trans>What's New</Trans>
             </TabButton>
           </TabBar>
@@ -268,6 +354,12 @@ export function AdminPanel() {
           </Show>
           <Show when={tab() === "discovery"}>
             <DiscoveryTab password={authToken()} />
+          </Show>
+          <Show when={tab() === "subscriptions"}>
+            <SubscriptionsTab password={authToken()} />
+          </Show>
+          <Show when={tab() === "gifts"}>
+            <GiftsTab password={authToken()} />
           </Show>
           <Show when={tab() === "feature_requests"}>
             <FeatureRequestsTab password={authToken()} />
@@ -292,7 +384,9 @@ function DiscoveryTab(props: { password: string }) {
   async function review(id: string, action: "approve" | "deny") {
     setLoadingId(id);
     try {
-      await apiFetch(`/admin/discovery/${id}/${action}`, props.password, { method: "POST" });
+      await apiFetch(`/admin/discovery/${id}/${action}`, props.password, {
+        method: "POST",
+      });
       await refetch();
     } finally {
       setLoadingId();
@@ -303,36 +397,79 @@ function DiscoveryTab(props: { password: string }) {
     <Column gap="md">
       <Row gap="md" align style={{ "justify-content": "space-between" }}>
         <Column gap="xs">
-          <Text class={typography({ class: "title", size: "medium" })}><Trans>Discovery submissions</Trans></Text>
-          <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
+          <Text class={typography({ class: "title", size: "medium" })}>
+            <Trans>Discovery submissions</Trans>
+          </Text>
+          <Text
+            class={typography({ class: "body", size: "small" })}
+            style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+          >
             <Trans>Approve or deny community servers and bots.</Trans>
           </Text>
         </Column>
         <Button onPress={() => refetch()} isDisabled={data.loading}>
-          <Show when={data.loading} fallback={<MdRefresh {...iconSize(18)} />}><CircularProgress /></Show>
+          <Show when={data.loading} fallback={<MdRefresh {...iconSize(18)} />}>
+            <CircularProgress />
+          </Show>
         </Button>
       </Row>
-      <Show when={data()} fallback={<LoadingState label={t`Loading Discovery submissions...`} />}>
+      <Show
+        when={data()}
+        fallback={<LoadingState label={t`Loading Discovery submissions...`} />}
+      >
         {(entries) => (
-          <Show when={entries().length} fallback={<EmptyState label={t`No Discovery submissions`} />}>
+          <Show
+            when={entries().length}
+            fallback={<EmptyState label={t`No Discovery submissions`} />}
+          >
             <For each={entries()}>
               {(entry) => (
                 <ReportCard>
                   <Column gap="xs">
                     <Row gap="sm" align>
-                      <Badge>{entry.kind}</Badge><Badge variant={entry.status === "approved" ? "active" : "closed"}>{entry.status}</Badge>
+                      <Badge>{entry.kind}</Badge>
+                      <Badge
+                        variant={
+                          entry.status === "approved" ? "active" : "closed"
+                        }
+                      >
+                        {entry.status}
+                      </Badge>
                     </Row>
-                    <Text class={typography({ class: "title", size: "small" })}>{entry.name}</Text>
-                    <Text class={typography({ class: "body", size: "small" })}>{entry.description}</Text>
-                    <a href={discoveryUrl(entry)} target="_blank" rel="noreferrer" style={{ "word-break": "break-all" }}>
+                    <Text class={typography({ class: "title", size: "small" })}>
+                      {entry.name}
+                    </Text>
+                    <Text class={typography({ class: "body", size: "small" })}>
+                      {entry.description}
+                    </Text>
+                    <a
+                      href={discoveryUrl(entry)}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ "word-break": "break-all" }}
+                    >
                       {discoveryUrl(entry)}
                     </a>
                     <Show when={entry.status === "pending"}>
                       <Row gap="sm">
-                        <Button onPress={() => review(entry.id, "approve")} isDisabled={loadingId() === entry.id}>
-                          <Show when={loadingId() === entry.id} fallback={<MdCheckCircle {...iconSize(16)} />}><CircularProgress /></Show> <Trans>Approve</Trans>
+                        <Button
+                          onPress={() => review(entry.id, "approve")}
+                          isDisabled={loadingId() === entry.id}
+                        >
+                          <Show
+                            when={loadingId() === entry.id}
+                            fallback={<MdCheckCircle {...iconSize(16)} />}
+                          >
+                            <CircularProgress />
+                          </Show>{" "}
+                          <Trans>Approve</Trans>
                         </Button>
-                        <Button onPress={() => review(entry.id, "deny")} isDisabled={loadingId() === entry.id}><MdCancel {...iconSize(16)} /> <Trans>Deny</Trans></Button>
+                        <Button
+                          onPress={() => review(entry.id, "deny")}
+                          isDisabled={loadingId() === entry.id}
+                        >
+                          <MdCancel {...iconSize(16)} /> <Trans>Deny</Trans>
+                        </Button>
                       </Row>
                     </Show>
                   </Column>
@@ -340,6 +477,210 @@ function DiscoveryTab(props: { password: string }) {
               )}
             </For>
           </Show>
+        )}
+      </Show>
+    </Column>
+  );
+}
+
+function SubscriptionsTab(props: { password: string }) {
+  const { t } = useLingui();
+  const client = useClient();
+  const { openModal, showError } = useModals();
+  const [cancelLoading, setCancelLoading] = createSignal(false);
+  const [data, { refetch }] = createResource(
+    () => props.password,
+    (pwd) =>
+      apiFetch("/admin/subscriptions", pwd) as Promise<AdminSubscription[]>,
+  );
+
+  async function update(
+    accountId: string,
+    status: "approved" | "declined" | "completed",
+  ) {
+    await apiFetch(`/admin/subscriptions/${accountId}`, props.password, {
+      method: "POST",
+      body: JSON.stringify({ status }),
+    });
+    await refetch();
+  }
+
+  async function cancelOwnSubscription() {
+    setCancelLoading(true);
+    try {
+      await client().account.cancelStripeSubscriptionImmediately();
+      await refetch();
+    } catch (error) {
+      showError(error);
+    } finally {
+      setCancelLoading(false);
+    }
+  }
+
+  return (
+    <Column gap="md">
+      <Row gap="md" align style={{ "justify-content": "space-between" }}>
+        <Column gap="xs">
+          <Text class={typography({ class: "title", size: "medium" })}>
+            <Trans>Subscriptions</Trans>
+          </Text>
+          <Text
+            class={typography({ class: "body", size: "small" })}
+            style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+          >
+            <Trans>Review cash payment requests and update their status.</Trans>
+          </Text>
+        </Column>
+        <Row gap="sm">
+          <Button
+            onPress={() =>
+              openModal({
+                type: "cancel_premium",
+                onConfirm: cancelOwnSubscription,
+                immediate: true,
+              })
+            }
+            isDisabled={cancelLoading()}
+          >
+            <Trans>Cancel my subscription (testing)</Trans>
+          </Button>
+          <Button onPress={() => refetch()} isDisabled={data.loading}>
+            <MdRefresh {...iconSize(18)} />
+          </Button>
+        </Row>
+      </Row>
+      <Show
+        when={data()}
+        fallback={<LoadingState label={t`Loading subscription requests...`} />}
+      >
+        {(entries) => (
+          <Show
+            when={entries().length}
+            fallback={<EmptyState label={t`No subscription requests`} />}
+          >
+            <For each={entries()}>
+              {(entry) => (
+                <ReportCard>
+                  <Column gap="xs">
+                    <Row gap="sm" align>
+                      <Text
+                        class={typography({ class: "title", size: "small" })}
+                      >
+                        {entry.email}
+                      </Text>
+                      <Badge>{entry.status}</Badge>
+                    </Row>
+                    <Text class={typography({ class: "body", size: "small" })}>
+                      {entry.account_id}
+                    </Text>
+                    <Show when={entry.status === "pending"}>
+                      <Row gap="sm">
+                        <Button
+                          onPress={() => update(entry.account_id, "approved")}
+                        >
+                          <MdCheckCircle {...iconSize(16)} />{" "}
+                          <Trans>Approve</Trans>
+                        </Button>
+                        <Button
+                          onPress={() => update(entry.account_id, "declined")}
+                        >
+                          <MdCancel {...iconSize(16)} /> <Trans>Decline</Trans>
+                        </Button>
+                      </Row>
+                    </Show>
+                  </Column>
+                </ReportCard>
+              )}
+            </For>
+          </Show>
+        )}
+      </Show>
+    </Column>
+  );
+}
+
+function GiftsTab(props: { password: string }) {
+  const { t } = useLingui();
+  const [duration, setDuration] = createSignal("30");
+  const [created, setCreated] = createSignal<CreatedGift>();
+  const [loading, setLoading] = createSignal(false);
+  const [error, setError] = createSignal("");
+
+  async function createGift() {
+    setLoading(true);
+    setError("");
+    setCreated(undefined);
+    try {
+      const result = (await apiFetch("/admin/gifts", props.password, {
+        method: "POST",
+        body: JSON.stringify({ duration_days: Number(duration()) }),
+      })) as CreatedGift;
+      setCreated(result);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t`Unable to create gift.`);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <Column gap="md">
+      <Column gap="xs">
+        <Text class={typography({ class: "title", size: "medium" })}>
+          <Trans>Create Premium gift</Trans>
+        </Text>
+        <Text
+          class={typography({ class: "body", size: "small" })}
+          style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+        >
+          <Trans>
+            Create a one-time link that grants TailsTalk 2 Premium and its
+            Premium benefits.
+          </Trans>
+        </Text>
+      </Column>
+      <ReportCard>
+        <Column gap="sm">
+          <TextField
+            type="number"
+            label={t`Premium duration (days)`}
+            value={duration()}
+            min={1}
+            max={3650}
+            onChange={(event) => setDuration(event.currentTarget.value)}
+          />
+          <Button onPress={createGift} isDisabled={loading()}>
+            <Show when={loading()} fallback={<Trans>Create gift</Trans>}>
+              <CircularProgress />
+            </Show>
+          </Button>
+          <Show when={error()}>
+            <Text style={{ color: "var(--md-sys-color-error)" }}>
+              {error()}
+            </Text>
+          </Show>
+        </Column>
+      </ReportCard>
+      <Show when={created()}>
+        {(gift) => (
+          <ReportCard>
+            <Column gap="xs">
+              <Text class={typography({ class: "title", size: "small" })}>
+                <Trans>Gift created</Trans>
+              </Text>
+              <Text class={typography({ class: "body", size: "small" })}>
+                <Trans>Share this one-time link:</Trans>
+              </Text>
+              <Text
+                style={{ "overflow-wrap": "anywhere", "user-select": "all" }}
+              >
+                {gift().url}
+              </Text>
+              <Button onPress={() => navigator.clipboard.writeText(gift().url)}>
+                <Trans>Copy gift link</Trans>
+              </Button>
+            </Column>
+          </ReportCard>
         )}
       </Show>
     </Column>
@@ -354,15 +695,42 @@ function StatsTab(props: { password: string }) {
   );
 
   return (
-    <Show when={data()} fallback={<LoadingState label={t`Loading platform metrics...`} />}>
+    <Show
+      when={data()}
+      fallback={<LoadingState label={t`Loading platform metrics...`} />}
+    >
       {(s) => (
         <StatsGrid>
-          <StatCard icon={<MdPeople {...iconSize(24)} />} label={t`Users`} value={formatNumber(s().users)} />
-          <StatCard icon={<MdDns {...iconSize(24)} />} label={t`Servers`} value={formatNumber(s().servers)} />
-          <StatCard icon={<MdTag {...iconSize(24)} />} label={t`Channels`} value={formatNumber(s().channels)} />
-          <StatCard icon={<MdChat {...iconSize(24)} />} label={t`Messages`} value={formatNumber(s().messages)} />
-          <StatCard icon={<MdSmartToy {...iconSize(24)} />} label={t`Bots`} value={formatNumber(s().bots)} />
-          <StatCard icon={<MdReport {...iconSize(24)} />} label={t`Reports`} value={formatNumber(s().reports)} />
+          <StatCard
+            icon={<MdPeople {...iconSize(24)} />}
+            label={t`Users`}
+            value={formatNumber(s().users)}
+          />
+          <StatCard
+            icon={<MdDns {...iconSize(24)} />}
+            label={t`Servers`}
+            value={formatNumber(s().servers)}
+          />
+          <StatCard
+            icon={<MdTag {...iconSize(24)} />}
+            label={t`Channels`}
+            value={formatNumber(s().channels)}
+          />
+          <StatCard
+            icon={<MdChat {...iconSize(24)} />}
+            label={t`Messages`}
+            value={formatNumber(s().messages)}
+          />
+          <StatCard
+            icon={<MdSmartToy {...iconSize(24)} />}
+            label={t`Bots`}
+            value={formatNumber(s().bots)}
+          />
+          <StatCard
+            icon={<MdReport {...iconSize(24)} />}
+            label={t`Reports`}
+            value={formatNumber(s().reports)}
+          />
         </StatsGrid>
       )}
     </Show>
@@ -373,14 +741,21 @@ function FeatureRequestsTab(props: { password: string }) {
   const { t } = useLingui();
   const [data, { refetch }] = createResource(
     () => props.password,
-    (pwd) => apiFetch("/admin/feature-requests", pwd) as Promise<AdminFeatureRequest[]>,
+    (pwd) =>
+      apiFetch("/admin/feature-requests", pwd) as Promise<
+        AdminFeatureRequest[]
+      >,
   );
   const [loadingId, setLoadingId] = createSignal<string>();
 
   async function review(id: string, action: "approve" | "deny") {
     setLoadingId(id);
     try {
-      await apiFetch(`/admin/feature-requests/${id}/${action}`, props.password, { method: "POST" });
+      await apiFetch(
+        `/admin/feature-requests/${id}/${action}`,
+        props.password,
+        { method: "POST" },
+      );
       await refetch();
     } finally {
       setLoadingId();
@@ -391,25 +766,56 @@ function FeatureRequestsTab(props: { password: string }) {
     <Column gap="md">
       <Row gap="md" align style={{ "justify-content": "space-between" }}>
         <Column gap="xs">
-          <Text class={typography({ class: "title", size: "medium" })}><Trans>Feature requests</Trans></Text>
-          <Text class={typography({ class: "body", size: "small" })}><Trans>Review ideas submitted by users.</Trans></Text>
+          <Text class={typography({ class: "title", size: "medium" })}>
+            <Trans>Feature requests</Trans>
+          </Text>
+          <Text class={typography({ class: "body", size: "small" })}>
+            <Trans>Review ideas submitted by users.</Trans>
+          </Text>
         </Column>
-        <Button onPress={() => refetch()} isDisabled={data.loading}><Show when={data.loading} fallback={<MdRefresh {...iconSize(18)} />}><CircularProgress /></Show></Button>
+        <Button onPress={() => refetch()} isDisabled={data.loading}>
+          <Show when={data.loading} fallback={<MdRefresh {...iconSize(18)} />}>
+            <CircularProgress />
+          </Show>
+        </Button>
       </Row>
-      <Show when={data()} fallback={<LoadingState label={t`Loading feature requests...`} />}>
+      <Show
+        when={data()}
+        fallback={<LoadingState label={t`Loading feature requests...`} />}
+      >
         {(entries) => (
-          <Show when={entries().length} fallback={<EmptyState label={t`No feature requests`} />}>
+          <Show
+            when={entries().length}
+            fallback={<EmptyState label={t`No feature requests`} />}
+          >
             <For each={entries()}>
               {(entry) => (
                 <ReportCard>
                   <Column gap="xs">
-                    <Row gap="sm" align><Badge>{entry.status}</Badge><Text>{entry.author_name}</Text></Row>
-                    <Text class={typography({ class: "title", size: "small" })}>{entry.title}</Text>
-                    <Text class={typography({ class: "body", size: "small" })}>{entry.body}</Text>
+                    <Row gap="sm" align>
+                      <Badge>{entry.status}</Badge>
+                      <Text>{entry.author_name}</Text>
+                    </Row>
+                    <Text class={typography({ class: "title", size: "small" })}>
+                      {entry.title}
+                    </Text>
+                    <Text class={typography({ class: "body", size: "small" })}>
+                      {entry.body}
+                    </Text>
                     <Show when={entry.status === "pending"}>
                       <Row gap="sm">
-                        <Button onPress={() => review(entry.id, "approve")} isDisabled={loadingId() === entry.id}><Trans>Approve</Trans></Button>
-                        <Button onPress={() => review(entry.id, "deny")} isDisabled={loadingId() === entry.id}><Trans>Deny</Trans></Button>
+                        <Button
+                          onPress={() => review(entry.id, "approve")}
+                          isDisabled={loadingId() === entry.id}
+                        >
+                          <Trans>Approve</Trans>
+                        </Button>
+                        <Button
+                          onPress={() => review(entry.id, "deny")}
+                          isDisabled={loadingId() === entry.id}
+                        >
+                          <Trans>Deny</Trans>
+                        </Button>
                       </Row>
                     </Show>
                   </Column>
@@ -453,7 +859,9 @@ function ReportsTab(props: { password: string }) {
       });
       await refetch();
     } catch (error) {
-      setActionError(error instanceof Error ? error.message : t`Unable to resolve report.`);
+      setActionError(
+        error instanceof Error ? error.message : t`Unable to resolve report.`,
+      );
     } finally {
       setLoading(id, false);
     }
@@ -472,7 +880,9 @@ function ReportsTab(props: { password: string }) {
       });
       await refetch();
     } catch (error) {
-      setActionError(error instanceof Error ? error.message : t`Unable to dismiss report.`);
+      setActionError(
+        error instanceof Error ? error.message : t`Unable to dismiss report.`,
+      );
     } finally {
       setLoading(id, false);
     }
@@ -483,7 +893,12 @@ function ReportsTab(props: { password: string }) {
     const groups = new Map<string, { name: string; reports: AdminReport[] }>();
     for (const report of reports) {
       const id = report.server_id || "platform";
-      const group = groups.get(id) || { name: report.server_name || (id === "platform" ? t`Platform / unknown server` : id), reports: [] };
+      const group = groups.get(id) || {
+        name:
+          report.server_name ||
+          (id === "platform" ? t`Platform / unknown server` : id),
+        reports: [],
+      };
       group.reports.push(report);
       groups.set(id, group);
     }
@@ -494,8 +909,15 @@ function ReportsTab(props: { password: string }) {
     <Column gap="md">
       <Row gap="md" align style={{ "justify-content": "space-between" }}>
         <Column gap="xs">
-        <Text class={typography({ class: "title", size: "medium" })}><Trans>Reports</Trans></Text>
-          <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}><Trans>Review community-submitted issues.</Trans></Text>
+          <Text class={typography({ class: "title", size: "medium" })}>
+            <Trans>Reports</Trans>
+          </Text>
+          <Text
+            class={typography({ class: "body", size: "small" })}
+            style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+          >
+            <Trans>Review community-submitted issues.</Trans>
+          </Text>
         </Column>
         <Button onPress={() => refetch()} isDisabled={data.loading}>
           <Show when={data.loading} fallback={<MdRefresh {...iconSize(18)} />}>
@@ -504,64 +926,116 @@ function ReportsTab(props: { password: string }) {
         </Button>
       </Row>
       <Show when={actionError()}>
-        <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-error)" }}>
+        <Text
+          class={typography({ class: "body", size: "small" })}
+          style={{ color: "var(--md-sys-color-error)" }}
+        >
           {actionError()}
         </Text>
       </Show>
-      <Show when={data()} fallback={<LoadingState label={t`Loading reports...`} />}>
+      <Show
+        when={data()}
+        fallback={<LoadingState label={t`Loading reports...`} />}
+      >
         {(reports) => (
-          <Show when={reports().length > 0} fallback={<EmptyState label={t`No reports to review`} />}>
+          <Show
+            when={reports().length > 0}
+            fallback={<EmptyState label={t`No reports to review`} />}
+          >
             <For each={groupedReports(reports())}>
               {(group) => (
                 <Column gap="sm">
-                  <Text class={typography({ class: "title", size: "small" })}><Trans>Server:</Trans> {group.name}</Text>
-                  <For each={group.reports}>{(r) => (
-                  <ReportCard>
-                    <Column gap="xs">
-                    <Row gap="sm" align>
-                      <Badge>{r.content_type}</Badge>
-                      <Badge variant={r.status === "Created" ? "active" : "closed"}>
-                        {r.status}
-                      </Badge>
-                    </Row>
-                    <Text class={typography({ class: "label", size: "small" })}>
-                      <Trans>Reporter:</Trans> {r.author_name}
-                    </Text>
-                    <Text class={typography({ class: "label", size: "small" })}>
-                      <Trans>Content:</Trans> {r.content_name} ({r.content_type})
-                    </Text>
-                    <Text class={typography({ class: "label", size: "small" })}>
-                      <Trans>ID:</Trans> {r.content_id}
-                    </Text>
-                    <Text class={typography({ class: "label", size: "small" })}>
-                      <Trans>Reason:</Trans> {r.report_reason}
-                    </Text>
-                    <Show when={r.additional_context}>
-                      <Text class={typography({ class: "label", size: "small" })}>
-                        <Trans>Context:</Trans> {r.additional_context}
-                      </Text>
-                    </Show>
-                    <Show when={r.message_content}>
-                      <Text class={typography({ class: "body", size: "small" })}>
-                        <Trans>Message:</Trans> {r.message_content}
-                      </Text>
-                    </Show>
-                    <Show when={!isLoading(r.id) && r.status === "Created"}>
-                      <Row gap="sm">
-                        <Button onPress={() => resolveReport(r.id)}>
-                          <MdCheckCircle {...iconSize(16)} /> <Trans>Resolve</Trans>
-                        </Button>
-                        <Button onPress={() => dismissReport(r.id)}>
-                          <MdCancel {...iconSize(16)} /> <Trans>Dismiss</Trans>
-                        </Button>
-                      </Row>
-                    </Show>
-                    <Show when={isLoading(r.id)}>
-                      <MdHourglassEmpty {...iconSize(16)} />
-                    </Show>
-                    </Column>
-                  </ReportCard>
-                  )}</For>
+                  <Text class={typography({ class: "title", size: "small" })}>
+                    <Trans>Server:</Trans> {group.name}
+                  </Text>
+                  <For each={group.reports}>
+                    {(r) => (
+                      <ReportCard>
+                        <Column gap="xs">
+                          <Row gap="sm" align>
+                            <Badge>{r.content_type}</Badge>
+                            <Badge
+                              variant={
+                                r.status === "Created" ? "active" : "closed"
+                              }
+                            >
+                              {r.status}
+                            </Badge>
+                          </Row>
+                          <Text
+                            class={typography({
+                              class: "label",
+                              size: "small",
+                            })}
+                          >
+                            <Trans>Reporter:</Trans> {r.author_name}
+                          </Text>
+                          <Text
+                            class={typography({
+                              class: "label",
+                              size: "small",
+                            })}
+                          >
+                            <Trans>Content:</Trans> {r.content_name} (
+                            {r.content_type})
+                          </Text>
+                          <Text
+                            class={typography({
+                              class: "label",
+                              size: "small",
+                            })}
+                          >
+                            <Trans>ID:</Trans> {r.content_id}
+                          </Text>
+                          <Text
+                            class={typography({
+                              class: "label",
+                              size: "small",
+                            })}
+                          >
+                            <Trans>Reason:</Trans> {r.report_reason}
+                          </Text>
+                          <Show when={r.additional_context}>
+                            <Text
+                              class={typography({
+                                class: "label",
+                                size: "small",
+                              })}
+                            >
+                              <Trans>Context:</Trans> {r.additional_context}
+                            </Text>
+                          </Show>
+                          <Show when={r.message_content}>
+                            <Text
+                              class={typography({
+                                class: "body",
+                                size: "small",
+                              })}
+                            >
+                              <Trans>Message:</Trans> {r.message_content}
+                            </Text>
+                          </Show>
+                          <Show
+                            when={!isLoading(r.id) && r.status === "Created"}
+                          >
+                            <Row gap="sm">
+                              <Button onPress={() => resolveReport(r.id)}>
+                                <MdCheckCircle {...iconSize(16)} />{" "}
+                                <Trans>Resolve</Trans>
+                              </Button>
+                              <Button onPress={() => dismissReport(r.id)}>
+                                <MdCancel {...iconSize(16)} />{" "}
+                                <Trans>Dismiss</Trans>
+                              </Button>
+                            </Row>
+                          </Show>
+                          <Show when={isLoading(r.id)}>
+                            <MdHourglassEmpty {...iconSize(16)} />
+                          </Show>
+                        </Column>
+                      </ReportCard>
+                    )}
+                  </For>
                 </Column>
               )}
             </For>
@@ -579,7 +1053,10 @@ function ServersTab(props: { password: string }) {
     () => `${props.password}:${query()}`,
     (key) => {
       const [, password, search] = key.match(/^([^:]*):(.*)$/) ?? [];
-      return apiFetch(`/admin/servers${search ? `?q=${encodeURIComponent(search)}` : ""}`, password || props.password) as Promise<AdminServer[]>;
+      return apiFetch(
+        `/admin/servers${search ? `?q=${encodeURIComponent(search)}` : ""}`,
+        password || props.password,
+      ) as Promise<AdminServer[]>;
     },
   );
   const [expanded, setExpanded] = createSignal<string>();
@@ -602,20 +1079,33 @@ function ServersTab(props: { password: string }) {
       });
       await refetch();
     } catch (e) {
-      setError(e instanceof Error ? e.message : t`Unable to update server status.`);
-    } finally { setLoadingId(); }
+      setError(
+        e instanceof Error ? e.message : t`Unable to update server status.`,
+      );
+    } finally {
+      setLoadingId();
+    }
   }
 
   async function remove(server: AdminServer) {
-    if (!window.confirm(t`Permanently delete ${server.name}? This cannot be undone.`)) return;
+    if (
+      !window.confirm(
+        t`Permanently delete ${server.name}? This cannot be undone.`,
+      )
+    )
+      return;
     setLoadingId(server.id);
     setError("");
     try {
-      await apiFetch(`/admin/servers/${server.id}`, props.password, { method: "DELETE" });
+      await apiFetch(`/admin/servers/${server.id}`, props.password, {
+        method: "DELETE",
+      });
       await refetch();
     } catch (e) {
       setError(e instanceof Error ? e.message : t`Unable to delete server.`);
-    } finally { setLoadingId(); }
+    } finally {
+      setLoadingId();
+    }
   }
 
   async function createInvite(server: AdminServer) {
@@ -623,10 +1113,17 @@ function ServersTab(props: { password: string }) {
     setError("");
     setGeneratedInvite();
     try {
-      const invite = await apiFetch(`/admin/servers/${server.id}/invite`, props.password, { method: "POST" }) as { code?: string; url?: string };
+      const invite = (await apiFetch(
+        `/admin/servers/${server.id}/invite`,
+        props.password,
+        { method: "POST" },
+      )) as { code?: string; url?: string };
       const url = invite.code
         ? `https://tailstalk2.com/invite/${encodeURIComponent(invite.code)}`
-        : invite.url?.replace(/tailstalk2\.com\/(?!invite\/)/, "tailstalk2.com/invite/");
+        : invite.url?.replace(
+            /tailstalk2\.com\/(?!invite\/)/,
+            "tailstalk2.com/invite/",
+          );
       if (!url) throw new Error(t`The server did not return an invite link.`);
       setGeneratedInvite(url);
       try {
@@ -636,63 +1133,190 @@ function ServersTab(props: { password: string }) {
       }
     } catch (e) {
       setError(e instanceof Error ? e.message : t`Unable to create invite.`);
-    } finally { setLoadingId(); }
+    } finally {
+      setLoadingId();
+    }
   }
 
   return (
     <Column gap="md">
       <Row gap="md" align style={{ "justify-content": "space-between" }}>
         <Column gap="xs">
-          <Text class={typography({ class: "title", size: "medium" })}><Trans>Server management</Trans></Text>
-          <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
-            <Trans>View servers, ownership, membership, channels, and roles. Suspensions and deletions are platform-wide.</Trans>
+          <Text class={typography({ class: "title", size: "medium" })}>
+            <Trans>Server management</Trans>
+          </Text>
+          <Text
+            class={typography({ class: "body", size: "small" })}
+            style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+          >
+            <Trans>
+              View servers, ownership, membership, channels, and roles.
+              Suspensions and deletions are platform-wide.
+            </Trans>
           </Text>
         </Column>
-        <Button onPress={() => refetch()} isDisabled={servers.loading}><Show when={servers.loading} fallback={<MdRefresh {...iconSize(18)} />}><CircularProgress /></Show></Button>
+        <Button onPress={() => refetch()} isDisabled={servers.loading}>
+          <Show
+            when={servers.loading}
+            fallback={<MdRefresh {...iconSize(18)} />}
+          >
+            <CircularProgress />
+          </Show>
+        </Button>
       </Row>
       <Row gap="sm">
-        <TextField value={query()} onChange={(e) => setQuery(e.currentTarget.value)} onKeyDown={(e) => e.key === "Enter" && search()} placeholder={t`Search server name or ID`} />
-        <Button onPress={search} isDisabled={servers.loading}><MdSearch {...iconSize(18)} /></Button>
+        <TextField
+          value={query()}
+          onChange={(e) => setQuery(e.currentTarget.value)}
+          onKeyDown={(e) => e.key === "Enter" && search()}
+          placeholder={t`Search server name or ID`}
+        />
+        <Button onPress={search} isDisabled={servers.loading}>
+          <MdSearch {...iconSize(18)} />
+        </Button>
       </Row>
-      <Show when={error()}><Text style={{ color: "var(--md-sys-color-error)" }}>{error()}</Text></Show>
+      <Show when={error()}>
+        <Text style={{ color: "var(--md-sys-color-error)" }}>{error()}</Text>
+      </Show>
       <Show when={generatedInvite()}>
         {(url) => (
           <Text>
             <Trans>Invite link:</Trans>{" "}
-            <a href={url()} target="_blank" rel="noreferrer">{url()}</a>
+            <a href={url()} target="_blank" rel="noreferrer">
+              {url()}
+            </a>
           </Text>
         )}
       </Show>
-      <Show when={servers()} fallback={<LoadingState label={t`Loading servers...`} />}>
-        {(entries) => <Show when={entries().length} fallback={<EmptyState label={t`No servers found`} />}>
-          <For each={entries()}>{(server) => (
-            <ReportCard>
-              <Row gap="md" align style={{ "justify-content": "space-between" }}>
-                <Column gap="xs" style={{ flex: 1 }}>
-                  <Row gap="sm" align><Text class={typography({ class: "title", size: "small" })}>{server.name}</Text><Show when={server.suspended}><Badge variant="active"><Trans>Suspended</Trans></Badge></Show></Row>
-                  <Text class={typography({ class: "label", size: "small" })}><Trans>Owner:</Trans> {server.owner_name} ({server.owner_id})</Text>
-                  <Text class={typography({ class: "label", size: "small" })}>{formatNumber(server.member_count)} <Trans>members</Trans> · {server.channels.length} <Trans>channels</Trans> · {server.roles.length} <Trans>roles</Trans></Text>
-                  <Text class={typography({ class: "label", size: "small" })}><Trans>Created:</Trans> {server.created_at || server.id}</Text>
-                  <Text class={typography({ class: "label", size: "small" })}><Trans>ID:</Trans> {server.id}</Text>
-                </Column>
-                <Row gap="sm">
-                  <Button onPress={() => setExpanded(expanded() === server.id ? undefined : server.id)}>{expanded() === server.id ? <Trans>Hide details</Trans> : <Trans>Details</Trans>}</Button>
-                  <Button onPress={() => createInvite(server)} isDisabled={loadingId() === server.id}><Trans>Generate invite</Trans></Button>
-                  <Button onPress={() => suspend(server)} isDisabled={loadingId() === server.id}>{server.suspended ? <Trans>Unsuspend</Trans> : <Trans>Suspend</Trans>}</Button>
-                  <Button onPress={() => remove(server)} isDisabled={loadingId() === server.id}><MdDelete {...iconSize(16)} /> <Trans>Delete</Trans></Button>
-                </Row>
-              </Row>
-              <Show when={expanded() === server.id}>
-                <Column gap="xs" style={{ "margin-top": "var(--gap-md)" }}>
-                  <Text class={typography({ class: "label", size: "small" })}><Trans>Channels</Trans></Text>
-                  <Text class={typography({ class: "body", size: "small" })}>{server.channels.map((channel) => `${channel.name} (${channel.channel_type})`).join(", ") || t`No channels`}</Text>
-                  <Text class={typography({ class: "label", size: "small" })}><Trans>Roles</Trans></Text>
-                  <Text class={typography({ class: "body", size: "small" })}>{server.roles.map((role) => role.name || role.id).join(", ") || t`No roles`}</Text>
-                </Column>
-              </Show>
-            </ReportCard>
-          )}</For>
-        </Show>}
+      <Show
+        when={servers()}
+        fallback={<LoadingState label={t`Loading servers...`} />}
+      >
+        {(entries) => (
+          <Show
+            when={entries().length}
+            fallback={<EmptyState label={t`No servers found`} />}
+          >
+            <For each={entries()}>
+              {(server) => (
+                <ReportCard>
+                  <Row
+                    gap="md"
+                    align
+                    style={{ "justify-content": "space-between" }}
+                  >
+                    <Column gap="xs" style={{ flex: 1 }}>
+                      <Row gap="sm" align>
+                        <Text
+                          class={typography({ class: "title", size: "small" })}
+                        >
+                          {server.name}
+                        </Text>
+                        <Show when={server.suspended}>
+                          <Badge variant="active">
+                            <Trans>Suspended</Trans>
+                          </Badge>
+                        </Show>
+                      </Row>
+                      <Text
+                        class={typography({ class: "label", size: "small" })}
+                      >
+                        <Trans>Owner:</Trans> {server.owner_name} (
+                        {server.owner_id})
+                      </Text>
+                      <Text
+                        class={typography({ class: "label", size: "small" })}
+                      >
+                        {formatNumber(server.member_count)}{" "}
+                        <Trans>members</Trans> · {server.channels.length}{" "}
+                        <Trans>channels</Trans> · {server.roles.length}{" "}
+                        <Trans>roles</Trans>
+                      </Text>
+                      <Text
+                        class={typography({ class: "label", size: "small" })}
+                      >
+                        <Trans>Created:</Trans> {server.created_at || server.id}
+                      </Text>
+                      <Text
+                        class={typography({ class: "label", size: "small" })}
+                      >
+                        <Trans>ID:</Trans> {server.id}
+                      </Text>
+                    </Column>
+                    <Row gap="sm">
+                      <Button
+                        onPress={() =>
+                          setExpanded(
+                            expanded() === server.id ? undefined : server.id,
+                          )
+                        }
+                      >
+                        {expanded() === server.id ? (
+                          <Trans>Hide details</Trans>
+                        ) : (
+                          <Trans>Details</Trans>
+                        )}
+                      </Button>
+                      <Button
+                        onPress={() => createInvite(server)}
+                        isDisabled={loadingId() === server.id}
+                      >
+                        <Trans>Generate invite</Trans>
+                      </Button>
+                      <Button
+                        onPress={() => suspend(server)}
+                        isDisabled={loadingId() === server.id}
+                      >
+                        {server.suspended ? (
+                          <Trans>Unsuspend</Trans>
+                        ) : (
+                          <Trans>Suspend</Trans>
+                        )}
+                      </Button>
+                      <Button
+                        onPress={() => remove(server)}
+                        isDisabled={loadingId() === server.id}
+                      >
+                        <MdDelete {...iconSize(16)} /> <Trans>Delete</Trans>
+                      </Button>
+                    </Row>
+                  </Row>
+                  <Show when={expanded() === server.id}>
+                    <Column gap="xs" style={{ "margin-top": "var(--gap-md)" }}>
+                      <Text
+                        class={typography({ class: "label", size: "small" })}
+                      >
+                        <Trans>Channels</Trans>
+                      </Text>
+                      <Text
+                        class={typography({ class: "body", size: "small" })}
+                      >
+                        {server.channels
+                          .map(
+                            (channel) =>
+                              `${channel.name} (${channel.channel_type})`,
+                          )
+                          .join(", ") || t`No channels`}
+                      </Text>
+                      <Text
+                        class={typography({ class: "label", size: "small" })}
+                      >
+                        <Trans>Roles</Trans>
+                      </Text>
+                      <Text
+                        class={typography({ class: "body", size: "small" })}
+                      >
+                        {server.roles
+                          .map((role) => role.name || role.id)
+                          .join(", ") || t`No roles`}
+                      </Text>
+                    </Column>
+                  </Show>
+                </ReportCard>
+              )}
+            </For>
+          </Show>
+        )}
       </Show>
     </Column>
   );
@@ -700,6 +1324,8 @@ function ServersTab(props: { password: string }) {
 
 function UsersTab(props: { password: string }) {
   const { t } = useLingui();
+  const [resetLinks, setResetLinks] = createSignal<Record<string, string>>({});
+  const snackbar = useSnackbar();
   const [query, setQuery] = createSignal("");
   const [results, setResults] = createSignal<AdminUserInfo[]>([]);
   const [searching, setSearching] = createSignal(false);
@@ -716,7 +1342,11 @@ function UsersTab(props: { password: string }) {
 
   async function withLoading(id: string, fn: () => Promise<void>) {
     setLoading(id, true);
-    try { await fn(); } finally { setLoading(id, false); }
+    try {
+      await fn();
+    } finally {
+      setLoading(id, false);
+    }
   }
 
   async function search() {
@@ -748,7 +1378,9 @@ function UsersTab(props: { password: string }) {
 
   async function unbanUser(id: string) {
     await withLoading(id, async () => {
-      await apiFetch(`/admin/users/${id}/unban`, props.password, { method: "POST" });
+      await apiFetch(`/admin/users/${id}/unban`, props.password, {
+        method: "POST",
+      });
       search();
     });
   }
@@ -781,14 +1413,20 @@ function UsersTab(props: { password: string }) {
 
   async function clearWarnings(id: string) {
     await withLoading(id, async () => {
-      await apiFetch(`/admin/users/${id}/clear-warnings`, props.password, { method: "POST" });
+      await apiFetch(`/admin/users/${id}/clear-warnings`, props.password, {
+        method: "POST",
+      });
       search();
     });
   }
 
   async function deleteWarning(userId: string, index: number) {
     await withLoading(userId, async () => {
-      await apiFetch(`/admin/users/${userId}/delete-warning/${index}`, props.password, { method: "POST" });
+      await apiFetch(
+        `/admin/users/${userId}/delete-warning/${index}`,
+        props.password,
+        { method: "POST" },
+      );
       search();
     });
   }
@@ -801,6 +1439,23 @@ function UsersTab(props: { password: string }) {
         body: JSON.stringify({ badge, enabled }),
       });
       await search();
+    });
+  }
+
+  async function generatePasswordResetLink(userId: string) {
+    await withLoading(userId, async () => {
+      const result = await apiFetch<{ url: string }>(
+        `/admin/users/${userId}/password-reset`,
+        props.password,
+        { method: "POST" },
+      );
+      setResetLinks((current) => ({ ...current, [userId]: result.url }));
+      await navigator.clipboard.writeText(result.url);
+      snackbar.show({
+        message: t`Password reset link generated and copied to your clipboard.`,
+        placement: "bottom",
+        closeable: true,
+      });
     });
   }
 
@@ -821,8 +1476,15 @@ function UsersTab(props: { password: string }) {
   return (
     <Column gap="md">
       <Column gap="xs">
-        <Text class={typography({ class: "title", size: "medium" })}><Trans>User directory</Trans></Text>
-        <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}><Trans>Search accounts and take moderation actions.</Trans></Text>
+        <Text class={typography({ class: "title", size: "medium" })}>
+          <Trans>User directory</Trans>
+        </Text>
+        <Text
+          class={typography({ class: "body", size: "small" })}
+          style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+        >
+          <Trans>Search accounts and take moderation actions.</Trans>
+        </Text>
       </Column>
       <Row gap="sm">
         <TextField
@@ -835,8 +1497,12 @@ function UsersTab(props: { password: string }) {
           <MdSearch {...iconSize(18)} />
         </Button>
       </Row>
-      <Show when={searching()}><LoadingState label={t`Searching users...`} /></Show>
-      <Show when={!searching() && query() && results().length === 0}><EmptyState label={t`No users found`} /></Show>
+      <Show when={searching()}>
+        <LoadingState label={t`Searching users...`} />
+      </Show>
+      <Show when={!searching() && query() && results().length === 0}>
+        <EmptyState label={t`No users found`} />
+      </Show>
       <For each={results()}>
         {(u) => (
           <UserCard>
@@ -850,27 +1516,43 @@ function UsersTab(props: { password: string }) {
                     ID: {u.id}
                   </Text>
                   <Show when={u.privileged}>
-                    <Badge><Trans>Privileged</Trans></Badge>
+                    <Badge>
+                      <Trans>Privileged</Trans>
+                    </Badge>
                   </Show>
                   <Show when={isBanned(u)}>
-                    <Badge variant="active"><Trans>Banned</Trans></Badge>
+                    <Badge variant="active">
+                      <Trans>Banned</Trans>
+                    </Badge>
                   </Show>
                   <Show when={isSuspended(u) && !isBanned(u)}>
                     <Badge variant="active">
-                      <Trans>Suspended until {u.suspended_until ? new Date(u.suspended_until).toLocaleString() : "?"}</Trans>
+                      <Trans>
+                        Suspended until{" "}
+                        {u.suspended_until
+                          ? new Date(u.suspended_until).toLocaleString()
+                          : "?"}
+                      </Trans>
                     </Badge>
                   </Show>
                 </Column>
                 <Column gap="xs">
                   <Show when={isLoading(u.id)}>
-                    <MdHourglassEmpty {...iconSize(20)} style={{ margin: "auto" }} />
+                    <MdHourglassEmpty
+                      {...iconSize(20)}
+                      style={{ margin: "auto" }}
+                    />
                   </Show>
-                  <Show when={!isLoading(u.id) && (isBanned(u) || isSuspended(u))}>
+                  <Show
+                    when={!isLoading(u.id) && (isBanned(u) || isSuspended(u))}
+                  >
                     <Button onPress={() => unbanUser(u.id)}>
                       <MdCheckCircle {...iconSize(16)} /> <Trans>Unban</Trans>
                     </Button>
                   </Show>
-                  <Show when={!isLoading(u.id) && !isBanned(u) && !isSuspended(u)}>
+                  <Show
+                    when={!isLoading(u.id) && !isBanned(u) && !isSuspended(u)}
+                  >
                     <Button onPress={() => warnUser(u.id)}>
                       <MdWarning {...iconSize(16)} /> <Trans>Warn</Trans>
                     </Button>
@@ -881,23 +1563,50 @@ function UsersTab(props: { password: string }) {
                       <MdBlock {...iconSize(16)} /> <Trans>Ban</Trans>
                     </Button>
                   </Show>
+                  <Show when={!isLoading(u.id)}>
+                    <Button onPress={() => void generatePasswordResetLink(u.id)}>
+                      <MdLockReset {...iconSize(16)} />
+                      <Trans>Generate reset link</Trans>
+                    </Button>
+                  </Show>
+                  <Show when={resetLinks()[u.id]}>
+                    {(link) => (
+                      <Text
+                        style={{
+                          "max-width": "320px",
+                          "overflow-wrap": "anywhere",
+                          "font-size": "0.75rem",
+                        }}
+                      >
+                        {link()}
+                      </Text>
+                    )}
+                  </Show>
                 </Column>
               </Row>
               <Show when={u.warnings && u.warnings.length > 0}>
                 <Column gap="xs">
                   <Row gap="sm" align>
-                    <Text class={typography({ class: "label", size: "small" })}
-                      style={{ fontWeight: 600 }}>
+                    <Text
+                      class={typography({ class: "label", size: "small" })}
+                      style={{ fontWeight: 600 }}
+                    >
                       <Trans>Warnings ({u.warnings.length}):</Trans>
                     </Text>
-                    <Button onPress={() => clearWarnings(u.id)} disabled={isLoading(u.id)}>
+                    <Button
+                      onPress={() => clearWarnings(u.id)}
+                      disabled={isLoading(u.id)}
+                    >
                       <Trans>Clear all</Trans>
                     </Button>
                   </Row>
                   <For each={u.warnings}>
                     {(w, i) => (
                       <WarningRow>
-                        <Text class={typography({ class: "label", size: "small" })} style={{ flex: 1 }}>
+                        <Text
+                          class={typography({ class: "label", size: "small" })}
+                          style={{ flex: 1 }}
+                        >
                           {w.reason} — {new Date(w.created_at).toLocaleString()}
                         </Text>
                         <Button onPress={() => deleteWarning(u.id, i())}>
@@ -909,7 +1618,10 @@ function UsersTab(props: { password: string }) {
                 </Column>
               </Show>
               <Column gap="xs">
-                <Text class={typography({ class: "label", size: "small" })} style={{ "font-weight": 600 }}>
+                <Text
+                  class={typography({ class: "label", size: "small" })}
+                  style={{ "font-weight": 600 }}
+                >
                   <Trans>Custom badges</Trans>
                 </Text>
                 <Row gap="xs" style={{ "flex-wrap": "wrap" }}>
@@ -989,7 +1701,11 @@ function WhatsNewTab(props: { password: string }) {
     ]);
   }
 
-  function updateEntry(index: number, field: keyof WhatsNewEntry, value: string) {
+  function updateEntry(
+    index: number,
+    field: keyof WhatsNewEntry,
+    value: string,
+  ) {
     setEntries((prev) => {
       const next = [...prev];
       next[index] = { ...next[index], [field]: value };
@@ -1018,49 +1734,76 @@ function WhatsNewTab(props: { password: string }) {
     <Column gap="md">
       <Row gap="md" align>
         <Column gap="xs" style={{ flex: 1 }}>
-        <Text class={typography({ class: "title", size: "medium" })}><Trans>What's New Editor</Trans></Text>
-          <Text class={typography({ class: "body", size: "small" })} style={{ color: "var(--md-sys-color-on-surface-variant)" }}><Trans>Publish updates that appear in the client.</Trans></Text>
+          <Text class={typography({ class: "title", size: "medium" })}>
+            <Trans>What's New Editor</Trans>
+          </Text>
+          <Text
+            class={typography({ class: "body", size: "small" })}
+            style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+          >
+            <Trans>Publish updates that appear in the client.</Trans>
+          </Text>
         </Column>
-        <Button onPress={addEntry} isDisabled={loading() || saving()}><Trans>Add Entry</Trans></Button>
+        <Button onPress={addEntry} isDisabled={loading() || saving()}>
+          <Trans>Add Entry</Trans>
+        </Button>
         <Button onPress={save} isDisabled={loading() || saving()}>
           <Show when={saving()} fallback={<Trans>Save</Trans>}>
             <CircularProgress />
           </Show>
         </Button>
       </Row>
-        <Show when={!loading()} fallback={<LoadingState label={t`Loading updates...`} />}>
+      <Show
+        when={!loading()}
+        fallback={<LoadingState label={t`Loading updates...`} />}
+      >
         <For each={entries()}>
-        {(entry, i) => (
-          <Column gap="sm" style={{
-            padding: "var(--gap-md)",
-            background: "var(--md-sys-color-surface-container-highest)",
-            borderRadius: "var(--borderRadius-md)",
-          }}>
-            <Row gap="sm" align>
-              <Text class={typography({ class: "label", size: "small" })}><Trans>Title:</Trans></Text>
-              <Button onPress={() => removeEntry(i())}>
-                <MdDelete {...iconSize(14)} />
-              </Button>
-            </Row>
-            <TextField
-              value={entry.title}
-              onChange={(e) => updateEntry(i(), "title", e.currentTarget.value)}
-              placeholder={t`Title`}
-            />
-            <Text class={typography({ class: "label", size: "small" })}><Trans>Body:</Trans></Text>
-            <TextField
-              value={entry.body}
-              onChange={(e) => updateEntry(i(), "body", e.currentTarget.value)}
-              placeholder={t`Body (supports plain text)`}
-            />
-            <Text class={typography({ class: "label", size: "small" })}><Trans>Date:</Trans></Text>
-            <TextField
-              type="date"
-              value={entry.date}
-              onChange={(e) => updateEntry(i(), "date", e.currentTarget.value)}
-            />
-          </Column>
-        )}
+          {(entry, i) => (
+            <Column
+              gap="sm"
+              style={{
+                padding: "var(--gap-md)",
+                background: "var(--md-sys-color-surface-container-highest)",
+                borderRadius: "var(--borderRadius-md)",
+              }}
+            >
+              <Row gap="sm" align>
+                <Text class={typography({ class: "label", size: "small" })}>
+                  <Trans>Title:</Trans>
+                </Text>
+                <Button onPress={() => removeEntry(i())}>
+                  <MdDelete {...iconSize(14)} />
+                </Button>
+              </Row>
+              <TextField
+                value={entry.title}
+                onChange={(e) =>
+                  updateEntry(i(), "title", e.currentTarget.value)
+                }
+                placeholder={t`Title`}
+              />
+              <Text class={typography({ class: "label", size: "small" })}>
+                <Trans>Body:</Trans>
+              </Text>
+              <TextField
+                value={entry.body}
+                onChange={(e) =>
+                  updateEntry(i(), "body", e.currentTarget.value)
+                }
+                placeholder={t`Body (supports plain text)`}
+              />
+              <Text class={typography({ class: "label", size: "small" })}>
+                <Trans>Date:</Trans>
+              </Text>
+              <TextField
+                type="date"
+                value={entry.date}
+                onChange={(e) =>
+                  updateEntry(i(), "date", e.currentTarget.value)
+                }
+              />
+            </Column>
+          )}
         </For>
       </Show>
     </Column>
@@ -1068,11 +1811,21 @@ function WhatsNewTab(props: { password: string }) {
 }
 
 function LoadingState(props: { label: string }) {
-  return <StatusState><CircularProgress /><Text>{props.label}</Text></StatusState>;
+  return (
+    <StatusState>
+      <CircularProgress />
+      <Text>{props.label}</Text>
+    </StatusState>
+  );
 }
 
 function EmptyState(props: { label: string }) {
-  return <StatusState><MdCheckCircle {...iconSize(20)} /><Text>{props.label}</Text></StatusState>;
+  return (
+    <StatusState>
+      <MdCheckCircle {...iconSize(20)} />
+      <Text>{props.label}</Text>
+    </StatusState>
+  );
 }
 
 const TabBar = styled("div", {
