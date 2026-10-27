@@ -5632,3 +5632,6 @@ msgstr "Your user has already been created? Try logging in again or refreshing t
 msgid "Your server needs at least 2 boosts to unlock a vanity URL."
 msgstr "Your server needs at least 2 boosts to unlock a vanity URL."
 
+msgid "Server settings"
+msgstr "Server settings"
+

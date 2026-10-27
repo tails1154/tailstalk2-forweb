@@ -5578,3 +5578,6 @@ msgstr ""
 msgid "Your server needs at least 2 boosts to unlock a vanity URL."
 msgstr ""
 
+msgid "Server settings"
+msgstr ""
+

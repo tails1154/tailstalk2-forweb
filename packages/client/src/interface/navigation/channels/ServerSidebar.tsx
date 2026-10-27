@@ -17,7 +17,6 @@ import { KeybindAction, createKeybind } from "@revolt/keybinds";
 import { TextWithEmoji } from "@revolt/markdown";
 import { useModals } from "@revolt/modal";
 import { useNavigate } from "@revolt/routing";
-import { useVoice } from "@revolt/rtc";
 import { useState } from "@revolt/state";
 import {
   Column,
@@ -32,7 +31,6 @@ import {
   symbolSize,
   typography,
 } from "@revolt/ui";
-import { VoiceChannelPreview } from "@revolt/ui/components/features/voice/VoiceChannelPreview";
 import { createDragHandle } from "@revolt/ui/components/utils/Draggable";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 
@@ -278,16 +276,17 @@ function ServerInfo(
       <ServerName onClick={props.openServerInfo}>
         <TextWithEmoji content={props.server.name} />
       </ServerName>
-      <Show when={props.canManageServer}>
+      <Tooltip placement="bottom" content={t`Server settings`}>
         <IconButton
           size="xs"
           width="narrow"
           variant={props.server.banner ? "_header" : "standard"}
+          aria-label={t`Server settings`}
           onPress={props.openServerSettings}
         >
           <MdSettings {...symbolSize(24)} />
         </IconButton>
-      </Show>
+      </Tooltip>
       <Show when={props.openServerOnboarding}>
         <Tooltip placement="bottom" content={t`Redo onboarding`}>
           <IconButton
@@ -473,7 +472,6 @@ function Entry(
   props: { channel: Channel; active: boolean } & Pick<Props, "menuGenerator">,
 ) {
   const state = useState();
-  const voice = useVoice();
   const { openModal } = useModals();
 
   const canEditChannel = createMemo(() =>
@@ -493,18 +491,14 @@ function Entry(
       (props.channel.mentions?.size || true),
   );
 
-  const inCall = () => props.channel.id === voice.channel()?.id;
-
   const attentionState = createMemo(() =>
     props.active
       ? "selected"
-      : inCall()
-        ? "active"
-        : state.notifications.isChannelMuted(props.channel)
-          ? "muted"
-          : props.channel.unread
-            ? "active"
-            : "normal",
+      : state.notifications.isChannelMuted(props.channel)
+        ? "muted"
+        : props.channel.unread
+          ? "active"
+          : "normal",
   );
 
   return (
@@ -517,15 +511,7 @@ function Entry(
           attention={attentionState()}
           icon={
             <>
-              <Switch fallback={<Symbol>grid_3x3</Symbol>}>
-                <Match when={props.channel.isVoice}>
-                  <Symbol
-                    color={inCall() ? "var(--md-sys-color-primary)" : undefined}
-                  >
-                    headset_mic
-                  </Symbol>
-                </Match>
-              </Switch>
+              <Symbol>grid_3x3</Symbol>
               <Show when={props.channel.icon}>
                 <ChannelIcon
                   src={props.channel.iconURL}
@@ -582,7 +568,6 @@ function Entry(
           </OverflowingText>
         </MenuButton>
 
-        <VoiceChannelPreview channel={props.channel} />
       </Column>
     </a>
   );
