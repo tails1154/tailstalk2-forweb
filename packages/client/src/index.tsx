@@ -51,15 +51,15 @@ import "./index.css";
 import { DevelopmentPage } from "./interface/Development";
 import { Discover } from "./interface/Discover";
 import { Friends } from "./interface/Friends";
+import { GiftRedeem } from "./interface/GiftRedeem";
 import { HomePage } from "./interface/Home";
+import { AboutPage, PrivacyPage } from "./PublicPage";
 import { ServerHome } from "./interface/ServerHome";
 import { StripeCancel, StripeSuccess } from "./interface/StripeReturn";
 import { Tailslets } from "./interface/Tailslets";
 import { Videos } from "./interface/Videos";
 import { ChannelPage } from "./interface/channels/ChannelPage";
-import {
-  ServiceWorkerUpdatePrompt,
-} from "./serviceWorkerInterface";
+import { ServiceWorkerUpdatePrompt } from "./serviceWorkerInterface";
 
 /**
  * Redirect PWA start to the last active path
@@ -251,6 +251,8 @@ render(
             <Route path="/*" component={FlowHome} />
           </Route>
           <Route path="/register" component={RegisterRedirect} />
+          <Route path="/about" component={AboutPage} />
+          <Route path="/privacy" component={PrivacyPage} />
           <Route path="/" component={Interface as never}>
             <Route path="/pwa" component={PWARedirect} />
             <Route path="/dev" component={DevelopmentPage} />
@@ -258,6 +260,7 @@ render(
             <Route path="/settings" component={SettingsRedirect} />
             <Route path="/premium/success" component={StripeSuccess} />
             <Route path="/premium/cancel" component={StripeCancel} />
+            <Route path="/gift/:giftId" component={GiftRedeem} />
             <Route path="/app" component={HomePage} />
             <Route path="/invite/:code" component={InviteRedirect} />
             <Route path="/:code" component={InviteRedirect} />

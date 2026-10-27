@@ -163,13 +163,13 @@ export function AuthPage(props: { children: JSX.Element }) {
             </NavItems>
             <Bullet />
             <NavItems>
-              <a href="http://tails1154.com:9782/docs/aup.html" target="_blank" rel="noreferrer">
+              <a href="https://tailstalk2.com/about" target="_blank" rel="noreferrer">
                 <Trans>About</Trans>
               </a>
               <a href="http://tails1154.com:9782/docs/aup.html" target="_blank" rel="noreferrer">
                 <Trans>Terms of Service</Trans>
               </a>
-              <a href="http://tails1154.com:9782/docs/aup.html" target="_blank" rel="noreferrer">
+              <a href="https://tailstalk2.com/privacy" target="_blank" rel="noreferrer">
                 <Trans>Privacy Policy</Trans>
               </a>
             </NavItems>
