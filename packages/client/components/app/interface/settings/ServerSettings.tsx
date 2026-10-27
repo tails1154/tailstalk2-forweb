@@ -1,5 +1,6 @@
 import {
   BiSolidEnvelope,
+  BiSolidDiamond,
   BiSolidFlagAlt,
   BiSolidGroup,
   BiSolidHappyBeaming,
@@ -19,6 +20,7 @@ import { ColouredText } from "@revolt/ui";
 import { SettingsConfiguration } from ".";
 import { ChannelPermissionsEditor } from "./channel/permissions/ChannelPermissionsEditor";
 import ServerAnalyticsSettings from "./server/Analytics";
+import ServerBoosts from "./server/Boosts";
 import ServerLeaderboard from "./server/Leaderboard";
 import ServerOnboardingSettings from "./server/Onboarding";
 import Overview from "./server/Overview";
@@ -78,6 +80,8 @@ const Config: SettingsConfiguration<Server> = {
         return <ServerXPSettings server={server} />;
       case "analytics":
         return <ServerAnalyticsSettings server={server} />;
+      case "boosts":
+        return <ServerBoosts server={server} />;
       case "onboarding":
         return <ServerOnboardingSettings server={server} />;
       case "leaderboard":
@@ -126,6 +130,16 @@ const Config: SettingsConfiguration<Server> = {
               id: "emojis",
               icon: <BiSolidHappyBeaming size={20} />,
               title: <Trans>Emojis</Trans>,
+            },
+          ],
+        },
+        {
+          title: <Trans>Server boosts</Trans>,
+          entries: [
+            {
+              id: "boosts",
+              icon: <BiSolidDiamond size={20} />,
+              title: <Trans>Boosts</Trans>,
             },
           ],
         },

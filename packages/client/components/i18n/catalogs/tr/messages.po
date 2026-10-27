@@ -56,6 +56,11 @@ msgstr ""
 msgid "{0, plural, one {Drop a file} other {Drop # files}}"
 msgstr ""
 
+#. placeholder {0}: data().next_level ? `${data().boost_count} of ${data().next_level} boosts toward the next level` : "This server has reached the highest boost level."
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "{0}"
+msgstr ""
+
 #. placeholder {0}: users() .slice(0, -1) .map((user) => user!.username) .join(", ")
 #. placeholder {1}: users().slice(-1)[0]!.username
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
@@ -183,16 +188,28 @@ msgid "{usernames} reacted"
 msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "• More supporter perks may be added later"
+msgid "• Attachments up to 2 GB"
 msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "• Support independent development"
+msgid "• More Premium benefits may be added later"
 msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "• TailsTalk Supporter profile badge"
+#~ msgid "• More supporter perks may be added later"
+#~ msgstr ""
+
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+#~ msgid "• Support independent development"
+#~ msgstr ""
+
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "• TailsTalk 2 Premium profile badge"
 msgstr ""
+
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+#~ msgid "• TailsTalk Supporter profile badge"
+#~ msgstr ""
 
 #: components/ui/components/features/messaging/elements/SystemMessage.tsx
 msgid "<0/> has been added by <1/>"
@@ -382,6 +399,14 @@ msgstr "Arkadaş isteğini kabul et"
 msgid "Acknowledge"
 msgstr ""
 
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Active boost"
+msgstr ""
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Active TailsTalk 2 Premium includes 2 free boosts."
+msgstr ""
+
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
 msgid "Active vanity URL"
 msgstr ""
@@ -394,6 +419,10 @@ msgstr ""
 #: src/interface/Friends.tsx
 #: components/modal/modals/AddFriend.tsx
 msgid "Add a new friend"
+msgstr ""
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Add a Premium boost"
 msgstr ""
 
 #: components/modal/modals/AccountSwitcher.tsx
@@ -462,6 +491,14 @@ msgstr ""
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Advanced"
 msgstr "Gelişmiş"
+
+#: components/app/Advertisements.tsx
+#~ msgid "Advertisements help keep TailsTalk 2 online"
+#~ msgstr ""
+
+#: components/app/Advertisements.tsx
+#~ msgid "Advertisements help pay for hosting and development. You can turn them off for free now or later in your account settings."
+#~ msgstr ""
 
 #: components/app/interface/settings/server/roles/ServerRoleOverview.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
@@ -561,6 +598,7 @@ msgstr "Görünüm"
 
 #: components/app/interface/settings/user/Admin.tsx
 #: components/app/interface/settings/user/Admin.tsx
+#: components/app/interface/settings/user/Admin.tsx
 msgid "Approve"
 msgstr ""
 
@@ -643,6 +681,10 @@ msgstr "Profil Resmi"
 msgid "Back"
 msgstr ""
 
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Back to forum"
+msgstr ""
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Background"
 msgstr ""
@@ -723,6 +765,19 @@ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Body:"
+msgstr ""
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Boost progress"
+msgstr ""
+
+#: components/app/interface/settings/ServerSettings.tsx
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Boosts"
+msgstr ""
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Boosts never lock vanity links or custom invite links behind a paywall."
 msgstr ""
 
 #: src/interface/Discover.tsx
@@ -823,6 +878,10 @@ msgstr "Arkadaş isteğini iptal et"
 msgid "Cancel message"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Cancel my subscription (testing)"
+msgstr ""
+
 #: components/modal/modals/CancelPremium.tsx
 #: components/app/interface/settings/user/SupporterSubscription.tsx
 msgid "Cancel subscription"
@@ -842,6 +901,10 @@ msgstr ""
 
 #: src/interface/Videos.tsx
 msgid "Caption"
+msgstr ""
+
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "Cash payment request pending"
 msgstr ""
 
 #: components/modal/modals/EditUsername.tsx
@@ -1115,6 +1178,18 @@ msgstr "Onayla"
 msgid "Confirm action"
 msgstr "İşlemi onayla"
 
+#: components/modal/modals/CashPayment.tsx
+msgid "Confirm request"
+msgstr ""
+
+#: components/modal/modals/CashPayment.tsx
+#~ msgid "Confirm that you want to request TailsTalk 2 Premium using a cash payment. An administrator will review the request and contact you with the next steps. No payment is taken now."
+#~ msgstr ""
+
+#: components/modal/modals/CashPayment.tsx
+msgid "Confirm that you want to request TailsTalk 2 Premium using a cash payment. tails1154 will direct message you with further instructions. No payment is taken now."
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Connect"
 msgstr "Bağlan"
@@ -1181,6 +1256,10 @@ msgstr "Kanal ID'sini kopyala"
 #: components/app/interface/settings/user/OAuth.tsx
 #~ msgid "Copy client ID"
 #~ msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Copy gift link"
+msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Copy ID"
@@ -1307,6 +1386,14 @@ msgstr ""
 msgid "Create a new role"
 msgstr "Yeni bir rol oluştur"
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Create a one-time link that grants TailsTalk 2 Premium and its Premium benefits."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+#~ msgid "Create a one-time link that grants TailsTalk 2 Premium and its supporter perks."
+#~ msgstr ""
+
 #: components/app/interface/settings/server/Page.tsx
 #~ msgid "Create a public landing page for your server with a description and useful links."
 #~ msgstr ""
@@ -1352,6 +1439,10 @@ msgstr "Kategori oluştur"
 msgid "Create channel"
 msgstr "Kanal oluştur"
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Create gift"
+msgstr ""
+
 #: components/app/menus/ServerContextMenu.tsx
 #: components/app/menus/ChannelContextMenu.tsx
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
@@ -1372,6 +1463,10 @@ msgstr ""
 
 #: components/modal/modals/CreatePoll.tsx
 msgid "Create poll"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Create Premium gift"
 msgstr ""
 
 #: components/modal/modals/CreateRole.tsx
@@ -1474,6 +1569,10 @@ msgstr ""
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Deafen Members"
 msgstr "Üyeleri Sağırlaştır"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Decline"
+msgstr ""
 
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Default"
@@ -1685,6 +1784,10 @@ msgstr ""
 #: src/interface/channels/text/TextChannel.tsx
 #~ msgid "Discussion forum"
 #~ msgstr ""
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Dislike"
+msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Dismiss"
@@ -2069,9 +2172,17 @@ msgstr ""
 msgid "For 8 hours"
 msgstr ""
 
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Forum"
+msgstr ""
+
 #: components/modal/modals/CreateChannel.tsx
-#~ msgid "Forum Channel"
-#~ msgstr ""
+msgid "Forum Channel"
+msgstr ""
+
+#: components/modal/modals/CreateChannel.tsx
+msgid "Forum purpose"
+msgstr ""
 
 #: src/interface/Friends.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
@@ -2110,6 +2221,14 @@ msgstr ""
 msgid "Get active recovery codes"
 msgstr ""
 
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "Get TailsTalk 2 Premium and unlock Premium benefits."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Gift created"
+msgstr ""
+
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Give"
 msgstr ""
@@ -2125,6 +2244,10 @@ msgstr ""
 #: components/modal/modals/ScreenShareSettings.tsx
 #: components/modal/modals/ScreenSharePicker.tsx
 msgid "Go"
+msgstr ""
+
+#: components/modal/modals/CashPayment.tsx
+msgid "Go back"
 msgstr ""
 
 #: components/auth/src/flows/FlowVerify.tsx
@@ -2198,6 +2321,10 @@ msgstr ""
 #. placeholder {0}: link()
 #: components/modal/modals/CreateInvite.tsx
 msgid "Here is your new invite code: <0>{0}</0>"
+msgstr ""
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Hide boost progress from members"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
@@ -2355,7 +2482,6 @@ msgstr ""
 msgid "Join the TailsTalk 2 Lounge"
 msgstr ""
 
-#: src/interface/channels/ChannelHeader.tsx
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
 msgid "Join the voice channel"
 msgstr ""
@@ -2372,6 +2498,10 @@ msgstr "Günümüze dön"
 #: components/ui/components/features/messaging/bars/NewMessages.tsx
 msgid "Jump to the beginning"
 msgstr "Başlangıca geri dön"
+
+#: components/app/Advertisements.tsx
+#~ msgid "Keep advertisements"
+#~ msgstr ""
 
 #: components/modal/modals/ChannelToggleMature.tsx
 #~ msgid "Keep as is"
@@ -2463,12 +2593,20 @@ msgstr ""
 msgid "Level {0}"
 msgstr ""
 
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Level 1 unlocks at 2 boosts, level 2 at 5, and level 3 at 10."
+msgstr ""
+
 #: src/index.tsx
 msgid "Level up!"
 msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Light"
+msgstr ""
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Like"
 msgstr ""
 
 #: components/app/interface/settings/server/Page.tsx
@@ -2507,6 +2645,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Loading servers..."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Loading subscription requests..."
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
@@ -2858,6 +3000,10 @@ msgstr ""
 msgid "New to the server"
 msgstr ""
 
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Next level at"
+msgstr ""
+
 #: components/modal/modals/ServerIdentity.tsx
 msgid "Nickname"
 msgstr "Takma Ad"
@@ -2866,8 +3012,17 @@ msgstr "Takma Ad"
 msgid "No channels"
 msgstr ""
 
+#: src/interface/channels/forum/ForumChannel.tsx
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "No details provided."
+msgstr ""
+
 #: components/app/interface/settings/user/Admin.tsx
 msgid "No Discovery submissions"
+msgstr ""
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "No discussions have been posted yet."
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
@@ -2906,6 +3061,10 @@ msgstr ""
 msgid "No servers or bots found."
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "No subscription requests"
+msgstr ""
+
 #: src/interface/Tailslets.tsx
 msgid "No Tailslets have been posted yet."
 msgstr ""
@@ -2940,6 +3099,10 @@ msgstr "Hiçbiri"
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Normal"
 #~ msgstr ""
+
+#: src/interface/GiftRedeem.tsx
+msgid "Not now"
+msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Not of minimum age to use the platform"
@@ -3024,6 +3187,10 @@ msgstr "Bir kez silindikten sonra geri dönüşü olmayacaktır."
 msgid "One of the first 1000 users!"
 msgstr ""
 
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "One-time boost purchases will be available later."
+msgstr ""
+
 #: src/interface/Friends.tsx
 #: src/interface/navigation/servers/UserMenu.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
@@ -3047,6 +3214,10 @@ msgstr ""
 
 #: components/app/menus/ChannelContextMenu.tsx
 msgid "Open channel settings"
+msgstr ""
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Open discussion"
 msgstr ""
 
 #: components/app/menus/MessageContextMenu.tsx
@@ -3190,6 +3361,18 @@ msgstr ""
 msgid "Post a video"
 msgstr ""
 
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Post details"
+msgstr ""
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Post discussion"
+msgstr ""
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Post title"
+msgstr ""
+
 #: src/interface/Videos.tsx
 msgid "Post video"
 msgstr ""
@@ -3201,6 +3384,22 @@ msgstr ""
 #: components/app/interface/settings/UserSettings.tsx
 #~ msgid "Premium"
 #~ msgstr ""
+
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "Premium benefits:"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Premium duration (days)"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Premium gifts"
+msgstr ""
+
+#: components/modal/modals/Error2.tsx
+msgid "Premium supports attachments up to 2 GB."
+msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Primary"
@@ -3345,6 +3544,26 @@ msgstr "Kurtarma Kodu"
 msgid "Recovery Codes"
 msgstr ""
 
+#: src/interface/GiftRedeem.tsx
+msgid "Redeem"
+msgstr ""
+
+#: components/ui/components/features/messaging/elements/Embed.tsx
+msgid "Redeem gift"
+msgstr ""
+
+#: src/interface/GiftRedeem.tsx
+msgid "Redeem TailsTalk 2 Premium"
+msgstr ""
+
+#: src/interface/GiftRedeem.tsx
+msgid "Redeem this one-time gift to receive TailsTalk 2 Premium and its Premium benefits immediately."
+msgstr ""
+
+#: src/interface/GiftRedeem.tsx
+#~ msgid "Redeem this one-time gift to receive TailsTalk 2 Premium and its supporter perks immediately."
+#~ msgstr ""
+
 #: src/interface/navigation/channels/ServerSidebar.tsx
 #: src/interface/navigation/channels/ServerSidebar.tsx
 msgid "Redo onboarding"
@@ -3377,6 +3596,7 @@ msgstr "Uygunluk"
 #: components/modal/modals/RemoveMember.tsx
 #: components/modal/modals/AccountSwitcher.tsx
 #: components/app/interface/settings/user/Admin.tsx
+#: components/app/interface/settings/server/Boosts.tsx
 msgid "Remove"
 msgstr ""
 
@@ -3429,6 +3649,11 @@ msgstr ""
 msgid "Rep TailsTalk 2 using Discord rich presence."
 msgstr ""
 
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Replies"
+msgstr ""
+
+#: src/interface/channels/forum/ForumChannel.tsx
 #: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 #: components/ui/components/features/messaging/elements/MessageToolbar.tsx
 #: components/app/menus/MessageContextMenu.tsx
@@ -3468,6 +3693,11 @@ msgstr ""
 
 #: components/app/interface/settings/user/FeatureRequests.tsx
 msgid "Request a feature"
+msgstr ""
+
+#: components/modal/modals/CashPayment.tsx
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+msgid "Request cash payment"
 msgstr ""
 
 #: components/auth/src/flows/FlowResend.tsx
@@ -3526,12 +3756,20 @@ msgstr ""
 msgid "Return to account settings"
 msgstr ""
 
+#: src/interface/GiftRedeem.tsx
+msgid "Return to TailsTalk 2"
+msgstr ""
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Return to voice channel"
 msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Revenge or underage pornography"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Review cash payment requests and update their status."
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
@@ -3686,6 +3924,10 @@ msgstr ""
 msgid "See an overview of activity and membership in your server."
 msgstr ""
 
+#: components/modal/modals/Error2.tsx
+msgid "See Premium"
+msgstr ""
+
 #: components/app/interface/settings/user/Feedback.tsx
 #~ msgid "See what we're currently working on."
 #~ msgstr ""
@@ -3823,6 +4065,11 @@ msgstr ""
 msgid "Server Banner"
 msgstr ""
 
+#: components/app/interface/settings/ServerSettings.tsx
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Server boosts"
+msgstr ""
+
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Server Default"
 msgstr ""
@@ -3837,6 +4084,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/profile/EditProfile.tsx
 msgid "Server Identities"
+msgstr ""
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Server level"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
@@ -3927,6 +4178,18 @@ msgstr ""
 #~ msgid "Share the webpage you are viewing through the TailsTalk 2 helper extension. You can turn this off at any time."
 #~ msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Share this one-time link:"
+msgstr ""
+
+#: components/app/interface/settings/user/Advanced.tsx
+#~ msgid "Show advertisements"
+#~ msgstr ""
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Show boost progress to members"
+msgstr ""
+
 #: components/app/interface/settings/user/Native.tsx
 msgid "Show corrections and suggestions as you type."
 msgstr ""
@@ -3975,6 +4238,10 @@ msgstr ""
 msgid "Slowmode off"
 msgstr ""
 
+#: components/ui/components/features/messaging/elements/Embed.tsx
+msgid "Someone sent you a TailsTalk 2 Premium gift."
+msgstr ""
+
 #: components/modal/modals/EditEmail.tsx
 msgid "someone@example.com"
 msgstr ""
@@ -4019,6 +4286,14 @@ msgstr "Konuş"
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Spellchecker"
+msgstr ""
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Start a discussion"
+msgstr ""
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Start a discussion and keep replies together."
 msgstr ""
 
 #: src/interface/channels/text/TextChannel.tsx
@@ -4098,16 +4373,21 @@ msgid "Submit to Discover"
 msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "Subscribe to receive the TailsTalk Supporter badge with TailsTalk 2 Premium. Stripe handles payment securely; TailsTalk 2 never sees your card details."
+msgid "Subscribe to receive the TailsTalk 2 Premium badge with TailsTalk 2 Premium. Stripe handles payment securely; TailsTalk 2 never sees your card details."
 msgstr ""
+
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+#~ msgid "Subscribe to receive the TailsTalk Supporter badge with TailsTalk 2 Premium. Stripe handles payment securely; TailsTalk 2 never sees your card details."
+#~ msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
 msgid "Subscribe with Stripe"
 msgstr ""
 
-#: components/app/interface/settings/UserSettings.tsx
-#~ msgid "Subscriptions"
-#~ msgstr ""
+#: components/app/interface/settings/user/Admin.tsx
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Subscriptions"
+msgstr ""
 
 #: components/app/interface/settings/user/FeatureRequests.tsx
 msgid "Suggest ideas for TailsTalk 2 and track their review status."
@@ -4126,16 +4406,20 @@ msgstr ""
 #~ msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "Support TailsTalk 2 and unlock Premium benefits."
-msgstr ""
+#~ msgid "Support TailsTalk 2 and unlock Premium benefits."
+#~ msgstr ""
 
 #: src/interface/Home.tsx
 #~ msgid "Support the project by donating - thank you!"
 #~ msgstr "Bağış yaparak projeyi destekleyin - teşekkürler!"
 
-#: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "Supporter features:"
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Support this server and unlock optional cosmetic perks."
 msgstr ""
+
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+#~ msgid "Supporter features:"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Surface"
@@ -4229,6 +4513,10 @@ msgstr ""
 #: components/app/interface/settings/user/subscriptions/EditSubscription.tsx
 #~ msgid "TailsTalk 2 PREMIUM"
 #~ msgstr ""
+
+#: components/ui/components/features/messaging/elements/Embed.tsx
+msgid "TailsTalk 2 Premium Gift"
+msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "TailsTalk 2 will start in the system tray."
@@ -4385,6 +4673,10 @@ msgstr ""
 msgid "This file type is not allowed."
 msgstr ""
 
+#: src/interface/GiftRedeem.tsx
+msgid "This gift is invalid, expired, or already redeemed."
+msgstr ""
+
 #. placeholder {0}: err.max
 #: components/i18n/errors.ts
 msgid "This group is too large, you can have up to {0} users."
@@ -4392,6 +4684,10 @@ msgstr ""
 
 #: components/i18n/errors.ts
 msgid "This has already been sent."
+msgstr ""
+
+#: components/modal/modals/CancelPremium.tsx
+msgid "This immediately cancels your TailsTalk 2 Premium subscription and removes Premium access and its badge."
 msgstr ""
 
 #: components/ui/components/features/messaging/elements/ConversationStart.tsx
@@ -4495,12 +4791,28 @@ msgstr ""
 msgid "Trending GIFs"
 msgstr ""
 
+#: components/app/Advertisements.tsx
+#~ msgid "Turn off advertisements"
+#~ msgstr ""
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Unable to add a boost right now."
+msgstr ""
+
 #: components/app/interface/settings/server/Backup.tsx
 msgid "Unable to create a server backup."
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
+msgid "Unable to create gift."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
 msgid "Unable to create invite."
+msgstr ""
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Unable to create this forum post right now. Please try again."
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
@@ -4527,6 +4839,10 @@ msgstr ""
 msgid "Unable to load feature requests right now."
 msgstr ""
 
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Unable to load forum posts right now. Please try again."
+msgstr ""
+
 #: src/interface/Tailslets.tsx
 msgid "Unable to load Tailslets right now. Please try again."
 msgstr ""
@@ -4547,6 +4863,10 @@ msgstr ""
 msgid "Unable to publish this Tailslet right now. Please try again."
 msgstr ""
 
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Unable to remove this boost right now."
+msgstr ""
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Unable to remove this theme right now."
 msgstr ""
@@ -4561,6 +4881,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/FeatureRequests.tsx
 msgid "Unable to submit this feature request right now."
+msgstr ""
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Unable to update boost display settings right now."
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
@@ -4594,6 +4918,12 @@ msgstr ""
 
 #: components/markdown/plugins/anchors.tsx
 msgid "Unknown Server"
+msgstr ""
+
+#: src/interface/channels/forum/ForumChannel.tsx
+#: src/interface/channels/forum/ForumChannel.tsx
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Unknown user"
 msgstr ""
 
 #: components/app/interface/settings/user/subscriptions/EditSubscription.tsx
@@ -4644,6 +4974,11 @@ msgstr ""
 #: components/app/menus/ServerContextMenu.tsx
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Until I turn it back on"
+msgstr ""
+
+#: src/interface/channels/forum/ForumChannel.tsx
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Untitled discussion"
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -4840,8 +5175,8 @@ msgstr ""
 #~ msgstr ""
 
 #: components/modal/modals/CreateChannel.tsx
-msgid "Voice Channel"
-msgstr "Ses Kanalı"
+#~ msgid "Voice Channel"
+#~ msgstr "Ses Kanalı"
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Voice Processing"
@@ -4877,6 +5212,10 @@ msgstr ""
 
 #: components/modal/modals/TransferServerOwnership.tsx
 msgid "WARNING: You may lose access to owner-only server settings immediately after the transfer."
+msgstr ""
+
+#: components/modal/modals/CancelPremium.tsx
+msgid "WARNING! THIS IS A GIFTED SUBSCRIPTION! Are you SURE you want to cancel it?"
 msgstr ""
 
 #. placeholder {0}: u.warnings.length
@@ -4938,6 +5277,10 @@ msgstr "Hoş geldin!"
 msgid "What do you want to share?"
 msgstr ""
 
+#: components/modal/modals/CreateChannel.tsx
+msgid "What should people discuss here?"
+msgstr ""
+
 #: components/modal/modals/Changelog.tsx
 msgid "What's new"
 msgstr ""
@@ -4974,6 +5317,10 @@ msgstr ""
 
 #: components/modal/modals/CreateOrJoinServer.tsx
 msgid "Would you like to create a new server or join an existing one?"
+msgstr ""
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Write a reply"
 msgstr ""
 
 #: components/modal/modals/UserProfile.tsx
@@ -5101,9 +5448,13 @@ msgstr "Bu kanalda mesaj gönderme izniniz yok."
 msgid "You don't have to put @cats.angletonisd.net in this box or your ID is invalid. Please remove it"
 msgstr ""
 
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+#~ msgid "You have an active {0} subscription. Your Supporter badge is enabled.<0><1/>Your subscription is scheduled to end at the end of this billing period.</0>"
+#~ msgstr ""
+
 #. placeholder {0}: subscription().tier
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "You have an active {0} subscription. Your Supporter badge is enabled.<0><1/>Your subscription is scheduled to end at the end of this billing period.</0>"
+msgid "You have an active {0} subscription. Your TailsTalk 2 Premium badge is enabled.<0><1/>Your subscription is scheduled to end at the end of this billing period.</0>"
 msgstr ""
 
 #: components/i18n/errors.ts
@@ -5114,6 +5465,10 @@ msgstr ""
 #~ msgid "You have no OAuth applications yet."
 #~ msgstr ""
 
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "You have not boosted this server."
+msgstr ""
+
 #: components/app/interface/settings/user/FeatureRequests.tsx
 msgid "You have not submitted any feature requests yet."
 msgstr ""
@@ -5122,9 +5477,21 @@ msgstr ""
 msgid "You have this user blocked."
 msgstr ""
 
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "You have used all of your free Premium boosts."
+msgstr ""
+
 #: components/ui/components/features/voice/VoiceStatefulUserIcons.tsx
 msgid "You muted this user."
 msgstr ""
+
+#: src/interface/GiftRedeem.tsx
+msgid "You now have TailsTalk 2 Premium and its Premium benefits."
+msgstr ""
+
+#: src/interface/GiftRedeem.tsx
+#~ msgid "You now have TailsTalk 2 Premium and its supporter perks."
+#~ msgstr ""
 
 #. placeholder {0}: currentLevel()
 #: src/index.tsx
@@ -5189,6 +5556,10 @@ msgstr ""
 #: components/auth/src/flows/FlowVerify.tsx
 msgid "Your account has been verified!"
 msgstr "Hesabınız doğrulandı!"
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Your boosts"
+msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Your bot was submitted for Discovery review."

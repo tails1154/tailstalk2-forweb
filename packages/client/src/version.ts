@@ -1,2 +1,2 @@
 /** Version of the frontend currently being served. */
-export const CURRENT_VERSION = "1.4.22";
+export const CURRENT_VERSION = "1.7.1";
