@@ -15,8 +15,8 @@ import MdDelete from "@material-design-icons/svg/outlined/delete.svg?component-s
 import MdDns from "@material-design-icons/svg/outlined/dns.svg?component-solid";
 import MdExplore from "@material-design-icons/svg/outlined/explore.svg?component-solid";
 import MdHourglassEmpty from "@material-design-icons/svg/outlined/hourglass_empty.svg?component-solid";
-import MdLogout from "@material-design-icons/svg/outlined/logout.svg?component-solid";
 import MdLockReset from "@material-design-icons/svg/outlined/lock_reset.svg?component-solid";
+import MdLogout from "@material-design-icons/svg/outlined/logout.svg?component-solid";
 import MdPeople from "@material-design-icons/svg/outlined/people.svg?component-solid";
 import MdRefresh from "@material-design-icons/svg/outlined/refresh.svg?component-solid";
 import MdReport from "@material-design-icons/svg/outlined/report.svg?component-solid";
@@ -27,8 +27,8 @@ import MdTag from "@material-design-icons/svg/outlined/tag.svg?component-solid";
 import MdTimer from "@material-design-icons/svg/outlined/timer.svg?component-solid";
 import MdWarning from "@material-design-icons/svg/outlined/warning.svg?component-solid";
 
-import { CONFIGURATION } from "@revolt/common";
 import { useClient } from "@revolt/client";
+import { CONFIGURATION } from "@revolt/common";
 import { useModals } from "@revolt/modal";
 import {
   Button,
@@ -50,6 +50,7 @@ type Tab =
   | "discovery"
   | "subscriptions"
   | "gifts"
+  | "decorations"
   | "feature_requests"
   | "whatsnew";
 
@@ -93,6 +94,14 @@ interface CreatedGift {
   id: string;
   url: string;
   duration_days: number;
+}
+
+interface AdminDecoration {
+  id: string;
+  name: string;
+  asset_url: string;
+  price_xp: number;
+  enabled: boolean;
 }
 
 interface AdminReport {
@@ -156,7 +165,11 @@ function authHeader(password: string) {
   return { Authorization: `Basic ${btoa(`tails1154:${password}`)}` };
 }
 
-async function apiFetch<T = unknown>(path: string, password: string, init?: RequestInit): Promise<T> {
+async function apiFetch<T = unknown>(
+  path: string,
+  password: string,
+  init?: RequestInit,
+): Promise<T> {
   const res = await fetch(`${CONFIGURATION.DEFAULT_API_URL}${path}`, {
     ...init,
     headers: {
@@ -328,6 +341,12 @@ export function AdminPanel() {
               <MdStar {...iconSize(16)} /> <Trans>Premium gifts</Trans>
             </TabButton>
             <TabButton
+              active={tab() === "decorations"}
+              onClick={() => setTab("decorations")}
+            >
+              <MdStar {...iconSize(16)} /> <Trans>Decorations</Trans>
+            </TabButton>
+            <TabButton
               active={tab() === "feature_requests"}
               onClick={() => setTab("feature_requests")}
             >
@@ -360,6 +379,9 @@ export function AdminPanel() {
           </Show>
           <Show when={tab() === "gifts"}>
             <GiftsTab password={authToken()} />
+          </Show>
+          <Show when={tab() === "decorations"}>
+            <DecorationsTab password={authToken()} />
           </Show>
           <Show when={tab() === "feature_requests"}>
             <FeatureRequestsTab password={authToken()} />
@@ -681,6 +703,154 @@ function GiftsTab(props: { password: string }) {
               </Button>
             </Column>
           </ReportCard>
+        )}
+      </Show>
+    </Column>
+  );
+}
+
+function DecorationsTab(props: { password: string }) {
+  const { t } = useLingui();
+  const client = useClient();
+  const snackbar = useSnackbar();
+  const [file, setFile] = createSignal<File>();
+  const [name, setName] = createSignal("");
+  const [price, setPrice] = createSignal("0");
+  const [loading, setLoading] = createSignal(false);
+  const [error, setError] = createSignal("");
+  const [decorations, { refetch }] = createResource(
+    () => props.password,
+    (pwd) => apiFetch("/admin/profile-decorations", pwd) as Promise<AdminDecoration[]>,
+  );
+
+  async function createDecoration() {
+    const selectedFile = file();
+    if (!selectedFile || !name().trim()) {
+      setError(t`Choose an image and enter a decoration name.`);
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    try {
+      const assetId = await client().uploadFile(
+        "attachments",
+        selectedFile,
+        CONFIGURATION.DEFAULT_MEDIA_URL,
+      );
+      await apiFetch("/admin/profile-decorations", props.password, {
+        method: "POST",
+        body: JSON.stringify({
+          name: name().trim(),
+          asset_id: assetId,
+          price_xp: Math.max(0, Number(price()) || 0),
+        }),
+      });
+      setFile(undefined);
+      setName("");
+      setPrice("0");
+      await refetch();
+      snackbar.show({ message: t`Decoration added to the catalog.` });
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : t`Unable to create decoration.`,
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <Column gap="md">
+      <Column gap="xs">
+        <Text class={typography({ class: "title", size: "medium" })}>
+          <Trans>Profile decorations</Trans>
+        </Text>
+        <Text
+          class={typography({ class: "body", size: "small" })}
+          style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+        >
+          <Trans>
+            Upload decorations here. Users can buy them with XP and equip them
+            from their profile settings.
+          </Trans>
+        </Text>
+      </Column>
+      <ReportCard>
+        <Column gap="sm">
+          <Text class={typography({ class: "title", size: "small" })}>
+            <Trans>Add a decoration</Trans>
+          </Text>
+          <input
+            type="file"
+            accept="image/png,image/webp,image/gif"
+            onChange={(event) => setFile(event.currentTarget.files?.[0])}
+          />
+          <TextField
+            label={t`Decoration name`}
+            value={name()}
+            onChange={(event) => setName(event.currentTarget.value)}
+          />
+          <TextField
+            type="number"
+            min={0}
+            label={t`XP price`}
+            value={price()}
+            onChange={(event) => setPrice(event.currentTarget.value)}
+          />
+          <Button onPress={createDecoration} isDisabled={loading()}>
+            <Show when={loading()} fallback={<Trans>Add decoration</Trans>}>
+              <CircularProgress />
+            </Show>
+          </Button>
+          <Show when={error()}>
+            <Text style={{ color: "var(--md-sys-color-error)" }}>
+              {error()}
+            </Text>
+          </Show>
+        </Column>
+      </ReportCard>
+      <Show when={decorations.loading}>
+        <LoadingState label={t`Loading decorations...`} />
+      </Show>
+      <Show when={decorations.error}>
+        <ReportCard>
+          <Text style={{ color: "var(--md-sys-color-error)" }}>
+            <Trans>
+              Decorations could not be loaded. Your signed-in account must be a
+              platform moderator.
+            </Trans>
+          </Text>
+        </ReportCard>
+      </Show>
+      <Show when={decorations()}>
+        {(items) => (
+          <Column gap="sm">
+            <Text class={typography({ class: "title", size: "small" })}>
+              <Trans>Catalog</Trans>
+            </Text>
+            <For each={items()}>
+              {(decoration) => (
+                <ReportCard>
+                  <Row gap="md" align>
+                    <img
+                      src={decoration.asset_url}
+                      alt=""
+                      width="48"
+                      height="48"
+                      style={{ "object-fit": "contain" }}
+                    />
+                    <Column gap="xs">
+                      <Text>{decoration.name}</Text>
+                      <Text class={typography({ class: "label" })}>
+                        {decoration.price_xp} XP
+                      </Text>
+                    </Column>
+                  </Row>
+                </ReportCard>
+              )}
+            </For>
+          </Column>
         )}
       </Show>
     </Column>
@@ -1564,7 +1734,9 @@ function UsersTab(props: { password: string }) {
                     </Button>
                   </Show>
                   <Show when={!isLoading(u.id)}>
-                    <Button onPress={() => void generatePasswordResetLink(u.id)}>
+                    <Button
+                      onPress={() => void generatePasswordResetLink(u.id)}
+                    >
                       <MdLockReset {...iconSize(16)} />
                       <Trans>Generate reset link</Trans>
                     </Button>
