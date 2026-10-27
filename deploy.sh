@@ -7,6 +7,7 @@ REMOTE_HOST="tails1154.com"
 REMOTE_PORT="1699"
 REMOTE_USER="tails1154"
 REMOTE_COMPOSE_DIR="/home/tails1154/stoat"
+REMOTE_DEPLOY_DIR="/home/tails1154/.tailstalk2-deploy"
 LOCAL_DIST="packages/client/dist"
 LOCAL_VERSION="packages/client/public/tailstalk2.version"
 LOCAL_VERSION_CGI="scripts/tailstalk2_version.py"
@@ -33,7 +34,14 @@ echo "=== Building stoat.js client library ==="
 pnpm --filter stoat.js exec tsc
 
 echo "=== Building on host ==="
+# Vite can leave hashed assets from earlier builds behind in this workspace.
+# Clear only the generated client output so remote deploys never accumulate
+# stale source maps and old bundles.
+rm -rf "$LOCAL_DIST"
+mkdir -p "$LOCAL_DIST"
 NODE_OPTIONS="--max-old-space-size=4096" pnpm --filter client exec vite build
+echo "=== Removing production source maps ==="
+find "$LOCAL_DIST" -type f -name '*.map' -delete
 
 echo "=== Taring dist ==="
 rm -f "$DIST_ARCHIVE"
@@ -49,32 +57,30 @@ rm -f "$RPC_ARCHIVE"
 )
 
 echo "=== Uploading to $REMOTE_HOST ==="
-scp -P "$REMOTE_PORT" "$DIST_ARCHIVE" "$REMOTE_USER@$REMOTE_HOST:/tmp/stoat-dist.tar.gz"
-scp -P "$REMOTE_PORT" "$LOCAL_VERSION" "$REMOTE_USER@$REMOTE_HOST:/tmp/tailstalk2.version"
-scp -P "$REMOTE_PORT" "$LOCAL_VERSION_CGI" "$REMOTE_USER@$REMOTE_HOST:/tmp/tailstalk2_version.py"
-scp -P "$REMOTE_PORT" "$RPC_ARCHIVE" "$REMOTE_USER@$REMOTE_HOST:/tmp/tailstalk2-rpc-${RPC_VERSION}.zip"
-scp -P "$REMOTE_PORT" "$LOCAL_RPC_DIR/update.xml" "$REMOTE_USER@$REMOTE_HOST:/tmp/tailstalk2-rpc-update.xml"
+ssh -p "$REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" "mkdir -p '$REMOTE_DEPLOY_DIR'"
+scp -P "$REMOTE_PORT" "$DIST_ARCHIVE" "$REMOTE_USER@$REMOTE_HOST:$REMOTE_DEPLOY_DIR/stoat-dist.tar.gz"
+scp -P "$REMOTE_PORT" "$LOCAL_VERSION" "$REMOTE_USER@$REMOTE_HOST:$REMOTE_DEPLOY_DIR/tailstalk2.version"
+scp -P "$REMOTE_PORT" "$LOCAL_VERSION_CGI" "$REMOTE_USER@$REMOTE_HOST:$REMOTE_DEPLOY_DIR/tailstalk2_version.py"
+scp -P "$REMOTE_PORT" "$RPC_ARCHIVE" "$REMOTE_USER@$REMOTE_HOST:$REMOTE_DEPLOY_DIR/tailstalk2-rpc-${RPC_VERSION}.zip"
+scp -P "$REMOTE_PORT" "$LOCAL_RPC_DIR/update.xml" "$REMOTE_USER@$REMOTE_HOST:$REMOTE_DEPLOY_DIR/tailstalk2-rpc-update.xml"
 
 echo "=== Deploying on remote ==="
 ssh -p "$REMOTE_PORT" "$REMOTE_USER@$REMOTE_HOST" "
   set -e
   cd $REMOTE_COMPOSE_DIR
-  rm -rf /tmp/stoat-dist
-  mkdir -p /tmp/stoat-dist
-  tar xzf /tmp/stoat-dist.tar.gz -C /tmp/stoat-dist
-  docker cp /tmp/stoat-dist/. $CONTAINER:/app/dist/
+  rm -rf '$REMOTE_DEPLOY_DIR/stoat-dist'
+  mkdir -p '$REMOTE_DEPLOY_DIR/stoat-dist'
+  tar xzf '$REMOTE_DEPLOY_DIR/stoat-dist.tar.gz' -C '$REMOTE_DEPLOY_DIR/stoat-dist'
+  rm -rf /app/dist/\* /app/dist_injected
+  docker cp '$REMOTE_DEPLOY_DIR/stoat-dist/.' $CONTAINER:/app/dist/
   docker restart $CONTAINER
   mkdir -p /home/tails1154/ecraft
-  cp /tmp/tailstalk2.version /home/tails1154/ecraft/tailstalk2.version
-  install -m 755 /tmp/tailstalk2_version.py /home/tails1154/ecraft/cgi-bin/tailstalk2_version.py
+  cp '$REMOTE_DEPLOY_DIR/tailstalk2.version' /home/tails1154/ecraft/tailstalk2.version
+  install -m 755 '$REMOTE_DEPLOY_DIR/tailstalk2_version.py' /home/tails1154/ecraft/cgi-bin/tailstalk2_version.py
   mkdir -p /home/tails1154/ecraft/tailstalk2-rpc
-  install -m 644 /tmp/tailstalk2-rpc-${RPC_VERSION}.zip /home/tails1154/ecraft/tailstalk2-rpc/tailstalk2-rpc-${RPC_VERSION}.zip
-  install -m 644 /tmp/tailstalk2-rpc-update.xml /home/tails1154/ecraft/tailstalk2-rpc/update.xml
-  rm -rf /tmp/stoat-dist /tmp/stoat-dist.tar.gz
-  rm -f /tmp/tailstalk2_version.py
-  rm -f /tmp/tailstalk2.version
-  rm -f /tmp/tailstalk2-rpc-${RPC_VERSION}.zip
-  rm -f /tmp/tailstalk2-rpc-update.xml
+  install -m 644 '$REMOTE_DEPLOY_DIR/tailstalk2-rpc-${RPC_VERSION}.zip' /home/tails1154/ecraft/tailstalk2-rpc/tailstalk2-rpc-${RPC_VERSION}.zip
+  install -m 644 '$REMOTE_DEPLOY_DIR/tailstalk2-rpc-update.xml' /home/tails1154/ecraft/tailstalk2-rpc/update.xml
+  rm -rf '$REMOTE_DEPLOY_DIR'
 "
 
 echo "=== Done ==="
