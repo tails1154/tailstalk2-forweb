@@ -671,6 +671,10 @@ msgstr ""
 msgid "Avatar"
 msgstr ""
 
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Avatar decoration"
+msgstr ""
+
 #: src/interface/channels/AgeGate.tsx
 #: components/modal/modals/SourceCode.tsx
 #: components/modal/modals/MFAFlow.tsx
@@ -825,6 +829,10 @@ msgstr ""
 #: src/interface/channels/text/MemberSidebar.tsx
 #: components/ui/components/features/profiles/ProfileStatus.tsx
 msgid "Busy"
+msgstr ""
+
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Buy"
 msgstr ""
 
 #: components/modal/modals/CreateBot.tsx
@@ -1578,6 +1586,10 @@ msgstr ""
 msgid "Decline"
 msgstr ""
 
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Decoration name"
+msgstr ""
+
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Default"
 msgstr ""
@@ -1944,6 +1956,10 @@ msgstr ""
 msgid "Email"
 msgstr "ইমেইল"
 
+#: components/ui/components/features/messaging/composition/picker/CompositionMediaPicker.tsx
+msgid "Emoji"
+msgstr ""
+
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
 msgid "Emoji Name"
 msgstr ""
@@ -2046,6 +2062,10 @@ msgstr ""
 #: components/auth/src/flows/Form.tsx
 msgid "Enter your preferred username."
 msgstr "আপোনাৰ ব্যৱহাৰকাৰীনাম প্ৰবিষ্ট কৰক।"
+
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Equip decoration"
+msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
 #~ msgid "Exact HTTPS redirect URI"
@@ -2213,6 +2233,10 @@ msgstr ""
 msgid "Generate Recovery Codes"
 msgstr "পুনৰুদ্ধাৰ কোড সৃষ্টি কৰক"
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Generate reset link"
+msgstr ""
+
 #: components/modal/modals/CreateInvite.tsx
 msgid "Generating invite…"
 msgstr ""
@@ -2227,6 +2251,18 @@ msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
 msgid "Get TailsTalk 2 Premium and unlock Premium benefits."
+msgstr ""
+
+#: src/interface/Home.tsx
+msgid "GIF uploaded and URL copied to your clipboard."
+msgstr ""
+
+#: components/ui/components/features/messaging/composition/picker/CompositionMediaPicker.tsx
+msgid "GIFs"
+msgstr ""
+
+#: src/interface/Home.tsx
+msgid "GIFs must be smaller than 20 MB."
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
@@ -2873,6 +2909,10 @@ msgstr ""
 msgid "Missing permission"
 msgstr ""
 
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Moderator decoration uploader"
+msgstr ""
+
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Monochrome"
 #~ msgstr ""
@@ -3014,6 +3054,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "No channels"
+msgstr ""
+
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "No decoration"
 msgstr ""
 
 #: src/interface/channels/forum/ForumChannel.tsx
@@ -3257,6 +3301,10 @@ msgstr ""
 msgid "Overview"
 msgstr ""
 
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Owned"
+msgstr ""
+
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Owner:"
 msgstr ""
@@ -3279,6 +3327,10 @@ msgstr ""
 #: components/app/interface/settings/user/Account.tsx
 msgid "Password"
 msgstr "পাসওয়ার্ড"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Password reset link generated and copied to your clipboard."
+msgstr ""
 
 #: src/interface/Friends.tsx
 msgid "Pending"
@@ -3327,6 +3379,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 msgid "Play sound"
+msgstr ""
+
+#: src/interface/Home.tsx
+msgid "Please choose a GIF file."
 msgstr ""
 
 #: components/modal/modals/MFAFlow.tsx
@@ -4119,6 +4175,11 @@ msgstr ""
 msgid "Server rules (one per line)"
 msgstr ""
 
+#: src/interface/navigation/channels/ServerSidebar.tsx
+#: src/interface/navigation/channels/ServerSidebar.tsx
+msgid "Server settings"
+msgstr ""
+
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Server:"
 msgstr ""
@@ -4800,8 +4861,8 @@ msgid "Transfer server ownership"
 msgstr ""
 
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
-msgid "Trending GIFs"
-msgstr ""
+#~ msgid "Trending GIFs"
+#~ msgstr ""
 
 #: components/app/Advertisements.tsx
 #~ msgid "Turn off advertisements"
@@ -4903,6 +4964,10 @@ msgstr ""
 msgid "Unable to update server status."
 msgstr ""
 
+#: src/interface/Home.tsx
+msgid "Unable to upload this GIF right now."
+msgstr ""
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Unable to upload this theme right now."
 msgstr ""
@@ -4993,8 +5058,20 @@ msgstr ""
 msgid "Untitled discussion"
 msgstr ""
 
+#: src/interface/Home.tsx
+msgid "Upload a GIF and copy its hosted URL for sharing."
+msgstr ""
+
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Upload avatar decoration"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Upload Files"
+msgstr ""
+
+#: src/interface/Home.tsx
+msgid "Upload to Gifbox"
 msgstr ""
 
 #: components/ui/components/features/messaging/elements/Embed.tsx
@@ -5353,6 +5430,10 @@ msgstr ""
 msgid "XP per message"
 msgstr ""
 
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "XP price"
+msgstr ""
+
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Yes, I’m an AISD student"
@@ -5612,6 +5693,11 @@ msgstr ""
 
 #: components/i18n/errors.ts
 msgid "Your role ranking is too low to take this action."
+msgstr ""
+
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
+msgid "Your server needs at least 2 boosts to unlock a vanity URL."
 msgstr ""
 
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx

@@ -58,6 +58,7 @@ export function UserCard(
           user={props.user}
           member={props.member}
           bannerUrl={query.data?.animatedBannerURL}
+          avatarDecorationUrl={query.data?.avatarDecorationURL}
           onClick={openFull}
         />
 

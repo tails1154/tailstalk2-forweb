@@ -41,6 +41,7 @@ export function UserProfileModal(
           width={3}
           user={props.user}
           bannerUrl={query.data?.animatedBannerURL}
+          avatarDecorationUrl={query.data?.avatarDecorationURL}
           onClick={
             query.data?.banner
               ? () =>

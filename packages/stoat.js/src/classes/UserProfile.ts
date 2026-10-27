@@ -10,6 +10,7 @@ import { File } from "./File.js";
 export class UserProfile {
   readonly content?: string;
   readonly banner?: File;
+  readonly avatarDecoration?: string;
 
   /**
    * Construct Public Bot
@@ -18,6 +19,8 @@ export class UserProfile {
    */
   constructor(client: Client, data: APIUserProfile) {
     this.content = data.content!;
+    this.avatarDecoration = (data as APIUserProfile & { avatar_decoration?: string })
+      .avatar_decoration;
     this.banner = data.background
       ? new File(client, data.background)
       : undefined;
@@ -35,5 +38,10 @@ export class UserProfile {
    */
   get animatedBannerURL(): string | undefined {
     return this.banner?.createFileURL(true);
+  }
+
+  /** URL to the user's avatar decoration. */
+  get avatarDecorationURL(): string | undefined {
+    return this.avatarDecoration;
   }
 }

@@ -671,6 +671,10 @@ msgstr "Automatic Gain Control"
 msgid "Avatar"
 msgstr "Avatar"
 
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Avatar decoration"
+msgstr "Avatar decoration"
+
 #: src/interface/channels/AgeGate.tsx
 #: components/modal/modals/SourceCode.tsx
 #: components/modal/modals/MFAFlow.tsx
@@ -826,6 +830,10 @@ msgstr "Build your theme"
 #: components/ui/components/features/profiles/ProfileStatus.tsx
 msgid "Busy"
 msgstr "Busy"
+
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Buy"
+msgstr "Buy"
 
 #: components/modal/modals/CreateBot.tsx
 msgid "By creating this bot, you agree to the <0>Acceptable Use Policy</0>."
@@ -1578,6 +1586,10 @@ msgstr "Deafen Members"
 msgid "Decline"
 msgstr "Decline"
 
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Decoration name"
+msgstr "Decoration name"
+
 #: components/app/menus/shared/NotificationContextMenu.tsx
 msgid "Default"
 msgstr "Default"
@@ -1944,6 +1956,10 @@ msgstr "Effective <0/> (<1/>)"
 msgid "Email"
 msgstr "Email"
 
+#: components/ui/components/features/messaging/composition/picker/CompositionMediaPicker.tsx
+msgid "Emoji"
+msgstr "Emoji"
+
 #: components/app/interface/settings/server/emojis/EmojiList.tsx
 msgid "Emoji Name"
 msgstr "Emoji Name"
@@ -2046,6 +2062,10 @@ msgstr "Enter your invite code."
 #: components/auth/src/flows/Form.tsx
 msgid "Enter your preferred username."
 msgstr "Enter your preferred username."
+
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Equip decoration"
+msgstr "Equip decoration"
 
 #: components/app/interface/settings/user/OAuth.tsx
 #~ msgid "Exact HTTPS redirect URI"
@@ -2213,6 +2233,10 @@ msgstr "Generate invite"
 msgid "Generate Recovery Codes"
 msgstr "Generate Recovery Codes"
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Generate reset link"
+msgstr "Generate reset link"
+
 #: components/modal/modals/CreateInvite.tsx
 msgid "Generating invite…"
 msgstr "Generating invite…"
@@ -2228,6 +2252,18 @@ msgstr "Get active recovery codes"
 #: components/app/interface/settings/user/SupporterSubscription.tsx
 msgid "Get TailsTalk 2 Premium and unlock Premium benefits."
 msgstr "Get TailsTalk 2 Premium and unlock Premium benefits."
+
+#: src/interface/Home.tsx
+msgid "GIF uploaded and URL copied to your clipboard."
+msgstr "GIF uploaded and URL copied to your clipboard."
+
+#: components/ui/components/features/messaging/composition/picker/CompositionMediaPicker.tsx
+msgid "GIFs"
+msgstr "GIFs"
+
+#: src/interface/Home.tsx
+msgid "GIFs must be smaller than 20 MB."
+msgstr "GIFs must be smaller than 20 MB."
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Gift created"
@@ -2873,6 +2909,10 @@ msgstr "Minimise to Tray"
 msgid "Missing permission"
 msgstr "Missing permission"
 
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Moderator decoration uploader"
+msgstr "Moderator decoration uploader"
+
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Monochrome"
 #~ msgstr "Monochrome"
@@ -3015,6 +3055,10 @@ msgstr "Nickname"
 #: components/app/interface/settings/user/Admin.tsx
 msgid "No channels"
 msgstr "No channels"
+
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "No decoration"
+msgstr "No decoration"
 
 #: src/interface/channels/forum/ForumChannel.tsx
 #: src/interface/channels/forum/ForumChannel.tsx
@@ -3257,6 +3301,10 @@ msgstr "Output Volume"
 msgid "Overview"
 msgstr "Overview"
 
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Owned"
+msgstr "Owned"
+
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Owner:"
 msgstr "Owner:"
@@ -3279,6 +3327,10 @@ msgstr "Pardon User"
 #: components/app/interface/settings/user/Account.tsx
 msgid "Password"
 msgstr "Password"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Password reset link generated and copied to your clipboard."
+msgstr "Password reset link generated and copied to your clipboard."
 
 #: src/interface/Friends.tsx
 msgid "Pending"
@@ -3328,6 +3380,10 @@ msgstr "Platform overview and moderation tools"
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 msgid "Play sound"
 msgstr "Play sound"
+
+#: src/interface/Home.tsx
+msgid "Please choose a GIF file."
+msgstr "Please choose a GIF file."
 
 #: components/modal/modals/MFAFlow.tsx
 msgid "Please confirm this action using the selected method."
@@ -4119,6 +4175,11 @@ msgstr "Server rules"
 msgid "Server rules (one per line)"
 msgstr "Server rules (one per line)"
 
+#: src/interface/navigation/channels/ServerSidebar.tsx
+#: src/interface/navigation/channels/ServerSidebar.tsx
+msgid "Server settings"
+msgstr "Server settings"
+
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Server:"
 msgstr "Server:"
@@ -4800,8 +4861,8 @@ msgid "Transfer server ownership"
 msgstr "Transfer server ownership"
 
 #: components/ui/components/features/messaging/composition/picker/GifPicker.tsx
-msgid "Trending GIFs"
-msgstr "Trending GIFs"
+#~ msgid "Trending GIFs"
+#~ msgstr "Trending GIFs"
 
 #: components/app/Advertisements.tsx
 #~ msgid "Turn off advertisements"
@@ -4903,6 +4964,10 @@ msgstr "Unable to update boost display settings right now."
 msgid "Unable to update server status."
 msgstr "Unable to update server status."
 
+#: src/interface/Home.tsx
+msgid "Unable to upload this GIF right now."
+msgstr "Unable to upload this GIF right now."
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Unable to upload this theme right now."
 msgstr "Unable to upload this theme right now."
@@ -4993,9 +5058,21 @@ msgstr "Until I turn it back on"
 msgid "Untitled discussion"
 msgstr "Untitled discussion"
 
+#: src/interface/Home.tsx
+msgid "Upload a GIF and copy its hosted URL for sharing."
+msgstr "Upload a GIF and copy its hosted URL for sharing."
+
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "Upload avatar decoration"
+msgstr "Upload avatar decoration"
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Upload Files"
 msgstr "Upload Files"
+
+#: src/interface/Home.tsx
+msgid "Upload to Gifbox"
+msgstr "Upload to Gifbox"
 
 #: components/ui/components/features/messaging/elements/Embed.tsx
 msgid "Use"
@@ -5353,6 +5430,10 @@ msgstr "XP leaderboard"
 msgid "XP per message"
 msgstr "XP per message"
 
+#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
+msgid "XP price"
+msgstr "XP price"
+
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Yes, I’m an AISD student"
@@ -5615,6 +5696,11 @@ msgid "Your role ranking is too low to take this action."
 msgstr "Your role ranking is too low to take this action."
 
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
+msgid "Your server needs at least 2 boosts to unlock a vanity URL."
+msgstr "Your server needs at least 2 boosts to unlock a vanity URL."
+
+#: components/app/interface/settings/server/invites/ListServerInvites.tsx
 msgid "Your server was submitted for Discovery review."
 msgstr "Your server was submitted for Discovery review."
 
@@ -5629,39 +5715,3 @@ msgstr "Your TailsTalk 2 Premium subscription is being activated. You can return
 #: components/i18n/errors.ts
 msgid "Your user has already been created? Try logging in again or refreshing the app."
 msgstr "Your user has already been created? Try logging in again or refreshing the app."
-
-msgid "GIFs"
-msgstr "GIFs"
-
-msgid "Emoji"
-msgstr "Emoji"
-
-msgid "Please choose a GIF file."
-msgstr "Please choose a GIF file."
-
-msgid "GIFs must be smaller than 20 MB."
-msgstr "GIFs must be smaller than 20 MB."
-
-msgid "GIF uploaded and URL copied to your clipboard."
-msgstr "GIF uploaded and URL copied to your clipboard."
-
-msgid "Unable to upload this GIF right now."
-msgstr "Unable to upload this GIF right now."
-
-msgid "Upload a GIF and copy its hosted URL for sharing."
-msgstr "Upload a GIF and copy its hosted URL for sharing."
-
-msgid "Upload to Gifbox"
-msgstr "Upload to Gifbox"
-
-msgid "Password reset link generated and copied to your clipboard."
-msgstr "Password reset link generated and copied to your clipboard."
-
-msgid "Generate reset link"
-msgstr "Generate reset link"
-msgid "Your server needs at least 2 boosts to unlock a vanity URL."
-msgstr "Your server needs at least 2 boosts to unlock a vanity URL."
-
-msgid "Server settings"
-msgstr "Server settings"
-

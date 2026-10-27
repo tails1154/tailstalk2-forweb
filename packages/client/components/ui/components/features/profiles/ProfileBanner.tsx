@@ -13,6 +13,7 @@ export function ProfileBanner(props: {
   user: User;
   member?: ServerMember;
   bannerUrl?: string;
+  avatarDecorationUrl?: string;
   onClick?: (e: MouseEvent) => void;
   onClickAvatar?: (e: MouseEvent) => void;
   width: 2 | 3;
@@ -51,14 +52,19 @@ export function ProfileBanner(props: {
       </Show>
 
       <Row align gap="lg">
-        <Avatar
-          src={props.user.animatedAvatarURL}
-          size={48}
-          holepunch="bottom-right"
-          onClick={props.onClickAvatar}
-          interactive={props.user.avatar && !!props.onClickAvatar}
-          overlay={<UserStatus.Graphic status={props.user.presence} />}
-        />
+        <AvatarHolder>
+          <Avatar
+            src={props.user.animatedAvatarURL}
+            size={48}
+            holepunch="bottom-right"
+            onClick={props.onClickAvatar}
+            interactive={props.user.avatar && !!props.onClickAvatar}
+            overlay={<UserStatus.Graphic status={props.user.presence} />}
+          />
+          <Show when={props.avatarDecorationUrl}>
+            <AvatarDecoration src={props.avatarDecorationUrl} alt="" aria-hidden="true" />
+          </Show>
+        </AvatarHolder>
         <UserShort>
           <Show
             when={
@@ -119,6 +125,22 @@ const Banner = styled("div", {
         cursor: "pointer",
       },
     },
+  },
+});
+
+const AvatarHolder = styled("div", {
+  base: { position: "relative", width: "60px", height: "60px", display: "grid", placeItems: "center" },
+});
+
+const AvatarDecoration = styled("img", {
+  base: {
+    position: "absolute",
+    inset: 0,
+    width: "60px",
+    height: "60px",
+    objectFit: "contain",
+    pointerEvents: "none",
+    zIndex: 2,
   },
 });
 
