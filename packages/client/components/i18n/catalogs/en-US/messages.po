@@ -5578,6 +5578,27 @@ msgstr ""
 
 msgid "GIFs"
 msgstr ""
+
+msgid "Emoji"
+msgstr ""
+
+msgid "Please choose a GIF file."
+msgstr ""
+
+msgid "GIFs must be smaller than 20 MB."
+msgstr ""
+
+msgid "GIF uploaded and URL copied to your clipboard."
+msgstr ""
+
+msgid "Unable to upload this GIF right now."
+msgstr ""
+
+msgid "Upload a GIF and copy its hosted URL for sharing."
+msgstr ""
+
+msgid "Upload to Gifbox"
+msgstr ""
 msgid "Your server needs at least 2 boosts to unlock a vanity URL."
 msgstr ""
 

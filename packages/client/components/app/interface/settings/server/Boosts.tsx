@@ -134,8 +134,8 @@ export default function ServerBoosts(props: ServerSettingsProps) {
               <Row gap="xl" wrap>
                 <Stat label={t`Boosts`} value={data().boost_count} />
                 <Stat label={t`Server level`} value={data().level} />
-                <Show when={data().next_level !== undefined}>
-                  <Stat label={t`Next level at`} value={data().next_level!} />
+                <Show when={data().next_level != null}>
+                  <Stat label={t`Next level at`} value={data().next_level} />
                 </Show>
               </Row>
 
@@ -244,10 +244,10 @@ function progressPercent(data: ServerBoostSummary) {
   );
 }
 
-function Stat(props: { label: string; value: number }) {
+function Stat(props: { label: string; value?: number | null }) {
   return (
     <Column gap="xs">
-      <Text class="title" size="large">{props.value.toLocaleString()}</Text>
+      <Text class="title" size="large">{(props.value ?? 0).toLocaleString()}</Text>
       <Text>{props.label}</Text>
     </Column>
   );

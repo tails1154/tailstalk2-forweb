@@ -1,6 +1,6 @@
-import { Match, Show, Switch } from "solid-js";
+import { Match, Show, Switch, createSignal } from "solid-js";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { PublicChannelInvite } from "stoat.js";
 import { css, cva } from "styled-system/css";
 import { styled } from "styled-system/jsx";
@@ -8,6 +8,7 @@ import { styled } from "styled-system/jsx";
 import { IS_DEV, useClient } from "@revolt/client";
 import { useModals } from "@revolt/modal";
 import { useNavigate } from "@revolt/routing";
+import { CONFIGURATION } from "@revolt/common";
 import {
   Button,
   CategoryButton,
@@ -15,10 +16,12 @@ import {
   Header,
   iconSize,
   main,
+  useSnackbar,
 } from "@revolt/ui";
 
 import MdAddCircle from "@material-design-icons/svg/filled/add_circle.svg?component-solid";
 import MdExplore from "@material-design-icons/svg/filled/explore.svg?component-solid";
+import MdFileUpload from "@material-design-icons/svg/filled/file_upload.svg?component-solid";
 import MdGroups3 from "@material-design-icons/svg/filled/groups_3.svg?component-solid";
 import MdHome from "@material-design-icons/svg/filled/home.svg?component-solid";
 
@@ -86,13 +89,71 @@ const SeparatedColumn = styled(Column, {
   },
 });
 
+const GIFBOX_API = `${new URL(CONFIGURATION.DEFAULT_API_URL).origin}/gifbox`;
+
 /**
  * Home page
  */
 export function HomePage() {
+  const { t } = useLingui();
   const { openModal } = useModals();
+  const snackbar = useSnackbar();
   const navigate = useNavigate();
   const client = useClient();
+  const [uploadingGif, setUploadingGif] = createSignal(false);
+  let gifInput!: HTMLInputElement;
+
+  async function uploadGif(file?: File) {
+    if (!file) return;
+    gifInput.value = "";
+
+    if (file.type !== "image/gif") {
+      snackbar.show({
+        message: t`Please choose a GIF file.`,
+        placement: "bottom",
+        closeable: true,
+      });
+      return;
+    }
+
+    if (file.size > 20 * 1024 * 1024) {
+      snackbar.show({
+        message: t`GIFs must be smaller than 20 MB.`,
+        placement: "bottom",
+        closeable: true,
+      });
+      return;
+    }
+
+    setUploadingGif(true);
+    try {
+      const body = new FormData();
+      body.append("file", file);
+      const [authHeader, authValue] = client().authenticationHeader;
+      const response = await fetch(`${GIFBOX_API}/upload`, {
+        method: "POST",
+        headers: { [authHeader]: authValue },
+        body,
+      });
+      if (!response.ok) throw new Error(`Gifbox upload failed (${response.status})`);
+      const result = (await response.json()) as { url: string };
+      const url = new URL(result.url, GIFBOX_API).toString();
+      await navigator.clipboard.writeText(url);
+      snackbar.show({
+        message: t`GIF uploaded and URL copied to your clipboard.`,
+        placement: "bottom",
+        closeable: true,
+      });
+    } catch {
+      snackbar.show({
+        message: t`Unable to upload this GIF right now.`,
+        placement: "bottom",
+        closeable: true,
+      });
+    } finally {
+      setUploadingGif(false);
+    }
+  }
 
   const isInLounge =
     client()!.servers.get("01F7ZSBSFHQ8TA81725KQCSDDP") !== undefined;
@@ -151,8 +212,25 @@ export function HomePage() {
             </CategoryButton>
           </SeparatedColumn>
           <SeparatedColumn>
+            <CategoryButton
+              onClick={() => gifInput.click()}
+              description={
+                <Trans>Upload a GIF and copy its hosted URL for sharing.</Trans>
+              }
+              icon={<MdFileUpload />}
+              disabled={uploadingGif()}
+            >
+              <Trans>Upload to Gifbox</Trans>
+            </CategoryButton>
           </SeparatedColumn>
         </Buttons>
+        <input
+          ref={gifInput}
+          type="file"
+          accept="image/gif,.gif"
+          hidden
+          onChange={(event) => void uploadGif(event.currentTarget.files?.[0])}
+        />
         <Show when={IS_DEV}>
           <Button onPress={() => navigate("/dev")}>
             Open Development Page

@@ -154,6 +154,8 @@ function Categories(props: { headers: Record<string, string> }) {
         action: category.title,
       }));
     },
+    retry: false,
+    staleTime: 10 * 60 * 1000,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   }));
@@ -162,7 +164,7 @@ function Categories(props: { headers: Record<string, string> }) {
     queryKey: ["trendingGif1"],
     queryFn: async () => {
       const response = (await fetchGifbox(
-        "/featured?locale=en_US&limit=1",
+        "/trending?locale=en_US&limit=1",
         props.headers,
       )) as { results: GifboxResult[] };
       const result = response.results[0];
@@ -171,6 +173,8 @@ function Categories(props: { headers: Record<string, string> }) {
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     initialData: null,
+    retry: false,
+    staleTime: 10 * 60 * 1000,
   }));
 
   const items = createMemo(() => {
@@ -268,6 +272,8 @@ function GifSearch(props: {
       )) as { results: GifboxResult[] };
       return response.results.map((result) => ({ url: gifUrl(result) }));
     },
+    retry: false,
+    staleTime: 60 * 1000,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   }));

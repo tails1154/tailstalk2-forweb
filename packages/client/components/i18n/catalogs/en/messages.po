@@ -5632,6 +5632,27 @@ msgstr "Your user has already been created? Try logging in again or refreshing t
 
 msgid "GIFs"
 msgstr "GIFs"
+
+msgid "Emoji"
+msgstr "Emoji"
+
+msgid "Please choose a GIF file."
+msgstr "Please choose a GIF file."
+
+msgid "GIFs must be smaller than 20 MB."
+msgstr "GIFs must be smaller than 20 MB."
+
+msgid "GIF uploaded and URL copied to your clipboard."
+msgstr "GIF uploaded and URL copied to your clipboard."
+
+msgid "Unable to upload this GIF right now."
+msgstr "Unable to upload this GIF right now."
+
+msgid "Upload a GIF and copy its hosted URL for sharing."
+msgstr "Upload a GIF and copy its hosted URL for sharing."
+
+msgid "Upload to Gifbox"
+msgstr "Upload to Gifbox"
 msgid "Your server needs at least 2 boosts to unlock a vanity URL."
 msgstr "Your server needs at least 2 boosts to unlock a vanity URL."
 
