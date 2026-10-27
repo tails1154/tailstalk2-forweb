@@ -13,13 +13,9 @@ export function ServerInfoModal(
   const client = useClient();
   const { openModal } = useModals();
 
-  const canOpenSettings = () =>
-    props.server.orPermission(
-      "ManageServer",
-      "ManageCustomisation",
-      "ManageRole",
-      "ManagePermissions",
-    );
+  // Members can open the settings shell to view/assign boosts. Individual
+  // management sections remain hidden unless the member has permission.
+  const canOpenSettings = () => true;
 
   return (
     <Dialog
