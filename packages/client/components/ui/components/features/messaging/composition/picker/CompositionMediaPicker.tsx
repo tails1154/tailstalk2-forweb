@@ -4,6 +4,9 @@ import {
   JSX,
   Ref,
   Setter,
+  Match,
+  Show,
+  Switch,
   createContext,
   createSignal,
   onCleanup,
@@ -18,8 +21,10 @@ import { styled } from "styled-system/jsx";
 
 import { Button } from "@revolt/ui/components/design";
 import { Row } from "@revolt/ui/components/layout";
+import { Trans } from "@lingui-solid/solid/macro";
 
 import { EmojiPicker } from "./EmojiPicker";
+import { GifPicker } from "./GifPicker";
 
 interface Props {
   /**
@@ -49,7 +54,7 @@ export const CompositionMediaPickerContext = createContext(
 
 export function CompositionMediaPicker(props: Props) {
   const [anchor, setAnchor] = createSignal<HTMLElement>();
-  const [show, setShow] = createSignal<"emoji">();
+  const [show, setShow] = createSignal<"emoji" | "gif">();
 
   return (
     <CompositionMediaPickerContext.Provider value={props}>
@@ -85,8 +90,8 @@ export function CompositionMediaPicker(props: Props) {
 function Picker(
   props: Pick<Props, "onMessage" | "onTextReplacement"> & {
     anchor: Accessor<HTMLElement | undefined>;
-    show: Accessor<"emoji" | undefined>;
-    setShow: Setter<"emoji" | undefined>;
+    show: Accessor<"emoji" | "gif" | undefined>;
+    setShow: Setter<"emoji" | "gif" | undefined>;
   },
 ) {
   const [floating, setFloating] = createSignal<HTMLDivElement>();
@@ -119,11 +124,25 @@ function Picker(
             onPress={() => props.setShow("emoji")}
             group="standard"
           >
-            Emoji
+            <Trans>Emoji</Trans>
+          </Button>
+          <Button
+            groupActive={props.show() === "gif"}
+            onPress={() => props.setShow("gif")}
+            group="standard"
+          >
+            <Trans>GIFs</Trans>
           </Button>
         </Row>
 
-        <EmojiPicker />
+        <Switch>
+          <Match when={props.show() === "emoji"}>
+            <EmojiPicker />
+          </Match>
+          <Match when={props.show() === "gif"}>
+            <GifPicker />
+          </Match>
+        </Switch>
       </Container>
     </Base>
   );
