@@ -30,6 +30,17 @@ export function ListServerInvites(props: { server: Server }) {
   const { showError, openModal } = useModals();
   const [vanityUrl, setVanityUrl] = createSignal<string>();
   const [vanityCode, setVanityCode] = createSignal("");
+  const boostQuery = useQuery(() => ({
+    queryKey: ["server-boosts", props.server.id],
+    queryFn: async () => {
+      const response = await fetch(
+        `${CONFIGURATION.DEFAULT_API_URL}/servers/${props.server.id}/boosts`,
+        { headers: { [client().authenticationHeader[0]]: client().authenticationHeader[1] } },
+      );
+      if (!response.ok) return undefined;
+      return (await response.json()) as { boost_count: number };
+    },
+  }));
   const query = useQuery(() => ({
     queryKey: ["invites", props.server.id],
     queryFn: () => props.server.fetchInvites() as Promise<ServerInvite[]>,
@@ -63,6 +74,10 @@ export function ListServerInvites(props: { server: Server }) {
   }
 
   async function createVanity() {
+    if ((boostQuery.data?.boost_count ?? 0) < 2) {
+      showError(new Error(t`Your server needs at least 2 boosts to unlock a vanity URL.`));
+      return;
+    }
     const code = vanityCode().trim().toLowerCase();
     if (!code) return;
 
@@ -135,6 +150,9 @@ export function ListServerInvites(props: { server: Server }) {
       <Button group="standard" onPress={createVanity}>
         <Trans>Create vanity URL</Trans>
       </Button>
+      <Text size="small">
+        <Trans>Your server needs at least 2 boosts to unlock a vanity URL.</Trans>
+      </Text>
       <Button group="standard" onPress={submitToDiscovery}>
         <Trans>Submit server to Discovery</Trans>
       </Button>

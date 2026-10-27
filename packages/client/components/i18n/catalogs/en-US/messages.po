@@ -5575,3 +5575,6 @@ msgstr ""
 #: components/i18n/errors.ts
 msgid "Your user has already been created? Try logging in again or refreshing the app."
 msgstr ""
+msgid "Your server needs at least 2 boosts to unlock a vanity URL."
+msgstr ""
+
