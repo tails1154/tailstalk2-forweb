@@ -18,41 +18,42 @@ import {
   TextField,
   typography,
 } from "@revolt/ui/components/design";
+import { useClient } from "@revolt/client";
 
 import { CompositionMediaPickerContext } from "./CompositionMediaPicker";
 import { CONFIGURATION } from "@revolt/common";
 
-const GIF_API = `${CONFIGURATION.DEFAULT_API_URL}/gifs`;
-const GIF_PROXY_API = `${CONFIGURATION.DEFAULT_API_URL}/gif`;
-const GIF_ACTIONS = [
-  "angry",
-  "blush",
-  "cry",
-  "dance",
-  "happy",
-  "hug",
-  "kiss",
-  "laugh",
-  "pat",
-  "slap",
-  "smile",
-  "wave",
-] as const;
+const GIFBOX_API = `${new URL(CONFIGURATION.DEFAULT_API_URL).origin}/gifbox`;
 
 type GifCategory = { title: string; image: string; action: string };
 
 type GifResult = {
   url: string;
-  action: string;
+  action?: string;
 };
 
-async function fetchGif(action: string): Promise<GifResult> {
+type GifboxResult = {
+  url: string;
+  media_formats: Record<string, { url: string }>;
+};
+
+function gifUrl(result: GifboxResult) {
+  return (
+    result.media_formats.tinywebm?.url ??
+    result.media_formats.webm?.url ??
+    result.media_formats.gif?.url ??
+    result.url
+  );
+}
+
+async function fetchGifbox(path: string, headers: Record<string, string>) {
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), 12_000);
   try {
-    const response = await fetch(`${GIF_API}/${action}`, {
+    const response = await fetch(`${GIFBOX_API}${path}`, {
       cache: "no-store",
       signal: controller.signal,
+      headers,
     });
     if (!response.ok) throw new Error(`GIF request failed (${response.status})`);
     return response.json();
@@ -65,8 +66,13 @@ const FilterContext = createContext<(value: string) => void>();
 
 export function GifPicker() {
   const { t } = useLingui();
+  const client = useClient();
   const [filter, setFilter] = createSignal("");
   const [searchQuery, setSearchQuery] = createSignal("");
+  const headers = () => {
+    const [name, value] = client().authenticationHeader;
+    return { [name]: value };
+  };
 
   const commitSearch = () => {
     setSearchQuery(filter().toLowerCase());
@@ -96,12 +102,12 @@ export function GifPicker() {
         <Switch
           fallback={
             <FilterContext.Provider value={setFilter}>
-              <Categories />
+              <Categories headers={headers()} />
             </FilterContext.Provider>
           }
         >
           <Match when={searchQuery()}>
-            <GifSearch query={searchQuery()} />
+            <GifSearch query={searchQuery()} headers={headers()} />
           </Match>
         </Switch>
       </Suspense>
@@ -133,18 +139,21 @@ type CategoryItem =
       gif: GifResult | null;
     };
 
-function Categories() {
+function Categories(props: { headers: Record<string, string> }) {
   let targetElement!: HTMLDivElement;
 
   const trendingCategories = useQuery<GifCategory[]>(() => ({
     queryKey: ["trendingGifCategories"],
-    queryFn: async () =>
-      Promise.all(
-        GIF_ACTIONS.map(async (action) => {
-          const gif = await fetchGif(action);
-          return { title: action, action, image: gif.url };
-        }),
-      ),
+    queryFn: async () => {
+      const categories = (await fetchGifbox(
+        "/categories?locale=en_US",
+        props.headers,
+      )) as { title: string; image: string }[];
+      return categories.map((category) => ({
+        ...category,
+        action: category.title,
+      }));
+    },
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   }));
@@ -152,8 +161,12 @@ function Categories() {
   const trendingGif = useQuery<GifResult | null>(() => ({
     queryKey: ["trendingGif1"],
     queryFn: async () => {
-      const action = GIF_ACTIONS[Math.floor(Math.random() * GIF_ACTIONS.length)];
-      return fetchGif(action);
+      const response = (await fetchGifbox(
+        "/featured?locale=en_US&limit=1",
+        props.headers,
+      )) as { results: GifboxResult[] };
+      const result = response.results[0];
+      return result ? { url: gifUrl(result), action: "trending" } : null;
     },
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -240,23 +253,20 @@ const Category = styled("div", {
   },
 });
 
-function GifSearch(props: { query: string }) {
+function GifSearch(props: {
+  query: string;
+  headers: Record<string, string>;
+}) {
   let targetElement!: HTMLDivElement;
 
   const search = useQuery<GifResult[]>(() => ({
     queryKey: ["gifs", props.query],
     queryFn: async () => {
-      const requestedAction = props.query.toLowerCase();
-      const actions = GIF_ACTIONS.includes(requestedAction as never)
-        ? [requestedAction]
-        : GIF_ACTIONS;
-      const results = await Promise.all(
-        Array.from({ length: 12 }, async (_, index) => {
-          const action = actions[index % actions.length];
-          return fetchGif(action);
-        }),
-      );
-      return results;
+      const response = (await fetchGifbox(
+        `/search?query=${encodeURIComponent(props.query)}&locale=en_US&limit=50`,
+        props.headers,
+      )) as { results: GifboxResult[] };
+      return response.results.map((result) => ({ url: gifUrl(result) }));
     },
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -293,7 +303,7 @@ const GifItem = (props: {
       style={props.style as string}
       tabIndex={props.tabIndex}
       onClick={() =>
-        onMessage(`${GIF_PROXY_API}/${encodeURIComponent(props.item.url)}`)
+        onMessage(props.item.url)
       }
     />
   );
