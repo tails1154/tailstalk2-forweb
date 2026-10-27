@@ -3,6 +3,7 @@ import { Show, createSignal } from "solid-js";
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 
 import { useClient } from "@revolt/client";
+import { requestClientJson } from "../../../../client/customApi";
 import {
   Button,
   CircularProgress,
@@ -28,6 +29,8 @@ type ServerBoostSummary = {
   next_level?: number;
   user_boosts: ServerBoost[];
   available_premium_boosts: number;
+  user_level: number;
+  boost_cost_levels: number;
   is_premium: boolean;
   progress_enabled: boolean;
   can_manage: boolean;
@@ -42,14 +45,22 @@ export default function ServerBoosts(props: ServerSettingsProps) {
   const boosts = useQuery(() => ({
     queryKey: ["server-boosts", props.server.id],
     queryFn: () =>
-      client().api.get(`/servers/${props.server.id}/boosts`) as Promise<ServerBoostSummary>,
+      requestClientJson<ServerBoostSummary>(
+        client().api,
+        "GET",
+        `/servers/${props.server.id}/boosts`,
+      ),
   }));
 
   async function addBoost() {
     if (isBusy()) return;
     setBusy(true);
     try {
-      await client().api.post(`/servers/${props.server.id}/boosts`);
+      await requestClientJson<ServerBoostSummary>(
+        client().api,
+        "POST",
+        `/servers/${props.server.id}/boosts`,
+      );
       await boosts.refetch();
     } catch {
       snackbar.show({
@@ -66,7 +77,11 @@ export default function ServerBoosts(props: ServerSettingsProps) {
     if (isBusy()) return;
     setBusy(true);
     try {
-      await client().api.delete(`/servers/${props.server.id}/boosts/${boostId}`);
+      await requestClientJson<ServerBoostSummary>(
+        client().api,
+        "DELETE",
+        `/servers/${props.server.id}/boosts/${boostId}`,
+      );
       await boosts.refetch();
     } catch {
       snackbar.show({
@@ -83,9 +98,12 @@ export default function ServerBoosts(props: ServerSettingsProps) {
     if (isBusy()) return;
     setBusy(true);
     try {
-      await client().api.patch(`/servers/${props.server.id}/boosts/settings`, {
-        progress_enabled: enabled,
-      });
+      await requestClientJson<ServerBoostSummary>(
+        client().api,
+        "PATCH",
+        `/servers/${props.server.id}/boosts/settings`,
+        { progress_enabled: enabled },
+      );
       await boosts.refetch();
     } catch {
       snackbar.show({
@@ -94,24 +112,6 @@ export default function ServerBoosts(props: ServerSettingsProps) {
         closeable: true,
       });
     } finally {
-      setBusy(false);
-    }
-  }
-
-  async function buyBoost() {
-    if (isBusy()) return;
-    setBusy(true);
-    try {
-      const result = (await client().api.post(
-        `/servers/${props.server.id}/boosts/purchase`,
-      )) as { url: string };
-      window.location.assign(result.url);
-    } catch {
-      snackbar.show({
-        message: t`Boost purchases are not available right now.`,
-        placement: "bottom",
-        closeable: true,
-      });
       setBusy(false);
     }
   }
@@ -210,31 +210,22 @@ export default function ServerBoosts(props: ServerSettingsProps) {
               </Column>
 
               <Column gap="sm">
+                <Text class="title" size="medium">
+                  <Trans>Boost shop</Trans>
+                </Text>
+                <Text>
+                  <Trans>Spend one XP level to buy one server boost. You keep the boost until you remove it.</Trans>
+                </Text>
                 <Button
                   variant="filled"
-                  isDisabled={
-                    isBusy() ||
-                    !data().is_premium ||
-                    data().available_premium_boosts < 1
-                  }
+                  isDisabled={isBusy() || data().user_level <= 1}
                   onPress={() => void addBoost()}
                 >
-                  <Trans>Add a Premium boost</Trans>
+                  <Trans>Spend one XP level to add a boost</Trans>
                 </Button>
-                <Button
-                  variant="outlined"
-                  isDisabled={isBusy()}
-                  onPress={() => void buyBoost()}
-                >
-                  <Trans>Buy a permanent boost</Trans>
-                </Button>
-                <Show when={!data().is_premium}>
-                  <Text><Trans>Active TailsTalk 2 Premium includes 2 free boosts.</Trans></Text>
-                </Show>
-                <Show when={data().is_premium && data().available_premium_boosts < 1}>
-                  <Text><Trans>You have used all of your free Premium boosts.</Trans></Text>
-                </Show>
-                <Text><Trans>One-time boost purchases will be available later.</Trans></Text>
+                <Text>
+                  <Trans>Your current level is {data().user_level}. Each boost costs one level.</Trans>
+                </Text>
               </Column>
             </Column>
           )}

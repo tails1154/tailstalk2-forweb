@@ -404,8 +404,8 @@ msgid "Active boost"
 msgstr "Active boost"
 
 #: components/app/interface/settings/server/Boosts.tsx
-msgid "Active TailsTalk 2 Premium includes 2 free boosts."
-msgstr "Active TailsTalk 2 Premium includes 2 free boosts."
+#~ msgid "Active TailsTalk 2 Premium includes 2 free boosts."
+#~ msgstr "Active TailsTalk 2 Premium includes 2 free boosts."
 
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
 msgid "Active vanity URL"
@@ -422,8 +422,8 @@ msgid "Add a new friend"
 msgstr "Add a new friend"
 
 #: components/app/interface/settings/server/Boosts.tsx
-msgid "Add a Premium boost"
-msgstr "Add a Premium boost"
+#~ msgid "Add a Premium boost"
+#~ msgstr "Add a Premium boost"
 
 #: components/modal/modals/AccountSwitcher.tsx
 msgid "Add account"
@@ -770,6 +770,10 @@ msgstr "Body:"
 #: components/app/interface/settings/server/Boosts.tsx
 msgid "Boost progress"
 msgstr "Boost progress"
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Boost shop"
+msgstr "Boost shop"
 
 #: components/app/interface/settings/ServerSettings.tsx
 #: components/app/interface/settings/server/Boosts.tsx
@@ -3188,8 +3192,8 @@ msgid "One of the first 1000 users!"
 msgstr "One of the first 1000 users!"
 
 #: components/app/interface/settings/server/Boosts.tsx
-msgid "One-time boost purchases will be available later."
-msgstr "One-time boost purchases will be available later."
+#~ msgid "One-time boost purchases will be available later."
+#~ msgstr "One-time boost purchases will be available later."
 
 #: src/interface/Friends.tsx
 #: src/interface/navigation/servers/UserMenu.tsx
@@ -4287,6 +4291,14 @@ msgstr "Speak"
 #: components/app/interface/settings/user/Native.tsx
 msgid "Spellchecker"
 msgstr "Spellchecker"
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Spend one XP level to add a boost"
+msgstr "Spend one XP level to add a boost"
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Spend one XP level to buy one server boost. You keep the boost until you remove it."
+msgstr "Spend one XP level to buy one server boost. You keep the boost until you remove it."
 
 #: src/interface/channels/forum/ForumChannel.tsx
 msgid "Start a discussion"
@@ -5478,8 +5490,8 @@ msgid "You have this user blocked."
 msgstr "You have this user blocked."
 
 #: components/app/interface/settings/server/Boosts.tsx
-msgid "You have used all of your free Premium boosts."
-msgstr "You have used all of your free Premium boosts."
+#~ msgid "You have used all of your free Premium boosts."
+#~ msgstr "You have used all of your free Premium boosts."
 
 #: components/ui/components/features/voice/VoiceStatefulUserIcons.tsx
 msgid "You muted this user."
@@ -5564,6 +5576,11 @@ msgstr "Your boosts"
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Your bot was submitted for Discovery review."
 msgstr "Your bot was submitted for Discovery review."
+
+#. placeholder {0}: data().user_level
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Your current level is {0}. Each boost costs one level."
+msgstr "Your current level is {0}. Each boost costs one level."
 
 #: components/i18n/errors.ts
 #~ msgid "Your discriminator change has been ratelimited, please try again later."

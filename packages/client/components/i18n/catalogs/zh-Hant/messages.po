@@ -400,8 +400,8 @@ msgid "Active boost"
 msgstr ""
 
 #: components/app/interface/settings/server/Boosts.tsx
-msgid "Active TailsTalk 2 Premium includes 2 free boosts."
-msgstr ""
+#~ msgid "Active TailsTalk 2 Premium includes 2 free boosts."
+#~ msgstr ""
 
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
 msgid "Active vanity URL"
@@ -418,8 +418,8 @@ msgid "Add a new friend"
 msgstr ""
 
 #: components/app/interface/settings/server/Boosts.tsx
-msgid "Add a Premium boost"
-msgstr ""
+#~ msgid "Add a Premium boost"
+#~ msgstr ""
 
 #: components/modal/modals/AccountSwitcher.tsx
 msgid "Add account"
@@ -761,6 +761,10 @@ msgstr ""
 
 #: components/app/interface/settings/server/Boosts.tsx
 msgid "Boost progress"
+msgstr ""
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Boost shop"
 msgstr ""
 
 #: components/app/interface/settings/ServerSettings.tsx
@@ -3163,8 +3167,8 @@ msgid "One of the first 1000 users!"
 msgstr ""
 
 #: components/app/interface/settings/server/Boosts.tsx
-msgid "One-time boost purchases will be available later."
-msgstr ""
+#~ msgid "One-time boost purchases will be available later."
+#~ msgstr ""
 
 #: src/interface/Friends.tsx
 #: src/interface/navigation/servers/UserMenu.tsx
@@ -4249,6 +4253,14 @@ msgstr ""
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Spellchecker"
+msgstr ""
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Spend one XP level to add a boost"
+msgstr ""
+
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Spend one XP level to buy one server boost. You keep the boost until you remove it."
 msgstr ""
 
 #: src/interface/channels/forum/ForumChannel.tsx
@@ -5424,8 +5436,8 @@ msgid "You have this user blocked."
 msgstr ""
 
 #: components/app/interface/settings/server/Boosts.tsx
-msgid "You have used all of your free Premium boosts."
-msgstr ""
+#~ msgid "You have used all of your free Premium boosts."
+#~ msgstr ""
 
 #: components/ui/components/features/voice/VoiceStatefulUserIcons.tsx
 msgid "You muted this user."
@@ -5509,6 +5521,11 @@ msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Your bot was submitted for Discovery review."
+msgstr ""
+
+#. placeholder {0}: data().user_level
+#: components/app/interface/settings/server/Boosts.tsx
+msgid "Your current level is {0}. Each boost costs one level."
 msgstr ""
 
 #: components/i18n/errors.ts
