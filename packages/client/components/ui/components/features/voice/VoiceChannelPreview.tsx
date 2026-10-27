@@ -33,7 +33,7 @@ export function VoiceChannelPreview(props: { channel: Channel }) {
  */
 function VariantLive() {
   const voice = useVoice();
-  const users = useUsers(voice.participants);
+  const users = useUsers(voice.participants, true);
 
   return (
     <Base>

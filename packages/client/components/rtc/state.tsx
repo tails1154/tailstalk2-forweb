@@ -63,6 +63,7 @@ type VoicePeer = {
   userId: string;
   username?: string;
   connection: RTCPeerConnection;
+  pendingCandidates: RTCIceCandidateInit[];
 };
 
 type RemoteVoiceStream = { peerId: string; userId: string; stream: MediaStream };
@@ -414,7 +415,13 @@ class Voice {
 
   private async handleVoiceSignal(message: any, channel: Channel, generation: number) {
     if (generation !== this.connectionGeneration) return;
-    if (message.type === "error") throw new Error(`Voice error: ${message.code}`);
+    if (message.type === "error") {
+      const error = new Error(`Voice error: ${message.code}`);
+      this.disconnectCustomVoice();
+      this.#setState("READY");
+      this.onErr(error);
+      return;
+    }
 
     if (message.type === "joined") {
       this.localVoicePeerId = message.peer_id;
@@ -445,20 +452,38 @@ class Voice {
     if (!peer) return;
     if (message.type === "offer") {
       await peer.connection.setRemoteDescription(message.payload);
+      for (const candidate of peer.pendingCandidates.splice(0)) {
+        await peer.connection.addIceCandidate(candidate);
+      }
       const answer = await peer.connection.createAnswer();
       await peer.connection.setLocalDescription(answer);
       this.sendVoiceSignal({ type: "answer", to: message.from, payload: answer });
     } else if (message.type === "answer") {
       await peer.connection.setRemoteDescription(message.payload);
+      for (const candidate of peer.pendingCandidates.splice(0)) {
+        await peer.connection.addIceCandidate(candidate);
+      }
     } else if (message.type === "candidate" && message.payload) {
-      await peer.connection.addIceCandidate(message.payload);
+      if (peer.connection.remoteDescription) {
+        await peer.connection.addIceCandidate(message.payload);
+      } else {
+        peer.pendingCandidates.push(message.payload);
+      }
     }
   }
 
   private async createVoicePeer(info: { peer_id: string; user_id: string; username?: string }, initiator: boolean) {
     if (this.voicePeers.has(info.peer_id)) return;
-    const connection = new RTCPeerConnection();
-    const peer = { id: info.peer_id, userId: info.user_id, username: info.username, connection };
+    const connection = new RTCPeerConnection({
+      iceServers: [{ urls: "stun:stun.cloudflare.com:3478" }],
+    });
+    const peer = {
+      id: info.peer_id,
+      userId: info.user_id,
+      username: info.username,
+      connection,
+      pendingCandidates: [],
+    };
     this.voicePeers.set(info.peer_id, peer);
     this.localVoiceStream?.getTracks().forEach((track) => connection.addTrack(track, this.localVoiceStream!));
     connection.onicecandidate = (event) => {

@@ -12,7 +12,7 @@ import { VoiceCallCardStatus } from "./VoiceCallCardStatus";
 export function VoiceCallCardActiveRoom() {
   const voice = useVoice();
   const { t } = useLingui();
-  const users = useUsers(voice.participants);
+  const users = useUsers(voice.participants, true);
 
   return (
     <View>

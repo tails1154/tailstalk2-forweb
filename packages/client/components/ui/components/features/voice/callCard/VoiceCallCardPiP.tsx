@@ -10,7 +10,7 @@ import { VoiceCallCardStatus } from "./VoiceCallCardStatus";
 
 export function VoiceCallCardPiP() {
   const voice = useVoice();
-  const users = useUsers(voice.participants);
+  const users = useUsers(voice.participants, true);
 
   return (
     <MiniCard>
