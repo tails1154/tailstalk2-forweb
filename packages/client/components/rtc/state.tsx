@@ -4,6 +4,7 @@ import {
   createContext,
   createSignal,
   JSX,
+  onCleanup,
   Setter,
   useContext,
 } from "solid-js";
@@ -53,6 +54,7 @@ type ScreenShareQuality = {
 // Solid can briefly mount two voice contexts, and each one would otherwise be
 // able to call join_call before the other context updates its local state.
 let activeVoiceChannelId: string | undefined;
+let activeVoiceOwner: Voice | undefined;
 
 const VOICE_SIGNALING_URL =
   (import.meta.env.VITE_VOICE_URL as string | undefined) ??
@@ -66,7 +68,11 @@ type VoicePeer = {
   pendingCandidates: RTCIceCandidateInit[];
 };
 
-type RemoteVoiceStream = { peerId: string; userId: string; stream: MediaStream };
+type RemoteVoiceStream = {
+  peerId: string;
+  userId: string;
+  stream: MediaStream;
+};
 
 class Voice {
   #settings: VoiceSettings;
@@ -114,7 +120,15 @@ class Voice {
   private localVoiceStream?: MediaStream;
   private voicePeers = new Map<string, VoicePeer>();
   private localVoicePeerId?: string;
+  private audioContext?: AudioContext;
+  private remoteAudioNodes = new Map<
+    string,
+    { source: MediaStreamAudioSourceNode; gain: GainNode; userId: string }
+  >();
   private explicitVoiceDisconnect = false;
+  private reconnectTimer?: number;
+  private reconnectAttempts = 0;
+  private joinTimeout?: number;
 
   constructor(
     voiceSettings: VoiceSettings,
@@ -167,7 +181,9 @@ class Voice {
 
     this.screenShareTracks = new Set();
 
-    const [remoteStreams, setRemoteStreams] = createSignal<RemoteVoiceStream[]>([]);
+    const [remoteStreams, setRemoteStreams] = createSignal<RemoteVoiceStream[]>(
+      [],
+    );
     this.remoteStreams = remoteStreams;
     this.setRemoteStreams = setRemoteStreams;
 
@@ -197,9 +213,15 @@ class Voice {
     }
 
     if (this.connectingChannelId === channel.id) return;
-    if (activeVoiceChannelId === channel.id) return;
+    if (activeVoiceChannelId === channel.id && activeVoiceOwner === this)
+      return;
+    if (activeVoiceChannelId === channel.id && !activeVoiceOwner) {
+      activeVoiceChannelId = undefined;
+    }
+    if (activeVoiceOwner && activeVoiceOwner !== this) return;
     this.connectingChannelId = channel.id;
     activeVoiceChannelId = channel.id;
+    activeVoiceOwner = this;
 
     // TailsTalk 2 voice uses its own WebRTC mesh and signaling service. Keep
     // this path independent from the legacy LiveKit/voice-ingress stack.
@@ -360,6 +382,10 @@ class Voice {
     this.#setScreenshare(false);
 
     try {
+      // Resume output during the channel-click gesture. Remote tracks arrive
+      // later, after signaling, so hidden media elements may be autoplay-blocked.
+      this.audioContext = new AudioContext();
+      void this.audioContext.resume();
       const [header, token] = this.getClient().authenticationHeader;
       this.localVoiceStream = await navigator.mediaDevices.getUserMedia({
         audio: {
@@ -370,50 +396,117 @@ class Voice {
         },
         video: false,
       });
+      const canSpeak = channel.havePermission("Speak");
       this.localVoiceStream.getAudioTracks().forEach((track) => {
-        track.enabled = this.#settings.micOn && !this.#settings.deafen;
+        track.enabled =
+          canSpeak && this.#settings.micOn && !this.#settings.deafen;
       });
 
       const socket = new WebSocket(VOICE_SIGNALING_URL);
       this.voiceSocket = socket;
+      this.joinTimeout = window.setTimeout(() => {
+        if (
+          generation === this.connectionGeneration &&
+          this.state() === "CONNECTING"
+        ) {
+          socket.close();
+        }
+      }, 10_000);
 
       socket.addEventListener("message", (event) => {
         try {
-          void this.handleVoiceSignal(JSON.parse(event.data as string), channel, generation).catch((error) => this.onErr(error));
+          void this.handleVoiceSignal(
+            JSON.parse(event.data as string),
+            channel,
+            generation,
+          ).catch((error) => this.onErr(error));
         } catch (error) {
           this.onErr(error);
         }
       });
       socket.addEventListener("close", () => {
-        if (!this.explicitVoiceDisconnect && generation === this.connectionGeneration) {
+        if (
+          !this.explicitVoiceDisconnect &&
+          generation === this.connectionGeneration
+        ) {
           this.#setState("DISCONNECTED");
+          this.scheduleVoiceReconnect(channel, generation);
         }
       });
 
       await new Promise<void>((resolve, reject) => {
-        socket.addEventListener("open", () => {
-          socket.send(JSON.stringify({
-            type: "join",
-            room: channel.id,
-            token: header === "X-Bot-Token" ? token : token,
-          }));
-        }, { once: true });
-        socket.addEventListener("error", () => reject(new Error("Voice signaling connection failed")), { once: true });
-        socket.addEventListener("close", () => {
-          if (this.state() === "CONNECTING") reject(new Error("Voice signaling connection closed"));
-        }, { once: true });
+        socket.addEventListener(
+          "open",
+          () => {
+            socket.send(
+              JSON.stringify({
+                type: "join",
+                room: channel.id,
+                token: header === "X-Bot-Token" ? token : token,
+              }),
+            );
+          },
+          { once: true },
+        );
+        socket.addEventListener(
+          "error",
+          () => reject(new Error("Voice signaling connection failed")),
+          { once: true },
+        );
+        socket.addEventListener(
+          "close",
+          () => {
+            if (this.state() === "CONNECTING")
+              reject(new Error("Voice signaling connection closed"));
+          },
+          { once: true },
+        );
       });
     } catch (error) {
       this.disconnectCustomVoice();
       this.#setState("READY");
-      if (activeVoiceChannelId === channel.id) activeVoiceChannelId = undefined;
+      if (activeVoiceOwner === this) {
+        activeVoiceOwner = undefined;
+        activeVoiceChannelId = undefined;
+      }
       this.onErr(error);
     } finally {
-      if (this.connectingChannelId === channel.id) this.connectingChannelId = undefined;
+      if (this.connectingChannelId === channel.id)
+        this.connectingChannelId = undefined;
     }
   }
 
-  private async handleVoiceSignal(message: any, channel: Channel, generation: number) {
+  private scheduleVoiceReconnect(channel: Channel, generation: number) {
+    if (
+      this.explicitVoiceDisconnect ||
+      generation !== this.connectionGeneration
+    ) {
+      return;
+    }
+
+    window.clearTimeout(this.reconnectTimer);
+    const delay = Math.min(30_000, 1_000 * 2 ** this.reconnectAttempts);
+    this.reconnectAttempts = Math.min(this.reconnectAttempts + 1, 5);
+    this.#setState("RECONNECTING");
+    this.reconnectTimer = window.setTimeout(() => {
+      if (
+        this.explicitVoiceDisconnect ||
+        generation !== this.connectionGeneration
+      ) {
+        return;
+      }
+
+      activeVoiceChannelId = undefined;
+      this.connectingChannelId = undefined;
+      void this.connect(channel);
+    }, delay);
+  }
+
+  private async handleVoiceSignal(
+    message: any,
+    channel: Channel,
+    generation: number,
+  ) {
     if (generation !== this.connectionGeneration) return;
     if (message.type === "error") {
       const error = new Error(`Voice error: ${message.code}`);
@@ -424,17 +517,35 @@ class Voice {
     }
 
     if (message.type === "joined") {
+      window.clearTimeout(this.joinTimeout);
+      this.joinTimeout = undefined;
       this.localVoicePeerId = message.peer_id;
-      this.setParticipants([this.getClient().user?.id ?? "", ...message.peers.map((peer: any) => peer.user_id)].filter(Boolean));
+      this.reconnectAttempts = 0;
+      window.clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = undefined;
+      this.setParticipants(
+        [
+          this.getClient().user?.id ?? "",
+          ...message.peers.map((peer: any) => peer.user_id),
+        ].filter(Boolean),
+      );
       this.#setState("CONNECTED");
-      for (const peer of message.peers) await this.createVoicePeer(peer, this.localVoicePeerId! < peer.peer_id);
+      for (const peer of message.peers)
+        await this.createVoicePeer(peer, this.localVoicePeerId! < peer.peer_id);
       this.sound.playSound("userJoinVoice");
       return;
     }
 
     if (message.type === "peer_joined") {
       this.setParticipants((ids) => [...new Set([...ids, message.user_id])]);
-      await this.createVoicePeer({ peer_id: message.peer_id, user_id: message.user_id, username: message.username }, this.localVoicePeerId! < message.peer_id);
+      await this.createVoicePeer(
+        {
+          peer_id: message.peer_id,
+          user_id: message.user_id,
+          username: message.username,
+        },
+        this.localVoicePeerId! < message.peer_id,
+      );
       this.sound.playSound("userJoinVoice");
       return;
     }
@@ -442,7 +553,10 @@ class Voice {
     if (message.type === "peer_left") {
       this.voicePeers.get(message.peer_id)?.connection.close();
       this.voicePeers.delete(message.peer_id);
-      this.setRemoteStreams((streams) => streams.filter((stream) => stream.peerId !== message.peer_id));
+      this.detachRemoteAudio(message.peer_id);
+      this.setRemoteStreams((streams) =>
+        streams.filter((stream) => stream.peerId !== message.peer_id),
+      );
       this.setParticipants((ids) => ids.filter((id) => id !== message.user_id));
       this.sound.playSound("userLeaveVoice");
       return;
@@ -457,7 +571,11 @@ class Voice {
       }
       const answer = await peer.connection.createAnswer();
       await peer.connection.setLocalDescription(answer);
-      this.sendVoiceSignal({ type: "answer", to: message.from, payload: answer });
+      this.sendVoiceSignal({
+        type: "answer",
+        to: message.from,
+        payload: answer,
+      });
     } else if (message.type === "answer") {
       await peer.connection.setRemoteDescription(message.payload);
       for (const candidate of peer.pendingCandidates.splice(0)) {
@@ -472,10 +590,23 @@ class Voice {
     }
   }
 
-  private async createVoicePeer(info: { peer_id: string; user_id: string; username?: string }, initiator: boolean) {
+  private async createVoicePeer(
+    info: { peer_id: string; user_id: string; username?: string },
+    initiator: boolean,
+  ) {
     if (this.voicePeers.has(info.peer_id)) return;
     const connection = new RTCPeerConnection({
-      iceServers: [{ urls: "stun:stun.cloudflare.com:3478" }],
+      iceServers: [
+        { urls: "stun:stun.cloudflare.com:3478" },
+        {
+          urls: [
+            "turn:tails1154.com:9964?transport=udp",
+            "turn:tails1154.com:9964?transport=tcp",
+          ],
+          username: "tt2voice",
+          credential: "f3d0a253f4a1956f9aa068f91f16b99c45a1719b04060ea1",
+        },
+      ],
     });
     const peer = {
       id: info.peer_id,
@@ -485,12 +616,20 @@ class Voice {
       pendingCandidates: [],
     };
     this.voicePeers.set(info.peer_id, peer);
-    this.localVoiceStream?.getTracks().forEach((track) => connection.addTrack(track, this.localVoiceStream!));
+    this.localVoiceStream
+      ?.getTracks()
+      .forEach((track) => connection.addTrack(track, this.localVoiceStream!));
     connection.onicecandidate = (event) => {
-      if (event.candidate) this.sendVoiceSignal({ type: "candidate", to: info.peer_id, payload: event.candidate });
+      if (event.candidate)
+        this.sendVoiceSignal({
+          type: "candidate",
+          to: info.peer_id,
+          payload: event.candidate,
+        });
     };
     connection.ontrack = (event) => {
       const stream = event.streams[0] ?? new MediaStream([event.track]);
+      this.attachRemoteAudio(info.peer_id, info.user_id, stream);
       this.setRemoteStreams((streams) => [
         ...streams.filter((item) => item.peerId !== info.peer_id),
         { peerId: info.peer_id, userId: info.user_id, stream },
@@ -503,16 +642,66 @@ class Voice {
     }
   }
 
+  private attachRemoteAudio(
+    peerId: string,
+    userId: string,
+    stream: MediaStream,
+  ) {
+    if (!this.audioContext) return;
+    this.detachRemoteAudio(peerId);
+    const source = this.audioContext.createMediaStreamSource(stream);
+    const gain = this.audioContext.createGain();
+    source.connect(gain).connect(this.audioContext.destination);
+    this.remoteAudioNodes.set(peerId, { source, gain, userId });
+    this.updateRemoteAudioGains();
+  }
+
+  private detachRemoteAudio(peerId: string) {
+    const node = this.remoteAudioNodes.get(peerId);
+    if (!node) return;
+    node.source.disconnect();
+    node.gain.disconnect();
+    this.remoteAudioNodes.delete(peerId);
+  }
+
+  private updateRemoteAudioGains() {
+    // Older persisted voice settings may not contain per-user maps. Treat
+    // missing maps as empty so receiving a remote track can never crash the
+    // audio pipeline.
+    const userVolumes = this.#settings.userVolumes ?? {};
+    const userMutes = this.#settings.userMutes ?? {};
+    const outputVolume = this.#settings.outputVolume ?? 1;
+    for (const node of this.remoteAudioNodes.values()) {
+      const userVolume = userVolumes[node.userId] ?? 1;
+      const muted =
+        this.#settings.deafen || userMutes[node.userId] === true;
+      node.gain.gain.value = muted
+        ? 0
+        : Math.max(0, Math.min(1, outputVolume * userVolume));
+    }
+  }
+
   private sendVoiceSignal(message: object) {
-    if (this.voiceSocket?.readyState === WebSocket.OPEN) this.voiceSocket.send(JSON.stringify(message));
+    if (this.voiceSocket?.readyState === WebSocket.OPEN)
+      this.voiceSocket.send(JSON.stringify(message));
   }
 
   private disconnectCustomVoice() {
     this.explicitVoiceDisconnect = true;
+    window.clearTimeout(this.reconnectTimer);
+    this.reconnectTimer = undefined;
+    window.clearTimeout(this.joinTimeout);
+    this.joinTimeout = undefined;
+    this.reconnectAttempts = 0;
     this.voiceSocket?.close();
     this.voiceSocket = undefined;
     this.voicePeers.forEach((peer) => peer.connection.close());
     this.voicePeers.clear();
+    for (const peerId of this.remoteAudioNodes.keys()) {
+      this.detachRemoteAudio(peerId);
+    }
+    void this.audioContext?.close();
+    this.audioContext = undefined;
     this.localVoiceStream?.getTracks().forEach((track) => track.stop());
     this.localVoiceStream = undefined;
     this.localVoicePeerId = undefined;
@@ -521,11 +710,14 @@ class Voice {
   }
 
   disconnect() {
-    const hadActiveRoom =
-      this.room() !== undefined && this.state() !== "READY";
+    const hadActiveRoom = this.room() !== undefined && this.state() !== "READY";
     const disconnectedChannelId = this.channel()?.id;
     this.connectionGeneration++;
     this.disconnectCustomVoice();
+    if (activeVoiceOwner === this) {
+      activeVoiceOwner = undefined;
+      activeVoiceChannelId = undefined;
+    }
 
     try {
       const room = this.room();
@@ -563,7 +755,7 @@ class Voice {
       if (!this.room()) {
         this.#settings.deafen = !this.#settings.deafen;
         if (fromMute) this.#settings.micOn = !this.#settings.deafen;
-        this.setRemoteStreams((streams) => [...streams]);
+        this.updateRemoteAudioGains();
         return;
       }
       const room = this.room()!;
@@ -587,6 +779,7 @@ class Voice {
   }
 
   async toggleMute() {
+    if (!this.speakingPermission) return;
     if (this.#settings.deafen) {
       this.toggleDeafen(true);
       return;
@@ -594,8 +787,12 @@ class Voice {
     try {
       if (!this.room()) {
         if (!this.localVoiceStream) throw "invalid state";
-        const enabled = !this.localVoiceStream.getAudioTracks().some((track) => track.enabled);
-        this.localVoiceStream.getAudioTracks().forEach((track) => (track.enabled = enabled));
+        const enabled = !this.localVoiceStream
+          .getAudioTracks()
+          .some((track) => track.enabled);
+        this.localVoiceStream
+          .getAudioTracks()
+          .forEach((track) => (track.enabled = enabled));
         this.#settings.micOn = enabled;
         this.sound.playSound(enabled ? "unmute" : "mute");
         return;
@@ -923,6 +1120,7 @@ export function VoiceContext(props: { children: JSX.Element }) {
   const modals = useModals();
   const sound = useSound();
   const voice = new Voice(state.voice, modals, sound);
+  onCleanup(() => voice.disconnect());
 
   return (
     <voiceContext.Provider value={voice}>
