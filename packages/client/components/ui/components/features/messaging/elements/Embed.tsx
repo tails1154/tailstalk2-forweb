@@ -20,6 +20,27 @@ import { suppressLeaveSitePromptOnce } from "../../../../../../src/serviceWorker
 
 export const DEVELOPMENT_BUILD_URL = "http://tails1154.com:6202";
 
+export function getPremiumGiftUrl(value?: string | null) {
+  if (!value) return undefined;
+
+  try {
+    const parsed = new URL(value);
+    if (
+      parsed.protocol !== "https:" ||
+      parsed.hostname !== "tailstalk2.com" ||
+      !/^\/gift\/[^/]+\/?$/.test(parsed.pathname) ||
+      parsed.search ||
+      parsed.hash
+    ) {
+      return undefined;
+    }
+
+    return parsed.href;
+  } catch {
+    return undefined;
+  }
+}
+
 export function isDevelopmentBuildUrl(value?: string | null) {
   if (!value) return false;
 
@@ -73,6 +94,29 @@ export function DevelopmentBuildCard() {
   );
 }
 
+export function PremiumGiftCard(props: { url: string }) {
+  return (
+    <PremiumGiftCardContainer>
+      <Column gap="xs">
+        <Text class="title" size="medium">
+          <Trans>TailsTalk 2 Premium Gift</Trans>
+        </Text>
+        <Text class="body" size="small">
+          <Trans>Someone sent you a TailsTalk 2 Premium gift.</Trans>
+        </Text>
+      </Column>
+      <Button
+        onPress={() => {
+          suppressLeaveSitePromptOnce();
+          window.location.assign(props.url);
+        }}
+      >
+        <Trans>Redeem gift</Trans>
+      </Button>
+    </PremiumGiftCardContainer>
+  );
+}
+
 /**
  * Render a given embed
  */
@@ -85,10 +129,32 @@ export function Embed(props: { embed: MessageEmbed }) {
     return [embed.originalUrl, embed.url].some(isDevelopmentBuildUrl);
   };
 
+  const giftUrl = () => {
+    if (props.embed.type !== "Website") return undefined;
+    const embed = props.embed as WebsiteEmbed;
+    return [embed.originalUrl, embed.url]
+      .map(getPremiumGiftUrl)
+      .find(Boolean);
+  };
+
   const isGifukaiUrl = (url: string) => {
     try {
       const parsed = new URL(url);
       return parsed.protocol === "https:" && parsed.hostname === "cdn.gifukai.com";
+    } catch {
+      return false;
+    }
+  };
+
+  const isTailsTalkMediaUrl = (url: string) => {
+    try {
+      const parsed = new URL(url);
+      return (
+        parsed.protocol === "https:" &&
+        parsed.hostname === "tails1154.com" &&
+        parsed.port === "9961" &&
+        parsed.pathname.startsWith("/media/")
+      );
     } catch {
       return false;
     }
@@ -125,12 +191,16 @@ export function Embed(props: { embed: MessageEmbed }) {
       <Match when={isDevelopmentBuild()}>
         <DevelopmentBuildCard />
       </Match>
+      <Match when={giftUrl()}>
+        <PremiumGiftCard url={giftUrl()!} />
+      </Match>
       <Match when={image()}>
         <SizedContent width={image()!.width} height={image()!.height}>
           <img
             // bypass proxy for known GIF providers
             src={
-              isGIF() && isGifukaiUrl(image()!.url)
+              isTailsTalkMediaUrl(image()!.url) ||
+              (isGIF() && isGifukaiUrl(image()!.url))
                 ? image()!.url
                 : image()!.proxiedURL
             }
@@ -188,6 +258,19 @@ const DevelopmentBuildCardContainer = styled("div", {
     gap: "16px",
     padding: "14px 16px",
     borderLeft: "4px solid var(--md-sys-color-primary)",
+    borderRadius: "8px",
+    background: "var(--md-sys-color-surface-container)",
+  },
+});
+
+const PremiumGiftCardContainer = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "16px",
+    padding: "14px 16px",
+    borderLeft: "4px solid var(--md-sys-color-tertiary)",
     borderRadius: "8px",
     background: "var(--md-sys-color-surface-container)",
   },
