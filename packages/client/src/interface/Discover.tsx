@@ -151,8 +151,12 @@ export function Discover() {
                           {listing.category && (
                             <Category>{listing.category}</Category>
                           )}
-                          <Show when={(listing.boost_level ?? 0) >= 3}>
-                            <Category><Trans>Boosted</Trans></Category>
+                          <Show when={(listing.boost_level ?? 0) > 0}>
+                            <Category>
+                              <Trans>
+                                Boost level {listing.boost_level ?? 0}
+                              </Trans>
+                            </Category>
                           </Show>
                           {listing.kind === "server" && (
                             <span>
