@@ -29,6 +29,7 @@ interface DiscoverListing {
   invite?: string;
   category: string;
   members: number;
+  boost_level?: number;
 }
 
 const PUBLIC_INVITE_BASE = "https://tailstalk2.com/";
@@ -150,6 +151,9 @@ export function Discover() {
                           {listing.category && (
                             <Category>{listing.category}</Category>
                           )}
+                          <Show when={(listing.boost_level ?? 0) >= 3}>
+                            <Category><Trans>Boosted</Trans></Category>
+                          </Show>
                           {listing.kind === "server" && (
                             <span>
                               {listing.members} {t`members`}
