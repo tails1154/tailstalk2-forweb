@@ -316,69 +316,81 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
       attachments,
     };
 
-    // Add any files if attached
-    if (files?.length) {
-      // TODO: keep track of % upload progress
-      // we could visually show this in chat like
-      // on Discord mobile and allow individual
-      // files to be cancelled
-      for (const fileId of files) {
-        // Prepare for upload
-        const body = new FormData();
-        const { file, autumnId, uploadProgress } = this.getFile(fileId);
+    // Failed messages remain visible briefly so the user can retry them, then
+    // are removed automatically instead of accumulating in the outbox.
+    const markFailed = () => {
+      this.set(
+        "outbox",
+        channel.id,
+        this.getPendingMessages(channel.id).map((entry) =>
+          entry.idempotencyKey === idempotencyKey
+            ? { ...entry, status: "failed" }
+            : entry,
+        ),
+      );
 
-        // Use ID if already uploaded
-        if (autumnId) {
-          attachments.push(autumnId);
-          continue;
-        }
+      window.setTimeout(() => {
+        this.cancelSend(channel, idempotencyKey);
+      }, 5000);
+    };
 
-        body.set("file", file);
-
-        // We have to use XMLHttpRequest because modern fetch duplex streams require QUIC or HTTP/2
-        const xhr = new XMLHttpRequest();
-
-        const [success, response] = await new Promise<
-          [boolean, { id: string }]
-        >((resolve) => {
-          xhr.upload.addEventListener("progress", (event) => {
-            if (event.lengthComputable) {
-              uploadProgress[1](event.loaded / event.total);
-            }
-          });
-
-          xhr.addEventListener("loadend", () => {
-            uploadProgress[1](1);
-            resolve([xhr.readyState === 4 && xhr.status === 200, xhr.response]);
-          });
-
-          xhr.open(
-            "POST",
-            `${client.configuration!.features.autumn.url}/attachments`,
-            true,
-          );
-
-          const [authHeader, authHeaderValue] = client.authenticationHeader;
-          xhr.setRequestHeader(authHeader, authHeaderValue);
-          xhr.responseType = "json";
-
-          xhr.send(body);
-        });
-
-        if (!success) throw "Upload Error";
-
-        attachments.push(response.id);
-        this.fileCache[fileId].autumnId = response.id;
-      }
-    }
-
-    // TODO: fix bug with backend
-    if (!attachments.length) {
-      delete data.attachments;
-    }
-
-    // Send the message and clear the draft
     try {
+      // Add any files if attached
+      if (files?.length) {
+        // TODO: keep track of % upload progress
+        for (const fileId of files) {
+          const body = new FormData();
+          const { file, autumnId, uploadProgress } = this.getFile(fileId);
+
+          if (autumnId) {
+            attachments.push(autumnId);
+            continue;
+          }
+
+          body.set("file", file);
+
+          // XMLHttpRequest is used because fetch upload streams are not
+          // supported consistently across the browsers we target.
+          const xhr = new XMLHttpRequest();
+
+          const [success, response] = await new Promise<
+            [boolean, { id: string }]
+          >((resolve) => {
+            xhr.upload.addEventListener("progress", (event) => {
+              if (event.lengthComputable) {
+                uploadProgress[1](event.loaded / event.total);
+              }
+            });
+
+            xhr.addEventListener("loadend", () => {
+              uploadProgress[1](1);
+              resolve([xhr.readyState === 4 && xhr.status === 200, xhr.response]);
+            });
+
+            xhr.open(
+              "POST",
+              `${client.configuration!.features.autumn.url}/attachments`,
+              true,
+            );
+
+            const [authHeader, authHeaderValue] = client.authenticationHeader;
+            xhr.setRequestHeader(authHeader, authHeaderValue);
+            xhr.responseType = "json";
+            xhr.send(body);
+          });
+
+          if (!success || !response?.id) throw new Error("Upload Error");
+
+          attachments.push(response.id);
+          this.fileCache[fileId].autumnId = response.id;
+        }
+      }
+
+      // TODO: fix bug with backend
+      if (!attachments.length) {
+        delete data.attachments;
+      }
+
       await channel.sendMessage(data, idempotencyKey);
 
       if (files) {
@@ -395,18 +407,7 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
         ),
       );
     } catch {
-      this.set(
-        "outbox",
-        channel.id,
-        this.getPendingMessages(channel.id).map((entry) =>
-          entry.idempotencyKey === idempotencyKey
-            ? {
-                ...entry,
-                status: "failed",
-              }
-            : entry,
-        ),
-      );
+      markFailed();
     }
   }
 
