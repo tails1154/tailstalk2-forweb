@@ -236,7 +236,7 @@ function MountContext(props: { children?: JSX.Element }) {
         const reason = (event as CustomEvent<{ reason?: string }>).detail?.reason;
         showError(
           new Error(
-            t`You are banned from TailsTalk 2. Reason: ${reason ?? "Your account has been disabled."}`,
+            t`You are banned from TailsTalk 2.\n\nReason: ${reason ?? "Your account has been disabled."}\n\nDo not create another account.`,
           ),
         );
       };

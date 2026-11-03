@@ -57,11 +57,7 @@ export default function FlowCreate() {
     const timer = window.setTimeout(() => {
       setRegistrationLoading(false);
       setRegistrationBlocked(true);
-      modals.showError(
-        new Error(
-          t`You are banned from registering for TailsTalk 2. Reason: ${stored?.reason ?? "Your account has been disabled."}`,
-        ),
-      );
+      modals.showError(new Error(t`Cannot register due to a unknown error.`));
     }, 1000);
     onCleanup(() => window.clearTimeout(timer));
   });

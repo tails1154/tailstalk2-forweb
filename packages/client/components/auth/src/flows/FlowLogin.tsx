@@ -76,8 +76,11 @@ export default function FlowLogin() {
       await login({ email, password }, modals);
     } catch (error) {
       if (error instanceof Error && error.name === "DisabledAccount") {
+        const reason = (error as Error & { reason?: string }).reason;
         modals.showError(
-          new Error(t`You are banned from TailsTalk 2. Reason: Your account has been disabled.`),
+          new Error(
+            t`You are banned from TailsTalk 2.\n\nReason: ${reason ?? "Your account has been disabled."}\n\nDo not create another account.`,
+          ),
         );
       } else {
         modals.showError(error);

@@ -936,6 +936,10 @@ msgstr "Cannot delete account until servers are deleted or transferred"
 msgid "Cannot edit this message."
 msgstr "Cannot edit this message."
 
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "Cannot register due to a unknown error."
+msgstr "Cannot register due to a unknown error."
+
 #: src/interface/Videos.tsx
 msgid "Caption"
 msgstr "Caption"
@@ -5607,19 +5611,33 @@ msgstr "You are about to ban {0}"
 msgid "You are about to kick {0}"
 msgstr "You are about to kick {0}"
 
-#. placeholder {0}: stored?.reason ?? "Your account has been disabled."
 #: components/auth/src/flows/FlowCreate.tsx
-msgid "You are banned from registering for TailsTalk 2. Reason: {0}"
-msgstr "You are banned from registering for TailsTalk 2. Reason: {0}"
+#~ msgid "You are banned from registering for TailsTalk 2. Reason: {0}"
+#~ msgstr "You are banned from registering for TailsTalk 2. Reason: {0}"
 
 #. placeholder {0}: reason ?? "Your account has been disabled."
 #: src/index.tsx
-msgid "You are banned from TailsTalk 2. Reason: {0}"
-msgstr "You are banned from TailsTalk 2. Reason: {0}"
+#: components/auth/src/flows/FlowLogin.tsx
+msgid ""
+"You are banned from TailsTalk 2.\n"
+"\n"
+"Reason: {0}\n"
+"\n"
+"Do not create another account."
+msgstr ""
+"You are banned from TailsTalk 2.\n"
+"\n"
+"Reason: {0}\n"
+"\n"
+"Do not create another account."
+
+#: src/index.tsx
+#~ msgid "You are banned from TailsTalk 2. Reason: {0}"
+#~ msgstr "You are banned from TailsTalk 2. Reason: {0}"
 
 #: components/auth/src/flows/FlowLogin.tsx
-msgid "You are banned from TailsTalk 2. Reason: Your account has been disabled."
-msgstr "You are banned from TailsTalk 2. Reason: Your account has been disabled."
+#~ msgid "You are banned from TailsTalk 2. Reason: Your account has been disabled."
+#~ msgstr "You are banned from TailsTalk 2. Reason: Your account has been disabled."
 
 #: components/i18n/errors.ts
 msgid "You are banned from this server."

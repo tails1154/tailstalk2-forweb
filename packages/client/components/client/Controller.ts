@@ -615,7 +615,10 @@ export default class ClientController {
     }
 
     if (session.result === "Disabled") {
-      const reason = "Your account has been disabled.";
+      const reason =
+        "reason" in session && typeof session.reason === "string"
+          ? session.reason
+          : "Your account has been disabled.";
       try {
         localStorage.setItem(
           "tailstalk2:registration-blocked",
@@ -627,6 +630,7 @@ export default class ClientController {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const error = new Error("Account is not eligible to sign in");
       error.name = "DisabledAccount";
+      (error as Error & { reason?: string }).reason = reason;
       throw error;
     }
 
