@@ -357,6 +357,12 @@ class Voice {
 
       await room.connect(auth!.url, auth!.token, {
         autoSubscribe: true,
+        // The server's direct host candidate is not usable from this NAT:
+        // ICE reports connected, but DTLS never completes. Prefer the
+        // LiveKit TURN relay so the peer connection can finish reliably.
+        rtcConfig: {
+          iceTransportPolicy: "relay",
+        },
       });
 
       if (generation !== this.connectionGeneration || this.room() !== room) {
