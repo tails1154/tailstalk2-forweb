@@ -163,11 +163,13 @@ interface AdminFeatureRequest {
 
 let adminApi: import("stoat-api").API | undefined;
 let adminMfaTicket: string | undefined;
+let refreshAdminMfa: (() => Promise<boolean>) | undefined;
 
 async function apiFetch<T = unknown>(
   path: string,
   _session: string,
   init?: RequestInit,
+  retried = false,
 ): Promise<T> {
   if (!adminApi) throw new Error("Admin session is not ready");
   const body = init?.body
@@ -175,16 +177,29 @@ async function apiFetch<T = unknown>(
       ? JSON.parse(init.body)
       : init.body
     : undefined;
-  return requestClientJson<T>(
-    adminApi,
-    (init?.method ?? "GET") as "GET" | "POST" | "PATCH" | "DELETE",
-    path,
-    body,
-    {
-      ...(init?.headers ?? {}),
-      ...(adminMfaTicket ? { "X-MFA-Ticket": adminMfaTicket } : {}),
-    },
-  );
+  try {
+    return await requestClientJson<T>(
+      adminApi,
+      (init?.method ?? "GET") as "GET" | "POST" | "PATCH" | "DELETE",
+      path,
+      body,
+      {
+        ...(init?.headers ?? {}),
+        ...(adminMfaTicket ? { "X-MFA-Ticket": adminMfaTicket } : {}),
+      },
+    );
+  } catch (error) {
+    const status =
+      error instanceof Error && "status" in error
+        ? (error as Error & { status?: number }).status
+        : undefined;
+    if ((status === 401 || status === 403) && !retried && refreshAdminMfa) {
+      if (await refreshAdminMfa()) {
+        return apiFetch<T>(path, _session, init, true);
+      }
+    }
+    throw error;
+  }
 }
 
 function formatNumber(n: number) {
@@ -201,14 +216,21 @@ export function AdminPanel() {
   const [loading, setLoading] = createSignal(false);
   const [tab, setTab] = createSignal<Tab>("stats");
 
+  async function authenticateMfa() {
+    const mfa = await client().account.mfa();
+    const ticket = await mfaFlow(mfa);
+    if (!ticket) return false;
+    adminMfaTicket = ticket.token;
+    return true;
+  }
+
+  refreshAdminMfa = authenticateMfa;
+
   async function authenticate() {
     setLoading(true);
     setError("");
     try {
-      const mfa = await client().account.mfa();
-      const ticket = await mfaFlow(mfa);
-      if (!ticket) return;
-      adminMfaTicket = ticket.token;
+      if (!(await authenticateMfa())) return;
       await apiFetch("/admin", "session");
       setAuthToken("session");
     } catch {
@@ -1007,6 +1029,19 @@ function ReportsTab(props: { password: string }) {
   }
 
   async function resolveReport(id: string) {
+    const action = prompt(
+      t`Action for the reported user: warn, suspend, ban, or none`,
+      "warn",
+    )?.trim().toLowerCase();
+    if (!action || !["warn", "suspend", "ban", "none"].includes(action))
+      return;
+    const actionReason = prompt(t`Reason for this action:`) || undefined;
+    const suspendHours =
+      action === "suspend"
+        ? Number.parseInt(prompt(t`Suspend for how many hours?`, "24") || "24", 10)
+        : undefined;
+    if (action === "suspend" && (!Number.isFinite(suspendHours) || suspendHours < 1))
+      return;
     setLoading(id, true);
     setActionError("");
     try {
@@ -1014,7 +1049,11 @@ function ReportsTab(props: { password: string }) {
       // no notes are supplied. A body-less POST is rejected before the handler.
       await apiFetch(`/admin/reports/${id}/resolve`, props.password, {
         method: "POST",
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+          action,
+          action_reason: actionReason,
+          suspend_hours: suspendHours,
+        }),
       });
       await refetch();
     } catch (error) {
@@ -1657,7 +1696,7 @@ function UsersTab(props: { password: string }) {
       </Column>
       <Row gap="sm">
         <TextField
-          placeholder={t`Search username...`}
+          placeholder={t`Search username or ID...`}
           value={query()}
           onChange={(e) => setQuery(e.currentTarget.value)}
           onKeyDown={handleSearchKeyDown}

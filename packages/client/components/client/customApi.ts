@@ -36,7 +36,14 @@ export async function requestClientJson<T>(
   }
 
   if (!response.ok) {
-    throw data ?? new Error(`Request failed with status ${response.status}`);
+    const error = new Error(
+      typeof data === "string"
+        ? data
+        : `Request failed with status ${response.status}`,
+    ) as Error & { status: number; data: unknown };
+    error.status = response.status;
+    error.data = data;
+    throw error;
   }
 
   return data as T;
