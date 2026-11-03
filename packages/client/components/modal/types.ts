@@ -29,6 +29,14 @@ import type { ChangelogResponse } from "./modals/Changelog";
 
 export type Modals =
   | {
+      type: "report_action";
+      onConfirm: (
+        action: "warn" | "suspend" | "ban" | "none",
+        reason?: string,
+        suspendHours?: number,
+      ) => Promise<void>;
+    }
+  | {
       type: "add_bot";
       invite: PublicBot;
     }

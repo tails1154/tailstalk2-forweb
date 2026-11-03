@@ -1028,20 +1028,14 @@ function ReportsTab(props: { password: string }) {
     });
   }
 
-  async function resolveReport(id: string) {
-    const action = prompt(
-      t`Action for the reported user: warn, suspend, ban, or none`,
-      "warn",
-    )?.trim().toLowerCase();
-    if (!action || !["warn", "suspend", "ban", "none"].includes(action))
-      return;
-    const actionReason = prompt(t`Reason for this action:`) || undefined;
-    const suspendHours =
-      action === "suspend"
-        ? Number.parseInt(prompt(t`Suspend for how many hours?`, "24") || "24", 10)
-        : undefined;
-    if (action === "suspend" && (!Number.isFinite(suspendHours) || suspendHours < 1))
-      return;
+  const { openModal } = useModals();
+
+  async function resolveReport(
+    id: string,
+    action: "warn" | "suspend" | "ban" | "none",
+    actionReason?: string,
+    suspendHours?: number,
+  ) {
     setLoading(id, true);
     setActionError("");
     try {
@@ -1063,6 +1057,14 @@ function ReportsTab(props: { password: string }) {
     } finally {
       setLoading(id, false);
     }
+  }
+
+  function openResolveReport(id: string) {
+    openModal({
+      type: "report_action",
+      onConfirm: (action, reason, suspendHours) =>
+        resolveReport(id, action, reason, suspendHours),
+    });
   }
 
   async function dismissReport(id: string) {
@@ -1217,7 +1219,7 @@ function ReportsTab(props: { password: string }) {
                             when={!isLoading(r.id) && r.status === "Created"}
                           >
                             <Row gap="sm">
-                              <Button onPress={() => resolveReport(r.id)}>
+                              <Button onPress={() => openResolveReport(r.id)}>
                                 <MdCheckCircle {...iconSize(16)} />{" "}
                                 <Trans>Resolve</Trans>
                               </Button>

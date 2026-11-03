@@ -399,6 +399,10 @@ msgstr ""
 msgid "Acknowledge"
 msgstr ""
 
+#: components/modal/modals/ReportAction.tsx
+msgid "Action for the reported user"
+msgstr ""
+
 #: components/app/interface/settings/server/Boosts.tsx
 msgid "Active boost"
 msgstr ""
@@ -476,6 +480,7 @@ msgid "Add status text"
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+#: components/app/interface/channels/text/Message.tsx
 msgid "Admin"
 msgstr ""
 
@@ -493,8 +498,8 @@ msgid "Admin Panel"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
-msgid "Admin password"
-msgstr ""
+#~ msgid "Admin password"
+#~ msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
 msgid "Advanced"
@@ -662,8 +667,8 @@ msgid "Audio disabled by browser"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
-msgid "Authenticate"
-msgstr ""
+#~ msgid "Authenticate"
+#~ msgstr ""
 
 #: components/modal/modals/MFAFlow.tsx
 #: components/modal/modals/MFAFlow.tsx
@@ -680,8 +685,8 @@ msgid "Avatar"
 msgstr "Avatar"
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
-msgid "Avatar decoration"
-msgstr ""
+#~ msgid "Avatar decoration"
+#~ msgstr ""
 
 #: src/interface/channels/AgeGate.tsx
 #: components/modal/modals/SourceCode.tsx
@@ -709,6 +714,7 @@ msgstr ""
 msgid "Badges"
 msgstr "Lencana"
 
+#: components/modal/modals/ReportAction.tsx
 #: components/modal/modals/BanNonMember.tsx
 #: components/modal/modals/BanMember.tsx
 #: components/app/interface/settings/user/Admin.tsx
@@ -845,8 +851,8 @@ msgid "Busy"
 msgstr ""
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
-msgid "Buy"
-msgstr ""
+#~ msgid "Buy"
+#~ msgstr ""
 
 #: components/modal/modals/CreateBot.tsx
 msgid "By creating this bot, you agree to the <0>Acceptable Use Policy</0>."
@@ -873,6 +879,7 @@ msgstr ""
 #: components/modal/modals/ScreenSharePicker.tsx
 #: components/modal/modals/ResetBotToken.tsx
 #: components/modal/modals/ReportContent.tsx
+#: components/modal/modals/ReportAction.tsx
 #: components/modal/modals/RenameSession.tsx
 #: components/modal/modals/RemoveMember.tsx
 #: components/modal/modals/Onboarding.tsx
@@ -882,7 +889,6 @@ msgstr ""
 #: components/modal/modals/LeaveServer.tsx
 #: components/modal/modals/KickMember.tsx
 #: components/modal/modals/Invite.tsx
-#: components/modal/modals/EnableDmEncryption.tsx
 #: components/modal/modals/EditCategory.tsx
 #: components/modal/modals/DeleteServer.tsx
 #: components/modal/modals/DeleteRole.tsx
@@ -1261,6 +1267,7 @@ msgstr ""
 #: components/modal/modals/ServerOnboarding.tsx
 #: components/modal/modals/MFAEnableTOTP.tsx
 #: components/modal/modals/LinkWarning.tsx
+#: components/app/interface/settings/user/Admin.tsx
 msgid "Continue"
 msgstr "Teruskan"
 
@@ -1618,13 +1625,12 @@ msgid "Decoration added to the catalog."
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
-#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "Decoration name"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
-msgid "Decorations"
-msgstr ""
+#~ msgid "Decorations"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Decorations could not be loaded. Your signed-in account must be a platform moderator."
@@ -2033,8 +2039,8 @@ msgid "Enable Desktop Notifications"
 msgstr "Dayakan Pemberitahuan Desktop."
 
 #: components/modal/modals/EnableDmEncryption.tsx
-msgid "Enable encryption"
-msgstr ""
+#~ msgid "Enable encryption"
+#~ msgstr ""
 
 #: components/app/interface/settings/server/Page.tsx
 #~ msgid "Enable public server page"
@@ -2058,16 +2064,16 @@ msgstr ""
 
 #: src/interface/channels/ChannelHeader.tsx
 #: components/modal/modals/EnableDmEncryption.tsx
-msgid "Encrypt DM"
-msgstr ""
+#~ msgid "Encrypt DM"
+#~ msgstr ""
 
 #: src/interface/channels/ChannelHeader.tsx
-msgid "Encrypted DMs cannot be recovered on another device and cannot be turned off."
-msgstr ""
+#~ msgid "Encrypted DMs cannot be recovered on another device and cannot be turned off."
+#~ msgstr ""
 
 #: components/modal/modals/EnableDmEncryption.tsx
-msgid "Encryption cannot be turned off after it is enabled. Both people must use the same code to read the DM."
-msgstr ""
+#~ msgid "Encryption cannot be turned off after it is enabled. Both people must use the same code to read the DM."
+#~ msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "End call"
@@ -2129,8 +2135,8 @@ msgid "Enter your preferred username."
 msgstr "Masukkan nama pengguna pilihan anda."
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
-msgid "Equip decoration"
-msgstr ""
+#~ msgid "Equip decoration"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
 #~ msgid "Exact HTTPS redirect URI"
@@ -2384,6 +2390,10 @@ msgstr ""
 msgid "Gradient CSS"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Grant admin access"
+msgstr ""
+
 #. placeholder {0}: countBits(props.context.rolePermissions![role.id].a)
 #. placeholder {1}: countBits(props.context.rolePermissions![role.id].d)
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
@@ -2502,8 +2512,8 @@ msgstr ""
 #~ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
-msgid "Invalid admin password."
-msgstr ""
+#~ msgid "Invalid admin password."
+#~ msgstr ""
 
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Invisible"
@@ -2962,8 +2972,8 @@ msgid "Messages"
 msgstr ""
 
 #: components/modal/modals/EnableDmEncryption.tsx
-msgid "Messages in this DM will be encrypted in your browser before they are sent. TailsTalk 2 will store only encrypted text."
-msgstr ""
+#~ msgid "Messages in this DM will be encrypted in your browser before they are sent. TailsTalk 2 will store only encrypted text."
+#~ msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Messaging"
@@ -2983,8 +2993,8 @@ msgid "Missing permission"
 msgstr ""
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
-msgid "Moderator decoration uploader"
-msgstr ""
+#~ msgid "Moderator decoration uploader"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Monochrome"
@@ -3125,13 +3135,17 @@ msgstr ""
 msgid "Nickname"
 msgstr "Nama samaran"
 
+#: components/modal/modals/ReportAction.tsx
+msgid "No account action"
+msgstr ""
+
 #: components/app/interface/settings/user/Admin.tsx
 msgid "No channels"
 msgstr ""
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
-msgid "No decoration"
-msgstr ""
+#~ msgid "No decoration"
+#~ msgstr ""
 
 #: src/interface/channels/forum/ForumChannel.tsx
 #: src/interface/channels/forum/ForumChannel.tsx
@@ -3260,8 +3274,8 @@ msgid "Off"
 msgstr "Mati"
 
 #: components/app/interface/channels/text/Message.tsx
-msgid "Official Communication"
-msgstr "Komunikasi rasmi"
+#~ msgid "Official Communication"
+#~ msgstr "Komunikasi rasmi"
 
 #: src/interface/navigation/channels/ServerSidebar.tsx
 msgid "Official Server"
@@ -3375,8 +3389,8 @@ msgid "Overview"
 msgstr "Gambaran keseluruhan"
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
-msgid "Owned"
-msgstr ""
+#~ msgid "Owned"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Owner:"
@@ -3642,6 +3656,7 @@ msgstr ""
 msgid "Read past messages sent in channels"
 msgstr ""
 
+#: components/modal/modals/ReportAction.tsx
 #: components/modal/modals/BanNonMember.tsx
 #: components/modal/modals/BanMember.tsx
 #: components/app/interface/settings/server/bans/ListBans.tsx
@@ -3735,6 +3750,10 @@ msgstr "Perkaitan"
 #: components/app/interface/settings/user/Admin.tsx
 #: components/app/interface/settings/server/Boosts.tsx
 msgid "Remove"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Remove admin access"
 msgstr ""
 
 #: components/app/menus/MessageContextMenu.tsx
@@ -3875,6 +3894,11 @@ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Resolve"
+msgstr ""
+
+#: components/modal/modals/ReportAction.tsx
+#: components/modal/modals/ReportAction.tsx
+msgid "Resolve report"
 msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
@@ -4042,8 +4066,12 @@ msgid "Search servers and bots..."
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
-msgid "Search username..."
+msgid "Search username or ID..."
 msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+#~ msgid "Search username..."
+#~ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Searching users..."
@@ -4325,8 +4353,8 @@ msgid "Share this one-time link:"
 msgstr ""
 
 #: components/modal/modals/EnableDmEncryption.tsx
-msgid "Shared DM encryption code (8+ characters)"
-msgstr ""
+#~ msgid "Shared DM encryption code (8+ characters)"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/Advanced.tsx
 #~ msgid "Show advertisements"
@@ -4353,8 +4381,8 @@ msgstr ""
 #~ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
-msgid "Sign in to manage reports, users, and platform updates."
-msgstr ""
+#~ msgid "Sign in to manage reports, users, and platform updates."
+#~ msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Sign into TailsTalk 2"
@@ -4579,6 +4607,7 @@ msgstr ""
 msgid "Surface"
 msgstr ""
 
+#: components/modal/modals/ReportAction.tsx
 #: components/app/interface/settings/user/Admin.tsx
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Suspend"
@@ -4595,6 +4624,10 @@ msgstr ""
 #. placeholder {0}: u.suspended_until ? new Date(u.suspended_until).toLocaleString() : "?"
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Suspended until {0}"
+msgstr ""
+
+#: components/modal/modals/ReportAction.tsx
+msgid "Suspension length in hours"
 msgstr ""
 
 #: components/modal/modals/AccountSwitcher.tsx
@@ -5094,8 +5127,8 @@ msgid "Unknown user"
 msgstr ""
 
 #: src/interface/channels/ChannelHeader.tsx
-msgid "Unlock"
-msgstr ""
+#~ msgid "Unlock"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/subscriptions/EditSubscription.tsx
 #~ msgid "Unlock Nothing"
@@ -5157,8 +5190,8 @@ msgid "Upload a GIF and copy its hosted URL for sharing."
 msgstr ""
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
-msgid "Upload avatar decoration"
-msgstr ""
+#~ msgid "Upload avatar decoration"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Upload decorations here. Users can buy them with XP and equip them from their profile settings."
@@ -5381,6 +5414,7 @@ msgstr ""
 msgid "Want to change username?"
 msgstr ""
 
+#: components/modal/modals/ReportAction.tsx
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Warn"
 msgstr ""
@@ -5398,8 +5432,8 @@ msgid "WARNING: Ownership transfer is a serious account action. Do not continue 
 msgstr ""
 
 #: components/modal/modals/EnableDmEncryption.tsx
-msgid "WARNING: This cannot be recovered on another device. If you lose this code, your encrypted messages cannot be recovered."
-msgstr ""
+#~ msgid "WARNING: This cannot be recovered on another device. If you lose this code, your encrypted messages cannot be recovered."
+#~ msgstr ""
 
 #: components/modal/modals/TransferServerOwnership.tsx
 msgid "WARNING: You may lose access to owner-only server settings immediately after the transfer."
@@ -5541,7 +5575,6 @@ msgid "XP per message"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
-#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "XP price"
 msgstr ""
 
@@ -5765,6 +5798,10 @@ msgstr ""
 msgid "Your account has been verified!"
 msgstr "Akaun anda telah disahkan!"
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Your account is not authorized to use the admin panel."
+msgstr ""
+
 #: src/AccountDeletionPage.tsx
 msgid "Your account, messages, and servers have been queued for deletion."
 msgstr ""
@@ -5821,6 +5858,10 @@ msgstr ""
 
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
 msgid "Your server was submitted for Discovery review."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Your signed-in account is checked by the server. Only users granted admin access can continue."
 msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
