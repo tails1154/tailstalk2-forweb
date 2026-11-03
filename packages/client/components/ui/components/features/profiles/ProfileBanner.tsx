@@ -13,7 +13,6 @@ export function ProfileBanner(props: {
   user: User;
   member?: ServerMember;
   bannerUrl?: string;
-  avatarDecorationUrl?: string;
   onClick?: (e: MouseEvent) => void;
   onClickAvatar?: (e: MouseEvent) => void;
   width: 2 | 3;
@@ -61,9 +60,6 @@ export function ProfileBanner(props: {
             interactive={props.user.avatar && !!props.onClickAvatar}
             overlay={<UserStatus.Graphic status={props.user.presence} />}
           />
-          <Show when={props.avatarDecorationUrl}>
-            <AvatarDecoration src={props.avatarDecorationUrl} alt="" aria-hidden="true" />
-          </Show>
         </AvatarHolder>
         <UserShort>
           <Show
@@ -130,18 +126,6 @@ const Banner = styled("div", {
 
 const AvatarHolder = styled("div", {
   base: { position: "relative", width: "60px", height: "60px", display: "grid", placeItems: "center" },
-});
-
-const AvatarDecoration = styled("img", {
-  base: {
-    position: "absolute",
-    inset: 0,
-    width: "60px",
-    height: "60px",
-    objectFit: "contain",
-    pointerEvents: "none",
-    zIndex: 2,
-  },
 });
 
 const UserShort = styled("div", {

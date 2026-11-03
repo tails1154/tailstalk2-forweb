@@ -1,5 +1,5 @@
 import { createFormControl, createFormGroup } from "solid-forms";
-import { For, Show, createEffect, createSignal, on } from "solid-js";
+import { Show, createEffect, createSignal, on } from "solid-js";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { useQuery, useQueryClient } from "@tanstack/solid-query";
@@ -25,15 +25,6 @@ interface Props {
   user: User;
 }
 
-interface AvatarDecoration {
-  id: string;
-  name: string;
-  asset_url: string;
-  price_xp: number;
-  enabled: boolean;
-  owned: boolean;
-}
-
 export function UserProfileEditor(props: Props) {
   const { t } = useLingui();
   const client = useClient();
@@ -45,19 +36,6 @@ export function UserProfileEditor(props: Props) {
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
   }));
-
-  const decorations = useQuery(() => ({
-    queryKey: ["profile-decorations"],
-    queryFn: () =>
-      client().api.get("/users/profile-decorations") as Promise<
-        AvatarDecoration[]
-      >,
-    retry: false,
-  }));
-  const [selectedDecoration, setSelectedDecoration] = createSignal("");
-  const [decorationFile, setDecorationFile] = createSignal<File>();
-  const [decorationName, setDecorationName] = createSignal("");
-  const [decorationPrice, setDecorationPrice] = createSignal("0");
 
   const { navigate } = useSettingsNavigation();
 
@@ -79,26 +57,10 @@ export function UserProfileEditor(props: Props) {
 
   const [initialBio, setInitialBio] = createSignal<readonly [string]>();
 
-  function syncSelectedDecoration() {
-    const profileData = profile.data;
-    const decorationList = decorations.data;
-    if (!profileData || !decorationList) return;
-
-    // Profiles store the selected asset URL, while the editor select uses the
-    // catalog item's ID. Resolve the URL back to its catalog entry.
-    setSelectedDecoration(
-      decorationList.find(
-        (decoration) => decoration.asset_url === profileData.avatarDecoration,
-      )?.id ?? "",
-    );
-  }
-
-  // Once either request finishes, copy the profile's equipped decoration into
-  // the ID-based editor control.
   createEffect(
     on(
-      () => [profile.data, decorations.data],
-      ([profileData]) => {
+      () => profile.data,
+      (profileData) => {
         if (profileData) {
           editGroup.controls.banner.setValue(
             profileData.animatedBannerURL || null,
@@ -106,7 +68,6 @@ export function UserProfileEditor(props: Props) {
 
           editGroup.controls.bio.setValue(profileData.content || "");
           setInitialBio([profileData.content || ""]);
-          syncSelectedDecoration();
         }
       },
     ),
@@ -122,7 +83,6 @@ export function UserProfileEditor(props: Props) {
       );
       editGroup.controls.bio.setValue(profile.data.content || "");
       setInitialBio([profile.data.content || ""]);
-      syncSelectedDecoration();
     }
   }
 
@@ -186,43 +146,6 @@ export function UserProfileEditor(props: Props) {
     }
   }
 
-  async function saveDecoration() {
-    if (selectedDecoration()) {
-      await client().api.post(
-        `/users/profile-decorations/${selectedDecoration()}/equip`,
-      );
-    } else {
-      await client().api.delete("/users/profile-decorations/equip");
-    }
-    await queryClient.invalidateQueries({
-      queryKey: ["profile", props.user.id],
-    });
-  }
-
-  async function buyDecoration(id: string) {
-    await client().api.post(`/users/profile-decorations/${id}/purchase`);
-    await decorations.refetch();
-  }
-
-  async function uploadDecoration() {
-    const file = decorationFile();
-    if (!file || !decorationName().trim()) return;
-    const assetId = await client().uploadFile(
-      "attachments",
-      file,
-      CONFIGURATION.DEFAULT_MEDIA_URL,
-    );
-    await client().api.post("/users/profile-decorations", {
-      name: decorationName().trim(),
-      asset_id: assetId,
-      price_xp: Math.max(0, Number(decorationPrice()) || 0),
-    });
-    setDecorationFile(undefined);
-    setDecorationName("");
-    setDecorationPrice("0");
-    await decorations.refetch();
-  }
-
   const submit = Form2.useSubmitHandler(editGroup, onSubmit, onReset);
 
   return (
@@ -234,78 +157,6 @@ export function UserProfileEditor(props: Props) {
           label={t`Avatar`}
           imageJustify={false}
         />
-        <Show when={decorations.data}>
-          <label>
-            <Text class="label">
-              <Trans>Avatar decoration</Trans>
-            </Text>
-            <select
-              value={selectedDecoration()}
-              onChange={(event) =>
-                setSelectedDecoration(event.currentTarget.value)
-              }
-            >
-              <option value="">
-                <Trans>No decoration</Trans>
-              </option>
-              <For each={decorations.data}>
-                {(decoration) => (
-                  <option value={decoration.id} disabled={!decoration.owned}>
-                    {decoration.name} —{" "}
-                    {decoration.owned ? (
-                      <Trans>Owned</Trans>
-                    ) : (
-                      `${decoration.price_xp} XP`
-                    )}
-                  </option>
-                )}
-              </For>
-            </select>
-          </label>
-          <Row>
-            <Button onPress={() => void saveDecoration()}>
-              <Trans>Equip decoration</Trans>
-            </Button>
-            <For
-              each={decorations.data.filter((decoration) => !decoration.owned)}
-            >
-              {(decoration) => (
-                <Button onPress={() => void buyDecoration(decoration.id)}>
-                  <Trans>Buy</Trans> {decoration.name} ({decoration.price_xp}{" "}
-                  XP)
-                </Button>
-              )}
-            </For>
-          </Row>
-          <Show when={props.user.privileged || (props.user.badges & 32) !== 0}>
-            <Text class="label">
-              <Trans>Moderator decoration uploader</Trans>
-            </Text>
-            <input
-              type="file"
-              accept="image/png,image/webp,image/gif"
-              onChange={(event) =>
-                setDecorationFile(event.currentTarget.files?.[0])
-              }
-            />
-            <input
-              type="text"
-              placeholder={t`Decoration name`}
-              value={decorationName()}
-              onInput={(event) => setDecorationName(event.currentTarget.value)}
-            />
-            <input
-              type="number"
-              min="0"
-              placeholder={t`XP price`}
-              value={decorationPrice()}
-              onInput={(event) => setDecorationPrice(event.currentTarget.value)}
-            />
-            <Button onPress={() => void uploadDecoration()}>
-              <Trans>Upload avatar decoration</Trans>
-            </Button>
-          </Show>
-        </Show>
         <Form2.FileInput
           control={editGroup.controls.banner}
           accept="image/*"

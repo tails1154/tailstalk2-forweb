@@ -14,6 +14,10 @@ interface WarningItem {
   created_at: string;
 }
 
+function warningKey(warning: WarningItem) {
+  return `${warning.created_at}:${warning.reason}`;
+}
+
 export function WarningOverlay() {
   const client = useClient();
   const [warnings, setWarnings] = createSignal<WarningItem[]>([]);
@@ -38,8 +42,24 @@ export function WarningOverlay() {
 
     try {
       const res = await client().api.get("/users/@me/warnings");
-      if (res.warnings?.length > 0) {
-        setWarnings(res.warnings);
+      const storageKey = user?.id
+        ? `tailstalk-dismissed-warnings:${user.id}`
+        : undefined;
+      let dismissed = new Set<string>();
+      if (storageKey) {
+        try {
+          const saved = JSON.parse(localStorage.getItem(storageKey) ?? "[]");
+          if (Array.isArray(saved)) dismissed = new Set(saved);
+        } catch {
+          // Ignore malformed local state and show the warnings normally.
+        }
+      }
+
+      const pendingWarnings = (res.warnings ?? []).filter(
+        (warning: WarningItem) => !dismissed.has(warningKey(warning)),
+      );
+      if (pendingWarnings.length > 0) {
+        setWarnings(pendingWarnings);
         setVisible(true);
         startCountdown();
       }
@@ -61,6 +81,20 @@ export function WarningOverlay() {
 
   function dismiss() {
     if (!canDismiss()) return;
+    const userId = client().user?.id;
+    if (userId) {
+      const storageKey = `tailstalk-dismissed-warnings:${userId}`;
+      let dismissed: string[] = [];
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) ?? "[]");
+        if (Array.isArray(saved)) dismissed = saved;
+      } catch {
+        // Replace malformed local state with a valid dismissal list.
+      }
+      const dismissedSet = new Set(dismissed);
+      for (const warning of warnings()) dismissedSet.add(warningKey(warning));
+      localStorage.setItem(storageKey, JSON.stringify([...dismissedSet]));
+    }
     setVisible(false);
   }
 

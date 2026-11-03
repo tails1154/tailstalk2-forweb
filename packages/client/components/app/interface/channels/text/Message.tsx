@@ -224,8 +224,8 @@ export function Message(props: Props) {
             </Tooltip>
           </Match>
           <Match when={props.message.author?.privileged}>
-            <Tooltip content={t`Official Communication`} placement="top">
-              <Symbol size={16}>brightness_alert</Symbol>
+            <Tooltip content={t`Admin`} placement="top">
+              <Symbol size={16}>admin_panel_settings</Symbol>
             </Tooltip>
           </Match>
           <Match when={props.message.author?.bot}>

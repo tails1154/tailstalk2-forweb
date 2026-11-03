@@ -51,7 +51,6 @@ type Tab =
   | "discovery"
   | "subscriptions"
   | "gifts"
-  | "decorations"
   | "feature_requests"
   | "whatsnew";
 
@@ -340,12 +339,6 @@ export function AdminPanel() {
               <MdStar {...iconSize(16)} /> <Trans>Premium gifts</Trans>
             </TabButton>
             <TabButton
-              active={tab() === "decorations"}
-              onClick={() => setTab("decorations")}
-            >
-              <MdStar {...iconSize(16)} /> <Trans>Decorations</Trans>
-            </TabButton>
-            <TabButton
               active={tab() === "feature_requests"}
               onClick={() => setTab("feature_requests")}
             >
@@ -378,9 +371,6 @@ export function AdminPanel() {
           </Show>
           <Show when={tab() === "gifts"}>
             <GiftsTab password={authToken()} />
-          </Show>
-          <Show when={tab() === "decorations"}>
-            <DecorationsTab password={authToken()} />
           </Show>
           <Show when={tab() === "feature_requests"}>
             <FeatureRequestsTab password={authToken()} />
