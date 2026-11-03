@@ -119,6 +119,8 @@ class Voice {
   private voiceSocket?: WebSocket;
   private localVoiceStream?: MediaStream;
   private voicePeers = new Map<string, VoicePeer>();
+  /** Signaling can beat the peer-created event over the WebSocket. */
+  private pendingVoiceSignals = new Map<string, any[]>();
   private localVoicePeerId?: string;
   private audioContext?: AudioContext;
   private remoteAudioNodes = new Map<
@@ -563,7 +565,14 @@ class Voice {
     }
 
     const peer = this.voicePeers.get(message.from);
-    if (!peer) return;
+    if (!peer) {
+      if (typeof message.from === "string") {
+        const pending = this.pendingVoiceSignals.get(message.from) ?? [];
+        if (pending.length < 32) pending.push(message);
+        this.pendingVoiceSignals.set(message.from, pending);
+      }
+      return;
+    }
     if (message.type === "offer") {
       await peer.connection.setRemoteDescription(message.payload);
       for (const candidate of peer.pendingCandidates.splice(0)) {
@@ -616,6 +625,11 @@ class Voice {
       pendingCandidates: [],
     };
     this.voicePeers.set(info.peer_id, peer);
+
+    // Attach the local tracks and all event handlers before replaying queued
+    // signaling. An offer may have arrived before the peer_joined event was
+    // processed; answering it first would create an SDP without our audio
+    // track, and ICE candidates generated for the answer could be lost.
     this.localVoiceStream
       ?.getTracks()
       .forEach((track) => connection.addTrack(track, this.localVoiceStream!));
@@ -635,6 +649,12 @@ class Voice {
         { peerId: info.peer_id, userId: info.user_id, stream },
       ]);
     };
+
+    const pending = this.pendingVoiceSignals.get(info.peer_id);
+    this.pendingVoiceSignals.delete(info.peer_id);
+    for (const message of pending ?? []) {
+      await this.handleVoiceSignal(message, this.channel()!, this.connectionGeneration);
+    }
     if (initiator) {
       const offer = await connection.createOffer();
       await connection.setLocalDescription(offer);
@@ -648,6 +668,9 @@ class Voice {
     stream: MediaStream,
   ) {
     if (!this.audioContext) return;
+    if (this.audioContext.state === "suspended") {
+      void this.audioContext.resume();
+    }
     this.detachRemoteAudio(peerId);
     const source = this.audioContext.createMediaStreamSource(stream);
     const gain = this.audioContext.createGain();
@@ -668,13 +691,10 @@ class Voice {
     // Older persisted voice settings may not contain per-user maps. Treat
     // missing maps as empty so receiving a remote track can never crash the
     // audio pipeline.
-    const userVolumes = this.#settings.userVolumes ?? {};
-    const userMutes = this.#settings.userMutes ?? {};
     const outputVolume = this.#settings.outputVolume ?? 1;
     for (const node of this.remoteAudioNodes.values()) {
-      const userVolume = userVolumes[node.userId] ?? 1;
-      const muted =
-        this.#settings.deafen || userMutes[node.userId] === true;
+      const userVolume = this.#settings.getUserVolume(node.userId);
+      const muted = this.#settings.deafen || this.#settings.getUserMuted(node.userId);
       node.gain.gain.value = muted
         ? 0
         : Math.max(0, Math.min(1, outputVolume * userVolume));
@@ -697,6 +717,7 @@ class Voice {
     this.voiceSocket = undefined;
     this.voicePeers.forEach((peer) => peer.connection.close());
     this.voicePeers.clear();
+    this.pendingVoiceSignals.clear();
     for (const peerId of this.remoteAudioNodes.keys()) {
       this.detachRemoteAudio(peerId);
     }

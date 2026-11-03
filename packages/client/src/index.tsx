@@ -54,12 +54,16 @@ import { Friends } from "./interface/Friends";
 import { GiftRedeem } from "./interface/GiftRedeem";
 import { HomePage } from "./interface/Home";
 import { AboutPage, PrivacyPage } from "./PublicPage";
+import { AccountDeletionPage } from "./AccountDeletionPage";
 import { ServerHome } from "./interface/ServerHome";
 import { StripeCancel, StripeSuccess } from "./interface/StripeReturn";
 import { Tailslets } from "./interface/Tailslets";
 import { Videos } from "./interface/Videos";
 import { ChannelPage } from "./interface/channels/ChannelPage";
-import { ServiceWorkerUpdatePrompt } from "./serviceWorkerInterface";
+import {
+  isLeaveSitePromptSuppressed,
+  ServiceWorkerUpdatePrompt,
+} from "./serviceWorkerInterface";
 
 /**
  * Redirect PWA start to the last active path
@@ -81,6 +85,23 @@ function SettingsRedirect() {
 
 function RegisterRedirect() {
   return <Navigate href="/login/create" replace />;
+}
+
+/** Keep the browser's native leave-site confirmation enabled for this app. */
+function LeaveSitePrompt() {
+  onMount(() => {
+    const confirmLeave = (event: BeforeUnloadEvent) => {
+      if (isLeaveSitePromptSuppressed()) return;
+
+      event.preventDefault();
+      event.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", confirmLeave);
+    return () => window.removeEventListener("beforeunload", confirmLeave);
+  });
+
+  return null;
 }
 
 function LevelUpOverlay() {
@@ -217,6 +238,7 @@ function MountContext(props: { children?: JSX.Element }) {
                 <QueryClientProvider client={client}>
                   <SnackbarProvider controller={snackbarController}>
                     {props.children}
+                    <LeaveSitePrompt />
                     <LevelUpOverlay />
                     <ServiceWorkerUpdatePrompt />
                     <ModalRenderer />
@@ -253,6 +275,7 @@ render(
           <Route path="/register" component={RegisterRedirect} />
           <Route path="/about" component={AboutPage} />
           <Route path="/privacy" component={PrivacyPage} />
+          <Route path="/delete-account" component={AccountDeletionPage} />
           <Route path="/" component={Interface as never}>
             <Route path="/pwa" component={PWARedirect} />
             <Route path="/dev" component={DevelopmentPage} />

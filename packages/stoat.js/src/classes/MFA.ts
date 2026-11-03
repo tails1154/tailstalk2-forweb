@@ -194,12 +194,12 @@ export class MFATicket {
   /**
    * Delete account
    */
-  deleteAccount(): Promise<void> {
+  deleteAccount(): Promise<{ stripe_cancellation_failed?: boolean }> {
     this.#consume();
     return this.#client.api.post("/auth/account/delete", undefined, {
       headers: {
         "X-MFA-Ticket": this.token,
       },
-    });
+    }) as unknown as Promise<{ stripe_cancellation_failed?: boolean }>;
   }
 }

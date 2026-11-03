@@ -126,6 +126,13 @@ export class Channel {
   }
 
   /**
+   * Forum purpose configured for this text channel, if any.
+   */
+  get forum(): string | undefined {
+    return this.#collection.getUnderlyingObject(this.id).forum;
+  }
+
+  /**
    * Channel icon
    */
   get icon(): File | undefined {

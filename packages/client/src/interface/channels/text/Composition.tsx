@@ -321,6 +321,7 @@ export function MessageComposition(props: Props) {
         openModal({
           type: "error2",
           error,
+          upsell: maxSize <= 1_000_000_000,
         });
       } else {
         const error = new Error(
@@ -330,6 +331,7 @@ export function MessageComposition(props: Props) {
         openModal({
           type: "error2",
           error,
+          upsell: maxSize <= 1_000_000_000,
         });
       }
     }

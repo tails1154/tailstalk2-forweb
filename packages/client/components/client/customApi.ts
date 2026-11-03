@@ -12,6 +12,7 @@ export async function requestClientJson<T>(
   method: "GET" | "POST" | "PATCH" | "DELETE",
   path: string,
   body?: unknown,
+  extraHeaders?: HeadersInit,
 ): Promise<T> {
   const config = api.config;
   const response = await fetch(`${config.baseURL}${path}`, {
@@ -19,6 +20,7 @@ export async function requestClientJson<T>(
     headers: {
       ...(body === undefined ? {} : { "Content-Type": "application/json" }),
       ...(config.headers ?? {}),
+      ...(extraHeaders ?? {}),
     },
     body: body === undefined ? undefined : JSON.stringify(body),
   });

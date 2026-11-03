@@ -84,7 +84,10 @@ export function WarningOverlay() {
               <Show when={isSuspended()}>
                 <Column gap="sm">
                   <WarningCard>
-                    <Text class={typography({ class: "body", size: "small" })}>
+                    <Text
+                      class={typography({ class: "body", size: "small" })}
+                      style={{ color: "#fff" }}
+                    >
                       Your account has been suspended until {suspendedUntil()}.
                     </Text>
                   </WarningCard>
@@ -107,12 +110,15 @@ export function WarningOverlay() {
                   <For each={warnings()}>
                     {(w) => (
                       <WarningCard>
-                        <Text class={typography({ class: "body", size: "small" })}>
+                        <Text
+                          class={typography({ class: "body", size: "small" })}
+                          style={{ color: "#fff" }}
+                        >
                           {w.reason}
                         </Text>
                         <Text
                           class={typography({ class: "label", size: "small" })}
-                          style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+                          style={{ color: "rgba(255, 255, 255, 0.85)" }}
                         >
                           {new Date(w.created_at).toLocaleString()}
                         </Text>
@@ -178,6 +184,7 @@ const WarningCard = styled("div", {
   base: {
     padding: "var(--gap-md)",
     background: "var(--md-sys-color-error-container)",
+    color: "#fff",
     borderRadius: "var(--borderRadius-sm)",
   },
 });

@@ -511,7 +511,12 @@ function Entry(
           attention={attentionState()}
           icon={
             <>
-              <Symbol>grid_3x3</Symbol>
+              <Show
+                when={props.channel.isVoice}
+                fallback={<Symbol>grid_3x3</Symbol>}
+              >
+                <Symbol>voice_chat</Symbol>
+              </Show>
               <Show when={props.channel.icon}>
                 <ChannelIcon
                   src={props.channel.iconURL}
@@ -567,7 +572,6 @@ function Entry(
             <TextWithEmoji content={props.channel.name!} />
           </OverflowingText>
         </MenuButton>
-
       </Column>
     </a>
   );

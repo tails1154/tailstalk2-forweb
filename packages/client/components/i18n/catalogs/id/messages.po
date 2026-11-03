@@ -416,6 +416,10 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Add a decoration"
+msgstr ""
+
 #: src/interface/Friends.tsx
 #: components/modal/modals/AddFriend.tsx
 msgid "Add a new friend"
@@ -431,6 +435,10 @@ msgstr ""
 
 #: components/app/interface/settings/server/Onboarding.tsx
 msgid "Add answer"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Add decoration"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
@@ -771,6 +779,11 @@ msgstr ""
 msgid "Body:"
 msgstr ""
 
+#. placeholder {0}: listing.boost_level ?? 0
+#: src/interface/Discover.tsx
+msgid "Boost level {0}"
+msgstr ""
+
 #: components/app/interface/settings/server/Boosts.tsx
 msgid "Boost progress"
 msgstr ""
@@ -852,6 +865,7 @@ msgstr ""
 msgid "Bypasses slowmode in channels"
 msgstr ""
 
+#: src/AccountDeletionPage.tsx
 #: components/modal/modals/TransferServerOwnership.tsx
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/ServerIdentity.tsx
@@ -868,6 +882,7 @@ msgstr ""
 #: components/modal/modals/LeaveServer.tsx
 #: components/modal/modals/KickMember.tsx
 #: components/modal/modals/Invite.tsx
+#: components/modal/modals/EnableDmEncryption.tsx
 #: components/modal/modals/EditCategory.tsx
 #: components/modal/modals/DeleteServer.tsx
 #: components/modal/modals/DeleteRole.tsx
@@ -917,6 +932,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
 msgid "Cash payment request pending"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Catalog"
 msgstr ""
 
 #: components/modal/modals/EditUsername.tsx
@@ -1009,6 +1028,10 @@ msgstr "Saluran"
 msgid "Check your mail!"
 msgstr "Periksa email kamu!"
 
+#: src/AccountDeletionPage.tsx
+msgid "Checking your session..."
+msgstr ""
+
 #: src/interface/StripeReturn.tsx
 msgid "Checkout canceled"
 msgstr ""
@@ -1036,6 +1059,10 @@ msgstr ""
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
 #~ msgid "Choose a vanity code (3–32 lowercase characters):"
 #~ msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Choose an image and enter a decoration name."
+msgstr ""
 
 #: components/app/interface/settings/server/XP.tsx
 msgid "Choose how much XP a member earns for each message."
@@ -1586,8 +1613,21 @@ msgstr "Tulikan Anggota"
 msgid "Decline"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Decoration added to the catalog."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "Decoration name"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Decorations"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Decorations could not be loaded. Your signed-in account must be a platform moderator."
 msgstr ""
 
 #: components/app/menus/shared/NotificationContextMenu.tsx
@@ -1624,6 +1664,10 @@ msgstr "Hapus"
 #: components/modal/modals/DeleteChannel.tsx
 #: components/modal/modals/DeleteBot.tsx
 msgid "Delete {0}?"
+msgstr ""
+
+#: src/AccountDeletionPage.tsx
+msgid "Delete account"
 msgstr ""
 
 #: components/app/interface/settings/user/Account.tsx
@@ -1705,6 +1749,10 @@ msgstr ""
 #: src/interface/Videos.tsx
 #: src/interface/Videos.tsx
 msgid "Delete video"
+msgstr ""
+
+#: src/AccountDeletionPage.tsx
+msgid "Delete your TailsTalk 2 account"
 msgstr ""
 
 #: components/app/interface/settings/user/FeatureRequests.tsx
@@ -1984,6 +2032,10 @@ msgstr "Aktifkan aplikasi autentikator"
 msgid "Enable Desktop Notifications"
 msgstr "Aktifkan Notifikasi Desktop"
 
+#: components/modal/modals/EnableDmEncryption.tsx
+msgid "Enable encryption"
+msgstr ""
+
 #: components/app/interface/settings/server/Page.tsx
 #~ msgid "Enable public server page"
 #~ msgstr ""
@@ -2003,6 +2055,19 @@ msgstr ""
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Enable transparency glass/blur effects (slow on older machines)"
 #~ msgstr ""
+
+#: src/interface/channels/ChannelHeader.tsx
+#: components/modal/modals/EnableDmEncryption.tsx
+msgid "Encrypt DM"
+msgstr ""
+
+#: src/interface/channels/ChannelHeader.tsx
+msgid "Encrypted DMs cannot be recovered on another device and cannot be turned off."
+msgstr ""
+
+#: components/modal/modals/EnableDmEncryption.tsx
+msgid "Encryption cannot be turned off after it is enabled. Both people must use the same code to read the DM."
+msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "End call"
@@ -2372,8 +2437,8 @@ msgid "Hide details"
 msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
-msgid "Hide Others"
-msgstr ""
+#~ msgid "Hide Others"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "High Contrast"
@@ -2664,6 +2729,10 @@ msgid "Load file ({0})"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
+msgid "Loading decorations..."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
 msgid "Loading Discovery submissions..."
 msgstr ""
 
@@ -2890,6 +2959,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Messages"
+msgstr ""
+
+#: components/modal/modals/EnableDmEncryption.tsx
+msgid "Messages in this DM will be encrypted in your browser before they are sent. TailsTalk 2 will store only encrypted text."
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -3484,6 +3557,10 @@ msgstr "Profil"
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "Profile Bio"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Profile decorations"
 msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
@@ -4247,6 +4324,10 @@ msgstr ""
 msgid "Share this one-time link:"
 msgstr ""
 
+#: components/modal/modals/EnableDmEncryption.tsx
+msgid "Shared DM encryption code (8+ characters)"
+msgstr ""
+
 #: components/app/interface/settings/user/Advanced.tsx
 #~ msgid "Show advertisements"
 #~ msgstr ""
@@ -4264,8 +4345,8 @@ msgstr ""
 #~ msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
-msgid "Show Others"
-msgstr ""
+#~ msgid "Show Others"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Show send message button"
@@ -4783,6 +4864,10 @@ msgstr ""
 msgid "This password has previously appeared in security leaks, please use another password."
 msgstr ""
 
+#: src/AccountDeletionPage.tsx
+msgid "This permanently disables your account and queues your account, messages, and servers for deletion. Any active subscription will also be canceled when possible."
+msgstr ""
+
 #: components/app/interface/settings/server/Overview.tsx
 msgid "This server is about..."
 msgstr ""
@@ -4874,6 +4959,10 @@ msgstr ""
 
 #: components/app/interface/settings/server/Backup.tsx
 msgid "Unable to create a server backup."
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Unable to create decoration."
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
@@ -5000,7 +5089,12 @@ msgstr ""
 #: src/interface/channels/forum/ForumChannel.tsx
 #: src/interface/channels/forum/ForumChannel.tsx
 #: src/interface/channels/forum/ForumChannel.tsx
+#: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
 msgid "Unknown user"
+msgstr ""
+
+#: src/interface/channels/ChannelHeader.tsx
+msgid "Unlock"
 msgstr ""
 
 #: components/app/interface/settings/user/subscriptions/EditSubscription.tsx
@@ -5064,6 +5158,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "Upload avatar decoration"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Upload decorations here. Users can buy them with XP and equip them from their profile settings."
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -5264,8 +5362,8 @@ msgstr ""
 #~ msgstr ""
 
 #: components/modal/modals/CreateChannel.tsx
-#~ msgid "Voice Channel"
-#~ msgstr "Saluran Suara"
+msgid "Voice Channel"
+msgstr "Saluran Suara"
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 msgid "Voice Processing"
@@ -5299,6 +5397,10 @@ msgstr ""
 msgid "WARNING: Ownership transfer is a serious account action. Do not continue unless you intentionally want to give this server away."
 msgstr ""
 
+#: components/modal/modals/EnableDmEncryption.tsx
+msgid "WARNING: This cannot be recovered on another device. If you lose this code, your encrypted messages cannot be recovered."
+msgstr ""
+
 #: components/modal/modals/TransferServerOwnership.tsx
 msgid "WARNING: You may lose access to owner-only server settings immediately after the transfer."
 msgstr ""
@@ -5310,6 +5412,14 @@ msgstr ""
 #. placeholder {0}: u.warnings.length
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Warnings ({0}):"
+msgstr ""
+
+#: src/AccountDeletionPage.tsx
+msgid "We could not cancel your Stripe subscription automatically. If you purchased TailsTalk 2 Premium with Stripe, contact payments@tails1154.com so we can cancel it manually."
+msgstr ""
+
+#: src/AccountDeletionPage.tsx
+msgid "We could not complete the deletion request. Contact delete@tails1154.com as soon as possible so we can delete your account manually."
 msgstr ""
 
 #: components/auth/src/flows/FlowCheck.tsx
@@ -5430,6 +5540,7 @@ msgstr ""
 msgid "XP per message"
 msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "XP price"
 msgstr ""
@@ -5595,6 +5706,10 @@ msgstr ""
 msgid "You were logged out!"
 msgstr ""
 
+#: src/AccountDeletionPage.tsx
+msgid "You will be asked to confirm your password or authenticator before this happens."
+msgstr ""
+
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "You will not receive any notifications"
 msgstr ""
@@ -5649,6 +5764,10 @@ msgstr ""
 #: components/auth/src/flows/FlowVerify.tsx
 msgid "Your account has been verified!"
 msgstr "Akunmu telah diverifikasi!"
+
+#: src/AccountDeletionPage.tsx
+msgid "Your account, messages, and servers have been queued for deletion."
+msgstr ""
 
 #: components/app/interface/settings/server/Boosts.tsx
 msgid "Your boosts"

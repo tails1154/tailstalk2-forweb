@@ -16,13 +16,13 @@ import Wordmark from "../../../../public/assets/web/wordmark.svg?component-solid
  */
 export default function FlowHome() {
   const state = useState();
-  const { lifecycle, isLoggedIn, isError } = useClientLifecycle();
+  const { lifecycle, isError } = useClientLifecycle();
 
   return (
     <Switch
       fallback={
         <>
-          <Show when={isLoggedIn()}>
+          <Show when={lifecycle.loadedOnce()}>
             <Navigate href={state.layout.popNextPath() ?? "/"} />
           </Show>
 

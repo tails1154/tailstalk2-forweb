@@ -32,6 +32,8 @@
       "@revolt/i18n/*": ["components/i18n/*"],
       "@revolt/keybinds": ["components/keybinds"],
       "@revolt/keybinds/*": ["components/keybinds/*"],
+      "@revolt/lib": ["src/lib"],
+      "@revolt/lib/*": ["src/lib/*"],
       "@revolt/markdown": ["components/markdown"],
       "@revolt/markdown/*": ["components/markdown/*"],
       "@revolt/modal": ["components/modal"],

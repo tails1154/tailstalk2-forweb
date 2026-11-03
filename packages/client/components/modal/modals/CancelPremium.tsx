@@ -20,10 +20,22 @@ export function CancelPremiumModal(
         },
       ]}
     >
-      <Trans>
-        Your Premium access and badge will remain active until the end of the
-        current billing period. You can uncancel it later.
-      </Trans>
+      {props.gifted ? (
+        <Trans>
+          WARNING! THIS IS A GIFTED SUBSCRIPTION! Are you SURE you want to
+          cancel it?
+        </Trans>
+      ) : props.immediate ? (
+        <Trans>
+          This immediately cancels your TailsTalk 2 Premium subscription and
+          removes Premium access and its badge.
+        </Trans>
+      ) : (
+        <Trans>
+          Your Premium access and badge will remain active until the end of the
+          current billing period. You can uncancel it later.
+        </Trans>
+      )}
     </Dialog>
   );
 }

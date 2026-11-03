@@ -1,4 +1,10 @@
-import { Show, createResource, createSignal, onCleanup, onMount } from "solid-js";
+import {
+  Show,
+  createResource,
+  createSignal,
+  onCleanup,
+  onMount,
+} from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 
@@ -6,20 +12,23 @@ import { useClient } from "@revolt/client";
 import { useModals } from "@revolt/modal";
 import { CategoryButton, Column } from "@revolt/ui";
 
+import { suppressLeaveSitePromptOnce } from "../../../../../src/serviceWorkerInterface";
+
 export function SupporterSubscription() {
   const client = useClient();
   const { openModal, showError } = useModals();
   const [checkoutLoading, setCheckoutLoading] = createSignal(false);
   const [cancelLoading, setCancelLoading] = createSignal(false);
   const [resumeLoading, setResumeLoading] = createSignal(false);
-  const [account] = createResource(() =>
-    (client().api as unknown as { get: (path: string) => Promise<AccountInfo> }).get(
-      "/auth/account/",
-    ),
+  const [cashPaymentLoading, setCashPaymentLoading] = createSignal(false);
+  const [account, { refetch }] = createResource(() =>
+    (
+      client().api as unknown as { get: (path: string) => Promise<AccountInfo> }
+    ).get("/auth/account/"),
   );
 
   onMount(() => {
-    const refresh = window.setInterval(() => void account.refetch(), 30_000);
+    const refresh = window.setInterval(() => void refetch(), 30_000);
     onCleanup(() => window.clearInterval(refresh));
   });
 
@@ -27,6 +36,7 @@ export function SupporterSubscription() {
     setCheckoutLoading(true);
     try {
       const { url } = await client().account.createStripeCheckout();
+      suppressLeaveSitePromptOnce();
       window.location.assign(url);
     } finally {
       setCheckoutLoading(false);
@@ -37,7 +47,7 @@ export function SupporterSubscription() {
     setCancelLoading(true);
     try {
       await client().account.cancelStripeSubscription();
-      await account.refetch();
+      await refetch();
     } catch (error) {
       showError(error);
       throw error;
@@ -50,16 +60,31 @@ export function SupporterSubscription() {
     setResumeLoading(true);
     try {
       await client().account.resumeStripeSubscription();
-      await account.refetch();
+      await refetch();
     } finally {
       setResumeLoading(false);
+    }
+  }
+
+  async function requestCashPayment() {
+    setCashPaymentLoading(true);
+    try {
+      await client().account.requestCashPayment();
+      await refetch();
+    } catch (error) {
+      showError(error);
+      throw error;
+    } finally {
+      setCashPaymentLoading(false);
     }
   }
 
   return (
     <CategoryButton.Collapse
       title={<Trans>TailsTalk 2 Premium</Trans>}
-      description={<Trans>Support TailsTalk 2 and unlock Premium benefits.</Trans>}
+      description={
+        <Trans>Get TailsTalk 2 Premium and unlock Premium benefits.</Trans>
+      }
     >
       <Column gap="md" style={{ padding: "0.75rem 1rem 1rem" }}>
         <Show
@@ -67,9 +92,9 @@ export function SupporterSubscription() {
           fallback={
             <div>
               <Trans>
-                Subscribe to receive the TailsTalk Supporter badge with TailsTalk 2 Premium. Stripe
-                handles payment securely; TailsTalk 2 never sees your card
-                details.
+                Subscribe to receive the TailsTalk 2 Premium badge with
+                TailsTalk 2 Premium. Stripe handles payment securely; TailsTalk
+                2 never sees your card details.
               </Trans>
             </div>
           }
@@ -78,36 +103,79 @@ export function SupporterSubscription() {
             <div>
               <Trans>
                 You have an active {subscription().tier} subscription. Your
-                Supporter badge is enabled.
+                TailsTalk 2 Premium badge is enabled.
                 <Show when={subscription().cancel_at_period_end}>
                   <br />
-                  <Trans>Your subscription is scheduled to end at the end of this billing period.</Trans>
+                  <Trans>
+                    Your subscription is scheduled to end at the end of this
+                    billing period.
+                  </Trans>
                 </Show>
               </Trans>
             </div>
           )}
         </Show>
         <div>
-          <Trans>Supporter features:</Trans>
+          <Trans>Premium benefits:</Trans>
           <br />
-          <Trans>• TailsTalk Supporter profile badge</Trans>
+          <Trans>• TailsTalk 2 Premium profile badge</Trans>
           <br />
-          <Trans>• Support independent development</Trans>
+          <Trans>• Attachments up to 2 GB</Trans>
           <br />
-          <Trans>• More supporter perks may be added later</Trans>
+          <Trans>• More Premium benefits may be added later</Trans>
         </div>
         <Show when={!account()?.subscription}>
-          <CategoryButton icon="blank" onClick={startCheckout} isDisabled={checkoutLoading()}>
+          <CategoryButton
+            icon="blank"
+            onClick={startCheckout}
+            disabled={checkoutLoading()}
+          >
             <Trans>Subscribe with Stripe</Trans>
           </CategoryButton>
+          <CategoryButton
+            icon="blank"
+            onClick={() =>
+              openModal({ type: "cash_payment", onConfirm: requestCashPayment })
+            }
+            disabled={
+              cashPaymentLoading() ||
+              account()?.cash_payment_request?.status === "pending"
+            }
+          >
+            <Show
+              when={account()?.cash_payment_request?.status === "pending"}
+              fallback={<Trans>Request cash payment</Trans>}
+            >
+              <Trans>Cash payment request pending</Trans>
+            </Show>
+          </CategoryButton>
         </Show>
-        <Show when={account()?.subscription && !account()?.subscription?.cancel_at_period_end}>
-          <CategoryButton icon="blank" onClick={() => openModal({ type: "cancel_premium", onConfirm: cancelSubscription })} isDisabled={cancelLoading()}>
+        <Show
+          when={
+            account()?.subscription &&
+            !account()?.subscription?.cancel_at_period_end
+          }
+        >
+          <CategoryButton
+            icon="blank"
+            onClick={() =>
+              openModal({
+                type: "cancel_premium",
+                onConfirm: cancelSubscription,
+                gifted: account()?.subscription?.provider === "gift",
+              })
+            }
+            disabled={cancelLoading()}
+          >
             <Trans>Cancel subscription</Trans>
           </CategoryButton>
         </Show>
         <Show when={account()?.subscription?.cancel_at_period_end}>
-          <CategoryButton icon="blank" onClick={resumeSubscription} isDisabled={resumeLoading()}>
+          <CategoryButton
+            icon="blank"
+            onClick={resumeSubscription}
+            disabled={resumeLoading()}
+          >
             <Trans>Uncancel subscription</Trans>
           </CategoryButton>
         </Show>
@@ -122,5 +190,9 @@ type AccountInfo = {
     tier: string;
     active_until: string;
     cancel_at_period_end: boolean;
+  };
+  cash_payment_request?: {
+    status: "pending" | "approved" | "declined" | "completed";
+    requested_at: string;
   };
 };

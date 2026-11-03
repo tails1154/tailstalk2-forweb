@@ -294,19 +294,22 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
     // Check if this is something we can even send
     if (!draft.content && !draft.files?.length) return;
 
-    // Add message to the outbox
+    const content = draft.content;
+
+    // Add message to the outbox.
     const idempotencyKey = ulid();
     this.set("outbox", channel.id, [
       ...this.getPendingMessages(channel.id),
       {
         ...draft,
+        content,
         idempotencyKey,
         status: "sending",
       } as UnsentMessage,
     ]);
 
     // Try sending the message
-    const { content, replies, files } = draft;
+    const { replies, files } = draft;
 
     // Construct message object
     const attachments: string[] = [];

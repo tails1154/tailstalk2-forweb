@@ -98,6 +98,24 @@ export function ReportContentModal(
         throw new Error("NoReasonProvided");
       }
 
+      let reportDetail = detail;
+      const targetMessage =
+        props.target instanceof MessageI ? props.target : undefined;
+      if (targetMessage?.channel?.type === "DirectMessage") {
+        const nearby = await targetMessage.channel.fetchMessages({ limit: 50 });
+        const ordered = nearby.sort(
+          (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
+        );
+        const targetIndex = ordered.findIndex(
+          (message) => message.id === targetMessage.id,
+        );
+          const context = ordered
+          .slice(Math.max(0, targetIndex - 1), targetIndex + 2)
+          .map((message) => `[${message.id}] ${message.content ?? ""}`);
+        const contextText = context.join("\n");
+        reportDetail = `${detail}\n\nDM context (up to 3 messages):\n${contextText}`;
+      }
+
       await props.client.api.post("/safety/report", {
         content:
           props.target instanceof User
@@ -118,7 +136,7 @@ export function ReportContentModal(
                   id: props.target.id,
                   report_reason: category as API.ContentReportReason,
                 },
-        additional_context: detail,
+        additional_context: reportDetail,
       });
       props.onClose();
     } catch (error) {

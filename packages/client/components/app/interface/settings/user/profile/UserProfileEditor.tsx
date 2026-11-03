@@ -8,10 +8,10 @@ import { API, User } from "stoat.js";
 import { useClient } from "@revolt/client";
 import { CONFIGURATION } from "@revolt/common";
 import {
+  Button,
   CategoryButton,
   CircularProgress,
   Column,
-  Button,
   Form2,
   Row,
   Text,
@@ -48,7 +48,10 @@ export function UserProfileEditor(props: Props) {
 
   const decorations = useQuery(() => ({
     queryKey: ["profile-decorations"],
-    queryFn: () => client().api.get("/users/profile-decorations") as Promise<AvatarDecoration[]>,
+    queryFn: () =>
+      client().api.get("/users/profile-decorations") as Promise<
+        AvatarDecoration[]
+      >,
     retry: false,
   }));
   const [selectedDecoration, setSelectedDecoration] = createSignal("");
@@ -76,11 +79,26 @@ export function UserProfileEditor(props: Props) {
 
   const [initialBio, setInitialBio] = createSignal<readonly [string]>();
 
-  // once profile data is loaded, copy it into the form
+  function syncSelectedDecoration() {
+    const profileData = profile.data;
+    const decorationList = decorations.data;
+    if (!profileData || !decorationList) return;
+
+    // Profiles store the selected asset URL, while the editor select uses the
+    // catalog item's ID. Resolve the URL back to its catalog entry.
+    setSelectedDecoration(
+      decorationList.find(
+        (decoration) => decoration.asset_url === profileData.avatarDecoration,
+      )?.id ?? "",
+    );
+  }
+
+  // Once either request finishes, copy the profile's equipped decoration into
+  // the ID-based editor control.
   createEffect(
     on(
-      () => profile.data,
-      (profileData) => {
+      () => [profile.data, decorations.data],
+      ([profileData]) => {
         if (profileData) {
           editGroup.controls.banner.setValue(
             profileData.animatedBannerURL || null,
@@ -88,7 +106,7 @@ export function UserProfileEditor(props: Props) {
 
           editGroup.controls.bio.setValue(profileData.content || "");
           setInitialBio([profileData.content || ""]);
-          setSelectedDecoration(profileData.avatarDecoration || "");
+          syncSelectedDecoration();
         }
       },
     ),
@@ -104,6 +122,7 @@ export function UserProfileEditor(props: Props) {
       );
       editGroup.controls.bio.setValue(profile.data.content || "");
       setInitialBio([profile.data.content || ""]);
+      syncSelectedDecoration();
     }
   }
 
@@ -169,11 +188,15 @@ export function UserProfileEditor(props: Props) {
 
   async function saveDecoration() {
     if (selectedDecoration()) {
-      await client().api.post(`/users/profile-decorations/${selectedDecoration()}/equip`);
+      await client().api.post(
+        `/users/profile-decorations/${selectedDecoration()}/equip`,
+      );
     } else {
       await client().api.delete("/users/profile-decorations/equip");
     }
-    await queryClient.invalidateQueries({ queryKey: ["profile", props.user.id] });
+    await queryClient.invalidateQueries({
+      queryKey: ["profile", props.user.id],
+    });
   }
 
   async function buyDecoration(id: string) {
@@ -213,37 +236,57 @@ export function UserProfileEditor(props: Props) {
         />
         <Show when={decorations.data}>
           <label>
-            <Text class="label"><Trans>Avatar decoration</Trans></Text>
+            <Text class="label">
+              <Trans>Avatar decoration</Trans>
+            </Text>
             <select
               value={selectedDecoration()}
-              onChange={(event) => setSelectedDecoration(event.currentTarget.value)}
+              onChange={(event) =>
+                setSelectedDecoration(event.currentTarget.value)
+              }
             >
-              <option value=""><Trans>No decoration</Trans></option>
+              <option value="">
+                <Trans>No decoration</Trans>
+              </option>
               <For each={decorations.data}>
                 {(decoration) => (
                   <option value={decoration.id} disabled={!decoration.owned}>
-                    {decoration.name} — {decoration.owned ? <Trans>Owned</Trans> : `${decoration.price_xp} XP`}
+                    {decoration.name} —{" "}
+                    {decoration.owned ? (
+                      <Trans>Owned</Trans>
+                    ) : (
+                      `${decoration.price_xp} XP`
+                    )}
                   </option>
                 )}
               </For>
             </select>
           </label>
           <Row>
-            <Button onPress={() => void saveDecoration()}><Trans>Equip decoration</Trans></Button>
-            <For each={decorations.data.filter((decoration) => !decoration.owned)}>
+            <Button onPress={() => void saveDecoration()}>
+              <Trans>Equip decoration</Trans>
+            </Button>
+            <For
+              each={decorations.data.filter((decoration) => !decoration.owned)}
+            >
               {(decoration) => (
                 <Button onPress={() => void buyDecoration(decoration.id)}>
-                  <Trans>Buy</Trans> {decoration.name} ({decoration.price_xp} XP)
+                  <Trans>Buy</Trans> {decoration.name} ({decoration.price_xp}{" "}
+                  XP)
                 </Button>
               )}
             </For>
           </Row>
           <Show when={props.user.privileged || (props.user.badges & 32) !== 0}>
-            <Text class="label"><Trans>Moderator decoration uploader</Trans></Text>
+            <Text class="label">
+              <Trans>Moderator decoration uploader</Trans>
+            </Text>
             <input
               type="file"
               accept="image/png,image/webp,image/gif"
-              onChange={(event) => setDecorationFile(event.currentTarget.files?.[0])}
+              onChange={(event) =>
+                setDecorationFile(event.currentTarget.files?.[0])
+              }
             />
             <input
               type="text"

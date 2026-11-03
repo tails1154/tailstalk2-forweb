@@ -9,8 +9,9 @@ import { AddFriendModal } from "./modals/AddFriend";
 import { AddMembersToGroupModal } from "./modals/AddMembersToGroup";
 import { BanMemberModal } from "./modals/BanMember";
 import { BanNonMemberModal } from "./modals/BanNonMember";
-import { ChangelogModal } from "./modals/Changelog";
 import { CancelPremiumModal } from "./modals/CancelPremium";
+import { CashPaymentModal } from "./modals/CashPayment";
+import { ChangelogModal } from "./modals/Changelog";
 import { ChannelInfoModal } from "./modals/ChannelInfo";
 import { ChannelToggleMatureModal } from "./modals/ChannelToggleMature";
 import { CreateBotModal } from "./modals/CreateBot";
@@ -19,8 +20,8 @@ import { CreateChannelModal } from "./modals/CreateChannel";
 import { CreateGroupModal } from "./modals/CreateGroup";
 import { CreateGroupOrServer } from "./modals/CreateGroupOrServer";
 import { CreateInviteModal } from "./modals/CreateInvite";
-import { CreatePollModal } from "./modals/CreatePoll";
 import { CreateOrJoinServerModal } from "./modals/CreateOrJoinServer";
+import { CreatePollModal } from "./modals/CreatePoll";
 import { CreateRoleModal } from "./modals/CreateRole";
 import { CreateServerModal } from "./modals/CreateServer";
 import { CreateWebhookModal } from "./modals/CreateWebhook";
@@ -99,6 +100,8 @@ export function RenderModal(props: ActiveModal & { onClose: () => void }) {
       return <ChangelogModal {...modalProps} />;
     case "cancel_premium":
       return <CancelPremiumModal {...modalProps} />;
+    case "cash_payment":
+      return <CashPaymentModal {...modalProps} />;
     case "add_members_to_group":
       return <AddMembersToGroupModal {...modalProps} />;
     case "channel_info":

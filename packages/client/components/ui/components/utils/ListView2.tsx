@@ -85,8 +85,8 @@ export function ListView2(props: Props) {
               ?.getBoundingClientRect()
           : null;
 
-        if (updatedRect) {
-          ref?.scrollTo({
+        if (updatedRect && ref) {
+          ref.scrollTo({
             top: ref.scrollTop + (updatedRect.top - currentRect.top),
           });
         }

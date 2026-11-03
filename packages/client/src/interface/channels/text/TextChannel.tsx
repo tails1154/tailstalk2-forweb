@@ -26,7 +26,6 @@ import {
   TypingIndicator,
   main,
 } from "@revolt/ui";
-import { VoiceChannelCallCardMount } from "@revolt/ui/components/features/voice/callCard/VoiceCallCard";
 
 import { ChannelHeader } from "../ChannelHeader";
 import { ChannelPageProps } from "../ChannelPage";
@@ -69,9 +68,6 @@ export function TextChannel(props: ChannelPageProps) {
    * @returns Message Id
    */
   const highlightMessageId = () => params().messageId;
-
-  const canConnect = () =>
-    props.channel.isVoice && props.channel.havePermission("Connect");
 
   // Get a reference to the message box's load latest function
   let jumpToBottomRef: ((nearby?: string) => void) | undefined;
@@ -177,22 +173,15 @@ export function TextChannel(props: ChannelPageProps) {
       </Header>
       <Content>
         <main class={main()}>
-          <Show
-            when={canConnect()}
-            fallback={
-              <BelowFloatingHeader>
-                <div>
-                  <NewMessages
-                    lastId={lastId}
-                    jumpBack={() => navigate(lastId()!)}
-                    dismiss={() => setLastId()}
-                  />
-                </div>
-              </BelowFloatingHeader>
-            }
-          >
-            <VoiceChannelCallCardMount channel={props.channel} />
-          </Show>
+          <BelowFloatingHeader>
+            <div>
+              <NewMessages
+                lastId={lastId}
+                jumpBack={() => navigate(lastId()!)}
+                dismiss={() => setLastId()}
+              />
+            </div>
+          </BelowFloatingHeader>
 
           <Messages
             channel={props.channel}

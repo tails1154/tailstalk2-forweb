@@ -17,6 +17,22 @@ export class AccountCollection {
     this.client = client;
   }
 
+  private async postSubscriptionCancellation(immediate: boolean): Promise<void> {
+    const config = this.client.api.config;
+    const response = await fetch(
+      `${config.baseURL}/auth/account/stripe/cancel`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(config.headers ?? {}),
+        },
+        body: JSON.stringify({ immediate }),
+      },
+    );
+    if (!response.ok) throw await response.text();
+  }
+
   /**
    * Fetch current account email
    * @returns Email
@@ -51,11 +67,14 @@ export class AccountCollection {
     }).post("/auth/account/stripe/checkout")) as { url: string };
   }
 
-  /** Schedule the current Stripe subscription to cancel at period end. */
+  /** Cancel the current Stripe subscription at the end of the billing period. */
   async cancelStripeSubscription(): Promise<void> {
-    await (this.client.api as unknown as {
-      post: (path: string) => Promise<unknown>;
-    }).post("/auth/account/stripe/cancel");
+    await this.postSubscriptionCancellation(false);
+  }
+
+  /** Immediately cancel the current Stripe subscription (admin testing only). */
+  async cancelStripeSubscriptionImmediately(): Promise<void> {
+    await this.postSubscriptionCancellation(true);
   }
 
   /** Resume a Stripe subscription scheduled for cancellation. */
@@ -63,6 +82,13 @@ export class AccountCollection {
     await (this.client.api as unknown as {
       post: (path: string) => Promise<unknown>;
     }).post("/auth/account/stripe/resume");
+  }
+
+  /** Request a generic cash payment review for TailsTalk 2 Premium. */
+  async requestCashPayment(): Promise<void> {
+    await (this.client.api as unknown as {
+      post: (path: string) => Promise<unknown>;
+    }).post("/auth/account/cash-payment");
   }
 
   /**

@@ -57,6 +57,12 @@ export type Modals =
   | {
       type: "cancel_premium";
       onConfirm: () => Promise<void>;
+      immediate?: boolean;
+      gifted?: boolean;
+    }
+  | {
+      type: "cash_payment";
+      onConfirm: () => Promise<void>;
     }
   | {
       type: "channel_info";
@@ -178,6 +184,7 @@ export type Modals =
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       error: any;
+      upsell?: boolean;
     }
   | {
       type: "feature_request_response";

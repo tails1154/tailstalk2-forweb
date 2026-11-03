@@ -84,6 +84,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "styled-system": resolve(__dirname, "styled-system"),
+      "@revolt/lib": resolve(__dirname, "src/lib"),
       ...readdirSync(resolve(__dirname, "components")).reduce(
         (p, f) => ({
           ...p,

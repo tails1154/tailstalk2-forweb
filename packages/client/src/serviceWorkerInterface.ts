@@ -117,8 +117,36 @@ async function installLatestVersion(updateServiceWorker?: () => Promise<void>) {
     await updateServiceWorker();
   }
 
+  // Version checks can discover a new bundle before Workbox emits
+  // onNeedRefresh. Make sure a waiting worker is activated before navigating;
+  // otherwise a normal reload can continue serving the old precache.
+  if ("serviceWorker" in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.getRegistration();
+      await registration?.update();
+      if (registration?.waiting) {
+        await new Promise<void>((resolve) => {
+          const timeout = window.setTimeout(resolve, 5000);
+          navigator.serviceWorker.addEventListener(
+            "controllerchange",
+            () => {
+              window.clearTimeout(timeout);
+              resolve();
+            },
+            { once: true },
+          );
+          registration.waiting?.postMessage({ type: "SKIP_WAITING" });
+        });
+      }
+    } catch {
+      // A service worker is optional; the cache-busted navigation still runs.
+    }
+  }
+
   await waitForServer();
-  window.location.reload();
+  const url = new URL(window.location.href);
+  url.searchParams.set("_tt2_refresh", Date.now().toString());
+  window.location.replace(url.toString());
 }
 
 if (import.meta.env.PROD) {

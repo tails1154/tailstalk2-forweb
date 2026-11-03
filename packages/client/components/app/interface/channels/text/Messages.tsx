@@ -285,21 +285,26 @@ export function Messages(props: Props) {
 
       // If we're not at the end, restore scroll position
       if (existingState && !existingState.atEnd) {
-        setTimeout(() =>
-          listRef!.scrollTo({
+        setTimeout(() => {
+          // The channel can be switched before this deferred callback runs.
+          // In that case the old list has already been unmounted.
+          if (!listRef) return;
+          listRef.scrollTo({
             top: existingState.scrollTop!,
             behavior: "instant",
-          }),
-        );
+          });
+        });
       }
       // Or... reset scroll to the end
       else if (atEnd()) {
-        setTimeout(() =>
-          listRef!.scrollTo({
+        setTimeout(() => {
+          // The channel can be switched before this deferred callback runs.
+          if (!listRef) return;
+          listRef.scrollTo({
             top: 9999999,
             behavior: "instant",
-          }),
-        );
+          });
+        });
       }
     } catch {
       // Keep track of any failures (and allow retry / other actions)

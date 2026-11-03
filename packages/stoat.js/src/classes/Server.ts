@@ -378,7 +378,9 @@ export class Server {
    * @param data Channel create route data
    * @returns The newly-created channel
    */
-  async createChannel(data: DataCreateServerChannel): Promise<Channel> {
+  async createChannel(
+    data: DataCreateServerChannel & { forum?: string },
+  ): Promise<Channel> {
     const channel = await this.#collection.client.api.post(
       `/servers/${this.id as ""}/channels`,
       data,

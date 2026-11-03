@@ -25,6 +25,8 @@ import {
   DevelopmentBuildCard,
   isDevelopmentBuildUrl,
   Embed,
+  getPremiumGiftUrl,
+  PremiumGiftCard,
   MessageContainer,
   MessageReply,
   Reactions,
@@ -86,6 +88,8 @@ export function Message(props: Props) {
   const client = useClient();
 
   const [isHovering, setIsHovering] = createSignal(false);
+  const rawContent = () => props.message.content;
+  const displayContent = () => rawContent();
 
   /**
    * Determine whether this message only contains a GIF
@@ -98,13 +102,16 @@ export function Message(props: Props) {
       (props.message.embeds[0] as WebsiteEmbed).originalUrl?.startsWith(
         "https://tenor.com",
       )) &&
-    props.message.content &&
-    !props.message.content.replace(RE_URL, "").length;
+    displayContent() &&
+    !displayContent().replace(RE_URL, "").length;
 
   const isDevelopmentBuildMessage = () => {
-    const content = props.message.content?.trim();
+    const content = displayContent()?.trim();
     return isDevelopmentBuildUrl(content);
   };
+
+  const premiumGiftUrl = () =>
+    getPremiumGiftUrl(displayContent()?.trim());
 
   /**
    * React with an emoji
@@ -170,17 +177,23 @@ export function Message(props: Props) {
 
               onMount(() => {
                 if (!message()) {
-                  props.message.channel!.fetchMessage(reply_id);
+                  void props.message.channel!
+                    .fetchMessage(reply_id)
+                    .catch(() => undefined);
                 }
               });
 
               return (
-                <MessageReply
-                  mention={props.message.mentionIds?.includes(
-                    message()!.authorId!,
+                <Show when={message()}>
+                  {(reply) => (
+                    <MessageReply
+                      mention={props.message.mentionIds?.includes(
+                        reply().authorId!,
+                      )}
+                      message={reply()}
+                    />
                   )}
-                  message={message()}
-                />
+                </Show>
               );
             }}
           </For>
@@ -303,17 +316,21 @@ export function Message(props: Props) {
         </Match>
         <Match
           when={
-            props.message.content &&
+            displayContent() &&
             !isOnlyGIF() &&
-            !isDevelopmentBuildMessage()
+            !isDevelopmentBuildMessage() &&
+            !premiumGiftUrl()
           }
         >
           <BreakText>
-            <Markdown content={props.message.content!} />
+            <Markdown content={displayContent()!} />
           </BreakText>
         </Match>
         <Match when={isDevelopmentBuildMessage()}>
           <DevelopmentBuildCard />
+        </Match>
+        <Match when={premiumGiftUrl()}>
+          <PremiumGiftCard url={premiumGiftUrl()!} />
         </Match>
       </Switch>
       <Show when={props.message.poll}>
@@ -326,7 +343,7 @@ export function Message(props: Props) {
           )}
         </For>
       </Show>
-      <Show when={props.message.embeds}>
+      <Show when={props.message.embeds && !premiumGiftUrl()}>
         <For each={props.message.embeds}>
           {(embed) => <Embed embed={embed} />}
         </For>

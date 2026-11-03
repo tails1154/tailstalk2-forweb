@@ -29,6 +29,7 @@ import MdWarning from "@material-design-icons/svg/outlined/warning.svg?component
 
 import { useClient } from "@revolt/client";
 import { CONFIGURATION } from "@revolt/common";
+import { requestClientJson } from "../../../../client/customApi";
 import { useModals } from "@revolt/modal";
 import {
   Button,
@@ -161,26 +162,30 @@ interface AdminFeatureRequest {
   status: string;
 }
 
-function authHeader(password: string) {
-  return { Authorization: `Basic ${btoa(`tails1154:${password}`)}` };
-}
+let adminApi: import("stoat-api").API | undefined;
+let adminMfaTicket: string | undefined;
 
 async function apiFetch<T = unknown>(
   path: string,
-  password: string,
+  _session: string,
   init?: RequestInit,
 ): Promise<T> {
-  const res = await fetch(`${CONFIGURATION.DEFAULT_API_URL}${path}`, {
-    ...init,
-    headers: {
-      ...(init?.body ? { "Content-Type": "application/json" } : {}),
-      ...authHeader(password),
-      ...init?.headers,
+  if (!adminApi) throw new Error("Admin session is not ready");
+  const body = init?.body
+    ? typeof init.body === "string"
+      ? JSON.parse(init.body)
+      : init.body
+    : undefined;
+  return requestClientJson<T>(
+    adminApi,
+    (init?.method ?? "GET") as "GET" | "POST" | "PATCH" | "DELETE",
+    path,
+    body,
+    {
+      ...(init?.headers ?? {}),
+      ...(adminMfaTicket ? { "X-MFA-Ticket": adminMfaTicket } : {}),
     },
-  });
-  if (!res.ok) throw new Error(await res.text());
-  const text = await res.text();
-  return (text ? JSON.parse(text) : undefined) as T;
+  );
 }
 
 function formatNumber(n: number) {
@@ -189,7 +194,9 @@ function formatNumber(n: number) {
 
 export function AdminPanel() {
   const { t } = useLingui();
-  const [password, setPassword] = createSignal("");
+  const client = useClient();
+  const { mfaFlow } = useModals();
+  adminApi = client().api;
   const [authToken, setAuthToken] = createSignal("");
   const [error, setError] = createSignal("");
   const [loading, setLoading] = createSignal(false);
@@ -199,18 +206,17 @@ export function AdminPanel() {
     setLoading(true);
     setError("");
     try {
-      await apiFetch("/admin", password());
-      setAuthToken(password());
-      setPassword("");
+      const mfa = await client().account.mfa();
+      const ticket = await mfaFlow(mfa);
+      if (!ticket) return;
+      adminMfaTicket = ticket.token;
+      await apiFetch("/admin", "session");
+      setAuthToken("session");
     } catch {
-      setError(t`Invalid admin password.`);
+      setError(t`Your account is not authorized to use the admin panel.`);
     } finally {
       setLoading(false);
     }
-  }
-
-  function handleKeyDown(e: KeyboardEvent) {
-    if (e.key === "Enter") authenticate();
   }
 
   return (
@@ -231,21 +237,14 @@ export function AdminPanel() {
                 style={{ color: "var(--md-sys-color-on-surface-variant)" }}
               >
                 <Trans>
-                  Sign in to manage reports, users, and platform updates.
+                  Your signed-in account is checked by the server. Only users
+                  granted admin access can continue.
                 </Trans>
               </Text>
             </Column>
             <Column gap="sm">
-              <TextField
-                type="password"
-                placeholder={t`Admin password`}
-                value={password()}
-                onChange={(e) => setPassword(e.currentTarget.value)}
-                onKeyDown={handleKeyDown}
-                disabled={loading()}
-              />
               <Button onPress={authenticate} isDisabled={loading()}>
-                <Show when={loading()} fallback={<Trans>Authenticate</Trans>}>
+                <Show when={loading()} fallback={<Trans>Continue</Trans>}>
                   <CircularProgress />
                 </Show>
               </Button>
@@ -1629,6 +1628,16 @@ function UsersTab(props: { password: string }) {
     });
   }
 
+  async function setAdminAccess(userId: string, enabled: boolean) {
+    await withLoading(userId, async () => {
+      await apiFetch(`/admin/users/${userId}/admin-access`, props.password, {
+        method: "POST",
+        body: JSON.stringify({ enabled }),
+      });
+      await search();
+    });
+  }
+
   const customBadges = [
     { bit: UserBadges.XPChampion, label: t`XP Champion` },
     { bit: UserBadges.CommunityHelper, label: t`Community Helper` },
@@ -1739,6 +1748,12 @@ function UsersTab(props: { password: string }) {
                     >
                       <MdLockReset {...iconSize(16)} />
                       <Trans>Generate reset link</Trans>
+                    </Button>
+                    <Button
+                      onPress={() => void setAdminAccess(u.id, !u.privileged)}
+                    >
+                      <MdAdminPanelSettings {...iconSize(16)} />
+                      {u.privileged ? <Trans>Remove admin access</Trans> : <Trans>Grant admin access</Trans>}
                     </Button>
                   </Show>
                   <Show when={resetLinks()[u.id]}>

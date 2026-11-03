@@ -3,4 +3,4 @@
 #MISE depends=["install:assets"]
 set -e
 
-pnpm --filter client exec vite --host
+pnpm --filter client exec vite --host --port 6202

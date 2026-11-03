@@ -1,10 +1,11 @@
-import { Show } from "solid-js";
+import { Show, createSignal } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { Server } from "stoat.js";
 import { css } from "styled-system/css";
 
 import { useClient, useClientLifecycle } from "@revolt/client";
+import { requestClientJson } from "../../../client/customApi";
 import { useUser } from "@revolt/markdown/users";
 import { useModals } from "@revolt/modal";
 import { fetchLatestChangelog } from "@revolt/modal/modals/Changelog";
@@ -42,6 +43,22 @@ import Notifications from "./user/notifications/Notifications";
 import { EditProfile } from "./user/profile";
 import { Sessions } from "./user/Sessions";
 import { AdminPanel } from "./user/Admin";
+
+const [hasAdminAccess, setHasAdminAccess] = createSignal(false);
+let checkedAdminUserId: string | undefined;
+
+function refreshAdminAccess() {
+  const client = useClient()();
+  const userId = client.user?.id;
+  if (!userId) {
+    checkedAdminUserId = undefined;
+    setHasAdminAccess(false);
+    return;
+  }
+  if (checkedAdminUserId === userId) return;
+  checkedAdminUserId = userId;
+  setHasAdminAccess(client.user?.privileged === true);
+}
 
 const Config: SettingsConfiguration<{ server: Server }> = {
   /**
@@ -90,11 +107,8 @@ const Config: SettingsConfiguration<{ server: Server }> = {
       case "language":
         return <LanguageSettings />;
       case "admin": {
-        const user = client().user;
-        if (user?.username !== "tails1154" || user.discriminator !== "0000") {
-          return null;
-        }
-        return <AdminPanel />;
+        refreshAdminAccess();
+        return <Show when={hasAdminAccess()}><AdminPanel /></Show>;
       }
       case "feedback":
         return <Feedback />;
@@ -119,6 +133,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
     const { pop, openModal } = useModals();
     const { logout } = useClientLifecycle();
     const user = useClient()().user;
+    refreshAdminAccess();
 
     return {
       context: null!,
@@ -267,7 +282,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
             },
             {
               id: "admin",
-              hidden: user?.username !== "tails1154" || user.discriminator !== "0000",
+              hidden: !hasAdminAccess(),
               icon: <MdAdminPanelSettings {...iconSize(20)} />,
               title: <Trans>Admin Panel</Trans>,
             },
@@ -282,7 +297,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               title: <Trans>Feature Requests</Trans>,
             },
             {
-              href: "https://ko-fi.com/stoatchat",
+              href: "https://ko-fi.com/tails1154",
               icon: <MdCoffee {...iconSize(20)} />,
               title: <Trans>Donate</Trans>,
             },

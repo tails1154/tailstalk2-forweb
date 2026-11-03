@@ -1,4 +1,4 @@
-import { Match, Show, Switch, createSignal } from "solid-js";
+import { Match, Show, Switch, createEffect, createSignal } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
@@ -6,7 +6,6 @@ import { styled } from "styled-system/jsx";
 import { useClientLifecycle } from "@revolt/client";
 import { State, TransitionType } from "@revolt/client/Controller";
 import { useModals } from "@revolt/modal";
-import { Navigate } from "@revolt/routing";
 import {
   Button,
   CircularProgress,
@@ -20,6 +19,7 @@ import {
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
 import { useState } from "@revolt/state";
+import { suppressLeaveSitePromptOnce } from "../../../../src/serviceWorkerInterface";
 import { FlowTitle } from "./Flow";
 import { Fields, Form, isInvalidStudentId } from "./Form";
 
@@ -43,6 +43,13 @@ export default function FlowLogin() {
   const { lifecycle, isLoggedIn, login, selectUsername } = useClientLifecycle();
   const [aisdChoice, setAisdChoice] = createSignal<boolean | null>(null);
   const [studentIdError, setStudentIdError] = createSignal(false);
+
+  createEffect(() => {
+    if (!lifecycle.loadedOnce()) return;
+
+    suppressLeaveSitePromptOnce();
+    window.location.replace(state.layout.popNextPath() ?? "/");
+  });
   /**
    * Log into account
    * @param data Form Data
@@ -141,9 +148,6 @@ export default function FlowLogin() {
         }
       >
         <Match when={isLoggedIn()}>
-          <Navigate href={state.layout.popNextPath() ?? "/"} />
-        </Match>
-        <Match when={lifecycle.state() === State.LoggingIn}>
           <CircularProgress />
         </Match>
         <Match when={lifecycle.state() === State.Onboarding}>
