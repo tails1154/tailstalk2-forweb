@@ -74,7 +74,7 @@ const Section = styled("section", {
   },
 });
 
-function PublicPage(props: { title: string; children: JSX.Element }) {
+export function PublicPage(props: { title: string; children: JSX.Element }) {
   onMount(() => {
     document.title = `${props.title} · TailsTalk 2`;
   });

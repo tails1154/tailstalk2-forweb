@@ -5607,6 +5607,20 @@ msgstr "You are about to ban {0}"
 msgid "You are about to kick {0}"
 msgstr "You are about to kick {0}"
 
+#. placeholder {0}: stored?.reason ?? "Your account has been disabled."
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "You are banned from registering for TailsTalk 2. Reason: {0}"
+msgstr "You are banned from registering for TailsTalk 2. Reason: {0}"
+
+#. placeholder {0}: reason ?? "Your account has been disabled."
+#: src/index.tsx
+msgid "You are banned from TailsTalk 2. Reason: {0}"
+msgstr "You are banned from TailsTalk 2. Reason: {0}"
+
+#: components/auth/src/flows/FlowLogin.tsx
+msgid "You are banned from TailsTalk 2. Reason: Your account has been disabled."
+msgstr "You are banned from TailsTalk 2. Reason: Your account has been disabled."
+
 #: components/i18n/errors.ts
 msgid "You are banned from this server."
 msgstr "You are banned from this server."
@@ -5666,6 +5680,10 @@ msgstr "You cannot remove yourself."
 #: components/i18n/errors.ts
 msgid "You cannot report yourself."
 msgstr "You cannot report yourself."
+
+#: components/auth/src/flows/FlowLogin.tsx
+#~ msgid "You cannot signup due to a internal error"
+#~ msgstr "You cannot signup due to a internal error"
 
 #: components/i18n/errors.ts
 msgid "You cannot timeout yourself."

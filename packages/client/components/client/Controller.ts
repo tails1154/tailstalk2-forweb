@@ -1,7 +1,7 @@
 import { Accessor, Setter, createMemo, createSignal } from "solid-js";
 
 import { detect } from "detect-browser";
-import { API, Client, ConnectionState } from "stoat.js";
+import { API, Client, ConnectionState, UserFlags } from "stoat.js";
 import { ProtocolV1 } from "stoat.js/lib/events/v1";
 
 import { CONFIGURATION } from "@revolt/common";
@@ -99,6 +99,7 @@ class Lifecycle {
     this.onState = this.onState.bind(this);
     this.onReady = this.onReady.bind(this);
     this.onPolicyChanges = this.onPolicyChanges.bind(this);
+    this.onUserUpdate = this.onUserUpdate.bind(this);
 
     const [state, setState] = createSignal(State.Ready);
     this.state = state;
@@ -167,6 +168,26 @@ class Lifecycle {
     this.client.events.on("state", this.onState);
     this.client.on("ready", this.onReady);
     this.client.on("policyChanges", this.onPolicyChanges);
+    this.client.on("userUpdate", this.onUserUpdate);
+  }
+
+  private onUserUpdate(user: Client["user"]): void {
+    if (!user || user.id !== this.client.user?.id) return;
+    if ((user.flags & UserFlags.Banned) !== UserFlags.Banned) return;
+
+    const reason = "Your account has been disabled.";
+    try {
+      localStorage.setItem(
+        "tailstalk2:registration-blocked",
+        JSON.stringify({ reason }),
+      );
+    } catch {
+      // Storage is optional; the server remains authoritative.
+    }
+    window.dispatchEvent(
+      new CustomEvent("tailstalk2:account-banned", { detail: { reason } }),
+    );
+    this.logout();
   }
 
   #enter(nextState: State) {
@@ -594,15 +615,19 @@ export default class ClientController {
     }
 
     if (session.result === "Disabled") {
-      const reason =
-        "reason" in session && typeof session.reason === "string"
-          ? session.reason
-          : "Your account has been disabled.";
-      document.cookie = "account_disabled=1; path=/; max-age=31536000";
-      alert(
-        `Your account has been disabled.\n\nReason: ${reason}\n\nDo not create another account.`,
-      );
-      return;
+      const reason = "Your account has been disabled.";
+      try {
+        localStorage.setItem(
+          "tailstalk2:registration-blocked",
+          JSON.stringify({ reason }),
+        );
+      } catch {
+        // Storage is optional; the server remains authoritative.
+      }
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const error = new Error("Account is not eligible to sign in");
+      error.name = "DisabledAccount";
+      throw error;
     }
 
     const createdSession = {

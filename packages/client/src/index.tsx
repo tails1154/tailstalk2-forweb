@@ -6,7 +6,7 @@ import "./sentry";
 import { createSignal, JSX, onCleanup, onMount, Show } from "solid-js";
 import { render } from "solid-js/web";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { Navigate, Route, Router, useParams } from "@solidjs/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/solid-query";
 import "material-symbols";
@@ -228,6 +228,24 @@ function MountContext(props: { children?: JSX.Element }) {
    */
   const snackbarController = new SnackbarController();
 
+  function AccountBanHandler() {
+    const { t } = useLingui();
+    const { showError } = useModals();
+    onMount(() => {
+      const handler = (event: Event) => {
+        const reason = (event as CustomEvent<{ reason?: string }>).detail?.reason;
+        showError(
+          new Error(
+            t`You are banned from TailsTalk 2. Reason: ${reason ?? "Your account has been disabled."}`,
+          ),
+        );
+      };
+      window.addEventListener("tailstalk2:account-banned", handler);
+      onCleanup(() => window.removeEventListener("tailstalk2:account-banned", handler));
+    });
+    return null;
+  }
+
   return (
     <KeybindContext>
       <ModalContext>
@@ -238,6 +256,7 @@ function MountContext(props: { children?: JSX.Element }) {
                 <QueryClientProvider client={client}>
                   <SnackbarProvider controller={snackbarController}>
                     {props.children}
+                    <AccountBanHandler />
                     <LeaveSitePrompt />
                     <LevelUpOverlay />
                     <ServiceWorkerUpdatePrompt />

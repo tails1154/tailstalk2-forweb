@@ -1,15 +1,15 @@
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 
 import { useApi, useClient, useClientLifecycle } from "@revolt/client";
 import { CONFIGURATION } from "@revolt/common";
 import { useModals } from "@revolt/modal";
 import { useNavigate, useParams } from "@revolt/routing";
-import { Button, Column, Dialog, iconSize, Row, Text } from "@revolt/ui";
+import { Button, CircularProgress, Column, Dialog, iconSize, Row, Text } from "@revolt/ui";
 import { styled } from "styled-system/jsx";
 
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
-import { createSignal, Show } from "solid-js";
+import { createSignal, onCleanup, onMount, Show } from "solid-js";
 import { FlowTitle } from "./Flow";
 import { setFlowCheckEmail } from "./FlowCheck";
 import { Fields, Form, isInvalidStudentId } from "./Form";
@@ -34,16 +34,44 @@ export default function FlowCreate() {
   const navigate = useNavigate();
   const { code } = useParams();
   const modals = useModals();
+  const { t } = useLingui();
   const [aisdChoice, setAisdChoice] = createSignal<boolean | null>(null);
   const [studentIdError, setStudentIdError] = createSignal(false);
   const isAisdStudent = () => aisdChoice() === true;
   const { login } = useClientLifecycle();
+  const [registrationBlocked, setRegistrationBlocked] = createSignal(false);
+  const [registrationLoading, setRegistrationLoading] = createSignal(false);
+
+  onMount(() => {
+    let stored: { reason?: string } | undefined;
+    try {
+      stored = JSON.parse(
+        localStorage.getItem("tailstalk2:registration-blocked") ?? "null",
+      );
+    } catch {
+      stored = undefined;
+    }
+    if (!stored) return;
+
+    setRegistrationLoading(true);
+    const timer = window.setTimeout(() => {
+      setRegistrationLoading(false);
+      setRegistrationBlocked(true);
+      modals.showError(
+        new Error(
+          t`You are banned from registering for TailsTalk 2. Reason: ${stored?.reason ?? "Your account has been disabled."}`,
+        ),
+      );
+    }, 1000);
+    onCleanup(() => window.clearTimeout(timer));
+  });
 
   /**
    * Create an account
    * @param data Form Data
    */
   async function create(data: FormData) {
+    if (registrationLoading() || registrationBlocked()) return;
     const studentId = (data.get("student-id") as string | null)?.trim();
     if (isAisdStudent() && isInvalidStudentId(studentId ?? "")) {
       setStudentIdError(true);
@@ -130,7 +158,12 @@ export default function FlowCreate() {
       <FlowTitle subtitle={<Trans>Create an account</Trans>} emoji="wave">
         <Trans>Hello!</Trans>
       </FlowTitle>
-      <Show when={aisdChoice() !== null}>
+      <Show when={registrationLoading()}>
+        <Column align>
+          <CircularProgress />
+        </Column>
+      </Show>
+      <Show when={aisdChoice() !== null && !registrationLoading() && !registrationBlocked()}>
         <Form onSubmit={create} captcha={CONFIGURATION.HCAPTCHA_SITEKEY}>
           <Fields
             fields={[isAisdStudent() ? "student-id" : "email", "new-password"]}

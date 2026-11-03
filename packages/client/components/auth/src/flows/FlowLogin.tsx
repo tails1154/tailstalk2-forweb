@@ -1,6 +1,6 @@
 import { Match, Show, Switch, createEffect, createSignal } from "solid-js";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
 
 import { useClientLifecycle } from "@revolt/client";
@@ -40,9 +40,11 @@ const AccountWarning = styled("div", {
 export default function FlowLogin() {
   const state = useState();
   const modals = useModals();
+  const { t } = useLingui();
   const { lifecycle, isLoggedIn, login, selectUsername } = useClientLifecycle();
   const [aisdChoice, setAisdChoice] = createSignal<boolean | null>(null);
   const [studentIdError, setStudentIdError] = createSignal(false);
+  const [loginLoading, setLoginLoading] = createSignal(false);
 
   createEffect(() => {
     if (!lifecycle.loadedOnce()) return;
@@ -55,6 +57,7 @@ export default function FlowLogin() {
    * @param data Form Data
    */
   async function performLogin(data: FormData) {
+    if (loginLoading()) return;
     const studentId = (data.get("student-id") as string | null)?.trim();
     if (aisdChoice() && isInvalidStudentId(studentId ?? "")) {
       setStudentIdError(true);
@@ -68,10 +71,19 @@ export default function FlowLogin() {
 
     if (!email || !password) return;
 
+    setLoginLoading(true);
     try {
       await login({ email, password }, modals);
     } catch (error) {
-      modals.showError(error);
+      if (error instanceof Error && error.name === "DisabledAccount") {
+        modals.showError(
+          new Error(t`You are banned from TailsTalk 2. Reason: Your account has been disabled.`),
+        );
+      } else {
+        modals.showError(error);
+      }
+    } finally {
+      setLoginLoading(false);
     }
   }
 
@@ -147,6 +159,11 @@ export default function FlowLogin() {
           </>
         }
       >
+        <Match when={loginLoading()}>
+          <Column align>
+            <CircularProgress />
+          </Column>
+        </Match>
         <Match when={isLoggedIn()}>
           <CircularProgress />
         </Match>

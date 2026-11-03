@@ -11,6 +11,7 @@ import { useState } from "@revolt/state";
 
 import { suppressLeaveSitePromptOnce } from "./serviceWorkerInterface";
 import { FlowTitle } from "@revolt/auth/src/flows/Flow";
+import { PublicPage } from "./PublicPage";
 
 /** Public Google Play account-deletion flow. */
 export function AccountDeletionPage() {
@@ -68,7 +69,8 @@ export function AccountDeletionPage() {
   }
 
   return (
-    <Column gap="lg">
+    <PublicPage title="Delete account">
+      <Column gap="lg">
       <FlowTitle>
         <Trans>Delete your TailsTalk 2 account</Trans>
       </FlowTitle>
@@ -136,6 +138,7 @@ export function AccountDeletionPage() {
           </Text>
         </Match>
       </Switch>
-    </Column>
+      </Column>
+    </PublicPage>
   );
 }
