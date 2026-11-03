@@ -221,16 +221,12 @@ class Voice {
       activeVoiceChannelId = undefined;
     }
     if (activeVoiceOwner && activeVoiceOwner !== this) return;
+
+    this.disconnect();
     this.connectingChannelId = channel.id;
     activeVoiceChannelId = channel.id;
     activeVoiceOwner = this;
 
-    // TailsTalk 2 voice uses its own WebRTC mesh and signaling service. Keep
-    // this path independent from the legacy LiveKit/voice-ingress stack.
-    await this.connectCustomVoice(channel);
-    return;
-
-    this.disconnect();
     const generation = ++this.connectionGeneration;
 
     const room = new Room({
@@ -256,6 +252,15 @@ class Voice {
       { room, onlySubscribed: false },
     );
 
+    const syncParticipants = () => {
+      this.setParticipants([
+        room.localParticipant.identity,
+        ...Array.from(room.remoteParticipants.values(), (participant) =>
+          participant.identity,
+        ),
+      ]);
+    };
+
     batch(() => {
       this.#setRoom(room);
       this.#setChannel(channel);
@@ -266,6 +271,7 @@ class Voice {
 
     room.addListener("connected", () => {
       this.#setState("CONNECTED");
+      syncParticipants();
       if (this.speakingPermission)
         room.localParticipant
           .setMicrophoneEnabled(this.#settings.micOn)
@@ -290,13 +296,18 @@ class Voice {
       this.sound.playSound("userJoinVoice");
     });
 
-    room.addListener("disconnected", () => this.#setState("DISCONNECTED"));
+    room.addListener("disconnected", () => {
+      this.setParticipants([]);
+      this.#setState("DISCONNECTED");
+    });
 
     room.addListener("participantConnected", () => {
+      syncParticipants();
       this.sound.playSound("userJoinVoice");
     });
 
     room.addListener("participantDisconnected", () => {
+      syncParticipants();
       this.sound.playSound("userLeaveVoice");
     });
 
