@@ -116,8 +116,6 @@ export type SelectedTheme = Pick<
  */
 export class Theme extends AbstractStore<"theme", TypeTheme> {
   prefersDark: Accessor<boolean>;
-  serverTheme: Accessor<CustomTheme | undefined>;
-  private setServerThemeValue: (theme: CustomTheme | undefined) => void;
 
   /**
    * Construct store
@@ -133,10 +131,6 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
     );
 
     this.prefersDark = prefersDark;
-    const [serverTheme, setServerTheme] = createSignal<CustomTheme | undefined>();
-    this.serverTheme = serverTheme;
-    this.setServerThemeValue = setServerTheme;
-
     window
       .matchMedia("(prefers-color-scheme: dark)")
       .addEventListener("change", (event) => setPrefersDark(event.matches));
@@ -282,24 +276,6 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
    */
   get activeTheme(): SelectedTheme {
     const opts = this.get();
-    const serverTheme = this.serverTheme();
-
-    if (serverTheme) {
-      return {
-        blur: opts.blur,
-        interfaceFont: opts.interfaceFont,
-        monospaceFont: opts.monospaceFont,
-        messageSize: opts.messageSize,
-        messageGroupSpacing: opts.messageGroupSpacing,
-        preset: "custom",
-        darkMode: opts.mode === "dark" || (opts.mode === "system" && this.prefersDark()),
-        accent: serverTheme.primary,
-        contrast: opts.m3Contrast,
-        variant: opts.m3Variant,
-        custom: serverTheme,
-      };
-    }
-
     switch (opts.preset) {
       case "tailstalk2":
       case "stoat":
@@ -400,11 +376,6 @@ export class Theme extends AbstractStore<"theme", TypeTheme> {
     this.set("customThemes", [...themes, theme]);
     this.set("customThemeId", theme.id);
     this.set("preset", "custom");
-  }
-
-  /** Apply a server-wide theme temporarily without changing the user's library. */
-  setServerTheme(theme: CustomTheme | undefined) {
-    this.setServerThemeValue(theme);
   }
 
   removeCustomTheme(id: string) {

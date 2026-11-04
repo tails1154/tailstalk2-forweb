@@ -6,13 +6,14 @@ import { useQuery } from "@tanstack/solid-query";
 import { ServerSettingsProps } from "../ServerSettings";
 
 type AuditEntry = { id: string; user: string; reason?: string; action: { type?: string; [key: string]: unknown } };
-type AuditResponse = { audit_logs: AuditEntry[]; users: Array<{ id: string; username: string; avatar?: { _id?: string } }> };
+type AuditUser = { id?: string; _id?: string; username: string; avatar?: { _id?: string } };
+type AuditResponse = { audit_logs: AuditEntry[]; users: AuditUser[] };
 
 export default function ServerAuditLog(props: ServerSettingsProps) {
   const { t } = useLingui();
   const client = useClient();
   const query = useQuery(() => ({ queryKey: ["server-audit-log", props.server.id], queryFn: () => client().api.get(`/servers/${props.server.id}/audit_logs`, { limit: 100, include_users: true }) as Promise<AuditResponse> }));
-  const nameFor = (id: string) => query.data?.users.find((user) => user.id === id)?.username ?? id;
+  const nameFor = (id: string) => query.data?.users.find((user) => (user.id ?? user._id) === id)?.username ?? id;
 
   return <Column gap="xl">
     <Column gap="sm"><Text class="title" size="large"><Trans>Moderation audit timeline</Trans></Text><Text><Trans>Review server changes and moderation actions in reverse chronological order.</Trans></Text></Column>

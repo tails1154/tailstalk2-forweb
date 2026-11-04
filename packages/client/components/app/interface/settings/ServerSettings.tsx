@@ -30,10 +30,8 @@ import { EmojiList } from "./server/emojis/EmojiList";
 import { ListServerInvites } from "./server/invites/ListServerInvites";
 import { ServerRoleEditor } from "./server/roles/ServerRoleEditor";
 import { ServerRoleOverview } from "./server/roles/ServerRoleOverview";
-import ServerThemeSettings from "./server/Theme";
 import ServerAuditLog from "./server/AuditLog";
 
-import MdPalette from "@material-design-icons/svg/outlined/palette.svg?component-solid";
 import MdHistory from "@material-design-icons/svg/outlined/history.svg?component-solid";
 
 const Config: SettingsConfiguration<Server> = {
@@ -99,8 +97,6 @@ const Config: SettingsConfiguration<Server> = {
         return <ListServerInvites server={server} />;
       case "bans":
         return <ListServerBans server={server} />;
-      case "theme":
-        return <ServerThemeSettings server={server} />;
       case "audit-log":
         return <ServerAuditLog server={server} />;
 
@@ -132,17 +128,9 @@ const Config: SettingsConfiguration<Server> = {
           ],
         },
         {
-          hidden:
-            !server.havePermission("ManageCustomisation") &&
-            !server.havePermission("ManageServer"),
+          hidden: !server.havePermission("ManageCustomisation"),
           title: <Trans>Customisation</Trans>,
           entries: [
-            {
-              hidden: !server.havePermission("ManageServer"),
-              id: "theme",
-              icon: <MdPalette />,
-              title: <Trans>Server theme</Trans>,
-            },
             {
               id: "emojis",
               icon: <BiSolidHappyBeaming size={20} />,
