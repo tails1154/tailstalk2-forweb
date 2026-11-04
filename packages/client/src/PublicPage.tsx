@@ -212,9 +212,13 @@ export function PrivacyPage() {
             TailsTalk 2 is self-hosted. Data is accessible to the operator and
             authorized infrastructure administrators who need it to run and
             secure the service. The service may also use configured providers
-            for email delivery, CAPTCHA, file/media storage, or other requested
-            features. We do not sell personal data and the web client does not
-            load advertising or third-party analytics scripts.
+            for email delivery, CAPTCHA, file/media storage, error diagnostics,
+            or other requested features. If client error reporting is enabled,
+            it may send technical error details, browser/device information,
+            the page URL, and a release identifier to the configured diagnostic
+            provider; it is not used for advertising. We do not sell personal
+            data and the web client does not load advertising or third-party
+            analytics scripts.
           </Trans>
         </p>
         <p>
@@ -222,6 +226,21 @@ export function PrivacyPage() {
             Infrastructure may be located outside the European Economic Area.
             If your data is transferred internationally, the operator will use
             an applicable legal transfer mechanism and appropriate safeguards.
+          </Trans>
+        </p>
+      </Section>
+      <Section>
+        <h2>
+          <Trans>Cookies and local storage</Trans>
+        </h2>
+        <p>
+          <Trans>
+            The service uses strictly necessary session and security cookies to
+            keep you signed in and protect requests. The client may also use
+            local browser storage for settings, drafts, update notices, and
+            other functionality you request. These mechanisms are not used to
+            track you across unrelated websites, and you can clear local
+            browser data through your browser settings.
           </Trans>
         </p>
       </Section>
