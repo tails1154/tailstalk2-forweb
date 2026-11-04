@@ -144,38 +144,94 @@ export function PrivacyPage() {
     <PublicPage title="Privacy Policy">
       <Heading>Privacy Policy</Heading>
       <p>
-        This page explains the information TailsTalk 2 processes to provide the
-        service.
+        <strong>Last updated: November 3, 2026.</strong> This policy explains
+        what TailsTalk 2 processes, why we process it, and how you can exercise
+        your data-protection rights.
       </p>
+      <Section>
+        <h2>Who is responsible</h2>
+        <p>
+          The controller is the TailsTalk 2 operator, Tails1154. For privacy
+          questions or rights requests, contact
+          <a href="mailto:tails1154@tails1154.com"> tails1154@tails1154.com</a>.
+          No data-protection officer has been appointed.
+        </p>
+      </Section>
       <Section>
         <h2>Information we process</h2>
         <p>
-          Depending on how you use TailsTalk 2, this can include your account
-          details, messages, uploaded files, server membership, and device or
-          session information.
+          Depending on how you use the service, we process your email address,
+          password hash, user ID, username, profile information, messages,
+          reactions, uploaded files, server and channel memberships, reports,
+          moderation records, and session/device information. The account
+          system also records the IP address used when an account is created
+          for account security and abuse prevention. We do not receive or store
+          your plaintext password.
         </p>
       </Section>
       <Section>
-        <h2>How it is used</h2>
+        <h2>Purposes and legal bases</h2>
         <p>
-          This information is used to authenticate you, deliver messages and
-          notifications, secure the service, and provide the features you
-          request.
+          We process account and community data as necessary to perform our
+          agreement with you: to authenticate accounts, deliver messages,
+          operate servers, and provide requested features. We process security,
+          moderation, abuse-prevention, and audit data on the legitimate
+          interest of keeping the service safe and reliable. We process data
+          when required by law where a legal obligation applies. Browser
+          notification and microphone/camera access are controlled by your
+          browser and device permissions.
         </p>
       </Section>
       <Section>
-        <h2>Your choices</h2>
+        <h2>Sharing and international processing</h2>
         <p>
-          You can manage your account and sessions from settings. To ask a
-          privacy question or request help with your data, contact
-          tails1154@tails1154.com.
+          TailsTalk 2 is self-hosted. Data is accessible to the operator and
+          authorized infrastructure administrators who need it to run and
+          secure the service. The service may also use configured providers for
+          email delivery, CAPTCHA, file/media storage, or other requested
+          features. We do not sell personal data and the web client does not
+          load advertising or third-party analytics scripts.
+        </p>
+        <p>
+          Infrastructure may be located outside the European Economic Area. If
+          your data is transferred internationally, the operator will use an
+          applicable legal transfer mechanism and appropriate safeguards.
         </p>
       </Section>
       <Section>
-        <h2>Updates</h2>
+        <h2>Retention</h2>
         <p>
-          This policy may be updated as TailsTalk 2 changes. Material changes
-          will be posted on this page.
+          We keep account and community content while it is needed to provide
+          the service or until you request deletion, subject to content kept
+          for safety, legal claims, or legal obligations. Sessions are kept
+          until they expire or are revoked. Audit logs are configured to expire
+          after 30 days. Security records, including account-registration IP
+          data, are retained only for as long as needed for abuse prevention and
+          account security, then removed or anonymized. Backups may retain
+          deleted data until the relevant backup is rotated.
+        </p>
+      </Section>
+      <Section>
+        <h2>Your rights</h2>
+        <p>
+          Subject to legal exceptions, you may request access, correction,
+          deletion, restriction, portability, or object to processing. You may
+          also withdraw consent where processing relies on consent. To request
+          deletion, use the
+          <a href="/delete-account"> account-deletion page</a>. For other
+          requests, email us from the address associated with your account;
+          we may verify your identity before responding. We aim to respond
+          without undue delay and generally within one month. You may also
+          complain to your local data-protection supervisory authority.
+        </p>
+      </Section>
+      <Section>
+        <h2>Security and changes</h2>
+        <p>
+          We use access controls, password hashing, session revocation, and
+          encrypted HTTPS connections. No online service can guarantee absolute
+          security; report suspected security or privacy issues promptly.
+          Material policy changes will be posted here with a new update date.
         </p>
       </Section>
     </PublicPage>
