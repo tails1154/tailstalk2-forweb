@@ -1,9 +1,7 @@
-import { Match, Show, Switch, createEffect, createSignal, onMount } from "solid-js";
+import { Match, Show, Switch, createSignal, onMount } from "solid-js";
 
 import { Trans } from "@lingui-solid/solid/macro";
 import { useNavigate } from "@solidjs/router";
-import { createQuery } from "@tanstack/solid-query";
-
 import { useClient, useClientLifecycle } from "@revolt/client";
 import { useModals } from "@revolt/modal";
 import { Button, Column, Row, Text } from "@revolt/ui";
@@ -20,15 +18,6 @@ export function AccountDeletionPage() {
   const client = useClient();
   const { mfaFlow, showError } = useModals();
   const { isLoggedIn, lifecycle, logout } = useClientLifecycle();
-  // This page is public, so do not dereference client.user while the session
-  // is still logged out. The settings page can safely use createMfaResource,
-  // but this route is also rendered before the login redirect runs.
-  const mfa = createQuery(() => ({
-    queryKey: ["mfa", client().user?.id ?? "anonymous"],
-    queryFn: () => client().account.mfa(),
-    enabled: !!client().user,
-    throwOnError: true,
-  }));
   const [confirmed, setConfirmed] = createSignal(false);
   const [deleting, setDeleting] = createSignal(false);
   const [stripeCancellationFailed, setStripeCancellationFailed] =
@@ -37,20 +26,23 @@ export function AccountDeletionPage() {
 
   onMount(() => {
     state.layout.setNextPath("/delete-account");
-  });
-
-  createEffect(() => {
-    if (confirmed()) return;
-    if (lifecycle.loadedOnce() && !isLoggedIn()) {
-      state.layout.setNextPath("/delete-account");
+    // An unauthenticated public visit has no client connection that can ever
+    // set loadedOnce(), so waiting for that flag leaves the page stuck on
+    // "Checking your session...". A missing session is enough to redirect;
+    // FlowLogin consumes nextPath after authentication.
+    if (!isLoggedIn()) {
       navigate("/login/auth", { replace: true });
     }
   });
 
   async function deleteAccount() {
     setDeleting(true);
+    setDeletionFailed(false);
     try {
-      const ticket = await mfaFlow(mfa.data!);
+      // Fetch MFA methods at click time. The page is also reachable before
+      // login, so a query created while anonymous can otherwise leave us with
+      // stale/undefined MFA data after the login redirect.
+      const ticket = await mfaFlow(await client().account.mfa());
       if (!ticket) return;
 
       const result = await ticket.deleteAccount();
@@ -124,7 +116,7 @@ export function AccountDeletionPage() {
               </Button>
               <Button
                 variant="filled"
-                isDisabled={deleting() || mfa.isLoading}
+                isDisabled={deleting()}
                 onPress={deleteAccount}
               >
                 <Trans>Delete account</Trans>

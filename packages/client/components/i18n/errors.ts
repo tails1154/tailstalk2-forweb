@@ -102,6 +102,8 @@ export function useError() {
           return t`Please log in again.`;
         case "InvalidUsername":
           return t`This username is not allowed.`;
+        case "IsElevated":
+          return t`You cannot timeout a member with elevated permissions.`;
         case "MissingPermission":
         case "MissingUserPermission":
           return t`You do not have permission to do this.`;

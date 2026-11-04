@@ -18,7 +18,6 @@ import MdExplore from "@material-design-icons/svg/filled/explore.svg?component-s
 import MdHome from "@material-design-icons/svg/filled/home.svg?component-solid";
 import MdMarkChatRead from "@material-design-icons/svg/outlined/mark_chat_read.svg?component-solid";
 import MdSettings from "@material-design-icons/svg/filled/settings.svg?component-solid";
-import MdPost from "@material-symbols/svg-400/outlined/article.svg?component-solid";
 
 import { Tooltip } from "../../../../components/ui/components/floating";
 import { Draggable } from "../../../../components/ui/components/utils/Draggable";
@@ -362,17 +361,6 @@ export const ServerList = (props: Props) => {
       <Shadow>
         <div />
       </Shadow>
-      <Tooltip placement="right" content={t`Tailslets`}>
-        <a
-          href="/tailslets"
-          class={entryContainer({
-            indicator:
-              location.pathname === "/tailslets" ? "selected" : undefined,
-          })}
-        >
-          <Avatar size={42} fallback={<MdPost />} interactive />
-        </a>
-      </Tooltip>
       <Tooltip placement="right" content="Settings">
         <a
           class={entryContainer()}

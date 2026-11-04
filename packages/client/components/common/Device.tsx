@@ -33,6 +33,7 @@ export class Device {
   private pMedia;
   private tMedia;
   private setLayout;
+  private wakeLock?: WakeLockSentinel;
 
   constructor() {
     this.isMobile = isMobileBrowser();
@@ -58,6 +59,27 @@ export class Device {
 
   destroy() {
     this.pMedia.onchange = this.tMedia.onchange = null;
+  }
+
+  get isWakeLocked(): boolean {
+    return !!this.wakeLock && !this.wakeLock.released;
+  }
+
+  async setWakeLocked() {
+    if (this.isWakeLocked || !navigator.wakeLock?.request) return;
+
+    try {
+      this.wakeLock = await navigator.wakeLock.request("screen");
+    } catch {
+      // Wake Lock is optional; voice calls must continue when it is unavailable.
+    }
+  }
+
+  async releaseWakeLock() {
+    if (!this.isWakeLocked) return;
+
+    await this.wakeLock!.release();
+    this.wakeLock = undefined;
   }
 }
 

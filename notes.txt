@@ -1,0 +1,2 @@
+server side version: packages/client/public/tailstalk2.version
+client side version: packages/client/src/version.ts
