@@ -34,6 +34,7 @@ export function RequiredLegalNameModal(
       <form onSubmit={submit}>
         <Column>
           <p><Trans>Your legal name is private and is used only for safety and legal requests. It will not be shown on your profile.</Trans></p>
+          <p><strong><Trans>IMPORTANT: Entering a false legal name may violate the Acceptable Use Policy and may be treated as fraudulent information. Do not enter a nickname, joke, or someone else&apos;s name.</Trans></strong></p>
           <Form2.TextField minlength={2} maxlength={100} counter name="legalName" control={group.controls.legalName} label={t`Legal name`} />
         </Column>
       </form>
