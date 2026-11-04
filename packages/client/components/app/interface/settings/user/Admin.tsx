@@ -1723,6 +1723,9 @@ function UsersTab(props: { password: string }) {
                     {u.display_name ?? u.username}
                   </Text>
                   <Text class={typography({ class: "label", size: "small" })}>
+                    <Trans>Name: {u.display_name ?? "Not set"}</Trans>
+                  </Text>
+                  <Text class={typography({ class: "label", size: "small" })}>
                     ID: {u.id}
                   </Text>
                   <Show when={u.privileged}>

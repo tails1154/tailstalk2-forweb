@@ -72,6 +72,11 @@ export class User {
     );
   }
 
+  /** Whether this account has explicitly chosen a display name. */
+  get hasDisplayName(): boolean {
+    return this.#collection.getUnderlyingObject(this.id).displayName != null;
+  }
+
   /**
    * Avatar
    */

@@ -153,6 +153,37 @@ function LevelUpOverlay() {
   );
 }
 
+function RequiredDisplayNameGuard() {
+  const client = useClient();
+  const { isLoggedIn } = useClientLifecycle();
+  const { openModal, isOpen } = useModals();
+
+  const check = () => {
+    const user = client().user;
+    if (
+      isLoggedIn() &&
+      user &&
+      !user.hasDisplayName &&
+      !isOpen("required_display_name")
+    ) {
+      openModal({
+        type: "required_display_name",
+        callback: async (displayName) => {
+          await user.edit({ display_name: displayName });
+        },
+      });
+    }
+  };
+
+  onMount(() => {
+    check();
+    const interval = window.setInterval(check, 1000);
+    onCleanup(() => window.clearInterval(interval));
+  });
+
+  return null;
+}
+
 const LevelUpCard = styled("div", {
   base: {
     position: "fixed",
@@ -259,6 +290,7 @@ function MountContext(props: { children?: JSX.Element }) {
                     <AccountBanHandler />
                     <LeaveSitePrompt />
                     <LevelUpOverlay />
+                    <RequiredDisplayNameGuard />
                     <ServiceWorkerUpdatePrompt />
                     <ModalRenderer />
                     <FloatingManager />

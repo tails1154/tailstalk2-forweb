@@ -243,7 +243,11 @@ export type Modals =
   | { type: "mfa_recovery"; codes: string[]; mfa: MFA }
   | {
       type: "onboarding";
-      callback: (username: string, loginAfterSuccess?: true) => Promise<void>;
+      callback: (username: string, displayName: string, loginAfterSuccess?: true) => Promise<void>;
+    }
+  | {
+      type: "required_display_name";
+      callback: (displayName: string) => Promise<void>;
     }
   | {
       type: "policy_change";

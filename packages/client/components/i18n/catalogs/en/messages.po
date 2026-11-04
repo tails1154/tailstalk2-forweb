@@ -5919,3 +5919,24 @@ msgstr "Your TailsTalk 2 Premium subscription is being activated. You can return
 #: components/i18n/errors.ts
 msgid "Your user has already been created? Try logging in again or refreshing the app."
 msgstr "Your user has already been created? Try logging in again or refreshing the app."
+
+#: components/modal/modals/Onboarding.tsx
+#: components/modal/modals/RequiredDisplayName.tsx
+msgid "Name"
+msgstr "Name"
+
+#: components/modal/modals/RequiredDisplayName.tsx
+msgid "Choose your name"
+msgstr "Choose your name"
+
+#: components/modal/modals/RequiredDisplayName.tsx
+msgid "Set the name other people will see on your profile."
+msgstr "Set the name other people will see on your profile."
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Name: {0}"
+msgstr "Name: {0}"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Not set"
+msgstr "Not set"

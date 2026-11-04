@@ -49,6 +49,7 @@ import { MFAEnableTOTPModal } from "./modals/MFAEnableTOTP";
 import { MFAFlowModal } from "./modals/MFAFlow";
 import { MFARecoveryModal } from "./modals/MFARecovery";
 import { OnboardingModal } from "./modals/Onboarding";
+import { RequiredDisplayNameModal } from "./modals/RequiredDisplayName";
 import { PolicyChangeModal } from "./modals/PolicyChange";
 import { RemoveMemberModal } from "./modals/RemoveMember";
 import { RenameSessionModal } from "./modals/RenameSession";
@@ -179,6 +180,8 @@ export function RenderModal(props: ActiveModal & { onClose: () => void }) {
       return <MFARecoveryModal {...modalProps} />;
     case "onboarding":
       return <OnboardingModal {...modalProps} />;
+    case "required_display_name":
+      return <RequiredDisplayNameModal {...modalProps} />;
     case "policy_change":
       return <PolicyChangeModal {...modalProps} />;
     case "rename_session":
