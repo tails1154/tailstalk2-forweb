@@ -20,14 +20,14 @@ export function OnboardingModal(
 
   const group = createFormGroup({
     username: createFormControl("", { required: true }),
-    displayName: createFormControl("", { required: true }),
+    legalName: createFormControl("", { required: true }),
   });
 
   async function onSubmit() {
     try {
       await props.callback(
         group.controls.username.value,
-        group.controls.displayName.value,
+        group.controls.legalName.value,
       );
       props.onClose();
     } catch (error) {
@@ -69,9 +69,9 @@ export function OnboardingModal(
             minlength={2}
             maxlength={32}
             counter
-            name="displayName"
-            control={group.controls.displayName}
-            label={t`Name`}
+            name="legalName"
+            control={group.controls.legalName}
+            label={t`Legal name`}
           />
         </Column>
       </form>

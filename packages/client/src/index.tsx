@@ -60,6 +60,7 @@ import { StripeCancel, StripeSuccess } from "./interface/StripeReturn";
 import { Tailslets } from "./interface/Tailslets";
 import { Videos } from "./interface/Videos";
 import { ChannelPage } from "./interface/channels/ChannelPage";
+import { requestClientJson } from "../components/client/customApi";
 import {
   isLeaveSitePromptSuppressed,
   ServiceWorkerUpdatePrompt,
@@ -153,31 +154,48 @@ function LevelUpOverlay() {
   );
 }
 
-function RequiredDisplayNameGuard() {
+function RequiredLegalNameGuard() {
   const client = useClient();
   const { isLoggedIn } = useClientLifecycle();
   const { openModal, isOpen } = useModals();
+  let checking = false;
+  let checkedUserId: string | undefined;
 
-  const check = () => {
+  const check = async () => {
     const user = client().user;
-    if (
-      isLoggedIn() &&
-      user &&
-      !user.hasDisplayName &&
-      !isOpen("required_display_name")
-    ) {
+    if (!isLoggedIn() || !user) {
+      checkedUserId = undefined;
+      return;
+    }
+    if (checking || checkedUserId === user.id || isOpen("required_legal_name")) return;
+    checking = true;
+    try {
+      const status = await requestClientJson<{ set: boolean }>(
+        client().api,
+        "GET",
+        "/users/legal-name/status",
+      );
+      checkedUserId = user.id;
+      if (!status.set) {
       openModal({
-        type: "required_display_name",
-        callback: async (displayName) => {
-          await user.edit({ display_name: displayName });
+        type: "required_legal_name",
+        callback: async (legalName) => {
+          await requestClientJson(client().api, "PATCH", "/users/legal-name", {
+            legal_name: legalName,
+          });
         },
       });
+      }
+    } catch {
+      // A transient status failure must not make the entire client unusable.
+    } finally {
+      checking = false;
     }
   };
 
   onMount(() => {
-    check();
-    const interval = window.setInterval(check, 1000);
+    void check();
+    const interval = window.setInterval(() => void check(), 1000);
     onCleanup(() => window.clearInterval(interval));
   });
 
@@ -290,7 +308,7 @@ function MountContext(props: { children?: JSX.Element }) {
                     <AccountBanHandler />
                     <LeaveSitePrompt />
                     <LevelUpOverlay />
-                    <RequiredDisplayNameGuard />
+                    <RequiredLegalNameGuard />
                     <ServiceWorkerUpdatePrompt />
                     <ModalRenderer />
                     <FloatingManager />

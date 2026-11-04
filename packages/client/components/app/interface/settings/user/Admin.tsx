@@ -147,6 +147,7 @@ interface AdminUserInfo {
   username: string;
   discriminator: string;
   display_name?: string;
+  legal_name?: string;
   flags?: number;
   suspended_until?: string;
   privileged: boolean;
@@ -1724,6 +1725,7 @@ function UsersTab(props: { password: string }) {
                   </Text>
                   <Text class={typography({ class: "label", size: "small" })}>
                     <Trans>Name: {u.display_name ?? "Not set"}</Trans>
+                    <Trans>Legal name: {u.legal_name ?? "Not provided"}</Trans>
                   </Text>
                   <Text class={typography({ class: "label", size: "small" })}>
                     ID: {u.id}

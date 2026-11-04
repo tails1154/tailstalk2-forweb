@@ -5952,3 +5952,24 @@ msgstr "Copy as quote"
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Share message"
 msgstr "Share message"
+
+#: components/modal/modals/Onboarding.tsx
+#: components/modal/modals/RequiredLegalName.tsx
+msgid "Legal name"
+msgstr "Legal name"
+
+#: components/modal/modals/RequiredLegalName.tsx
+msgid "Confirm your legal name"
+msgstr "Confirm your legal name"
+
+#: components/modal/modals/RequiredLegalName.tsx
+msgid "Your legal name is private and is used only for safety and legal requests. It will not be shown on your profile."
+msgstr "Your legal name is private and is used only for safety and legal requests. It will not be shown on your profile."
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Legal name: {0}"
+msgstr "Legal name: {0}"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Not provided"
+msgstr "Not provided"
