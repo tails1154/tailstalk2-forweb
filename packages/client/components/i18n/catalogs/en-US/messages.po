@@ -1,17 +1,14 @@
 msgid ""
 msgstr ""
-
-"POT-Creation-Date: 2026-02-24 21:53+0000\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: @lingui/cli\n"
-"Language: en-US\n"
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
+"Language: \n"
 "Language-Team: \n"
+"Content-Type: \n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
@@ -429,6 +426,10 @@ msgstr ""
 #: src/interface/Friends.tsx
 #: components/modal/modals/AddFriend.tsx
 msgid "Add a new friend"
+msgstr ""
+
+#: components/app/interface/settings/user/Sessions.tsx
+msgid "Add a passkey"
 msgstr ""
 
 #: components/app/interface/settings/server/Boosts.tsx
@@ -1264,6 +1265,10 @@ msgstr ""
 msgid "Confirm that you want to request TailsTalk 2 Premium using a cash payment. tails1154 will direct message you with further instructions. No payment is taken now."
 msgstr ""
 
+#: components/app/interface/settings/user/Sessions.tsx
+msgid "Confirm your password"
+msgstr ""
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Connect"
 msgstr ""
@@ -1875,6 +1880,10 @@ msgstr ""
 msgid "Discord's dark interface with Blurple accents."
 msgstr ""
 
+#: src/Interface.tsx
+msgid "Discover"
+msgstr ""
+
 #: src/interface/Home.tsx
 msgid "Discover servers and bots"
 msgstr ""
@@ -2162,8 +2171,20 @@ msgstr ""
 msgid "Enter your current password..."
 msgstr ""
 
+#: components/auth/src/flows/FlowLogin.tsx
+msgid "Enter your email to use a passkey."
+msgstr ""
+
 #: components/auth/src/flows/Form.tsx
 msgid "Enter your invite code."
+msgstr ""
+
+#: components/app/interface/settings/user/Sessions.tsx
+msgid "Enter your password to add a passkey."
+msgstr ""
+
+#: components/app/interface/settings/user/Sessions.tsx
+msgid "Enter your password to remove a passkey."
 msgstr ""
 
 #: components/auth/src/flows/Form.tsx
@@ -2485,6 +2506,7 @@ msgstr ""
 #~ msgid "High Contrast"
 #~ msgstr ""
 
+#: src/Interface.tsx
 #: src/interface/Home.tsx
 #: src/interface/navigation/channels/HomeSidebar.tsx
 msgid "Home"
@@ -2493,6 +2515,10 @@ msgstr ""
 #: src/interface/channels/AgeGate.tsx
 #~ msgid "I confirm that I am at least 18 years old."
 #~ msgstr ""
+
+#: components/modal/modals/ServerOnboarding.tsx
+msgid "I have read and agree to the server rules."
+msgstr ""
 
 #: components/modal/modals/TransferServerOwnership.tsx
 msgid "I UNDERSTAND — CONFIRM NEXT WARNING"
@@ -3050,6 +3076,10 @@ msgstr ""
 #~ msgid "Missing permission"
 #~ msgstr ""
 
+#: src/Interface.tsx
+msgid "Mobile navigation"
+msgstr ""
+
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Moderation audit log"
 msgstr ""
@@ -3452,6 +3482,10 @@ msgstr ""
 msgid "Open file"
 msgstr ""
 
+#: src/Interface.tsx
+msgid "Open navigation"
+msgstr ""
+
 #: components/app/menus/ServerContextMenu.tsx
 msgid "Open server settings"
 msgstr ""
@@ -3499,6 +3533,14 @@ msgstr ""
 
 #: components/app/interface/settings/server/bans/ListBans.tsx
 msgid "Pardon User"
+msgstr ""
+
+#: components/app/interface/settings/user/Sessions.tsx
+msgid "Passkey name"
+msgstr ""
+
+#: components/app/interface/settings/user/Sessions.tsx
+msgid "Passkeys"
 msgstr ""
 
 #: components/modal/modals/MFAFlow.tsx
@@ -3895,6 +3937,15 @@ msgstr ""
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Remove other members' avatars"
 msgstr ""
+
+#. placeholder {0}: passkey.name
+#: components/app/interface/settings/user/Sessions.tsx
+msgid "Remove passkey: {0}"
+msgstr ""
+
+#: components/app/interface/settings/user/Sessions.tsx
+#~ msgid "Remove passkey: {name}"
+#~ msgstr ""
 
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Remove reaction"
@@ -4352,6 +4403,10 @@ msgstr ""
 msgid "Server analytics"
 msgstr ""
 
+#: components/app/interface/settings/server/Overview.tsx
+msgid "Server announcement"
+msgstr ""
+
 #: components/modal/modals/ServerIdentity.tsx
 msgid "Server Avatar"
 msgstr ""
@@ -4444,6 +4499,7 @@ msgstr ""
 msgid "Set your status"
 msgstr ""
 
+#: src/Interface.tsx
 #: components/modal/modals/ServerInfo.tsx
 msgid "Settings"
 msgstr ""
@@ -4458,6 +4514,10 @@ msgstr ""
 
 #: components/ui/components/features/messaging/composition/TypingIndicator.tsx
 msgid "Several people are typing…"
+msgstr ""
+
+#: components/app/interface/settings/server/Overview.tsx
+msgid "Share an important update with your members."
 msgstr ""
 
 #: components/modal/modals/ScreenShareSettings.tsx
@@ -4533,6 +4593,10 @@ msgstr ""
 #: components/app/interface/settings/user/Admin.tsx
 #~ msgid "Sign in to manage reports, users, and platform updates."
 #~ msgstr ""
+
+#: components/auth/src/flows/FlowLogin.tsx
+msgid "Sign in with a passkey"
+msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Sign into TailsTalk 2"
@@ -5432,6 +5496,10 @@ msgstr ""
 msgid "Use the graphics card to improve performance."
 msgstr ""
 
+#: components/app/interface/settings/user/Sessions.tsx
+msgid "Use your device unlock, security key, or password manager to sign in."
+msgstr ""
+
 #: components/app/interface/settings/server/bans/ListBans.tsx
 msgid "User"
 msgstr ""
@@ -6077,6 +6145,14 @@ msgstr ""
 msgid "Your bot was submitted for Discovery review."
 msgstr ""
 
+#: components/app/interface/settings/user/Sessions.tsx
+msgid "Your browser could not complete passkey registration."
+msgstr ""
+
+#: components/auth/src/flows/FlowLogin.tsx
+msgid "Your browser could not complete the passkey sign-in."
+msgstr ""
+
 #. placeholder {0}: data().user_level
 #: components/app/interface/settings/server/Boosts.tsx
 msgid "Your current level is {0}. Each boost costs one level."
@@ -6141,72 +6217,4 @@ msgstr ""
 
 #: components/i18n/errors.ts
 msgid "Your user has already been created? Try logging in again or refreshing the app."
-msgstr ""
-
-#: src/Interface.tsx
-msgid "Mobile navigation"
-msgstr ""
-
-#: src/Interface.tsx
-msgid "Open navigation"
-msgstr ""
-
-#: components/app/interface/settings/server/Overview.tsx
-msgid "Server announcement"
-msgstr ""
-
-#: components/app/interface/settings/server/Overview.tsx
-msgid "Share an important update with your members."
-msgstr ""
-
-#: components/auth/src/flows/FlowLogin.tsx
-msgid "Enter your email to use a passkey."
-msgstr ""
-
-#: components/auth/src/flows/FlowLogin.tsx
-msgid "Sign in with a passkey"
-msgstr ""
-
-#: components/app/interface/settings/user/Sessions.tsx
-msgid "Passkeys"
-msgstr ""
-
-#: components/app/interface/settings/user/Sessions.tsx
-msgid "Use your device unlock, security key, or password manager to sign in."
-msgstr ""
-
-#: components/app/interface/settings/user/Sessions.tsx
-msgid "Confirm your password"
-msgstr ""
-
-#: components/app/interface/settings/user/Sessions.tsx
-msgid "Passkey name"
-msgstr ""
-
-#: components/app/interface/settings/user/Sessions.tsx
-msgid "Add a passkey"
-msgstr ""
-
-#: components/app/interface/settings/user/Sessions.tsx
-msgid "Remove passkey: {name}"
-msgstr ""
-
-#: components/auth/src/flows/FlowLogin.tsx
-msgid "Your browser could not complete the passkey sign-in."
-msgstr ""
-
-#: components/app/interface/settings/user/Sessions.tsx
-msgid "Enter your password to add a passkey."
-msgstr ""
-
-#: components/app/interface/settings/user/Sessions.tsx
-msgid "Your browser could not complete passkey registration."
-msgstr ""
-
-#: components/app/interface/settings/user/Sessions.tsx
-msgid "Enter your password to remove a passkey."
-msgstr ""
-
-#: components/modal/modals/ServerOnboarding.tsx
-msgid "I have read and agree to the server rules."
 msgstr ""

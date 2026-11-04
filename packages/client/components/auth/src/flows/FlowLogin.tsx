@@ -1,4 +1,4 @@
-import { Match, Show, Switch, createEffect, createSignal } from "solid-js";
+import { Match, Show, Switch, createEffect, createSignal, onMount } from "solid-js";
 
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { styled } from "styled-system/jsx";
@@ -46,6 +46,23 @@ export default function FlowLogin() {
   const [studentIdError, setStudentIdError] = createSignal(false);
   const [loginLoading, setLoginLoading] = createSignal(false);
 
+  onMount(() => {
+    let notice: { reason?: string } | undefined;
+    try {
+      notice = JSON.parse(localStorage.getItem("tailstalk2:ban-notice") ?? "null");
+      localStorage.removeItem("tailstalk2:ban-notice");
+    } catch {
+      notice = undefined;
+    }
+    if (!notice) return;
+
+    modals.showError(
+      new Error(
+        t`You are banned from TailsTalk 2.\n\nReason: ${notice.reason ?? "Your account has been disabled."}\n\nDo not create another account.`,
+      ),
+    );
+  });
+
   createEffect(() => {
     if (!lifecycle.loadedOnce()) return;
 
@@ -76,12 +93,7 @@ export default function FlowLogin() {
       await login({ email, password }, modals);
     } catch (error) {
       if (error instanceof Error && error.name === "DisabledAccount") {
-        const reason = (error as Error & { reason?: string }).reason;
-        modals.showError(
-          new Error(
-            t`You are banned from TailsTalk 2.\n\nReason: ${reason ?? "Your account has been disabled."}\n\nDo not create another account.`,
-          ),
-        );
+        modals.showError(new Error(t`This account cannot sign in.`));
       } else {
         modals.showError(error);
       }

@@ -202,18 +202,17 @@ class Lifecycle {
     if ((user.flags & UserFlags.Banned) !== UserFlags.Banned) return;
 
     const reason = "Your account has been disabled.";
+    this.logout();
+  }
+
+  private rememberBanAtLogout(reason: string): void {
     try {
-      localStorage.setItem(
-        "tailstalk2:registration-blocked",
-        JSON.stringify({ reason }),
-      );
+      const value = JSON.stringify({ reason });
+      localStorage.setItem("tailstalk2:registration-blocked", value);
+      localStorage.setItem("tailstalk2:ban-notice", value);
     } catch {
       // Storage is optional; the server remains authoritative.
     }
-    window.dispatchEvent(
-      new CustomEvent("tailstalk2:account-banned", { detail: { reason } }),
-    );
-    this.logout();
   }
 
   #enter(nextState: State) {
@@ -656,14 +655,6 @@ export default class ClientController {
         "reason" in session && typeof session.reason === "string"
           ? session.reason
           : "Your account has been disabled.";
-      try {
-        localStorage.setItem(
-          "tailstalk2:registration-blocked",
-          JSON.stringify({ reason }),
-        );
-      } catch {
-        // Storage is optional; the server remains authoritative.
-      }
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const error = new Error("Account is not eligible to sign in");
       error.name = "DisabledAccount";
@@ -675,6 +666,7 @@ export default class ClientController {
     // browser-only registration lock that was set when a ban was observed.
     try {
       localStorage.removeItem("tailstalk2:registration-blocked");
+      localStorage.removeItem("tailstalk2:ban-notice");
     } catch {
       // Storage is optional.
     }
@@ -704,6 +696,14 @@ export default class ClientController {
   }
 
   logout(keepAccount = false) {
+    const currentUser = this.getCurrentClient()?.user;
+    if (
+      currentUser &&
+      (currentUser.flags & UserFlags.Banned) === UserFlags.Banned
+    ) {
+      this.rememberBanAtLogout("Your account has been disabled.");
+    }
+
     this.state.settings.resetNotificationsState();
     killServiceWorkerSubscription(this.getCurrentClient());
     const session = this.state.auth.getSession();
