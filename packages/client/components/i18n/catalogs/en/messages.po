@@ -276,12 +276,14 @@ msgstr "<0/> updated the group name to <1>{0}</1>"
 msgid "<0>Be careful!</0><1/>This is not the same as the link that was displayed:"
 msgstr "<0>Be careful!</0><1/>This is not the same as the link that was displayed:"
 
+#: components/modal/modals/TimeoutMember.tsx
 #: components/modal/modals/BanMember.tsx
 msgid "1 day"
 msgstr "1 day"
 
 #: src/interface/channels/text/Composition.tsx
 #: src/interface/channels/text/Composition.tsx
+#: components/modal/modals/TimeoutMember.tsx
 #: components/modal/modals/BanMember.tsx
 #: components/app/interface/settings/channel/Overview.tsx
 msgid "1 hour"
@@ -301,6 +303,7 @@ msgstr "1 person reacted"
 msgid "1 second"
 msgstr "1 second"
 
+#: components/modal/modals/TimeoutMember.tsx
 #: components/app/interface/settings/channel/Overview.tsx
 msgid "10 minutes"
 msgstr "10 minutes"
@@ -333,6 +336,7 @@ msgstr "30 minutes"
 msgid "30 seconds"
 msgstr "30 seconds"
 
+#: components/modal/modals/TimeoutMember.tsx
 #: components/app/interface/settings/channel/Overview.tsx
 msgid "5 minutes"
 msgstr "5 minutes"
@@ -341,6 +345,7 @@ msgstr "5 minutes"
 msgid "5 seconds"
 msgstr "5 seconds"
 
+#: components/modal/modals/TimeoutMember.tsx
 #: components/modal/modals/BanMember.tsx
 #: components/app/interface/settings/channel/Overview.tsx
 msgid "6 hours"
@@ -573,8 +578,8 @@ msgid "Already friends with this user."
 msgstr "Already friends with this user."
 
 #: components/app/interface/settings/user/voice/ScreenShareOptions.tsx
-msgid "Always Ask for Screen Share Quality"
-msgstr "Always Ask for Screen Share Quality"
+#~ msgid "Always Ask for Screen Share Quality"
+#~ msgstr "Always Ask for Screen Share Quality"
 
 #: components/app/interface/settings/user/Language.tsx
 msgid "American (MM/DD/YYYY)"
@@ -608,6 +613,10 @@ msgstr "Appearance"
 #: components/app/interface/settings/user/OAuth.tsx
 #~ msgid "Application name"
 #~ msgstr "Application name"
+
+#: components/modal/modals/TimeoutMember.tsx
+msgid "Apply"
+msgstr "Apply"
 
 #: components/app/interface/settings/user/Admin.tsx
 #: components/app/interface/settings/user/Admin.tsx
@@ -663,8 +672,8 @@ msgid "Assign Roles"
 msgstr "Assign Roles"
 
 #: components/modal/modals/ScreenShareSettings.tsx
-msgid "Audio disabled by browser"
-msgstr "Audio disabled by browser"
+#~ msgid "Audio disabled by browser"
+#~ msgstr "Audio disabled by browser"
 
 #: components/app/interface/settings/user/Admin.tsx
 #~ msgid "Authenticate"
@@ -681,8 +690,8 @@ msgid "Automated decisions"
 msgstr "Automated decisions"
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
-msgid "Automatic Gain Control"
-msgstr "Automatic Gain Control"
+#~ msgid "Automatic Gain Control"
+#~ msgstr "Automatic Gain Control"
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "Avatar"
@@ -825,12 +834,12 @@ msgid "Bots"
 msgstr "Bots"
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
-msgid "Browser"
-msgstr "Browser"
+#~ msgid "Browser"
+#~ msgstr "Browser"
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
-msgid "Browser Echo Cancellation"
-msgstr "Browser Echo Cancellation"
+#~ msgid "Browser Echo Cancellation"
+#~ msgstr "Browser Echo Cancellation"
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 #~ msgid "Browser Noise Supression"
@@ -881,10 +890,9 @@ msgstr "Bypasses slowmode in channels"
 
 #: src/AccountDeletionPage.tsx
 #: components/modal/modals/TransferServerOwnership.tsx
+#: components/modal/modals/TimeoutMember.tsx
 #: components/modal/modals/SignOutSessions.tsx
 #: components/modal/modals/ServerIdentity.tsx
-#: components/modal/modals/ScreenShareSettings.tsx
-#: components/modal/modals/ScreenSharePicker.tsx
 #: components/modal/modals/ResetBotToken.tsx
 #: components/modal/modals/ReportContent.tsx
 #: components/modal/modals/ReportAction.tsx
@@ -1089,6 +1097,11 @@ msgstr "Choose a vanity code (3–32 lowercase characters)"
 msgid "Choose an image and enter a decoration name."
 msgstr "Choose an image and enter a decoration name."
 
+#. placeholder {0}: props.member.user?.username
+#: components/modal/modals/TimeoutMember.tsx
+msgid "Choose how long {0} should be timed out."
+msgstr "Choose how long {0} should be timed out."
+
 #: components/app/interface/settings/server/XP.tsx
 msgid "Choose how much XP a member earns for each message."
 msgstr "Choose how much XP a member earns for each message."
@@ -1207,14 +1220,18 @@ msgstr "Closes {0}"
 msgid "Code"
 msgstr "Code"
 
+#: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
+#~ msgid "Collapse call window"
+#~ msgstr "Collapse call window"
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Colour mode"
 msgstr "Colour mode"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
-msgid "Coming soon! 👀"
-msgstr "Coming soon! 👀"
+#~ msgid "Coming soon! 👀"
+#~ msgstr "Coming soon! 👀"
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 #: components/app/interface/settings/user/Admin.tsx
@@ -1268,12 +1285,12 @@ msgid "Connect to voice channel"
 msgstr "Connect to voice channel"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardStatus.tsx
-msgid "Connected"
-msgstr "Connected"
+#~ msgid "Connected"
+#~ msgstr "Connected"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardStatus.tsx
-msgid "Connecting"
-msgstr "Connecting"
+#~ msgid "Connecting"
+#~ msgstr "Connecting"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Content breaks one or more laws"
@@ -1679,8 +1696,8 @@ msgid "Default Permissions"
 msgstr "Default Permissions"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
-msgid "Defean"
-msgstr "Defean"
+#~ msgid "Defean"
+#~ msgstr "Defean"
 
 #: components/modal/modals/EmojiPreview.tsx
 #: components/modal/modals/DeleteServer.tsx
@@ -1768,16 +1785,16 @@ msgstr "Delete Server"
 
 #: src/interface/Tailslets.tsx
 #: src/interface/Tailslets.tsx
-msgid "Delete Tailslet"
-msgstr "Delete Tailslet"
+#~ msgid "Delete Tailslet"
+#~ msgstr "Delete Tailslet"
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Delete theme"
 msgstr "Delete theme"
 
 #: src/interface/Tailslets.tsx
-msgid "Delete this Tailslet?"
-msgstr "Delete this Tailslet?"
+#~ msgid "Delete this Tailslet?"
+#~ msgstr "Delete this Tailslet?"
 
 #: src/interface/Videos.tsx
 msgid "Delete this video?"
@@ -1850,7 +1867,6 @@ msgstr "Disable Account"
 msgid "Disable one-time password authenticator"
 msgstr "Disable one-time password authenticator"
 
-#: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
 #: components/app/interface/settings/server/Overview.tsx
 #: components/app/interface/settings/server/Overview.tsx
 #: components/app/interface/settings/server/Overview.tsx
@@ -1859,8 +1875,8 @@ msgid "Disabled"
 msgstr "Disabled"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardStatus.tsx
-msgid "Disconnected"
-msgstr "Disconnected"
+#~ msgid "Disconnected"
+#~ msgstr "Disconnected"
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Discord"
@@ -1923,8 +1939,8 @@ msgid "Do you want to view the backend or frontend code?"
 msgstr "Do you want to view the backend or frontend code?"
 
 #: components/modal/modals/ScreenShareSettings.tsx
-msgid "Don't ask me again"
-msgstr "Don't ask me again"
+#~ msgid "Don't ask me again"
+#~ msgstr "Don't ask me again"
 
 #: components/modal/modals/LinkWarning.tsx
 msgid "Don't ask me again for "
@@ -2115,20 +2131,20 @@ msgstr "Enable server XP"
 #~ msgstr "Encryption cannot be turned off after it is enabled. Both people must use the same code to read the DM."
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
-msgid "End call"
-msgstr "End call"
+#~ msgid "End call"
+#~ msgstr "End call"
 
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Engagement"
 msgstr "Engagement"
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
-msgid "Enhanced"
-msgstr "Enhanced"
+#~ msgid "Enhanced"
+#~ msgstr "Enhanced"
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
-msgid "Enhanced (RNNoise)"
-msgstr "Enhanced (RNNoise)"
+#~ msgid "Enhanced (RNNoise)"
+#~ msgstr "Enhanced (RNNoise)"
 
 #: components/modal/modals/RenameSession.tsx
 msgid "Enter a new name for this session"
@@ -2393,8 +2409,8 @@ msgstr "Give us some detail"
 
 #: components/modal/modals/ScreenShareSettings.tsx
 #: components/modal/modals/ScreenSharePicker.tsx
-msgid "Go"
-msgstr "Go"
+#~ msgid "Go"
+#~ msgstr "Go"
 
 #: components/modal/modals/CashPayment.tsx
 msgid "Go back"
@@ -2550,6 +2566,10 @@ msgstr "Information we process"
 msgid "Infrastructure may be located outside the European Economic Area. If your data is transferred internationally, the operator will use an applicable legal transfer mechanism and appropriate safeguards."
 msgstr "Infrastructure may be located outside the European Economic Area. If your data is transferred internationally, the operator will use an applicable legal transfer mechanism and appropriate safeguards."
 
+#: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
+#~ msgid "Input Volume"
+#~ msgstr "Input Volume"
+
 #: src/serviceWorkerInterface.ts
 msgid "Install now"
 msgstr "Install now"
@@ -2649,8 +2669,8 @@ msgid "Join the TailsTalk 2 Lounge"
 msgstr "Join the TailsTalk 2 Lounge"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
-msgid "Join the voice channel"
-msgstr "Join the voice channel"
+#~ msgid "Join the voice channel"
+#~ msgstr "Join the voice channel"
 
 #: components/ui/components/features/profiles/ProfileJoined.tsx
 #: components/ui/components/features/messaging/elements/Invite.tsx
@@ -2783,7 +2803,6 @@ msgstr "Like"
 #~ msgid "Links"
 #~ msgstr "Links"
 
-#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Listen"
 msgstr "Listen"
@@ -2921,9 +2940,17 @@ msgstr "Mark as read"
 msgid "Mark as unread"
 msgstr "Mark as unread"
 
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Mark solved"
+msgstr "Mark solved"
+
 #: components/modal/modals/ChannelToggleMature.tsx
 msgid "Mark this channel as mature?"
 msgstr "Mark this channel as mature?"
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Mark unsolved"
+msgstr "Mark unsolved"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Masquerade"
@@ -2936,6 +2963,10 @@ msgstr "Mature content on TailsTalk 2 is not allowed."
 #: components/modal/modals/ChannelToggleMature.tsx
 msgid "Mature content on TailsTalk 2 is not allowed. This channel cannot be marked as mature."
 msgstr "Mature content on TailsTalk 2 is not allowed. This channel cannot be marked as mature."
+
+#: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
+#~ msgid "Maximize call window"
+#~ msgstr "Maximize call window"
 
 #: src/interface/Discover.tsx
 #: components/app/interface/settings/user/Admin.tsx
@@ -3044,8 +3075,8 @@ msgstr "Minimise to Tray"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
-msgid "Missing permission"
-msgstr "Missing permission"
+#~ msgid "Missing permission"
+#~ msgstr "Missing permission"
 
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "Moderation audit log"
@@ -3080,6 +3111,10 @@ msgstr "More actions"
 msgid "Most information comes directly from you when you create an account, update your profile, send messages, upload files, join or create communities, submit reports, or contact support. Additional information is generated by using the service, such as session, security, moderation, and delivery records. Some information may come from other users when they mention you, report content, or interact with shared communities."
 msgstr "Most information comes directly from you when you create an account, update your profile, send messages, upload files, join or create communities, submit reports, or contact support. Additional information is generated by using the service, such as session, security, moderation, and delivery records. Some information may come from other users when they mention you, report content, or interact with shared communities."
 
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Most replies"
+msgstr "Most replies"
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Move Members"
 msgstr "Move Members"
@@ -3097,8 +3132,6 @@ msgstr "Multi-factor authentication is already enabled for this account."
 #~ msgid "multiple selections"
 #~ msgstr "multiple selections"
 
-#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
-#: components/app/menus/UserContextMenu.tsx
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 msgid "Mute"
 msgstr "Mute"
@@ -3117,8 +3150,8 @@ msgid "Mute Members"
 msgstr "Mute Members"
 
 #: components/app/menus/UserContextMenu.tsx
-msgid "Mute Screen Share"
-msgstr "Mute Screen Share"
+#~ msgid "Mute Screen Share"
+#~ msgstr "Mute Screen Share"
 
 #: components/app/menus/ServerContextMenu.tsx
 msgid "Mute Server"
@@ -3191,6 +3224,10 @@ msgstr "New owner"
 msgid "New Password"
 msgstr "New Password"
 
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "New replies"
+msgstr "New replies"
+
 #: components/app/interface/channels/text/Message.tsx
 msgid "New to TailsTalk 2"
 msgstr "New to TailsTalk 2"
@@ -3198,6 +3235,10 @@ msgstr "New to TailsTalk 2"
 #: components/app/interface/channels/text/Message.tsx
 msgid "New to the server"
 msgstr "New to the server"
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Newest"
+msgstr "Newest"
 
 #: components/app/interface/settings/server/Boosts.tsx
 msgid "Next level at"
@@ -3281,8 +3322,8 @@ msgid "No subscription requests"
 msgstr "No subscription requests"
 
 #: src/interface/Tailslets.tsx
-msgid "No Tailslets have been posted yet."
-msgstr "No Tailslets have been posted yet."
+#~ msgid "No Tailslets have been posted yet."
+#~ msgstr "No Tailslets have been posted yet."
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "No users found"
@@ -3464,8 +3505,8 @@ msgid "Other"
 msgstr "Other"
 
 #: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
-msgid "Output Volume"
-msgstr "Output Volume"
+#~ msgid "Output Volume"
+#~ msgstr "Output Volume"
 
 #: components/app/interface/settings/ServerSettings.tsx
 #: components/app/interface/settings/ChannelSettings.tsx
@@ -3521,8 +3562,8 @@ msgid "Permissions"
 msgstr "Permissions"
 
 #: components/modal/modals/ScreenSharePicker.tsx
-msgid "Pick a Screen to Share"
-msgstr "Pick a Screen to Share"
+#~ msgid "Pick a Screen to Share"
+#~ msgstr "Pick a Screen to Share"
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Pick a username that you want people to be able to find you by. This can be changed later in your user settings."
@@ -3532,9 +3573,18 @@ msgstr "Pick a username that you want people to be able to find you by. This can
 msgid "Pin message"
 msgstr "Pin message"
 
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Pin post"
+msgstr "Pin post"
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Ping everyone and all roles"
 msgstr "Ping everyone and all roles"
+
+#: src/interface/channels/forum/ForumChannel.tsx
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Pinned"
+msgstr "Pinned"
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Platform / unknown server"
@@ -3609,8 +3659,8 @@ msgid "Post video"
 msgstr "Post video"
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
-msgid "Powered by RNNoise"
-msgstr "Powered by RNNoise"
+#~ msgid "Powered by RNNoise"
+#~ msgstr "Powered by RNNoise"
 
 #: components/app/interface/settings/UserSettings.tsx
 #~ msgid "Premium"
@@ -3679,8 +3729,8 @@ msgstr "Provided email or password is wrong."
 #~ msgstr "Public client (requires PKCE)"
 
 #: src/interface/Tailslets.tsx
-msgid "Publish Tailslet"
-msgstr "Publish Tailslet"
+#~ msgid "Publish Tailslet"
+#~ msgstr "Publish Tailslet"
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Publish to theme store"
@@ -3776,9 +3826,13 @@ msgstr "Receive notifications while the tab is open."
 msgid "Receive push notifications while the app is closed."
 msgstr "Receive push notifications while the app is closed."
 
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Recently active"
+msgstr "Recently active"
+
 #: components/ui/components/features/voice/callCard/VoiceCallCardStatus.tsx
-msgid "Reconnecting"
-msgstr "Reconnecting"
+#~ msgid "Reconnecting"
+#~ msgstr "Reconnecting"
 
 #: components/modal/modals/MFAFlow.tsx
 #: components/modal/modals/MFAFlow.tsx
@@ -3878,6 +3932,10 @@ msgstr "Remove other members' avatars"
 msgid "Remove reaction"
 msgstr "Remove reaction"
 
+#: components/modal/modals/TimeoutMember.tsx
+msgid "Remove timeout"
+msgstr "Remove timeout"
+
 #: components/modal/modals/RenameSession.tsx
 #: components/modal/modals/EditCategory.tsx
 #: components/app/interface/settings/user/Sessions.tsx
@@ -3899,8 +3957,16 @@ msgid "Rep TailsTalk 2 using Discord rich presence."
 msgstr "Rep TailsTalk 2 using Discord rich presence."
 
 #: src/interface/channels/forum/ForumChannel.tsx
+msgid "replies"
+msgstr "replies"
+
+#: src/interface/channels/forum/ForumChannel.tsx
 msgid "Replies"
 msgstr "Replies"
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "reply"
+msgstr "reply"
 
 #: src/interface/channels/forum/ForumChannel.tsx
 #: components/ui/components/features/messaging/elements/MessageToolbar.tsx
@@ -4001,6 +4067,10 @@ msgstr "Responsibly disclosed security issues"
 msgid "Restore backup"
 msgstr "Restore backup"
 
+#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
+#~ msgid "Restore call window"
+#~ msgstr "Restore call window"
+
 #: src/PublicPage.tsx
 msgid "Retention"
 msgstr "Retention"
@@ -4018,8 +4088,8 @@ msgstr "Retry sending"
 #~ msgstr "Return to TailsTalk 2"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
-msgid "Return to voice channel"
-msgstr "Return to voice channel"
+#~ msgid "Return to voice channel"
+#~ msgstr "Return to voice channel"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Revenge or underage pornography"
@@ -4117,6 +4187,10 @@ msgstr "Save and apply"
 msgid "Save file"
 msgstr "Save file"
 
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Save tags"
+msgstr "Save tags"
+
 #: src/interface/channels/text/Composition.tsx
 msgid "Save to your notes"
 msgstr "Save to your notes"
@@ -4133,12 +4207,12 @@ msgstr "Scams or fraud"
 
 #: components/modal/modals/ScreenShareSettings.tsx
 #: components/app/interface/settings/user/voice/ScreenShareOptions.tsx
-msgid "Screen Share Settings"
-msgstr "Screen Share Settings"
+#~ msgid "Screen Share Settings"
+#~ msgstr "Screen Share Settings"
 
 #: components/app/menus/UserContextMenu.tsx
-msgid "Screen Share Volume"
-msgstr "Screen Share Volume"
+#~ msgid "Screen Share Volume"
+#~ msgstr "Screen Share Volume"
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Search accounts and take moderation actions."
@@ -4156,6 +4230,10 @@ msgstr "Search for groups..."
 #: components/modal/modals/AddMembersToGroup.tsx
 msgid "Search for users..."
 msgstr "Search for users..."
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Search forum posts"
+msgstr "Search forum posts"
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Search server name or ID"
@@ -4215,24 +4293,24 @@ msgid "Select a member first."
 msgstr "Select a member first."
 
 #: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
-msgid "Select audio input"
-msgstr "Select audio input"
+#~ msgid "Select audio input"
+#~ msgstr "Select audio input"
 
 #: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
-msgid "Select audio output"
-msgstr "Select audio output"
+#~ msgid "Select audio output"
+#~ msgstr "Select audio output"
 
 #: components/modal/modals/CreateGroup.tsx
 msgid "Select members to add"
 msgstr "Select members to add"
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
-msgid "Select noise suppression"
-msgstr "Select noise suppression"
+#~ msgid "Select noise suppression"
+#~ msgstr "Select noise suppression"
 
 #: components/app/interface/settings/user/voice/ScreenShareOptions.tsx
-msgid "Select screen share quality"
-msgstr "Select screen share quality"
+#~ msgid "Select screen share quality"
+#~ msgstr "Select screen share quality"
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "Select the login method that applies to you."
@@ -4243,8 +4321,8 @@ msgid "Select the registration method that applies to you."
 msgstr "Select the registration method that applies to you."
 
 #: components/app/interface/settings/user/voice/VoiceInputOptions.tsx
-msgid "Select video input"
-msgstr "Select video input"
+#~ msgid "Select video input"
+#~ msgstr "Select video input"
 
 #: components/app/interface/settings/user/Language.tsx
 msgid "Select your language"
@@ -4428,8 +4506,8 @@ msgstr "Several people are typing…"
 
 #: components/modal/modals/ScreenShareSettings.tsx
 #: components/modal/modals/ScreenSharePicker.tsx
-msgid "Share audio"
-msgstr "Share audio"
+#~ msgid "Share audio"
+#~ msgstr "Share audio"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -4445,12 +4523,12 @@ msgid "Share message"
 msgstr "Share message"
 
 #: src/interface/Tailslets.tsx
-msgid "Share quick updates with your TailsTalk 2 account."
-msgstr "Share quick updates with your TailsTalk 2 account."
+#~ msgid "Share quick updates with your TailsTalk 2 account."
+#~ msgstr "Share quick updates with your TailsTalk 2 account."
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
-msgid "Share screen"
-msgstr "Share screen"
+#~ msgid "Share screen"
+#~ msgstr "Share screen"
 
 #: src/interface/Videos.tsx
 msgid "Share short videos with your TailsTalk 2 account."
@@ -4528,6 +4606,15 @@ msgstr "Slowmode is enabled."
 msgid "Slowmode off"
 msgstr "Slowmode off"
 
+#: src/interface/channels/forum/ForumChannel.tsx
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Solved"
+msgstr "Solved"
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Solved first"
+msgstr "Solved first"
+
 #: components/ui/components/features/messaging/elements/Embed.tsx
 msgid "Someone sent you a TailsTalk 2 Premium gift."
 msgstr "Someone sent you a TailsTalk 2 Premium gift."
@@ -4556,6 +4643,11 @@ msgstr "Something went wrong! {error}"
 #: components/i18n/errors.ts
 msgid "Something went wrong. Try again later."
 msgstr "Something went wrong. Try again later."
+
+#: src/interface/channels/forum/ForumChannel.tsx
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Sort discussions"
+msgstr "Sort discussions"
 
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 msgid "Sounds"
@@ -4599,16 +4691,16 @@ msgstr "Start a discussion and keep replies together."
 #~ msgstr "Start a discussion by posting a message in this forum."
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
-msgid "Start camera"
-msgstr "Start camera"
+#~ msgid "Start camera"
+#~ msgstr "Start camera"
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Start Minimised to Tray"
 msgstr "Start Minimised to Tray"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
-msgid "Start the call"
-msgstr "Start the call"
+#~ msgid "Start the call"
+#~ msgstr "Start the call"
 
 #: components/app/interface/settings/user/Native.tsx
 msgid "Start with Computer"
@@ -4627,12 +4719,12 @@ msgid "Stoat"
 msgstr "Stoat"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
-msgid "Stop camera"
-msgstr "Stop camera"
+#~ msgid "Stop camera"
+#~ msgstr "Stop camera"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
-msgid "Stop sharing"
-msgstr "Stop sharing"
+#~ msgid "Stop sharing"
+#~ msgstr "Stop sharing"
 
 #: components/app/interface/settings/user/Advanced.tsx
 msgid "Stop Using Development Build"
@@ -4758,8 +4850,8 @@ msgid "Switch account"
 msgstr "Switch account"
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
-msgid "Switch to this voice channel"
-msgstr "Switch to this voice channel"
+#~ msgid "Switch to this voice channel"
+#~ msgstr "Switch to this voice channel"
 
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Sync appearance options, such as chosen emoji pack and message density."
@@ -4781,15 +4873,20 @@ msgstr "System"
 msgid "System message channels"
 msgstr "System message channels"
 
+#: src/interface/channels/forum/ForumChannel.tsx
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Tags (comma separated)"
+msgstr "Tags (comma separated)"
+
 #: src/interface/Tailslets.tsx
-msgid "Tailslet deleted."
-msgstr "Tailslet deleted."
+#~ msgid "Tailslet deleted."
+#~ msgstr "Tailslet deleted."
 
 #: src/interface/Tailslets.tsx
 #: src/interface/Tailslets.tsx
 #: src/interface/navigation/servers/ServerList.tsx
-msgid "Tailslets"
-msgstr "Tailslets"
+#~ msgid "Tailslets"
+#~ msgstr "Tailslets"
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "TailsTalk 2"
@@ -5089,6 +5186,15 @@ msgstr "This will invalidate the current token and stop any existing instances o
 msgid "Time format"
 msgstr "Time format"
 
+#: components/modal/modals/TimeoutMember.tsx
+msgid "Timeout duration"
+msgstr "Timeout duration"
+
+#: components/modal/modals/TimeoutMember.tsx
+#: components/app/menus/UserContextMenu.tsx
+msgid "Timeout member"
+msgstr "Timeout member"
+
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Timeout Members"
 msgstr "Timeout Members"
@@ -5170,8 +5276,8 @@ msgid "Unable to delete server."
 msgstr "Unable to delete server."
 
 #: src/interface/Tailslets.tsx
-msgid "Unable to delete this Tailslet right now. Please try again."
-msgstr "Unable to delete this Tailslet right now. Please try again."
+#~ msgid "Unable to delete this Tailslet right now. Please try again."
+#~ msgstr "Unable to delete this Tailslet right now. Please try again."
 
 #: src/interface/Videos.tsx
 msgid "Unable to delete this video right now. Please try again."
@@ -5194,8 +5300,8 @@ msgid "Unable to load forum posts right now. Please try again."
 msgstr "Unable to load forum posts right now. Please try again."
 
 #: src/interface/Tailslets.tsx
-msgid "Unable to load Tailslets right now. Please try again."
-msgstr "Unable to load Tailslets right now. Please try again."
+#~ msgid "Unable to load Tailslets right now. Please try again."
+#~ msgstr "Unable to load Tailslets right now. Please try again."
 
 #: src/interface/Home.tsx
 msgid "Unable to load the official server invite right now."
@@ -5214,8 +5320,8 @@ msgid "Unable to post this video right now. Please try again."
 msgstr "Unable to post this video right now. Please try again."
 
 #: src/interface/Tailslets.tsx
-msgid "Unable to publish this Tailslet right now. Please try again."
-msgstr "Unable to publish this Tailslet right now. Please try again."
+#~ msgid "Unable to publish this Tailslet right now. Please try again."
+#~ msgstr "Unable to publish this Tailslet right now. Please try again."
 
 #: components/app/interface/settings/server/Boosts.tsx
 msgid "Unable to remove this boost right now."
@@ -5281,7 +5387,6 @@ msgstr "Unknown Server"
 #: src/interface/channels/forum/ForumChannel.tsx
 #: src/interface/channels/forum/ForumChannel.tsx
 #: src/interface/channels/forum/ForumChannel.tsx
-#: components/ui/components/features/voice/callCard/VoiceCallCardActiveRoom.tsx
 msgid "Unknown user"
 msgstr "Unknown user"
 
@@ -5305,7 +5410,6 @@ msgstr "Unmark as Mature"
 #~ msgid "Unmark this channel as mature?"
 #~ msgstr "Unmark this channel as mature?"
 
-#: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #: components/app/interface/settings/user/notifications/Sounds.tsx
 msgid "Unmute"
 msgstr "Unmute"
@@ -5321,6 +5425,10 @@ msgstr "Unmute Server"
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Unpin message"
 msgstr "Unpin message"
+
+#: src/interface/channels/forum/ForumChannel.tsx
+msgid "Unpin post"
+msgstr "Unpin post"
 
 #: components/app/interface/channels/text/DraftMessage.tsx
 msgid "Unsent message"
@@ -5398,8 +5506,8 @@ msgid "User Joined"
 msgstr "User Joined"
 
 #: components/app/interface/settings/user/notifications/Sounds.tsx
-msgid "User Joined Call"
-msgstr "User Joined Call"
+#~ msgid "User Joined Call"
+#~ msgstr "User Joined Call"
 
 #: components/app/interface/settings/server/Overview.tsx
 msgid "User Kicked"
@@ -5410,8 +5518,8 @@ msgid "User Left"
 msgstr "User Left"
 
 #: components/app/interface/settings/user/notifications/Sounds.tsx
-msgid "User Left Call"
-msgstr "User Left Call"
+#~ msgid "User Left Call"
+#~ msgstr "User Left Call"
 
 #: components/app/interface/settings/ServerSettings.tsx
 msgid "User Management"
@@ -5554,16 +5662,16 @@ msgstr "Voice"
 #~ msgstr "Voice & Video"
 
 #: components/modal/modals/CreateChannel.tsx
-msgid "Voice Channel"
-msgstr "Voice Channel"
+#~ msgid "Voice Channel"
+#~ msgstr "Voice Channel"
 
 #: components/app/interface/settings/user/voice/VoiceProcessingOptions.tsx
-msgid "Voice Processing"
-msgstr "Voice Processing"
+#~ msgid "Voice Processing"
+#~ msgstr "Voice Processing"
 
 #: components/app/menus/UserContextMenu.tsx
-msgid "Volume"
-msgstr "Volume"
+#~ msgid "Volume"
+#~ msgstr "Volume"
 
 #: components/app/interface/channels/text/Message.tsx
 #~ msgid "votes"
@@ -5682,8 +5790,8 @@ msgid "Welcome!"
 msgstr "Welcome!"
 
 #: src/interface/Tailslets.tsx
-msgid "What do you want to share?"
-msgstr "What do you want to share?"
+#~ msgid "What do you want to share?"
+#~ msgstr "What do you want to share?"
 
 #: components/modal/modals/CreateChannel.tsx
 msgid "What should people discuss here?"
@@ -5718,10 +5826,17 @@ msgstr "Which topics are you interested in?"
 msgid "Who is responsible"
 msgstr "Who is responsible"
 
-#. placeholder {0}: names.join(", ")
 #: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
-msgid "With {0}"
-msgstr "With {0}"
+#~ msgid "with {0}"
+#~ msgstr "with {0}"
+
+#: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
+#~ msgid "With {0}"
+#~ msgstr "With {0}"
+
+#: components/ui/components/features/voice/callCard/VoiceCallCardPreview.tsx
+#~ msgid "with {0} others"
+#~ msgstr "with {0} others"
 
 #: components/app/interface/settings/server/Backup.tsx
 msgid "Working…"
@@ -5875,6 +5990,10 @@ msgstr "You cannot report yourself."
 #~ msgstr "You cannot signup due to a internal error"
 
 #: components/i18n/errors.ts
+msgid "You cannot timeout a member with elevated permissions."
+msgstr "You cannot timeout a member with elevated permissions."
+
+#: components/i18n/errors.ts
 msgid "You cannot timeout yourself."
 msgstr "You cannot timeout yourself."
 
@@ -5933,8 +6052,8 @@ msgstr "You have this user blocked."
 #~ msgstr "You have used all of your free Premium boosts."
 
 #: components/ui/components/features/voice/VoiceStatefulUserIcons.tsx
-msgid "You muted this user."
-msgstr "You muted this user."
+#~ msgid "You muted this user."
+#~ msgstr "You muted this user."
 
 #: src/interface/GiftRedeem.tsx
 #~ msgid "You now have TailsTalk 2 Premium and its Premium benefits."

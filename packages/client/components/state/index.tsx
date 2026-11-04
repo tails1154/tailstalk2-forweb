@@ -26,7 +26,6 @@ import { Settings } from "./stores/Settings";
 import { Sounds } from "./stores/Sounds";
 import { Sync } from "./stores/Sync";
 import { Theme } from "./stores/Theme";
-import { Voice } from "./stores/Voice";
 
 export { SyncWorker } from "./SyncWorker";
 
@@ -65,7 +64,6 @@ export class State {
   settings = new Settings(this);
   sync = new Sync(this);
   theme = new Theme(this);
-  voice = new Voice(this);
   sounds = new Sounds(this);
 
   /**

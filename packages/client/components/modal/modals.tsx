@@ -55,8 +55,6 @@ import { RenameSessionModal } from "./modals/RenameSession";
 import { ReportContentModal } from "./modals/ReportContent";
 import { ReportActionModal } from "./modals/ReportAction";
 import { ResetBotTokenModal } from "./modals/ResetBotToken";
-import { ScreenSharePickerModal } from "./modals/ScreenSharePicker";
-import { ScreenShareSettingsModal } from "./modals/ScreenShareSettings";
 import { ServerIdentityModal } from "./modals/ServerIdentity";
 import { ServerInfoModal } from "./modals/ServerInfo";
 import { ServerOnboardingModal } from "./modals/ServerOnboarding";
@@ -65,6 +63,7 @@ import { SignOutSessionsModal } from "./modals/SignOutSessions";
 import { SignedOutModal } from "./modals/SignedOut";
 import { SourceCodeModal } from "./modals/SourceCode";
 import { TransferServerOwnershipModal } from "./modals/TransferServerOwnership";
+import { TimeoutMemberModal } from "./modals/TimeoutMember";
 import { UserProfileModal } from "./modals/UserProfile";
 import { UserProfileMutualFriendsModal } from "./modals/UserProfileMutualFriends";
 import { UserProfileMutualGroupsModal } from "./modals/UserProfileMutualGroups";
@@ -147,6 +146,8 @@ export function RenderModal(props: ActiveModal & { onClose: () => void }) {
       return <DeleteServerModal {...modalProps} />;
     case "transfer_server_ownership":
       return <TransferServerOwnershipModal {...modalProps} />;
+    case "timeout_member":
+      return <TimeoutMemberModal {...modalProps} />;
     case "edit_email":
       return <EditEmailModal {...modalProps} />;
     case "edit_password":
@@ -216,10 +217,6 @@ export function RenderModal(props: ActiveModal & { onClose: () => void }) {
     case "remove_member":
       return <RemoveMemberModal {...modalProps} />;
 
-    case "screen_share_settings":
-      return <ScreenShareSettingsModal {...modalProps} />;
-    case "screen_share_picker":
-      return <ScreenSharePickerModal {...modalProps} />;
     default:
       console.error(
         "Failed to create modal for",

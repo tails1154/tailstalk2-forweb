@@ -7,7 +7,7 @@ import { useClient } from "@revolt/client";
 import { useModals } from "@revolt/modal";
 import { useSmartParams } from "@revolt/routing";
 import { useState } from "@revolt/state";
-import { dismissFloatingElements, Slider, Text } from "@revolt/ui";
+import { dismissFloatingElements } from "@revolt/ui";
 
 import MdAccountCircle from "@material-design-icons/svg/outlined/account_circle.svg?component-solid";
 import MdAddCircleOutline from "@material-design-icons/svg/outlined/add_circle_outline.svg?component-solid";
@@ -21,12 +21,10 @@ import MdChat from "@material-design-icons/svg/outlined/chat.svg?component-solid
 import MdClose from "@material-design-icons/svg/outlined/close.svg?component-solid";
 import MdDoNotDisturbOn from "@material-design-icons/svg/outlined/do_not_disturb_on.svg?component-solid";
 import MdFace from "@material-design-icons/svg/outlined/face.svg?component-solid";
-import MdMicOff from "@material-design-icons/svg/outlined/mic_off.svg?component-solid";
 import MdPersonAddAlt from "@material-design-icons/svg/outlined/person_add_alt.svg?component-solid";
 import MdPersonRemove from "@material-design-icons/svg/outlined/person_remove.svg?component-solid";
 import MdReport from "@material-design-icons/svg/outlined/report.svg?component-solid";
-import MdChecked from "@material-symbols/svg-400/outlined/check_box.svg?component-solid";
-import MdUnchecked from "@material-symbols/svg-400/outlined/check_box_outline_blank.svg?component-solid";
+import MdTimer from "@material-design-icons/svg/outlined/timer.svg?component-solid";
 
 import {
   ContextMenu,
@@ -43,8 +41,6 @@ export function UserContextMenu(props: {
   channel?: Channel;
   member?: ServerMember;
   contextMessage?: Message;
-  inVoice?: boolean;
-  isScreenshare?: boolean;
 }) {
   // TODO: if we take serverId instead, we could dynamically fetch server member here
   // same for the floating menu I guess?
@@ -155,6 +151,16 @@ export function UserContextMenu(props: {
   function banMember() {
     openModal({
       type: "ban_member",
+      member: props.member!,
+    });
+  }
+
+  /**
+   * Timeout the member
+   */
+  function timeoutMember() {
+    openModal({
+      type: "timeout_member",
       member: props.member!,
     });
   }
@@ -276,6 +282,18 @@ export function UserContextMenu(props: {
   }
 
   /**
+   * Whether the user can timeout this member
+   */
+  function canTimeout() {
+    return (
+      !props.user.self &&
+      props.member?.server?.havePermission("TimeoutMembers") &&
+      !props.member.hasPermission(props.member.server, "TimeoutMembers") &&
+      props.member.inferiorTo(props.member.server.member!)
+    );
+  }
+
+  /**
    * Whether the user can ban a non-member in the current server
    */
   function canBanNonMember() {
@@ -302,87 +320,6 @@ export function UserContextMenu(props: {
 
   return (
     <ContextMenu class="UserContextMenu">
-      {/* Voice controls */}
-      <Show when={props.inVoice && !props.user.self && !props.isScreenshare}>
-        <ContextMenuButton
-          onMouseDown={(e) => e.stopImmediatePropagation()}
-          onClick={(e) => e.stopImmediatePropagation()}
-        >
-          <Text class="label">
-            <Trans>Volume</Trans>
-          </Text>
-          <Slider
-            min={0}
-            max={3}
-            step={0.1}
-            value={state.voice.getUserVolume(props.user.id)}
-            onInput={(event) =>
-              state.voice.setUserVolume(
-                props.user.id,
-                event.currentTarget.value,
-              )
-            }
-            labelFormatter={(label) => (label * 100).toFixed(0) + "%"}
-          />
-        </ContextMenuButton>
-        <ContextMenuButton
-          icon={MdMicOff}
-          onClick={() =>
-            state.voice.setUserMuted(
-              props.user.id,
-              !state.voice.getUserMuted(props.user.id),
-            )
-          }
-          actionSymbol={
-            state.voice.getUserMuted(props.user.id) ? MdChecked : MdUnchecked
-          }
-        >
-          <Trans>Mute</Trans>
-        </ContextMenuButton>
-        <ContextMenuDivider />
-      </Show>
-      <Show when={props.isScreenshare && !props.user.self}>
-        <ContextMenuButton
-          onMouseDown={(e) => e.stopImmediatePropagation()}
-          onClick={(e) => e.stopImmediatePropagation()}
-        >
-          <Text class="label">
-            <Trans>Screen Share Volume</Trans>
-          </Text>
-          <Slider
-            min={0}
-            max={3}
-            step={0.1}
-            value={state.voice.getScreenShareVolume(props.user.id)}
-            onInput={(event) =>
-              state.voice.setScreenShareVolume(
-                props.user.id,
-                event.currentTarget.value,
-              )
-            }
-            labelFormatter={(label) => (label * 100).toFixed(0) + "%"}
-          />
-        </ContextMenuButton>
-        <ContextMenuButton
-          icon={MdMicOff}
-          onClick={() =>
-            state.voice.setScreenShareMuted(
-              props.user.id,
-              !state.voice.getScreenShareMuted(props.user.id),
-            )
-          }
-          actionSymbol={
-            state.voice.getScreenShareMuted(props.user.id)
-              ? MdChecked
-              : MdUnchecked
-          }
-        >
-          <Trans>Mute Screen Share</Trans>
-        </ContextMenuButton>
-
-        <ContextMenuDivider />
-      </Show>
-
       {/* Quick actions: Profile, Message, Mention */}
       <ContextMenuButton icon={MdAccountCircle} onClick={openProfile}>
         <Trans>Profile</Trans>
@@ -456,12 +393,11 @@ export function UserContextMenu(props: {
         </Show>
       </Show>
 
-      {/* Moderation: kick, ban */}
-      {/** TODO: #287 timeout users */}
+      {/* Moderation: timeout, kick, ban */}
       <Show
         when={
           canRemoveMemberFromGroup() ||
-          (props.member && (canKick() || canBan()))
+          (props.member && (canTimeout() || canKick() || canBan()))
         }
       >
         <ContextMenuDivider />
@@ -481,6 +417,11 @@ export function UserContextMenu(props: {
             destructive
           >
             <Trans>Kick member</Trans>
+          </ContextMenuButton>
+        </Show>
+        <Show when={canTimeout()}>
+          <ContextMenuButton icon={MdTimer} onClick={timeoutMember}>
+            <Trans>Timeout member</Trans>
           </ContextMenuButton>
         </Show>
         <Show when={canBan()}>

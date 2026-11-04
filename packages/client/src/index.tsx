@@ -32,7 +32,6 @@ import { DeviceContext } from "@revolt/common";
 import { I18nProvider } from "@revolt/i18n";
 import { KeybindContext } from "@revolt/keybinds";
 import { ModalContext, ModalRenderer, useModals } from "@revolt/modal";
-import { VoiceContext } from "@revolt/rtc";
 import { StateContext, SyncWorker, useState } from "@revolt/state";
 import {
   FloatingManager,
@@ -55,7 +54,6 @@ import { HomePage } from "./interface/Home";
 import { AboutPage, PrivacyPage } from "./PublicPage";
 import { AccountDeletionPage } from "./AccountDeletionPage";
 import { ServerHome } from "./interface/ServerHome";
-import { Tailslets } from "./interface/Tailslets";
 import { Videos } from "./interface/Videos";
 import { ChannelPage } from "./interface/channels/ChannelPage";
 import { requestClientJson } from "../components/client/customApi";
@@ -251,19 +249,17 @@ function MountContext(props: { children?: JSX.Element }) {
         <ClientContext state={state}>
           <I18nProvider>
             <SoundContext>
-              <VoiceContext>
-                <QueryClientProvider client={client}>
-                  <SnackbarProvider controller={snackbarController}>
-                    {props.children}
-                    <AccountBanHandler />
-                    <LeaveSitePrompt />
-                    <LevelUpOverlay />
-                    <ServiceWorkerUpdatePrompt />
-                    <ModalRenderer />
-                    <FloatingManager />
-                  </SnackbarProvider>
-                </QueryClientProvider>
-              </VoiceContext>
+              <QueryClientProvider client={client}>
+                <SnackbarProvider controller={snackbarController}>
+                  {props.children}
+                  <AccountBanHandler />
+                  <LeaveSitePrompt />
+                  <LevelUpOverlay />
+                  <ServiceWorkerUpdatePrompt />
+                  <ModalRenderer />
+                  <FloatingManager />
+                </SnackbarProvider>
+              </QueryClientProvider>
             </SoundContext>
           </I18nProvider>
           <SyncWorker />
@@ -305,7 +301,6 @@ render(
             <Route path="/bot/:code" component={BotRedirect} />
             <Route path="/friends" component={Friends} />
             <Route path="/videos" component={Videos} />
-            <Route path="/tailslets" component={Tailslets} />
             <Route path="/server/:server/*">
               <Route path="/channel/:channel/*" component={ChannelPage} />
               <Route path="/*" component={ServerHome} />

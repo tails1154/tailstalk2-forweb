@@ -108,7 +108,9 @@ export const ServerSidebar = (props: Props) => {
   // TODO: this does not filter visible channels at the moment because the state for categories is not stored anywhere
   /** Gets a list of channels that are currently not hidden inside a closed category */
   const visibleChannels = () =>
-    props.server.orderedChannels.flatMap((category) => category.channels);
+    props.server.orderedChannels.flatMap((category) =>
+      category.channels.filter((channel) => !channel.isVoice),
+    );
 
   // TODO: when navigating channels, we want to add aria-keyshortcuts={localized-shortcut} to the next/previous channels
   // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-keyshortcuts
@@ -361,10 +363,11 @@ function Category(
   const channels = createMemo(() =>
     props.category.channels.filter(
       (channel) =>
-        props.category.id === "default" ||
-        isOpen() ||
-        channel.unread ||
-        channel.id === props.channelId,
+        !channel.isVoice &&
+        (props.category.id === "default" ||
+          isOpen() ||
+          channel.unread ||
+          channel.id === props.channelId),
     ),
   );
 
@@ -511,12 +514,7 @@ function Entry(
           attention={attentionState()}
           icon={
             <>
-              <Show
-                when={props.channel.isVoice}
-                fallback={<Symbol>grid_3x3</Symbol>}
-              >
-                <Symbol>voice_chat</Symbol>
-              </Show>
+              <Symbol>grid_3x3</Symbol>
               <Show when={props.channel.icon}>
                 <ChannelIcon
                   src={props.channel.iconURL}

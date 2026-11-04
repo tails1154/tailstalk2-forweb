@@ -59,16 +59,6 @@ export type TypeSounds = {
   unmute: boolean;
 
   /**
-   * Play a sound when a user joins your voice channel
-   */
-  userJoinVoice: boolean;
-
-  /**
-   * Play a sound when a user leaves your voice channel
-   */
-  userLeaveVoice: boolean;
-
-  /**
    * Play a sound when a user moves channels
    */
   userMoved: boolean;
@@ -94,8 +84,6 @@ export class Sounds extends AbstractStore<"sounds", TypeSounds> {
       streamViewerLeave: true,
       undeafen: true,
       unmute: true,
-      userJoinVoice: true,
-      userLeaveVoice: true,
       userMoved: true,
     };
   }
@@ -126,10 +114,6 @@ export class Sounds extends AbstractStore<"sounds", TypeSounds> {
           : true,
       undeafen: typeof input.undeafen === "boolean" ? input.undeafen : true,
       unmute: typeof input.unmute === "boolean" ? input.unmute : true,
-      userJoinVoice:
-        typeof input.userJoinVoice === "boolean" ? input.userJoinVoice : true,
-      userLeaveVoice:
-        typeof input.userLeaveVoice === "boolean" ? input.userLeaveVoice : true,
       userMoved: typeof input.userMoved === "boolean" ? input.userMoved : true,
     };
   }

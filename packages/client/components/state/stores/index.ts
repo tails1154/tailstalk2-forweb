@@ -16,7 +16,6 @@ import { TypeSettings } from "./Settings";
 import { TypeSounds } from "./Sounds";
 import { TypeSynchronisation } from "./Sync";
 import { TypeTheme } from "./Theme";
-import { TypeVoice } from "./Voice";
 
 export type Store = {
   auth: TypeAuth;
@@ -33,7 +32,6 @@ export type Store = {
   sounds: TypeSounds;
   sync: TypeSynchronisation;
   theme: TypeTheme;
-  voice: TypeVoice;
 };
 
 /**

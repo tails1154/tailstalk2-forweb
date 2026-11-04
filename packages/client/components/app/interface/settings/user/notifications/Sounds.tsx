@@ -140,48 +140,6 @@ export default function Sounds() {
             </CategoryButton>
           </Show>
           <CategoryButton
-            action={<Checkbox checked={sounds.enabled("userJoinVoice")} />}
-            onClick={() => sounds.toggle("userJoinVoice")}
-            icon="blank"
-          >
-            <Content>
-              <Trans>User Joined Call</Trans>
-              <IconButton
-                onPress={() => soundController.playSound("userJoinVoice", true)}
-                use:floating={{
-                  tooltip: {
-                    placement: "top",
-                    content: playSoundString,
-                  },
-                }}
-              >
-                <MdVolumeUp {...iconSize(18)} />
-              </IconButton>
-            </Content>
-          </CategoryButton>
-          <CategoryButton
-            action={<Checkbox checked={sounds.enabled("userLeaveVoice")} />}
-            onClick={() => sounds.toggle("userLeaveVoice")}
-            icon="blank"
-          >
-            <Content>
-              <Trans>User Left Call</Trans>
-              <IconButton
-                onPress={() =>
-                  soundController.playSound("userLeaveVoice", true)
-                }
-                use:floating={{
-                  tooltip: {
-                    placement: "top",
-                    content: playSoundString,
-                  },
-                }}
-              >
-                <MdVolumeUp {...iconSize(18)} />
-              </IconButton>
-            </Content>
-          </CategoryButton>
-          <CategoryButton
             action={<Checkbox checked={sounds.enabled("streamStart")} />}
             onClick={() => sounds.toggle("streamStart")}
             icon="blank"

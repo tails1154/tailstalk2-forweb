@@ -29,10 +29,19 @@ import { useSmartParams } from "@revolt/routing";
 
 import { ChannelHeader } from "../ChannelHeader";
 
+type ForumSort = "recent" | "active" | "replies" | "solved";
+type ForumMetadata = {
+  message_id: string;
+  channel_id: string;
+  tags: string[];
+  solved: boolean;
+};
+
 /**
  * Forum-style presentation for a text channel with a forum purpose.
- * Posts are regular TailsTalk messages, so existing permissions, moderation,
- * notifications, and replies continue to work without a new API contract.
+ * Posts are regular TailsTalk messages. Forum-specific tags and solved state
+ * are persisted by the forum metadata API while messages retain normal reply,
+ * reaction, moderation, and notification behavior.
  */
 export function ForumChannel(props: { channel: Channel }) {
   const { t } = useLingui();
@@ -43,6 +52,10 @@ export function ForumChannel(props: { channel: Channel }) {
   const [busy, setBusy] = createSignal(false);
   const [title, setTitle] = createSignal("");
   const [body, setBody] = createSignal("");
+  const [tags, setTags] = createSignal("");
+  const [search, setSearch] = createSignal("");
+  const [sort, setSort] = createSignal<ForumSort>("recent");
+  const [metadata, setMetadata] = createSignal<Record<string, ForumMetadata>>({});
   const params = useSmartParams();
   const selectedPost = createMemo(() =>
     messages().find((message) => message.id === params().messageId),
@@ -58,8 +71,18 @@ export function ForumChannel(props: { channel: Channel }) {
     setLoading(true);
     setMessages([]);
     try {
-      const fetched = await props.channel.fetchMessages({ limit: 50 });
+      const [fetched, forumMetadata] = await Promise.all([
+        props.channel.fetchMessages({ limit: 50 }),
+        client().api
+          .get(`/channels/${props.channel.id}/forum`)
+          .catch(() => [] as ForumMetadata[]),
+      ]);
       setMessages(fetched);
+      setMetadata(
+        Object.fromEntries(
+          (forumMetadata as ForumMetadata[]).map((entry) => [entry.message_id, entry]),
+        ),
+      );
     } catch {
       snackbar.show({
         message: t`Unable to load forum posts right now. Please try again.`,
@@ -115,8 +138,21 @@ export function ForumChannel(props: { channel: Channel }) {
         content: `${postTitle}\n\n${postBody}`,
       });
       setMessages((current) => [post, ...current]);
+      const postTags = tags()
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean)
+        .slice(0, 5);
+      if (postTags.length) {
+        const entry = (await client().api.patch(
+          `/channels/${props.channel.id}/messages/${post.id}/forum`,
+          { tags: postTags, solved: false },
+        )) as ForumMetadata;
+        setMetadata((current) => ({ ...current, [post.id]: entry }));
+      }
       setTitle("");
       setBody("");
+      setTags("");
     } catch {
       snackbar.show({
         message: t`Unable to create this forum post right now. Please try again.`,
@@ -148,6 +184,13 @@ export function ForumChannel(props: { channel: Channel }) {
                 busy={busy()}
                 setTitle={setTitle}
                 setBody={setBody}
+                tags={tags()}
+                setTags={setTags}
+                sort={sort()}
+                setSort={setSort}
+                metadata={metadata()}
+                search={search()}
+                setSearch={setSearch}
                 createPost={createPost}
               />
             }
@@ -157,6 +200,10 @@ export function ForumChannel(props: { channel: Channel }) {
                 channel={props.channel}
                 post={post}
                 replies={selectedReplies()}
+                metadata={metadata()[post.id]}
+                updateMetadata={(entry) =>
+                  setMetadata((current) => ({ ...current, [post.id]: entry }))
+                }
                 onReply={appendMessage}
               />
             )}
@@ -176,11 +223,48 @@ function ForumIndex(props: {
   busy: boolean;
   setTitle: (value: string) => void;
   setBody: (value: string) => void;
+  tags: string;
+  setTags: (value: string) => void;
+  sort: ForumSort;
+  setSort: (value: ForumSort) => void;
+  metadata: Record<string, ForumMetadata>;
+  search: string;
+  setSearch: (value: string) => void;
   createPost: () => Promise<void>;
 }) {
   const { t } = useLingui();
-  const posts = () =>
-    props.messages.filter((message) => !message.replyIds?.length);
+  const posts = createMemo(() => {
+    const query = props.search.trim().toLocaleLowerCase();
+    const posts = props.messages.filter((message) => {
+      if (message.replyIds?.length) return false;
+      if (!query) return true;
+      const content = message.content.toLocaleLowerCase();
+      const tags = props.metadata[message.id]?.tags.join(" ").toLocaleLowerCase();
+      return content.includes(query) || tags?.includes(query);
+    });
+    const repliesFor = (post: Message) =>
+      props.messages.filter((message) => message.replyIds?.includes(post.id));
+    return [...posts].sort((a, b) => {
+      const aMeta = props.metadata[a.id];
+      const bMeta = props.metadata[b.id];
+      if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+      if (props.sort === "solved") {
+        return Number(Boolean(bMeta?.solved)) - Number(Boolean(aMeta?.solved));
+      }
+      if (props.sort === "replies") {
+        return (b.replyIds?.length ?? 0) - (a.replyIds?.length ?? 0);
+      }
+      if (props.sort === "active") {
+        const latest = (post: Message) =>
+          Math.max(
+            post.createdAt.getTime(),
+            ...repliesFor(post).map((reply) => reply.createdAt.getTime()),
+          );
+        return latest(b) - latest(a);
+      }
+      return b.createdAt.getTime() - a.createdAt.getTime();
+    });
+  });
 
   return (
     <>
@@ -208,6 +292,12 @@ function ForumIndex(props: {
           onInput={(event) => props.setTitle(event.currentTarget.value)}
         />
         <TextField
+          label={t`Tags (comma separated)`}
+          value={props.tags}
+          maxlength={180}
+          onInput={(event) => props.setTags(event.currentTarget.value)}
+        />
+        <TextField
           label={t`Post details`}
           value={props.body}
           rows={4}
@@ -228,6 +318,25 @@ function ForumIndex(props: {
         </Button>
       </Composer>
 
+      <Toolbar>
+        <Text size="small"><Trans>Sort discussions</Trans></Text>
+        <TextField
+          label={t`Search forum posts`}
+          value={props.search}
+          onInput={(event) => props.setSearch(event.currentTarget.value)}
+        />
+        <StyledSelect
+          value={props.sort}
+          onChange={(event) => props.setSort(event.currentTarget.value as ForumSort)}
+          aria-label={t`Sort discussions`}
+        >
+          <option value="recent">{t`Newest`}</option>
+          <option value="active">{t`Recently active`}</option>
+          <option value="replies">{t`Most replies`}</option>
+          <option value="solved">{t`Solved first`}</option>
+        </StyledSelect>
+      </Toolbar>
+
       <Show when={!props.loading} fallback={<CircularProgress />}>
         <Show
           when={posts().length > 0}
@@ -243,21 +352,46 @@ function ForumIndex(props: {
               const postTitle =
                 lines.shift()?.trim() || t`Untitled discussion`;
               const postBody = lines.join("\n").trim();
+              const postMetadata = props.metadata[message.id];
+              const replyCount = message.replyIds?.length ?? 0;
+              const seenReplyCount = Number(
+                localStorage.getItem(`tailstalk-forum-seen:${props.channel.id}:${message.id}`) ?? 0,
+              );
               return (
                 <PostCard>
+                  <Show when={message.pinned || postMetadata?.solved}>
+                    <StatusRow>
+                      <Show when={message.pinned}><StatusBadge><Trans>Pinned</Trans></StatusBadge></Show>
+                      <Show when={postMetadata?.solved}><SolvedBadge><Trans>Solved</Trans></SolvedBadge></Show>
+                    </StatusRow>
+                  </Show>
                   <Text class="title" size="medium">
                     {postTitle}
                   </Text>
                   <PostBody>{postBody || t`No details provided.`}</PostBody>
+                  <Show when={postMetadata?.tags?.length}>
+                    <TagRow>
+                      <For each={postMetadata?.tags}>{(tag) => <Tag>{tag}</Tag>}</For>
+                    </TagRow>
+                  </Show>
                   <ForumReactions message={message} />
                   <Meta>
                     <Text size="small">
-                      {message.author?.displayName || t`Unknown user`} ·{" "}
+                      {message.author?.displayName || t`Unknown user`} · {replyCount} {replyCount === 1 ? t`reply` : t`replies`} ·{" "}
                       {message.createdAt.toLocaleString()}
                     </Text>
+                    <Show when={replyCount > seenReplyCount}>
+                      <StatusBadge><Trans>New replies</Trans></StatusBadge>
+                    </Show>
                     <a
                       class={discussionLink}
                       href={`${props.channel.path}/${message.id}`}
+                      onClick={() =>
+                        localStorage.setItem(
+                          `tailstalk-forum-seen:${props.channel.id}:${message.id}`,
+                          String(replyCount),
+                        )
+                      }
                     >
                       <Trans>Open discussion</Trans>
                     </a>
@@ -276,11 +410,15 @@ function Discussion(props: {
   channel: Channel;
   post: Message;
   replies: Message[];
+  metadata?: ForumMetadata;
+  updateMetadata: (metadata: ForumMetadata) => void;
   onReply: (message: Message) => void;
 }) {
   const { t } = useLingui();
+  const client = useClient();
   const [replyText, setReplyText] = createSignal("");
   const [busy, setBusy] = createSignal(false);
+  const [tagText, setTagText] = createSignal(props.metadata?.tags.join(", ") ?? "");
   const lines = props.post.content.split("\n");
   const title = lines.shift()?.trim() || t`Untitled discussion`;
   const body = lines.join("\n").trim();
@@ -298,12 +436,57 @@ function Discussion(props: {
     }
   }
 
+  async function toggleSolved() {
+    if (busy()) return;
+    setBusy(true);
+    const tags = tagText().split(",").map((tag) => tag.trim()).filter(Boolean).slice(0, 5);
+    try {
+      const entry = (await client().api.patch(
+        `/channels/${props.channel.id}/messages/${props.post.id}/forum`,
+        { tags, solved: !(props.metadata?.solved ?? false) },
+      )) as ForumMetadata;
+      props.updateMetadata(entry);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function saveTags() {
+    if (busy()) return;
+    setBusy(true);
+    const tags = tagText().split(",").map((tag) => tag.trim()).filter(Boolean).slice(0, 5);
+    try {
+      const entry = (await client().api.patch(
+        `/channels/${props.channel.id}/messages/${props.post.id}/forum`,
+        { tags },
+      )) as ForumMetadata;
+      props.updateMetadata(entry);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function togglePinned() {
+    if (busy()) return;
+    setBusy(true);
+    try {
+      if (props.post.pinned) await props.post.unpin();
+      else await props.post.pin();
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <Column gap="xl">
       <a class={discussionLink} href={props.channel.path}>
         <Trans>Back to forum</Trans>
       </a>
       <PostCard>
+        <StatusRow>
+          <Show when={props.post.pinned}><StatusBadge><Trans>Pinned</Trans></StatusBadge></Show>
+          <Show when={props.metadata?.solved}><SolvedBadge><Trans>Solved</Trans></SolvedBadge></Show>
+        </StatusRow>
         <Text class="title" size="large">
           {title}
         </Text>
@@ -313,6 +496,27 @@ function Discussion(props: {
           {props.post.createdAt.toLocaleString()}
         </Text>
         <ForumReactions message={props.post} />
+        <ActionRow>
+          <Show when={props.channel.havePermission("ManageMessages")}>
+            <Button variant="outlined" isDisabled={busy()} onPress={() => void togglePinned()}>
+              {props.post.pinned ? <Trans>Unpin post</Trans> : <Trans>Pin post</Trans>}
+            </Button>
+          </Show>
+          <Show when={props.post.author?.id === client().user?.id || props.channel.havePermission("ManageMessages")}>
+            <Button variant="outlined" isDisabled={busy()} onPress={() => void toggleSolved()}>
+              {props.metadata?.solved ? <Trans>Mark unsolved</Trans> : <Trans>Mark solved</Trans>}
+            </Button>
+          </Show>
+        </ActionRow>
+        <TextField
+          label={t`Tags (comma separated)`}
+          value={tagText()}
+          maxlength={180}
+          onInput={(event) => setTagText(event.currentTarget.value)}
+        />
+        <Button variant="outlined" isDisabled={busy()} onPress={() => void saveTags()}>
+          <Trans>Save tags</Trans>
+        </Button>
       </PostCard>
       <Text class="title" size="medium">
         <Trans>Replies</Trans>
@@ -465,6 +669,58 @@ const Meta = styled("div", {
 
 const PostBody = styled("div", { base: { whiteSpace: "pre-wrap" } });
 const Empty = styled("div", { base: { padding: "var(--gap-lg) 0" } });
+const Toolbar = styled("div", {
+  base: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "var(--gap-md)",
+    flexWrap: "wrap",
+  },
+});
+const StyledSelect = styled("select", {
+  base: {
+    padding: "0.55rem 0.75rem",
+    borderRadius: "var(--borderRadius-md)",
+    border: "1px solid var(--md-sys-color-outline)",
+    background: "var(--md-sys-color-surface-container)",
+    color: "var(--md-sys-color-on-surface)",
+  },
+});
+const StatusRow = styled("div", {
+  base: { display: "flex", gap: "var(--gap-sm)", flexWrap: "wrap" },
+});
+const StatusBadge = styled("span", {
+  base: {
+    padding: "0.2rem 0.55rem",
+    borderRadius: "var(--borderRadius-full)",
+    background: "var(--md-sys-color-secondary-container)",
+    color: "var(--md-sys-color-on-secondary-container)",
+    fontSize: "0.8rem",
+    fontWeight: 600,
+  },
+});
+const SolvedBadge = styled(StatusBadge, {
+  base: {
+    background: "var(--md-sys-color-tertiary-container)",
+    color: "var(--md-sys-color-on-tertiary-container)",
+  },
+});
+const TagRow = styled("div", {
+  base: { display: "flex", gap: "var(--gap-sm)", flexWrap: "wrap" },
+});
+const Tag = styled("span", {
+  base: {
+    padding: "0.2rem 0.55rem",
+    borderRadius: "var(--borderRadius-full)",
+    background: "var(--md-sys-color-primary-container)",
+    color: "var(--md-sys-color-on-primary-container)",
+    fontSize: "0.8rem",
+  },
+});
+const ActionRow = styled("div", {
+  base: { display: "flex", gap: "var(--gap-sm)", flexWrap: "wrap" },
+});
 const ReactionRow = styled("div", {
   base: {
     display: "flex",

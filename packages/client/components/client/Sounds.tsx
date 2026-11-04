@@ -12,8 +12,6 @@ import streamViewerJoinSound from "../../public/assets/sounds/stream_viewer_join
 import streamViewerLeaveSound from "../../public/assets/sounds/stream_viewer_leave.ogg";
 import undeafenSound from "../../public/assets/sounds/undeafen.ogg";
 import unmuteSound from "../../public/assets/sounds/unmute.ogg";
-import userJoinVoiceSound from "../../public/assets/sounds/user_join_voice.ogg";
-import userLeaveVoiceSound from "../../public/assets/sounds/user_leave_voice.ogg";
 import userMovedSound from "../../public/assets/sounds/user_moved.ogg";
 
 /**
@@ -123,14 +121,6 @@ export class SoundController {
       }
       case "unmute": {
         this.node = new Audio(unmuteSound);
-        break;
-      }
-      case "userJoinVoice": {
-        this.node = new Audio(userJoinVoiceSound);
-        break;
-      }
-      case "userLeaveVoice": {
-        this.node = new Audio(userLeaveVoiceSound);
         break;
       }
       case "userMoved": {
