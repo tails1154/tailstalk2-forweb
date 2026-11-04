@@ -5088,6 +5088,10 @@ msgstr ""
 msgid "Themes"
 msgstr ""
 
+#: components/auth/src/flows/FlowLogin.tsx
+msgid "This account cannot sign in."
+msgstr ""
+
 #: components/i18n/errors.ts
 msgid "This account is not activated! Please check your account's inbox and try again."
 msgstr ""
@@ -5909,6 +5913,7 @@ msgstr ""
 #~ msgstr ""
 
 #. placeholder {0}: reason ?? "Your account has been disabled."
+#. placeholder {0}: notice.reason ?? "Your account has been disabled."
 #: src/index.tsx
 #: components/auth/src/flows/FlowLogin.tsx
 msgid ""

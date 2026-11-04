@@ -5139,6 +5139,10 @@ msgstr "Theme uploaded to the community theme store."
 msgid "Themes"
 msgstr "Themes"
 
+#: components/auth/src/flows/FlowLogin.tsx
+msgid "This account cannot sign in."
+msgstr "This account cannot sign in."
+
 #: components/i18n/errors.ts
 msgid "This account is not activated! Please check your account's inbox and try again."
 msgstr "This account is not activated! Please check your account's inbox and try again."
@@ -5969,6 +5973,7 @@ msgstr "You are about to kick {0}"
 #~ msgstr "You are banned from registering for TailsTalk 2. Reason: {0}"
 
 #. placeholder {0}: reason ?? "Your account has been disabled."
+#. placeholder {0}: notice.reason ?? "Your account has been disabled."
 #: src/index.tsx
 #: components/auth/src/flows/FlowLogin.tsx
 msgid ""
