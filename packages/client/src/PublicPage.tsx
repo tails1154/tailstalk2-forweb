@@ -179,10 +179,12 @@ export function PrivacyPage() {
             Depending on how you use the service, we process your email
             address, password hash, user ID, username, profile information,
             messages, reactions, uploaded files, server and channel
-            memberships, reports, moderation records, and session/device
-            information. The account system also records the IP address used
-            when an account is created for account security and abuse
-            prevention. We do not receive or store your plaintext password.
+            memberships, reports, moderation records, session/device
+            information, and—if payments are enabled—subscription and payment
+            status information. The account system also records the IP address
+            used when an account is created for account security and abuse
+            prevention. We do not receive or store your plaintext password or
+            full payment-card number.
           </Trans>
         </p>
       </Section>
@@ -211,14 +213,24 @@ export function PrivacyPage() {
           <Trans>
             TailsTalk 2 is self-hosted. Data is accessible to the operator and
             authorized infrastructure administrators who need it to run and
-            secure the service. The service may also use configured providers
-            for email delivery, CAPTCHA, file/media storage, error diagnostics,
-            or other requested features. If client error reporting is enabled,
-            it may send technical error details, browser/device information,
-            the page URL, and a release identifier to the configured diagnostic
-            provider; it is not used for advertising. We do not sell personal
-            data and the web client does not load advertising or third-party
-            analytics scripts.
+            secure the service. Core account, message, server, and file data is
+            stored on the operator's MongoDB and MinIO infrastructure. Email
+            delivery uses the SMTP provider configured by the operator. If
+            payments are enabled, Stripe receives the information needed to
+            create and manage a subscription; TailsTalk 2 does not receive or
+            store full card numbers. Voice calls use the configured LiveKit
+            infrastructure. Optional CAPTCHA, media-proxy, and error-
+            diagnostics providers may process the minimum information needed
+            for those features.
+          </Trans>
+        </p>
+        <p>
+          <Trans>
+            If client error reporting is enabled, it may send technical error
+            details, browser/device information, the page URL, and a release
+            identifier to the configured diagnostic provider; it is not used
+            for advertising. We do not sell personal data and the web client
+            does not load advertising or third-party analytics scripts.
           </Trans>
         </p>
         <p>
