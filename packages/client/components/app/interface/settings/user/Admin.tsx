@@ -49,8 +49,6 @@ type Tab =
   | "servers"
   | "users"
   | "discovery"
-  | "subscriptions"
-  | "gifts"
   | "feature_requests"
   | "whatsnew";
 
@@ -147,7 +145,6 @@ interface AdminUserInfo {
   username: string;
   discriminator: string;
   display_name?: string;
-  legal_name?: string;
   flags?: number;
   suspended_until?: string;
   privileged: boolean;
@@ -350,18 +347,6 @@ export function AdminPanel() {
               <MdExplore {...iconSize(16)} /> <Trans>Discovery</Trans>
             </TabButton>
             <TabButton
-              active={tab() === "subscriptions"}
-              onClick={() => setTab("subscriptions")}
-            >
-              <MdStar {...iconSize(16)} /> <Trans>Subscriptions</Trans>
-            </TabButton>
-            <TabButton
-              active={tab() === "gifts"}
-              onClick={() => setTab("gifts")}
-            >
-              <MdStar {...iconSize(16)} /> <Trans>Premium gifts</Trans>
-            </TabButton>
-            <TabButton
               active={tab() === "feature_requests"}
               onClick={() => setTab("feature_requests")}
             >
@@ -388,12 +373,6 @@ export function AdminPanel() {
           </Show>
           <Show when={tab() === "discovery"}>
             <DiscoveryTab password={authToken()} />
-          </Show>
-          <Show when={tab() === "subscriptions"}>
-            <SubscriptionsTab password={authToken()} />
-          </Show>
-          <Show when={tab() === "gifts"}>
-            <GiftsTab password={authToken()} />
           </Show>
           <Show when={tab() === "feature_requests"}>
             <FeatureRequestsTab password={authToken()} />
@@ -1670,19 +1649,9 @@ function UsersTab(props: { password: string }) {
     });
   }
 
-  async function clearLegalName(userId: string) {
-    await withLoading(userId, async () => {
-      await apiFetch(`/admin/users/${userId}/legal-name/clear`, props.password, {
-        method: "POST",
-      });
-      await search();
-    });
-  }
-
   const customBadges = [
     { bit: UserBadges.XPChampion, label: t`XP Champion` },
     { bit: UserBadges.CommunityHelper, label: t`Community Helper` },
-    { bit: UserBadges.TailsTalkSupporter, label: t`TailsTalk Supporter` },
   ];
 
   function handleSearchKeyDown(e: KeyboardEvent) {
@@ -1734,7 +1703,6 @@ function UsersTab(props: { password: string }) {
                   </Text>
                   <Text class={typography({ class: "label", size: "small" })}>
                     <Trans>Name: {u.display_name ?? "Not set"}</Trans>
-                    <Trans>Legal name: {u.legal_name ?? "Not provided"}</Trans>
                   </Text>
                   <Text class={typography({ class: "label", size: "small" })}>
                     ID: {u.id}
@@ -1800,12 +1768,6 @@ function UsersTab(props: { password: string }) {
                       <MdAdminPanelSettings {...iconSize(16)} />
                       {u.privileged ? <Trans>Remove admin access</Trans> : <Trans>Grant admin access</Trans>}
                     </Button>
-                    <Show when={u.legal_name}>
-                      <Button onPress={() => void clearLegalName(u.id)}>
-                        <MdDelete {...iconSize(16)} />
-                        <Trans>Clear legal name</Trans>
-                      </Button>
-                    </Show>
                   </Show>
                   <Show when={resetLinks()[u.id]}>
                     {(link) => (

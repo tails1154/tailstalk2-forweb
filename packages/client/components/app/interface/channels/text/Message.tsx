@@ -25,8 +25,6 @@ import {
   DevelopmentBuildCard,
   isDevelopmentBuildUrl,
   Embed,
-  getPremiumGiftUrl,
-  PremiumGiftCard,
   MessageContainer,
   MessageReply,
   Reactions,
@@ -109,9 +107,6 @@ export function Message(props: Props) {
     const content = displayContent()?.trim();
     return isDevelopmentBuildUrl(content);
   };
-
-  const premiumGiftUrl = () =>
-    getPremiumGiftUrl(displayContent()?.trim());
 
   /**
    * React with an emoji
@@ -318,8 +313,7 @@ export function Message(props: Props) {
           when={
             displayContent() &&
             !isOnlyGIF() &&
-            !isDevelopmentBuildMessage() &&
-            !premiumGiftUrl()
+            !isDevelopmentBuildMessage()
           }
         >
           <BreakText>
@@ -328,9 +322,6 @@ export function Message(props: Props) {
         </Match>
         <Match when={isDevelopmentBuildMessage()}>
           <DevelopmentBuildCard />
-        </Match>
-        <Match when={premiumGiftUrl()}>
-          <PremiumGiftCard url={premiumGiftUrl()!} />
         </Match>
       </Switch>
       <Show when={props.message.poll}>
@@ -343,7 +334,7 @@ export function Message(props: Props) {
           )}
         </For>
       </Show>
-      <Show when={props.message.embeds && !premiumGiftUrl()}>
+      <Show when={props.message.embeds}>
         <For each={props.message.embeds}>
           {(embed) => <Embed embed={embed} />}
         </For>

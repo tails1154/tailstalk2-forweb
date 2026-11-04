@@ -396,6 +396,10 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
 
       await channel.sendMessage(data, idempotencyKey);
 
+      if (data.content?.trim() === "67") {
+        void new Audio("/assets/sounds/67.mp3").play().catch(() => {});
+      }
+
       if (files) {
         for (const file of files) {
           this.removeFile(channel.id, file);

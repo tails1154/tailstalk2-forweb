@@ -51,12 +51,10 @@ import "./index.css";
 import { DevelopmentPage } from "./interface/Development";
 import { Discover } from "./interface/Discover";
 import { Friends } from "./interface/Friends";
-import { GiftRedeem } from "./interface/GiftRedeem";
 import { HomePage } from "./interface/Home";
 import { AboutPage, PrivacyPage } from "./PublicPage";
 import { AccountDeletionPage } from "./AccountDeletionPage";
 import { ServerHome } from "./interface/ServerHome";
-import { StripeCancel, StripeSuccess } from "./interface/StripeReturn";
 import { Tailslets } from "./interface/Tailslets";
 import { Videos } from "./interface/Videos";
 import { ChannelPage } from "./interface/channels/ChannelPage";
@@ -152,54 +150,6 @@ function LevelUpOverlay() {
       )}
     </Show>
   );
-}
-
-function RequiredLegalNameGuard() {
-  const client = useClient();
-  const { isLoggedIn } = useClientLifecycle();
-  const { openModal, isOpen } = useModals();
-  let checking = false;
-  let checkedUserId: string | undefined;
-
-  const check = async () => {
-    const user = client().user;
-    if (!isLoggedIn() || !user) {
-      checkedUserId = undefined;
-      return;
-    }
-    if (checking || checkedUserId === user.id || isOpen("required_legal_name")) return;
-    checking = true;
-    try {
-      const status = await requestClientJson<{ set: boolean }>(
-        client().api,
-        "GET",
-        "/users/legal-name/status",
-      );
-      checkedUserId = user.id;
-      if (!status.set) {
-      openModal({
-        type: "required_legal_name",
-        callback: async (legalName) => {
-          await requestClientJson(client().api, "PATCH", "/users/legal-name", {
-            legal_name: legalName,
-          });
-        },
-      });
-      }
-    } catch {
-      // A transient status failure must not make the entire client unusable.
-    } finally {
-      checking = false;
-    }
-  };
-
-  onMount(() => {
-    void check();
-    const interval = window.setInterval(() => void check(), 1000);
-    onCleanup(() => window.clearInterval(interval));
-  });
-
-  return null;
 }
 
 const LevelUpCard = styled("div", {
@@ -308,7 +258,6 @@ function MountContext(props: { children?: JSX.Element }) {
                     <AccountBanHandler />
                     <LeaveSitePrompt />
                     <LevelUpOverlay />
-                    <RequiredLegalNameGuard />
                     <ServiceWorkerUpdatePrompt />
                     <ModalRenderer />
                     <FloatingManager />
@@ -350,9 +299,6 @@ render(
             <Route path="/dev" component={DevelopmentPage} />
             <Route path="/discover/*" component={Discover} />
             <Route path="/settings" component={SettingsRedirect} />
-            <Route path="/premium/success" component={StripeSuccess} />
-            <Route path="/premium/cancel" component={StripeCancel} />
-            <Route path="/gift/:giftId" component={GiftRedeem} />
             <Route path="/app" component={HomePage} />
             <Route path="/invite/:code" component={InviteRedirect} />
             <Route path="/:code" component={InviteRedirect} />
