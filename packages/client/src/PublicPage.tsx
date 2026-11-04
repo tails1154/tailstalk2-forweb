@@ -274,6 +274,24 @@ export function PrivacyPage() {
       </Section>
       <Section>
         <h2>
+          <Trans>Children and age</Trans>
+        </h2>
+        <p>
+          <Trans>
+            TailsTalk 2 is a general-audience service and is not directed at
+            children under 13. We do not knowingly request or intentionally
+            collect children's personal information. If a parent or guardian
+            believes a child has provided personal information, contact{" "}
+            <a href="mailto:tails1154@tails1154.com">
+              tails1154@tails1154.com
+            </a>{" "}
+            with the account identifier so we can verify the request and take
+            appropriate action, including deletion where required.
+          </Trans>
+        </p>
+      </Section>
+      <Section>
+        <h2>
           <Trans>Automated decisions</Trans>
         </h2>
         <p>

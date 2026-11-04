@@ -1057,6 +1057,10 @@ msgstr "Checking your session..."
 #~ msgid "Checkout canceled"
 #~ msgstr "Checkout canceled"
 
+#: src/PublicPage.tsx
+msgid "Children and age"
+msgstr "Children and age"
+
 #: components/modal/modals/TransferServerOwnership.tsx
 msgid "Choose a current member to become the new owner. This requires five confirmations and MFA verification."
 msgstr "Choose a current member to become the new owner. This requires five confirmations and MFA verification."
@@ -4810,6 +4814,10 @@ msgstr "TailsTalk 2 for Desktop"
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "TailsTalk 2 Founder"
 msgstr "TailsTalk 2 Founder"
+
+#: src/PublicPage.tsx
+msgid "TailsTalk 2 is a general-audience service and is not directed at children under 13. We do not knowingly request or intentionally collect children's personal information. If a parent or guardian believes a child has provided personal information, contact <0>tails1154@tails1154.com</0> with the account identifier so we can verify the request and take appropriate action, including deletion where required."
+msgstr "TailsTalk 2 is a general-audience service and is not directed at children under 13. We do not knowingly request or intentionally collect children's personal information. If a parent or guardian believes a child has provided personal information, contact <0>tails1154@tails1154.com</0> with the account identifier so we can verify the request and take appropriate action, including deletion where required."
 
 #: components/auth/src/flows/FlowHome.tsx
 msgid "TailsTalk 2 is one of the best ways to stay connected with your friends and community, anywhere, anytime."
