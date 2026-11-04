@@ -256,11 +256,14 @@ export function PrivacyPage() {
             may also withdraw consent where processing relies on consent. To
             request deletion, use the{" "}
             <a href="/delete-account">account-deletion page</a>. To request a
-            copy of your data or exercise another right, email us from the
-            address associated with your account; we may verify your identity
-            before responding. We aim to respond without undue delay and
-            generally within one month. You may also complain to your local
-            data-protection supervisory authority.
+            <a href="mailto:tails1154@tails1154.com?subject=GDPR%20data%20access%20request">
+              copy of your data
+            </a>{" "}
+            or exercise another right, email us from the address associated with
+            your account; we may verify your identity before responding. We aim
+            to respond without undue delay and generally within one month. You
+            may also complain to your local data-protection supervisory
+            authority.
           </Trans>
         </p>
       </Section>

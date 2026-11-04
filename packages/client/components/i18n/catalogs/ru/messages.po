@@ -4611,7 +4611,11 @@ msgid "Student ID"
 msgstr ""
 
 #: src/PublicPage.tsx
-msgid "Subject to legal exceptions, you may request access, correction, deletion, restriction, portability, or object to processing. You may also withdraw consent where processing relies on consent. To request deletion, use the <0>account-deletion page</0>. To request a copy of your data or exercise another right, email us from the address associated with your account; we may verify your identity before responding. We aim to respond without undue delay and generally within one month. You may also complain to your local data-protection supervisory authority."
+#~ msgid "Subject to legal exceptions, you may request access, correction, deletion, restriction, portability, or object to processing. You may also withdraw consent where processing relies on consent. To request deletion, use the <0>account-deletion page</0>. To request a copy of your data or exercise another right, email us from the address associated with your account; we may verify your identity before responding. We aim to respond without undue delay and generally within one month. You may also complain to your local data-protection supervisory authority."
+#~ msgstr ""
+
+#: src/PublicPage.tsx
+msgid "Subject to legal exceptions, you may request access, correction, deletion, restriction, portability, or object to processing. You may also withdraw consent where processing relies on consent. To request deletion, use the <0>account-deletion page</0>. To request a<1>copy of your data</1> or exercise another right, email us from the address associated with your account; we may verify your identity before responding. We aim to respond without undue delay and generally within one month. You may also complain to your local data-protection supervisory authority."
 msgstr ""
 
 #: components/app/interface/settings/user/Feedback.tsx
