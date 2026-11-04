@@ -5940,3 +5940,15 @@ msgstr "Name: {0}"
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Not set"
 msgstr "Not set"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Read aloud"
+msgstr "Read aloud"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Copy as quote"
+msgstr "Copy as quote"
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Share message"
+msgstr "Share message"

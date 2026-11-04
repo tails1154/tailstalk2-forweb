@@ -22,6 +22,7 @@ import MdReply from "@material-design-icons/svg/outlined/reply.svg?component-sol
 import MdReport from "@material-design-icons/svg/outlined/report.svg?component-solid";
 import MdShare from "@material-design-icons/svg/outlined/share.svg?component-solid";
 import MdShield from "@material-design-icons/svg/outlined/shield.svg?component-solid";
+import MdVolumeUp from "@material-design-icons/svg/outlined/volume_up.svg?component-solid";
 
 import MdSentimentContent from "@material-symbols/svg-400/outlined/sentiment_content.svg?component-solid";
 
@@ -60,6 +61,45 @@ export function MessageContextMenu(props: { message?: Message; file?: File }) {
    */
   function copyText() {
     navigator.clipboard.writeText(props.message!.content);
+  }
+
+  /** Read a message aloud using the browser's built-in speech service. */
+  function readAloud() {
+    if (!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(
+      new SpeechSynthesisUtterance(props.message!.content),
+    );
+  }
+
+  /** Copy a conventional Markdown quote for pasting into another message. */
+  function copyQuote() {
+    const author = props.message!.author?.displayName ?? "Unknown user";
+    const quote = props.message!.content
+      .split("\n")
+      .map((line) => `> ${line}`)
+      .join("\n");
+    navigator.clipboard.writeText(`${quote}\n— ${author}`);
+  }
+
+  /** Use the operating system share sheet when the browser supports it. */
+  async function shareMessage() {
+    const url = `${location.origin}${
+      props.message!.server ? `/server/${props.message!.server.id}` : ""
+    }/channel/${props.message!.channelId}/${props.message!.id}`;
+    if ("share" in navigator) {
+      try {
+        await navigator.share({
+          title: "TailsTalk 2 message",
+          text: props.message!.content,
+          url,
+        });
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+      }
+    }
+    await navigator.clipboard.writeText(url);
   }
 
   /**
@@ -161,6 +201,15 @@ export function MessageContextMenu(props: { message?: Message; file?: File }) {
         </ContextMenuButton>
         <ContextMenuButton icon={MdContentCopy} onClick={copyText}>
           <Trans>Copy text</Trans>
+        </ContextMenuButton>
+        <ContextMenuButton icon={MdVolumeUp} onClick={readAloud}>
+          <Trans>Read aloud</Trans>
+        </ContextMenuButton>
+        <ContextMenuButton icon={MdContentCopy} onClick={copyQuote}>
+          <Trans>Copy as quote</Trans>
+        </ContextMenuButton>
+        <ContextMenuButton icon={MdShare} onClick={shareMessage}>
+          <Trans>Share message</Trans>
         </ContextMenuButton>
         <ContextMenuDivider />
         <Show
