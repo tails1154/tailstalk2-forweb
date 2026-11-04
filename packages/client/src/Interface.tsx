@@ -7,6 +7,7 @@ import {
   createEffect,
   createMemo,
   createSignal,
+  onCleanup,
   onMount,
 } from "solid-js";
 
@@ -31,6 +32,30 @@ import { WarningOverlay } from "@revolt/app/WarningOverlay";
 import { ServerSuspendedOverlay } from "@revolt/app/ServerSuspendedOverlay";
 import { Sidebar } from "./interface/Sidebar";
 import { suppressLeaveSitePromptOnce } from "./serviceWorkerInterface";
+import { requestClientJson } from "../components/client/customApi";
+import type { CustomTheme } from "../components/state/stores/Theme";
+
+function ServerThemeLoader() {
+  const state = useState();
+  const client = useClient();
+  const { pathname } = useLocation();
+
+  createEffect(() => {
+    const match = pathname.match(/^\/server\/([A-Za-z0-9]+)/);
+    state.theme.setServerTheme(undefined);
+    if (!match) return;
+    const serverId = match[1];
+    let active = true;
+    void requestClientJson<CustomTheme & { surface_high: string; on_surface: string } | null>(client().api, "GET", `/servers/${serverId}/theme`)
+      .then((theme) => {
+        if (!active || !theme) return;
+        state.theme.setServerTheme({ ...theme, surfaceHigh: theme.surface_high, onSurface: theme.on_surface });
+      })
+      .catch(() => undefined);
+    onCleanup(() => { active = false; });
+  });
+  return null;
+}
 
 function LoginRedirect() {
   onMount(() => {
@@ -108,6 +133,7 @@ const Interface = (props: { children: JSX.Element }) => {
 
   return (
     <MessageCache client={client()}>
+      <ServerThemeLoader />
       <div
         style={{
           display: "flex",

@@ -5957,4 +5957,68 @@ msgstr "Copy as quote"
 msgid "Share message"
 msgstr "Share message"
 
+#: components/app/interface/settings/server/Theme.tsx
+msgid "Custom server theme"
+msgstr "Custom server theme"
+
+#: components/app/interface/settings/server/Theme.tsx
+msgid "Choose the colours everyone sees when they visit this server."
+msgstr "Choose the colours everyone sees when they visit this server."
+
+#: components/app/interface/settings/server/Theme.tsx
+msgid "Theme name"
+msgstr "Theme name"
+
+#: components/app/interface/settings/server/Theme.tsx
+msgid "Save theme"
+msgstr "Save theme"
+
+#: components/app/interface/settings/server/Theme.tsx
+msgid "Reset to default"
+msgstr "Reset to default"
+
+#: components/app/interface/settings/server/Theme.tsx
+msgid "Server theme saved."
+msgstr "Server theme saved."
+
+#: components/app/interface/settings/server/Theme.tsx
+msgid "Unable to save the server theme right now."
+msgstr "Unable to save the server theme right now."
+
+#: components/app/interface/settings/server/Theme.tsx
+msgid "Server theme reset."
+msgstr "Server theme reset."
+
+#: components/app/interface/settings/server/Theme.tsx
+msgid "Unable to reset the server theme right now."
+msgstr "Unable to reset the server theme right now."
+
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Server theme"
+msgstr "Server theme"
+
+#: components/app/interface/settings/server/AuditLog.tsx
+msgid "Moderation audit timeline"
+msgstr "Moderation audit timeline"
+
+#: components/app/interface/settings/server/AuditLog.tsx
+msgid "Review server changes and moderation actions in reverse chronological order."
+msgstr "Review server changes and moderation actions in reverse chronological order."
+
+#: components/app/interface/settings/server/AuditLog.tsx
+msgid "No audit events yet."
+msgstr "No audit events yet."
+
+#: components/app/interface/settings/server/AuditLog.tsx
+msgid "No reason provided."
+msgstr "No reason provided."
+
+#: components/app/interface/settings/server/AuditLog.tsx
+msgid "changed something"
+msgstr "changed something"
+
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Moderation audit log"
+msgstr "Moderation audit log"
+
 #: components/modal/modals/Onboarding.tsx

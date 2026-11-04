@@ -91,6 +91,10 @@ export const Permission = {
   MentionEveryone: 2n ** 37n,
   /// Mention a role
   MentionRoles: 2n ** 38n,
+  /// Access server audit logs
+  ViewAuditLogs: 2n ** 40n,
+  /// Ping everyone, online members, and roles
+  PingEveryoneAndRoles: 2n ** 41n,
 
   // * Misc. permissions
   // % Bits 39 to 52: free area
