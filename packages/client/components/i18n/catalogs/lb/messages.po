@@ -188,12 +188,12 @@ msgid "{usernames} reacted"
 msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "• Attachments up to 2 GB"
-msgstr ""
+#~ msgid "• Attachments up to 2 GB"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "• More Premium benefits may be added later"
-msgstr ""
+#~ msgid "• More Premium benefits may be added later"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
 #~ msgid "• More supporter perks may be added later"
@@ -204,8 +204,8 @@ msgstr ""
 #~ msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "• TailsTalk 2 Premium profile badge"
-msgstr ""
+#~ msgid "• TailsTalk 2 Premium profile badge"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
 #~ msgid "• TailsTalk Supporter profile badge"
@@ -916,7 +916,6 @@ msgid "Cancel my subscription (testing)"
 msgstr ""
 
 #: components/modal/modals/CancelPremium.tsx
-#: components/app/interface/settings/user/SupporterSubscription.tsx
 msgid "Cancel subscription"
 msgstr ""
 
@@ -941,8 +940,8 @@ msgid "Caption"
 msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "Cash payment request pending"
-msgstr ""
+#~ msgid "Cash payment request pending"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Catalog"
@@ -994,6 +993,10 @@ msgstr ""
 msgid "Change your profile per-server"
 msgstr ""
 
+#: components/app/interface/settings/server/AuditLog.tsx
+msgid "changed something"
+msgstr ""
+
 #: components/modal/modals/Changelog.tsx
 #~ msgid "Changelog"
 #~ msgstr ""
@@ -1043,8 +1046,8 @@ msgid "Checking your session..."
 msgstr ""
 
 #: src/interface/StripeReturn.tsx
-msgid "Checkout canceled"
-msgstr ""
+#~ msgid "Checkout canceled"
+#~ msgstr ""
 
 #: components/modal/modals/TransferServerOwnership.tsx
 msgid "Choose a current member to become the new owner. This requires five confirmations and MFA verification."
@@ -1293,6 +1296,10 @@ msgstr ""
 
 #: components/app/interface/settings/server/invites/ListServerInvites.tsx
 msgid "Copy"
+msgstr ""
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Copy as quote"
 msgstr ""
 
 #: components/app/menus/CategoryContextMenu.tsx
@@ -1772,6 +1779,10 @@ msgstr ""
 #: components/app/interface/settings/user/Admin.tsx
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Deny"
+msgstr ""
+
+#: src/PublicPage.tsx
+msgid "Depending on how you use the service, we process your email address, password hash, user ID, username, profile information, messages, reactions, uploaded files, server and channel memberships, reports, moderation records, and session/device information. The account system also records the IP address used when an account is created for account security and abuse prevention. We do not receive or store your plaintext password."
 msgstr ""
 
 #: components/app/interface/settings/user/FeatureRequests.tsx
@@ -2325,8 +2336,8 @@ msgid "Get active recovery codes"
 msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "Get TailsTalk 2 Premium and unlock Premium benefits."
-msgstr ""
+#~ msgid "Get TailsTalk 2 Premium and unlock Premium benefits."
+#~ msgstr ""
 
 #: src/interface/Home.tsx
 msgid "GIF uploaded and URL copied to your clipboard."
@@ -2503,6 +2514,14 @@ msgstr ""
 msgid "Impersonation"
 msgstr ""
 
+#: src/PublicPage.tsx
+msgid "Information we process"
+msgstr ""
+
+#: src/PublicPage.tsx
+msgid "Infrastructure may be located outside the European Economic Area. If your data is transferred internationally, the operator will use an applicable legal transfer mechanism and appropriate safeguards."
+msgstr ""
+
 #: src/serviceWorkerInterface.ts
 msgid "Install now"
 msgstr ""
@@ -2657,6 +2676,10 @@ msgstr "Sprooche"
 
 #: components/app/interface/settings/user/Sync.tsx
 msgid "Last sync <0/>"
+msgstr ""
+
+#: src/PublicPage.tsx
+msgid "Last updated: November 3, 2026."
 msgstr ""
 
 #: src/interface/channels/text/TextSearchSidebar.tsx
@@ -2996,6 +3019,14 @@ msgstr ""
 msgid "Missing permission"
 msgstr ""
 
+#: components/app/interface/settings/ServerSettings.tsx
+msgid "Moderation audit log"
+msgstr ""
+
+#: components/app/interface/settings/server/AuditLog.tsx
+msgid "Moderation audit timeline"
+msgstr ""
+
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 #~ msgid "Moderator decoration uploader"
 #~ msgstr ""
@@ -3097,6 +3128,11 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
+#. placeholder {0}: u.display_name ?? "Not set"
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Name: {0}"
+msgstr ""
+
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Neutral"
 #~ msgstr ""
@@ -3143,6 +3179,10 @@ msgstr ""
 msgid "No account action"
 msgstr ""
 
+#: components/app/interface/settings/server/AuditLog.tsx
+msgid "No audit events yet."
+msgstr ""
+
 #: components/app/interface/settings/user/Admin.tsx
 msgid "No channels"
 msgstr ""
@@ -3169,8 +3209,8 @@ msgid "No feature requests"
 msgstr ""
 
 #: src/interface/StripeReturn.tsx
-msgid "No payment was made. You can subscribe to TailsTalk 2 Premium whenever you are ready."
-msgstr ""
+#~ msgid "No payment was made. You can subscribe to TailsTalk 2 Premium whenever you are ready."
+#~ msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsOverview.tsx
 msgid "No permissions set yet"
@@ -3178,6 +3218,10 @@ msgstr ""
 
 #: components/app/interface/settings/server/Onboarding.tsx
 msgid "No questions yet. Add one if members should choose roles during onboarding."
+msgstr ""
+
+#: components/app/interface/settings/server/AuditLog.tsx
+msgid "No reason provided."
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
@@ -3240,8 +3284,8 @@ msgstr "Keen"
 #~ msgstr ""
 
 #: src/interface/GiftRedeem.tsx
-msgid "Not now"
-msgstr ""
+#~ msgid "Not now"
+#~ msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Not of minimum age to use the platform"
@@ -3537,16 +3581,16 @@ msgstr ""
 #~ msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "Premium benefits:"
-msgstr ""
+#~ msgid "Premium benefits:"
+#~ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Premium duration (days)"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
-msgid "Premium gifts"
-msgstr ""
+#~ msgid "Premium gifts"
+#~ msgstr ""
 
 #: components/modal/modals/Error2.tsx
 msgid "Premium supports attachments up to 2 GB."
@@ -3556,6 +3600,7 @@ msgstr ""
 msgid "Primary"
 msgstr ""
 
+#: src/PublicPage.tsx
 #: components/auth/src/AuthPage.tsx
 msgid "Privacy Policy"
 msgstr "Dateschutzpolitik"
@@ -3609,6 +3654,10 @@ msgstr ""
 msgid "Publish updates that appear in the client."
 msgstr ""
 
+#: src/PublicPage.tsx
+msgid "Purposes and legal bases"
+msgstr ""
+
 #: components/modal/modals/CreatePoll.tsx
 #: components/app/interface/settings/server/Onboarding.tsx
 msgid "Question"
@@ -3642,6 +3691,10 @@ msgstr ""
 #: src/interface/navigation/servers/ServerList.tsx
 #: src/interface/navigation/servers/ServerList.tsx
 msgid "Read all"
+msgstr ""
+
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Read aloud"
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -3701,20 +3754,20 @@ msgid "Recovery Codes"
 msgstr ""
 
 #: src/interface/GiftRedeem.tsx
-msgid "Redeem"
-msgstr ""
+#~ msgid "Redeem"
+#~ msgstr ""
 
 #: components/ui/components/features/messaging/elements/Embed.tsx
 msgid "Redeem gift"
 msgstr ""
 
 #: src/interface/GiftRedeem.tsx
-msgid "Redeem TailsTalk 2 Premium"
-msgstr ""
+#~ msgid "Redeem TailsTalk 2 Premium"
+#~ msgstr ""
 
 #: src/interface/GiftRedeem.tsx
-msgid "Redeem this one-time gift to receive TailsTalk 2 Premium and its Premium benefits immediately."
-msgstr ""
+#~ msgid "Redeem this one-time gift to receive TailsTalk 2 Premium and its Premium benefits immediately."
+#~ msgstr ""
 
 #: src/interface/GiftRedeem.tsx
 #~ msgid "Redeem this one-time gift to receive TailsTalk 2 Premium and its supporter perks immediately."
@@ -3856,7 +3909,6 @@ msgid "Request a feature"
 msgstr ""
 
 #: components/modal/modals/CashPayment.tsx
-#: components/app/interface/settings/user/SupporterSubscription.tsx
 msgid "Request cash payment"
 msgstr ""
 
@@ -3913,17 +3965,21 @@ msgstr ""
 msgid "Restore backup"
 msgstr ""
 
+#: src/PublicPage.tsx
+msgid "Retention"
+msgstr ""
+
 #: components/app/menus/DraftMessageContextMenu.tsx
 msgid "Retry sending"
 msgstr ""
 
 #: src/interface/StripeReturn.tsx
-msgid "Return to account settings"
-msgstr ""
+#~ msgid "Return to account settings"
+#~ msgstr ""
 
 #: src/interface/GiftRedeem.tsx
-msgid "Return to TailsTalk 2"
-msgstr ""
+#~ msgid "Return to TailsTalk 2"
+#~ msgstr ""
 
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 msgid "Return to voice channel"
@@ -3947,6 +4003,10 @@ msgstr ""
 
 #: components/modal/modals/PolicyChange.tsx
 msgid "Review policy changes"
+msgstr ""
+
+#: components/app/interface/settings/server/AuditLog.tsx
+msgid "Review server changes and moderation actions in reverse chronological order."
 msgstr ""
 
 #: components/app/interface/settings/user/OAuth.tsx
@@ -4088,6 +4148,10 @@ msgstr ""
 #: components/app/interface/settings/user/OAuth.tsx
 #~ msgid "Secret rotated. Save the new secret now; it will not be shown again."
 #~ msgstr ""
+
+#: src/PublicPage.tsx
+msgid "Security and changes"
+msgstr ""
 
 #: components/app/interface/settings/server/Analytics.tsx
 msgid "See an overview of activity and membership in your server."
@@ -4336,6 +4400,10 @@ msgstr ""
 #~ msgid "Share link copied to your clipboard."
 #~ msgstr ""
 
+#: components/app/menus/MessageContextMenu.tsx
+msgid "Share message"
+msgstr ""
+
 #: src/interface/Tailslets.tsx
 msgid "Share quick updates with your TailsTalk 2 account."
 msgstr ""
@@ -4359,6 +4427,10 @@ msgstr ""
 #: components/modal/modals/EnableDmEncryption.tsx
 #~ msgid "Shared DM encryption code (8+ characters)"
 #~ msgstr ""
+
+#: src/PublicPage.tsx
+msgid "Sharing and international processing"
+msgstr ""
 
 #: components/app/interface/settings/user/Advanced.tsx
 #~ msgid "Show advertisements"
@@ -4538,6 +4610,10 @@ msgstr ""
 msgid "Student ID"
 msgstr ""
 
+#: src/PublicPage.tsx
+msgid "Subject to legal exceptions, you may request access, correction, deletion, restriction, portability, or object to processing. You may also withdraw consent where processing relies on consent. To request deletion, use the <0>account-deletion page</0>. To request a copy of your data or exercise another right, email us from the address associated with your account; we may verify your identity before responding. We aim to respond without undue delay and generally within one month. You may also complain to your local data-protection supervisory authority."
+msgstr ""
+
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Submit feature suggestion"
 msgstr "Gitt Feature Virschlag"
@@ -4559,18 +4635,17 @@ msgid "Submit to Discover"
 msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "Subscribe to receive the TailsTalk 2 Premium badge with TailsTalk 2 Premium. Stripe handles payment securely; TailsTalk 2 never sees your card details."
-msgstr ""
+#~ msgid "Subscribe to receive the TailsTalk 2 Premium badge with TailsTalk 2 Premium. Stripe handles payment securely; TailsTalk 2 never sees your card details."
+#~ msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
 #~ msgid "Subscribe to receive the TailsTalk Supporter badge with TailsTalk 2 Premium. Stripe handles payment securely; TailsTalk 2 never sees your card details."
 #~ msgstr ""
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "Subscribe with Stripe"
-msgstr ""
+#~ msgid "Subscribe with Stripe"
+#~ msgstr ""
 
-#: components/app/interface/settings/user/Admin.tsx
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Subscriptions"
 msgstr ""
@@ -4696,9 +4771,13 @@ msgstr ""
 msgid "TailsTalk 2 is one of the best ways to stay connected with your friends and community, anywhere, anytime."
 msgstr ""
 
-#: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "TailsTalk 2 Premium"
+#: src/PublicPage.tsx
+msgid "TailsTalk 2 is self-hosted. Data is accessible to the operator and authorized infrastructure administrators who need it to run and secure the service. The service may also use configured providers for email delivery, CAPTCHA, file/media storage, or other requested features. We do not sell personal data and the web client does not load advertising or third-party analytics scripts."
 msgstr ""
+
+#: components/app/interface/settings/user/SupporterSubscription.tsx
+#~ msgid "TailsTalk 2 Premium"
+#~ msgstr ""
 
 #: components/app/interface/settings/UserSettings.tsx
 #: components/app/interface/settings/user/subscriptions/EditSubscription.tsx
@@ -4715,8 +4794,8 @@ msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 #: components/app/interface/settings/user/Admin.tsx
-msgid "TailsTalk Supporter"
-msgstr ""
+#~ msgid "TailsTalk Supporter"
+#~ msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Tell us what's wrong with this message"
@@ -4751,8 +4830,8 @@ msgstr "Text Kanal"
 #~ msgstr ""
 
 #: src/interface/StripeReturn.tsx
-msgid "Thank you for supporting TailsTalk 2!"
-msgstr ""
+#~ msgid "Thank you for supporting TailsTalk 2!"
+#~ msgstr ""
 
 #: components/i18n/errors.ts
 msgid "That action had no effect."
@@ -4764,6 +4843,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "That theme link is invalid."
+msgstr ""
+
+#: src/PublicPage.tsx
+msgid "The controller is the TailsTalk 2 operator, Tails1154. For privacy questions or rights requests, contact <0>tails1154@tails1154.com</0>. No data-protection officer has been appointed."
 msgstr ""
 
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
@@ -4865,8 +4948,8 @@ msgid "This file type is not allowed."
 msgstr ""
 
 #: src/interface/GiftRedeem.tsx
-msgid "This gift is invalid, expired, or already redeemed."
-msgstr ""
+#~ msgid "This gift is invalid, expired, or already redeemed."
+#~ msgstr ""
 
 #. placeholder {0}: err.max
 #: components/i18n/errors.ts
@@ -4903,6 +4986,10 @@ msgstr ""
 
 #: src/AccountDeletionPage.tsx
 msgid "This permanently disables your account and queues your account, messages, and servers for deletion. Any active subscription will also be canceled when possible."
+msgstr ""
+
+#: src/PublicPage.tsx
+msgid "This policy explains what TailsTalk 2 processes, why we process it, and how you can exercise your data-protection rights."
 msgstr ""
 
 #: components/app/interface/settings/server/Overview.tsx
@@ -5046,6 +5133,10 @@ msgstr ""
 msgid "Unable to load Tailslets right now. Please try again."
 msgstr ""
 
+#: src/interface/Home.tsx
+msgid "Unable to load the official server invite right now."
+msgstr ""
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Unable to load the theme store right now."
 msgstr ""
@@ -5107,8 +5198,8 @@ msgid "Unblock user"
 msgstr "Deblokkeer gebruiker"
 
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "Uncancel subscription"
-msgstr ""
+#~ msgid "Uncancel subscription"
+#~ msgstr ""
 
 #. placeholder {0}: err.type
 #: components/i18n/errors.ts
@@ -5460,6 +5551,18 @@ msgstr ""
 msgid "We could not complete the deletion request. Contact delete@tails1154.com as soon as possible so we can delete your account manually."
 msgstr ""
 
+#: src/PublicPage.tsx
+msgid "We keep account and community content while it is needed to provide the service or until you request deletion, subject to content kept for safety, legal claims, or legal obligations. Account deletion is confirmed by email and then scheduled with a seven-day grace period before the account, owned servers, and authored messages are removed. Sessions are kept until they expire or are revoked. Audit logs are configured to expire after 30 days. Security records, including account-registration IP data, are retained only for as long as needed for abuse prevention and account security, then removed or anonymized. Backups may retain deleted data until the relevant backup is rotated."
+msgstr ""
+
+#: src/PublicPage.tsx
+msgid "We process account and community data as necessary to perform our agreement with you: to authenticate accounts, deliver messages, operate servers, and provide requested features. We process security, moderation, abuse-prevention, and audit data on the legitimate interest of keeping the service safe and reliable. We process data when required by law where a legal obligation applies. Browser notification and microphone/camera access are controlled by your browser and device permissions."
+msgstr ""
+
+#: src/PublicPage.tsx
+msgid "We use access controls, password hashing, session revocation, and encrypted HTTPS connections. No online service can guarantee absolute security; report suspected security or privacy issues promptly. Material policy changes will be posted here with a new update date."
+msgstr ""
+
 #: components/auth/src/flows/FlowCheck.tsx
 msgid "We've sent you a verification email. Please allow up to 10 minutes for it to arrive."
 msgstr "Et ka bis zu 10 Minuten daueren bis d‘E-Mail ukennt."
@@ -5537,6 +5640,10 @@ msgstr ""
 
 #: components/app/interface/settings/server/Onboarding.tsx
 msgid "Which topics are you interested in?"
+msgstr ""
+
+#: src/PublicPage.tsx
+msgid "Who is responsible"
 msgstr ""
 
 #. placeholder {0}: names.join(", ")
@@ -5720,10 +5827,9 @@ msgstr ""
 #~ msgid "You have an active {0} subscription. Your Supporter badge is enabled.<0><1/>Your subscription is scheduled to end at the end of this billing period.</0>"
 #~ msgstr ""
 
-#. placeholder {0}: subscription().tier
 #: components/app/interface/settings/user/SupporterSubscription.tsx
-msgid "You have an active {0} subscription. Your TailsTalk 2 Premium badge is enabled.<0><1/>Your subscription is scheduled to end at the end of this billing period.</0>"
-msgstr ""
+#~ msgid "You have an active {0} subscription. Your TailsTalk 2 Premium badge is enabled.<0><1/>Your subscription is scheduled to end at the end of this billing period.</0>"
+#~ msgstr ""
 
 #: components/i18n/errors.ts
 msgid "You have been locked out for entering a wrong password multiple times. Please wait a couple minutes and try again."
@@ -5754,8 +5860,8 @@ msgid "You muted this user."
 msgstr ""
 
 #: src/interface/GiftRedeem.tsx
-msgid "You now have TailsTalk 2 Premium and its Premium benefits."
-msgstr ""
+#~ msgid "You now have TailsTalk 2 Premium and its Premium benefits."
+#~ msgstr ""
 
 #: src/interface/GiftRedeem.tsx
 #~ msgid "You now have TailsTalk 2 Premium and its supporter perks."
@@ -5878,6 +5984,10 @@ msgstr ""
 msgid "Your requests"
 msgstr ""
 
+#: src/PublicPage.tsx
+msgid "Your rights"
+msgstr ""
+
 #: components/i18n/errors.ts
 msgid "Your role ranking is too low to take this action."
 msgstr ""
@@ -5900,8 +6010,8 @@ msgid "Your tails1154 account and TailsTalk 2 account are separate accounts."
 msgstr ""
 
 #: src/interface/StripeReturn.tsx
-msgid "Your TailsTalk 2 Premium subscription is being activated. You can return to the app now."
-msgstr ""
+#~ msgid "Your TailsTalk 2 Premium subscription is being activated. You can return to the app now."
+#~ msgstr ""
 
 #: components/i18n/errors.ts
 msgid "Your user has already been created? Try logging in again or refreshing the app."

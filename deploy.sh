@@ -22,6 +22,7 @@ mkdir -p "$DEPLOY_TMP_DIR"
 trap 'rm -rf "$DEPLOY_TMP_DIR"' EXIT
 
 echo "=== Compiling translations ==="
+pnpm --filter client exec lingui extract --overwrite
 pnpm --filter client exec lingui compile --typescript
 
 echo "=== Copying assets ==="
