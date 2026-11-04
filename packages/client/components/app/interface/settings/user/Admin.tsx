@@ -1670,6 +1670,15 @@ function UsersTab(props: { password: string }) {
     });
   }
 
+  async function clearLegalName(userId: string) {
+    await withLoading(userId, async () => {
+      await apiFetch(`/admin/users/${userId}/legal-name/clear`, props.password, {
+        method: "POST",
+      });
+      await search();
+    });
+  }
+
   const customBadges = [
     { bit: UserBadges.XPChampion, label: t`XP Champion` },
     { bit: UserBadges.CommunityHelper, label: t`Community Helper` },
@@ -1791,6 +1800,12 @@ function UsersTab(props: { password: string }) {
                       <MdAdminPanelSettings {...iconSize(16)} />
                       {u.privileged ? <Trans>Remove admin access</Trans> : <Trans>Grant admin access</Trans>}
                     </Button>
+                    <Show when={u.legal_name}>
+                      <Button onPress={() => void clearLegalName(u.id)}>
+                        <MdDelete {...iconSize(16)} />
+                        <Trans>Clear legal name</Trans>
+                      </Button>
+                    </Show>
                   </Show>
                   <Show when={resetLinks()[u.id]}>
                     {(link) => (

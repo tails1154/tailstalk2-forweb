@@ -648,10 +648,10 @@ export default class ClientController {
     });
   }
 
-  async selectUsername(username: string, legalName: string) {
+  async selectUsername(username: string, legalName?: string) {
     await this.lifecycle.client.api.post("/onboard/complete", {
       username,
-      legal_name: legalName,
+      ...(legalName ? { legal_name: legalName } : {}),
     });
 
     this.lifecycle.transition({

@@ -5973,3 +5973,7 @@ msgstr "Legal name: {0}"
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Not provided"
 msgstr "Not provided"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Clear legal name"
+msgstr "Clear legal name"
