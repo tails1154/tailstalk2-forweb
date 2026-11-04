@@ -155,6 +155,21 @@ export function HomePage() {
     }
   }
 
+  async function openOfficialInvite() {
+    try {
+      const invite = await client()
+        .api.get("/invites/tailstalk2")
+        .then((data) => PublicChannelInvite.from(client(), data));
+      openModal({ type: "invite", invite });
+    } catch (error) {
+      snackbar.show({
+        message: t`Unable to load the official server invite right now.`,
+        placement: "bottom",
+        closeable: true,
+      });
+    }
+  }
+
   const isInLounge =
     client()!.servers.get("01F7ZSBSFHQ8TA81725KQCSDDP") !== undefined;
 
@@ -195,7 +210,7 @@ export function HomePage() {
               <Trans>Create a group or server</Trans>
             </CategoryButton>
             <CategoryButton
-              onClick={() => window.open("https://tailstalk2.com/invite/tailstalk2")}
+              onClick={() => void openOfficialInvite()}
               description={
                 <Trans>Join our official server to connect with the community!</Trans>
               }

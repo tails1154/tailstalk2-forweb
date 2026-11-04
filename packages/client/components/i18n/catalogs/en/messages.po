@@ -5098,6 +5098,10 @@ msgstr "Unable to update server status."
 msgid "Unable to upload this GIF right now."
 msgstr "Unable to upload this GIF right now."
 
+#: src/interface/Home.tsx
+msgid "Unable to load the official server invite right now."
+msgstr "Unable to load the official server invite right now."
+
 #: components/app/interface/settings/user/themes/ThemesMenu.tsx
 msgid "Unable to upload this theme right now."
 msgstr "Unable to upload this theme right now."
