@@ -191,6 +191,7 @@ function createCustomColours(theme: NonNullable<SelectedTheme["custom"]>) {
  */
 export function LoadTheme() {
   const state = useState();
+  let previousVariables = new Set<string>();
 
   createEffect(() => {
     const activeTheme = state.theme.activeTheme;
@@ -222,7 +223,7 @@ export function LoadTheme() {
         : {};
     const triplets = createTriplets(colourVariables);
 
-    for (const [key, value] of Object.entries({
+    const variables = {
       ...Object.keys(legacyThemeUnsetShim().colours).reduce(
         (d, k) => ({
           ...d,
@@ -236,9 +237,20 @@ export function LoadTheme() {
       ...webVariables,
       ...colourVariables,
       ...triplets,
-    })) {
+    };
+
+    // A server theme is temporary. Remove variables from the previous theme
+    // before applying the next one so switching servers or resetting a theme
+    // cannot leave stale custom colours on the document body.
+    for (const key of previousVariables) {
+      document.body.style.removeProperty(key);
+    }
+
+    for (const [key, value] of Object.entries(variables)) {
       document.body.style.setProperty(key, value);
     }
+
+    previousVariables = new Set(Object.keys(variables));
   });
 
   return <Masks />;
