@@ -201,8 +201,7 @@ class Lifecycle {
     if (!user || user.id !== this.client.user?.id) return;
     if ((user.flags & UserFlags.Banned) !== UserFlags.Banned) return;
 
-    const reason = "Your account has been disabled.";
-    this.logout();
+    this.#controller.logout(false, "Your account has been disabled.");
   }
 
   private rememberBanAtLogout(reason: string): void {
@@ -695,9 +694,11 @@ export default class ClientController {
     });
   }
 
-  logout(keepAccount = false) {
+  logout(keepAccount = false, bannedReason?: string) {
     const currentUser = this.getCurrentClient()?.user;
-    if (
+    if (bannedReason) {
+      this.rememberBanAtLogout(bannedReason);
+    } else if (
       currentUser &&
       (currentUser.flags & UserFlags.Banned) === UserFlags.Banned
     ) {
