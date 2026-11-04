@@ -28,6 +28,10 @@ export default function ServerOverview(props: ServerSettingsProps) {
   const editGroup = createFormGroup({
     name: createFormControl(props.server.name),
     description: createFormControl(props.server.description || ""),
+    announcement: createFormControl(
+      (props.server as typeof props.server & { announcement?: string })
+        .announcement || "",
+    ),
     icon: createFormControl<string | File[] | null>(
       props.server.animatedIconURL,
     ),
@@ -98,6 +102,10 @@ export default function ServerOverview(props: ServerSettingsProps) {
   function onReset() {
     editGroup.controls.name.setValue(props.server.name);
     editGroup.controls.description.setValue(props.server.description || "");
+    editGroup.controls.announcement.setValue(
+      (props.server as typeof props.server & { announcement?: string })
+        .announcement || "",
+    );
     editGroup.controls.icon.setValue(props.server.animatedIconURL ?? null);
     editGroup.controls.banner.setValue(props.server.bannerURL ?? null);
     editGroup.controls.sys_user_joined.setValue(
@@ -115,7 +123,7 @@ export default function ServerOverview(props: ServerSettingsProps) {
   }
 
   async function onSubmit() {
-    const changes: API.DataEditServer = {
+    const changes: API.DataEditServer & { announcement?: string } = {
       remove: [],
       system_messages: {
         // empty object => remove every system_message channel
@@ -134,6 +142,15 @@ export default function ServerOverview(props: ServerSettingsProps) {
         changes.description = description;
       } else {
         changes.remove!.push("Description");
+      }
+    }
+
+    if (editGroup.controls.announcement.isDirty) {
+      const announcement = editGroup.controls.announcement.value.trim();
+      if (announcement) {
+        changes.announcement = announcement;
+      } else {
+        changes.remove!.push("Announcement" as never);
       }
     }
 
@@ -249,6 +266,16 @@ export default function ServerOverview(props: ServerSettingsProps) {
             control={editGroup.controls.description}
             label={t`Server Description`}
             placeholder={t`This server is about...`}
+          />
+          <Form2.TextField
+            autosize
+            min-rows={2}
+            maxlength={1024}
+            counter
+            name="announcement"
+            control={editGroup.controls.announcement}
+            label={t`Server announcement`}
+            placeholder={t`Share an important update with your members.`}
           />
           <Text class="title" size="small">
             <Trans>System message channels</Trans>

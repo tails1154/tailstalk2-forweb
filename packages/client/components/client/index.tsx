@@ -92,6 +92,7 @@ export function ClientContext(props: { state: State; children: JSXElement }) {
 export function useClientLifecycle() {
   const {
     login,
+    loginWithPasskey,
     logout,
     switchAccount,
     selectUsername,
@@ -103,6 +104,7 @@ export function useClientLifecycle() {
 
   return {
     login,
+    loginWithPasskey,
     logout,
     switchAccount,
     selectUsername,

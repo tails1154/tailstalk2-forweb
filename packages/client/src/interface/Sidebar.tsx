@@ -174,6 +174,7 @@ const Server: Component = () => {
   const [onboarding, setOnboarding] = createSignal<{
     enabled: boolean;
     completed: boolean;
+    rules_acknowledged?: boolean;
     title: string;
     message: string;
     rules: string;
@@ -196,6 +197,7 @@ const Server: Component = () => {
         const settings = onboarding as {
           enabled: boolean;
           completed: boolean;
+          rules_acknowledged?: boolean;
           title: string;
           message: string;
           rules: string;

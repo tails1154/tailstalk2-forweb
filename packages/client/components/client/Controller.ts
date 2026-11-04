@@ -8,7 +8,33 @@ import { CONFIGURATION } from "@revolt/common";
 import { ModalControllerExtended } from "@revolt/modal";
 import type { State as ApplicationState } from "@revolt/state";
 import type { Session } from "@revolt/state/stores/Auth";
+import { requestClientJson } from "./customApi";
+import {
+  getPasskeyCredential,
+  type PublicKeyOptionsJSON,
+} from "./passkeys";
 import { killServiceWorkerSubscription } from "./NotificationsController";
+
+type LoginReply =
+  | { result: "Success"; _id: string; token: string; user_id: string }
+  | {
+      result: "MFA";
+      ticket: string;
+      allowed_methods: API.MFAMethod[];
+    }
+  | { result: "Disabled"; user_id: string; reason?: string };
+
+function friendlySessionName() {
+  const browser = detect();
+  if (!browser) return "TailsTalk 2 for Web (Unknown Device)";
+
+  let { name, os } = browser as { name: string; os: string };
+  if (name === "ios") name = "safari";
+  else if (name === "fxios") name = "firefox";
+  else if (name === "crios") name = "chrome";
+  else if (os === "Mac OS" && navigator.maxTouchPoints > 0) os = "iPadOS";
+  return `TailsTalk 2 for Web (${name} on ${os})`;
+}
 
 export enum State {
   Ready = "Ready",
@@ -511,6 +537,7 @@ export default class ClientController {
     this.lifecycle = new Lifecycle(this);
 
     this.login = this.login.bind(this);
+    this.loginWithPasskey = this.loginWithPasskey.bind(this);
     this.logout = this.logout.bind(this);
     this.switchAccount = this.switchAccount.bind(this);
     this.selectUsername = this.selectUsername.bind(this);
@@ -553,32 +580,42 @@ export default class ClientController {
    * @param credentials Credentials
    */
   async login(credentials: API.DataLogin, modals: ModalControllerExtended) {
-    const browser = detect();
-
-    // Generate a friendly name for this browser
-    let friendly_name;
-    if (browser) {
-      let { name, os } = browser as { name: string; os: string };
-      if (name === "ios") {
-        name = "safari";
-      } else if (name === "fxios") {
-        name = "firefox";
-      } else if (name === "crios") {
-        name = "chrome";
-      } else if (os === "Mac OS" && navigator.maxTouchPoints > 0) {
-        os = "iPadOS";
-      }
-
-      friendly_name = `TailsTalk 2 for Web (${name} on ${os})`;
-    } else {
-      friendly_name = "TailsTalk 2 for Web (Unknown Device)";
-    }
+    const friendly_name = friendlySessionName();
 
     // Try to login with given credentials
-    let session = await this.api.post("/auth/session/login", {
+    const session = await this.api.post("/auth/session/login", {
       ...credentials,
       friendly_name,
     });
+
+    await this.finishLogin(session as LoginReply, friendly_name, modals);
+  }
+
+  async loginWithPasskey(email: string, modals: ModalControllerExtended) {
+    const friendly_name = friendlySessionName();
+    const start = await requestClientJson<{
+      challenge_id: string;
+      publicKey: PublicKeyOptionsJSON;
+    }>(this.api, "POST", "/auth/session/passkeys/login/start", {
+      email,
+      friendly_name,
+    });
+    const credential = await getPasskeyCredential(start.publicKey);
+    const session = await requestClientJson<LoginReply>(
+      this.api,
+      "POST",
+      "/auth/session/passkeys/login/finish",
+      { challenge_id: start.challenge_id, credential },
+    );
+    await this.finishLogin(session, friendly_name, modals);
+  }
+
+  private async finishLogin(
+    initialSession: LoginReply,
+    friendly_name: string,
+    modals: ModalControllerExtended,
+  ) {
+    let session = initialSession;
 
     // Prompt for MFA verification if necessary
     if (session.result === "MFA") {
@@ -599,11 +636,11 @@ export default class ClientController {
         }
 
         try {
-          session = await this.api.post("/auth/session/login", {
+          session = (await this.api.post("/auth/session/login", {
             mfa_response,
             mfa_ticket: session.ticket,
             friendly_name,
-          });
+          })) as LoginReply;
         } catch (err) {
           console.error("Failed login:", err);
         }
@@ -632,6 +669,14 @@ export default class ClientController {
       error.name = "DisabledAccount";
       (error as Error & { reason?: string }).reason = reason;
       throw error;
+    }
+
+    // A successful login proves the account is no longer disabled. Clear the
+    // browser-only registration lock that was set when a ban was observed.
+    try {
+      localStorage.removeItem("tailstalk2:registration-blocked");
+    } catch {
+      // Storage is optional.
     }
 
     const createdSession = {

@@ -230,6 +230,13 @@ export const ServerSidebar = (props: Props) => {
           </Header>
         </Match>
       </Switch>
+      <Show when={props.server.announcement}>
+        <AnnouncementBanner>
+          <Text size="small">
+            {props.server.announcement}
+          </Text>
+        </AnnouncementBanner>
+      </Show>
       <div
         use:invisibleScrollable
         style={{ "flex-grow": 1 }}
@@ -305,6 +312,16 @@ function ServerInfo(
     </Row>
   );
 }
+
+const AnnouncementBanner = styled("div", {
+  base: {
+    margin: "var(--gap-sm)",
+    padding: "var(--gap-sm) var(--gap-md)",
+    borderRadius: "var(--borderRadius-md)",
+    color: "var(--md-sys-color-on-primary-container)",
+    background: "var(--md-sys-color-primary-container)",
+  },
+});
 
 /**
  * Server name

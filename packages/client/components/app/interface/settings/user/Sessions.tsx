@@ -12,10 +12,11 @@ import {
   Show,
   Switch,
   createMemo,
+  createSignal,
   onMount,
 } from "solid-js";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { Session } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
@@ -26,10 +27,15 @@ import {
   CircularProgress,
   Column,
   Time,
+  Text,
+  TextField,
   iconSize,
 } from "@revolt/ui";
 
 import MdLogout from "@material-design-icons/svg/outlined/logout.svg?component-solid";
+import MdKey from "@material-design-icons/svg/outlined/key.svg?component-solid";
+import { requestClientJson } from "../../../../client/customApi";
+import { createPasskeyCredential } from "../../../../client/passkeys";
 
 /**
  * Sessions
@@ -55,6 +61,115 @@ export function Sessions() {
           <ListOtherSessions otherSessions={otherSessions} />
         </Match>
       </Switch>
+      <PasskeySettings />
+    </Column>
+  );
+}
+
+type PasskeyEntry = { id: string; name: string };
+
+function PasskeySettings() {
+  const client = useClient();
+  const { showError } = useModals();
+  const { t } = useLingui();
+  const [passkeys, setPasskeys] = createSignal<PasskeyEntry[]>([]);
+  const [password, setPassword] = createSignal("");
+  const [name, setName] = createSignal("");
+  const [busy, setBusy] = createSignal(false);
+
+  async function refresh() {
+    try {
+      setPasskeys(await requestClientJson<PasskeyEntry[]>(client().api, "GET", "/auth/session/passkeys"));
+    } catch (error) {
+      showError(error);
+    }
+  }
+
+  onMount(refresh);
+
+  async function addPasskey() {
+    if (!password()) {
+      showError(new Error(t`Enter your password to add a passkey.`));
+      return;
+    }
+    setBusy(true);
+    try {
+      const start = await requestClientJson<{
+        challenge_id: string;
+        publicKey: Parameters<typeof createPasskeyCredential>[0];
+      }>(client().api, "POST", "/auth/session/passkeys/register/start", { password: password() });
+      const credential = await createPasskeyCredential(start.publicKey);
+      await requestClientJson(client().api, "POST", "/auth/session/passkeys/register/finish", {
+        challenge_id: start.challenge_id,
+        credential,
+        name: name().trim() || "Passkey",
+      });
+      setPassword("");
+      setName("");
+      await refresh();
+    } catch (error) {
+      if (error instanceof Error && [
+        "Your browser did not return a passkey.",
+        "Your browser returned an invalid passkey response.",
+        "Passkey registration options are incomplete.",
+      ].includes(error.message)) {
+        showError(new Error(t`Your browser could not complete passkey registration.`));
+      } else {
+        showError(error);
+      }
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function removePasskey(id: string) {
+    if (!password()) {
+      showError(new Error(t`Enter your password to remove a passkey.`));
+      return;
+    }
+    setBusy(true);
+    try {
+      await requestClientJson(client().api, "DELETE", `/auth/session/passkeys/${encodeURIComponent(id)}`, {
+        password: password(),
+      });
+      setPassword("");
+      await refresh();
+    } catch (error) {
+      showError(error);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <Column gap="md">
+      <Text><Trans>Passkeys</Trans></Text>
+      <Text><Trans>Use your device unlock, security key, or password manager to sign in.</Trans></Text>
+      <TextField
+        type="password"
+        label={t`Confirm your password`}
+        value={password()}
+        onInput={(event) => setPassword(event.currentTarget.value)}
+        autocomplete="current-password"
+      />
+      <TextField
+        label={t`Passkey name`}
+        value={name()}
+        onInput={(event) => setName(event.currentTarget.value)}
+        maxlength={80}
+      />
+      <CategoryButton.Group>
+        <CategoryButton action="chevron" icon={<MdKey {...iconSize(22)} />} onClick={addPasskey} disabled={busy()}>
+          <Trans>Add a passkey</Trans>
+        </CategoryButton>
+        <For each={passkeys()}>
+          {(passkey) => (
+            <CategoryButton action="chevron" icon={<MdKey {...iconSize(22)} />} onClick={() => removePasskey(passkey.id)} disabled={busy()}>
+              <Trans>Remove passkey: {passkey.name}</Trans>
+            </CategoryButton>
+          )}
+        </For>
+      </CategoryButton.Group>
     </Column>
   );
 }

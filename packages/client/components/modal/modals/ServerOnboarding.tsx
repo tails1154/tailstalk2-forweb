@@ -16,7 +16,12 @@ export function ServerOnboardingModal(
   const client = useClient();
   const { showError } = useModals();
   const [answers, setAnswers] = createSignal<Record<string, string[]>>({});
-  const rules = () => props.onboarding.rules.split(/\r?\n/).filter(Boolean);
+  const [rulesAcknowledged, setRulesAcknowledged] = createSignal(false);
+  const rules = () =>
+    props.onboarding.rules
+      .split(/\r?\n/)
+      .map((rule) => rule.trim())
+      .filter(Boolean);
   const questions = () => props.onboarding.questions ?? [];
 
   const complete = useMutation(() => ({
@@ -25,7 +30,10 @@ export function ServerOnboardingModal(
         client().api,
         "POST",
         `/servers/${props.server.id}/onboarding/complete`,
-        { answers: answers() },
+        {
+          answers: answers(),
+          rules_acknowledged: rules().length === 0 || rulesAcknowledged(),
+        },
       ),
     onSuccess: () => {
       props.onComplete?.();
@@ -45,6 +53,8 @@ export function ServerOnboardingModal(
   }
 
   function closeOnboarding() {
+    // Members with rules must explicitly submit their acknowledgment.
+    if (rules().length > 0) return;
     props.onClose();
   }
 
@@ -57,6 +67,7 @@ export function ServerOnboardingModal(
         {
           text: <Trans>Continue</Trans>,
           onClick: () => complete.mutateAsync().then(() => undefined),
+          isDisabled: rules().length > 0 && !rulesAcknowledged(),
         },
       ]}
       isDisabled={complete.isPending}
@@ -70,6 +81,12 @@ export function ServerOnboardingModal(
             <Trans>Server rules</Trans>
           </Text>
           <For each={rules()}>{(rule) => <Text>• {rule}</Text>}</For>
+          <Checkbox
+            checked={rulesAcknowledged()}
+            onChange={(checked) => setRulesAcknowledged(checked)}
+          >
+            <Trans>I have read and agree to the server rules.</Trans>
+          </Checkbox>
         </Show>
         <For each={questions()}>
           {(question) => (

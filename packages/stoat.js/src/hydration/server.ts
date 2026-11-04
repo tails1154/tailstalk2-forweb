@@ -18,6 +18,7 @@ export type HydratedServer = {
 
   name: string;
   description?: string;
+  announcement?: string;
 
   icon?: File;
   banner?: File;
@@ -48,6 +49,8 @@ export const serverHydration: Hydrate<APIServer, HydratedServer> = {
     ownerId: (server) => server.owner,
     name: (server) => server.name,
     description: (server) => server.description!,
+    announcement: (server) =>
+      (server as APIServer & { announcement?: string }).announcement!,
     channelIds: (server) => new ReactiveSet(server.channels),
     categories: (server) => server.categories ?? [],
     systemMessages: (server) => server.system_messages ?? {},

@@ -266,6 +266,9 @@ export type Modals =
       type: "server_onboarding";
       server: Server;
       onboarding: {
+        enabled: boolean;
+        completed: boolean;
+        rules_acknowledged?: boolean;
         title: string;
         message: string;
         rules: string;

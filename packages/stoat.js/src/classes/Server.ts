@@ -111,6 +111,11 @@ export class Server {
     return this.#collection.getUnderlyingObject(this.id).description;
   }
 
+  /** Announcement shown to members at the top of the server. */
+  get announcement(): string | undefined {
+    return this.#collection.getUnderlyingObject(this.id).announcement;
+  }
+
   /**
    * Icon
    */

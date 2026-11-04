@@ -10,7 +10,7 @@ import {
   onMount,
 } from "solid-js";
 
-import { Trans } from "@lingui-solid/solid/macro";
+import { Trans, useLingui } from "@lingui-solid/solid/macro";
 import { Server } from "stoat.js";
 import { styled } from "styled-system/jsx";
 
@@ -22,10 +22,15 @@ import { State } from "@revolt/client/Controller";
 import { NotificationsWorker } from "@revolt/client/NotificationsWorker";
 import { useDevice } from "@revolt/common";
 import { useModals } from "@revolt/modal";
-import { useBeforeLeave, useLocation } from "@revolt/routing";
+import { useBeforeLeave, useLocation, useNavigate } from "@revolt/routing";
 import { useState } from "@revolt/state";
 import { LAYOUT_SECTIONS } from "@revolt/state/stores/Layout";
 import { CircularProgress, typography } from "@revolt/ui";
+
+import MdExplore from "@material-design-icons/svg/filled/explore.svg?component-solid";
+import MdHome from "@material-design-icons/svg/filled/home.svg?component-solid";
+import MdMenu from "@material-design-icons/svg/filled/menu.svg?component-solid";
+import MdSettings from "@material-design-icons/svg/filled/settings.svg?component-solid";
 
 import { WarningOverlay } from "@revolt/app/WarningOverlay";
 import { ServerSuspendedOverlay } from "@revolt/app/ServerSuspendedOverlay";
@@ -50,6 +55,7 @@ const Interface = (props: { children: JSX.Element }) => {
   const { openModal } = useModals();
   const { isLoggedIn, lifecycle } = useClientLifecycle();
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const device = useDevice();
   const isPhone = createMemo(() => device.layout() === "phone");
 
@@ -171,6 +177,19 @@ const Interface = (props: { children: JSX.Element }) => {
               >
                 {props.children}
               </Content>
+              <Show when={isPhone()}>
+                <MobileToolbar
+                  onMenu={() =>
+                    state.layout.setSectionState(
+                      LAYOUT_SECTIONS.PRIMARY_SIDEBAR,
+                      true,
+                    )
+                  }
+                  onHome={() => navigate("/app")}
+                  onDiscover={() => navigate("/discover")}
+                  onSettings={() => openModal({ type: "settings", config: "user" })}
+                />
+              </Show>
             </Layout>
           </Match>
         </Switch>
@@ -218,6 +237,9 @@ const Content = styled("div", {
     display: "flex",
     width: "100%",
     minWidth: 0,
+    mdDown: {
+      paddingBottom: "64px",
+    },
   },
   variants: {
     sidebar: {
@@ -227,6 +249,66 @@ const Content = styled("div", {
         overflow: "hidden",
       },
     },
+  },
+});
+
+function MobileToolbar(props: {
+  onMenu(): void;
+  onHome(): void;
+  onDiscover(): void;
+  onSettings(): void;
+}) {
+  const { t } = useLingui();
+  return (
+    <MobileToolbarBase aria-label={t`Mobile navigation`}>
+      <MobileToolbarButton onClick={props.onMenu} aria-label={t`Open navigation`}>
+        <MdMenu />
+      </MobileToolbarButton>
+      <MobileToolbarButton onClick={props.onHome} aria-label={t`Home`}>
+        <MdHome />
+      </MobileToolbarButton>
+      <MobileToolbarButton onClick={props.onDiscover} aria-label={t`Discover`}>
+        <MdExplore />
+      </MobileToolbarButton>
+      <MobileToolbarButton onClick={props.onSettings} aria-label={t`Settings`}>
+        <MdSettings />
+      </MobileToolbarButton>
+    </MobileToolbarBase>
+  );
+}
+
+const MobileToolbarBase = styled("nav", {
+  base: {
+    position: "fixed",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 110,
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
+    minHeight: "56px",
+    padding: "4px 8px env(safe-area-inset-bottom)",
+    background: "var(--md-sys-color-surface-container-high)",
+    borderTop: "1px solid var(--md-sys-color-outline-variant)",
+  },
+});
+
+const MobileToolbarButton = styled("button", {
+  base: {
+    display: "grid",
+    placeItems: "center",
+    width: "48px",
+    height: "48px",
+    border: 0,
+    borderRadius: "var(--borderRadius-md)",
+    color: "var(--md-sys-color-on-surface)",
+    background: "transparent",
+    cursor: "pointer",
+    "&:hover, &:focus-visible": {
+      background: "var(--md-sys-color-surface-container-highest)",
+    },
+    "& svg": { width: "24px", height: "24px" },
   },
 });
 

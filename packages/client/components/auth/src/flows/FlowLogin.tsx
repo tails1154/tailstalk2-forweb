@@ -41,7 +41,7 @@ export default function FlowLogin() {
   const state = useState();
   const modals = useModals();
   const { t } = useLingui();
-  const { lifecycle, isLoggedIn, login, selectUsername } = useClientLifecycle();
+  const { lifecycle, isLoggedIn, login, loginWithPasskey, selectUsername } = useClientLifecycle();
   const [aisdChoice, setAisdChoice] = createSignal<boolean | null>(null);
   const [studentIdError, setStudentIdError] = createSignal(false);
   const [loginLoading, setLoginLoading] = createSignal(false);
@@ -82,6 +82,36 @@ export default function FlowLogin() {
             t`You are banned from TailsTalk 2.\n\nReason: ${reason ?? "Your account has been disabled."}\n\nDo not create another account.`,
           ),
         );
+      } else {
+        modals.showError(error);
+      }
+    } finally {
+      setLoginLoading(false);
+    }
+  }
+
+  async function performPasskeyLogin() {
+    if (loginLoading()) return;
+    const emailField = document.querySelector('mdui-text-field[name="email"]') as
+      | (HTMLElement & { value: string })
+      | null;
+    const email = (emailField?.value ?? "").trim();
+    if (!email) {
+      modals.showError(new Error(t`Enter your email to use a passkey.`));
+      return;
+    }
+    setLoginLoading(true);
+    try {
+      await loginWithPasskey(email, modals);
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        [
+          "Your browser did not return a passkey.",
+          "Your browser returned an invalid passkey response.",
+        ].includes(error.message)
+      ) {
+        modals.showError(new Error(t`Your browser could not complete the passkey sign-in.`));
       } else {
         modals.showError(error);
       }
@@ -158,6 +188,11 @@ export default function FlowLogin() {
                   <Trans>Login</Trans>
                 </Button>
               </Row>
+              <Show when={!aisdChoice()}>
+                <Button type="button" variant="outlined" onPress={performPasskeyLogin}>
+                  <Trans>Sign in with a passkey</Trans>
+                </Button>
+              </Show>
             </Form>
           </>
         }
