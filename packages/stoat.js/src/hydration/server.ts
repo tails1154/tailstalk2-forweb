@@ -12,6 +12,12 @@ import { ServerRole } from "../classes/ServerRole.js";
 
 import type { Hydrate } from "./index.js";
 
+export type AutoModConfig = {
+  enabled: boolean;
+  blocked_words: string[];
+  mention_limit?: number;
+};
+
 export type HydratedServer = {
   id: string;
   ownerId: string;
@@ -19,6 +25,7 @@ export type HydratedServer = {
   name: string;
   description?: string;
   announcement?: string;
+  automod?: AutoModConfig;
 
   icon?: File;
   banner?: File;
@@ -51,6 +58,8 @@ export const serverHydration: Hydrate<APIServer, HydratedServer> = {
     description: (server) => server.description!,
     announcement: (server) =>
       (server as APIServer & { announcement?: string }).announcement!,
+    automod: (server) =>
+      (server as APIServer & { automod?: AutoModConfig }).automod,
     channelIds: (server) => new ReactiveSet(server.channels),
     categories: (server) => server.categories ?? [],
     systemMessages: (server) => server.system_messages ?? {},

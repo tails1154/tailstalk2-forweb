@@ -31,6 +31,7 @@ import { ListServerInvites } from "./server/invites/ListServerInvites";
 import { ServerRoleEditor } from "./server/roles/ServerRoleEditor";
 import { ServerRoleOverview } from "./server/roles/ServerRoleOverview";
 import ServerAuditLog from "./server/AuditLog";
+import ServerAutoModSettings from "./server/AutoMod";
 
 import MdHistory from "@material-design-icons/svg/outlined/history.svg?component-solid";
 
@@ -99,6 +100,8 @@ const Config: SettingsConfiguration<Server> = {
         return <ListServerBans server={server} />;
       case "audit-log":
         return <ServerAuditLog server={server} />;
+      case "automod":
+        return <ServerAutoModSettings server={server} />;
 
       default:
         return null;
@@ -181,6 +184,12 @@ const Config: SettingsConfiguration<Server> = {
             !server.havePermission("ViewAuditLogs"),
           title: <Trans>User Management</Trans>,
           entries: [
+            {
+              hidden: !server.havePermission("ManageServer"),
+              id: "automod",
+              icon: <BiSolidFlagAlt size={20} />,
+              title: <Trans>AutoMod</Trans>,
+            },
             {
               hidden: true,
               id: "members",

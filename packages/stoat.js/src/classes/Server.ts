@@ -21,6 +21,7 @@ import { decodeTime } from "ulid";
 import type { ServerCollection } from "../collections/ServerCollection.js";
 import { hydrate } from "../hydration/index.js";
 import type { ServerFlags } from "../hydration/server.js";
+import type { AutoModConfig } from "../hydration/server.js";
 import {
   bitwiseAndEq,
   calculatePermission,
@@ -114,6 +115,11 @@ export class Server {
   /** Announcement shown to members at the top of the server. */
   get announcement(): string | undefined {
     return this.#collection.getUnderlyingObject(this.id).announcement;
+  }
+
+  /** AutoMod configuration for this server. */
+  get automod(): AutoModConfig | undefined {
+    return this.#collection.getUnderlyingObject(this.id).automod;
   }
 
   /**
@@ -399,7 +405,7 @@ export class Server {
    * @param data Changes
    */
   async edit(
-    data: DataEditServer,
+    data: DataEditServer & { automod?: AutoModConfig },
     options?: { mfaTicket?: string },
   ): Promise<void> {
     this.#collection.updateUnderlyingObject(

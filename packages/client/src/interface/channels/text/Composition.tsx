@@ -18,6 +18,7 @@ import { styled } from "styled-system/jsx";
 
 import { useClient } from "@revolt/client";
 import { CONFIGURATION, debounce } from "@revolt/common";
+import { useError } from "@revolt/i18n";
 import { Keybind, KeybindAction, createKeybind } from "@revolt/keybinds";
 import { useModals } from "@revolt/modal";
 import { useState } from "@revolt/state";
@@ -32,6 +33,7 @@ import {
   MessageReplyPreview,
   Tooltip,
   humanFileSize,
+  useSnackbar,
 } from "@revolt/ui";
 import { Symbol } from "@revolt/ui/components/utils/Symbol";
 import { useSearchSpace } from "@revolt/ui/components/utils/autoComplete";
@@ -57,6 +59,16 @@ export function MessageComposition(props: Props) {
   const { t } = useLingui();
   const client = useClient();
   const { openModal } = useModals();
+  const formatError = useError();
+  const snackbar = useSnackbar();
+
+  function showSendError(error: unknown) {
+    snackbar.show({
+      message: formatError(error),
+      placement: "bottom",
+      closeable: true,
+    });
+  }
 
   const currentSlowmode = (): UserSlowmodes | undefined => {
     return client().userSlowmodes.get(props.channel.id);
@@ -270,12 +282,17 @@ export function MessageComposition(props: Props) {
           ...currentDraft,
           content: useContent,
         });
-        return state.draft.sendDraft(client(), props.channel);
+        return state.draft.sendDraft(
+          client(),
+          props.channel,
+          undefined,
+          showSendError,
+        );
       }
-      return props.channel.sendMessage(useContent);
+      return props.channel.sendMessage(useContent).catch(showSendError);
     }
 
-    state.draft.sendDraft(client(), props.channel);
+    state.draft.sendDraft(client(), props.channel, undefined, showSendError);
   }
 
   /**

@@ -697,6 +697,15 @@ msgstr ""
 #~ msgid "Automatic Gain Control"
 #~ msgstr ""
 
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Automatically block messages containing phrases you choose and messages that mention too many people."
+msgstr ""
+
+#: components/app/interface/settings/ServerSettings.tsx
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "AutoMod"
+msgstr ""
+
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "Avatar"
 msgstr "Профилна Слика"
@@ -782,6 +791,10 @@ msgstr ""
 msgid "Bans"
 msgstr "Забране"
 
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Block messages with more mentions than this number."
+msgstr ""
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Block user"
 msgstr "Блокирај корисника"
@@ -793,6 +806,10 @@ msgstr "Блокиран"
 #: components/ui/components/features/messaging/elements/MessageReply.tsx
 msgid "Blocked User"
 msgstr "Блокиран Корисник"
+
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Blocked words and phrases"
+msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Body (supports plain text)"
@@ -2093,6 +2110,10 @@ msgstr ""
 msgid "Enable authenticator app"
 msgstr "Омогући аутентикациону апликацију"
 
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Enable AutoMod"
+msgstr ""
+
 #: components/app/interface/settings/user/notifications/Notifications.tsx
 msgid "Enable Desktop Notifications"
 msgstr "Омогући Desktop Oбавештања"
@@ -2170,6 +2191,10 @@ msgstr "Унесите нову лозинку."
 #: components/modal/modals/MFAEnableTOTP.tsx
 msgid "Enter Code"
 msgstr "Унесите код"
+
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Enter one word or phrase per line."
+msgstr ""
 
 #: components/auth/src/flows/Form.tsx
 msgid "Enter your AISD student ID."
@@ -3019,6 +3044,10 @@ msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Mention Roles"
+msgstr ""
+
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Mention spam limit"
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -4221,6 +4250,10 @@ msgstr "Сачувај"
 msgid "Save and apply"
 msgstr ""
 
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Save AutoMod settings"
+msgstr ""
+
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Save file"
 msgstr ""
@@ -5193,6 +5226,10 @@ msgid "This message is empty and has not been sent."
 msgstr ""
 
 #: components/i18n/errors.ts
+msgid "This message was blocked by the server's AutoMod."
+msgstr ""
+
+#: components/i18n/errors.ts
 msgid "This password has previously appeared in security leaks, please use another password."
 msgstr ""
 
@@ -5388,6 +5425,10 @@ msgstr ""
 
 #: components/app/interface/settings/server/Backup.tsx
 msgid "Unable to restore this server backup."
+msgstr ""
+
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Unable to save AutoMod settings right now."
 msgstr ""
 
 #: components/app/interface/settings/user/FeatureRequests.tsx

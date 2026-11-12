@@ -37,6 +37,12 @@ export function useError() {
             | { type: "InternalError" }
           >;
 
+      // Keep this extensible for server-side error types added before the API
+      // package has been regenerated.
+      if ((err as { type: string }).type === "AutoModBlocked") {
+        return t`This message was blocked by the server's AutoMod.`;
+      }
+
       switch (err.type) {
         case "AlreadyFriends":
           return t`Already friends with this user.`;

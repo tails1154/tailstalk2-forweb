@@ -697,6 +697,15 @@ msgstr "Automated decisions"
 #~ msgid "Automatic Gain Control"
 #~ msgstr "Automatic Gain Control"
 
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Automatically block messages containing phrases you choose and messages that mention too many people."
+msgstr "Automatically block messages containing phrases you choose and messages that mention too many people."
+
+#: components/app/interface/settings/ServerSettings.tsx
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "AutoMod"
+msgstr "AutoMod"
+
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 msgid "Avatar"
 msgstr "Avatar"
@@ -782,6 +791,10 @@ msgstr "Banner"
 msgid "Bans"
 msgstr "Bans"
 
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Block messages with more mentions than this number."
+msgstr "Block messages with more mentions than this number."
+
 #: components/app/menus/UserContextMenu.tsx
 msgid "Block user"
 msgstr "Block user"
@@ -793,6 +806,10 @@ msgstr "Blocked"
 #: components/ui/components/features/messaging/elements/MessageReply.tsx
 msgid "Blocked User"
 msgstr "Blocked User"
+
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Blocked words and phrases"
+msgstr "Blocked words and phrases"
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Body (supports plain text)"
@@ -2101,6 +2118,10 @@ msgstr "Enable Authenticator"
 msgid "Enable authenticator app"
 msgstr "Enable authenticator app"
 
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Enable AutoMod"
+msgstr "Enable AutoMod"
+
 #: components/app/interface/settings/user/notifications/Notifications.tsx
 msgid "Enable Desktop Notifications"
 msgstr "Enable Desktop Notifications"
@@ -2178,6 +2199,10 @@ msgstr "Enter a new password."
 #: components/modal/modals/MFAEnableTOTP.tsx
 msgid "Enter Code"
 msgstr "Enter Code"
+
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Enter one word or phrase per line."
+msgstr "Enter one word or phrase per line."
 
 #: components/auth/src/flows/Form.tsx
 msgid "Enter your AISD student ID."
@@ -3028,6 +3053,10 @@ msgstr "Mention everyone and online members inside the server"
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Mention Roles"
 msgstr "Mention Roles"
+
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Mention spam limit"
+msgstr "Mention spam limit"
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Mention specific roles"
@@ -4233,6 +4262,10 @@ msgstr "Save"
 msgid "Save and apply"
 msgstr "Save and apply"
 
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Save AutoMod settings"
+msgstr "Save AutoMod settings"
+
 #: components/app/menus/MessageContextMenu.tsx
 msgid "Save file"
 msgstr "Save file"
@@ -5209,6 +5242,10 @@ msgid "This message is empty and has not been sent."
 msgstr "This message is empty and has not been sent."
 
 #: components/i18n/errors.ts
+msgid "This message was blocked by the server's AutoMod."
+msgstr "This message was blocked by the server's AutoMod."
+
+#: components/i18n/errors.ts
 msgid "This password has previously appeared in security leaks, please use another password."
 msgstr "This password has previously appeared in security leaks, please use another password."
 
@@ -5405,6 +5442,10 @@ msgstr "Unable to resolve report."
 #: components/app/interface/settings/server/Backup.tsx
 msgid "Unable to restore this server backup."
 msgstr "Unable to restore this server backup."
+
+#: components/app/interface/settings/server/AutoMod.tsx
+msgid "Unable to save AutoMod settings right now."
+msgstr "Unable to save AutoMod settings right now."
 
 #: components/app/interface/settings/user/FeatureRequests.tsx
 msgid "Unable to submit this feature request right now."

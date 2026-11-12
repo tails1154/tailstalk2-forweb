@@ -288,7 +288,12 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
    * @param channel Channel
    * @param existingDraft The existing draft to send
    */
-  async sendDraft(client: Client, channel: Channel, existingDraft?: DraftData) {
+  async sendDraft(
+    client: Client,
+    channel: Channel,
+    existingDraft?: DraftData,
+    onError?: (error: unknown) => void,
+  ) {
     const draft = existingDraft ?? this.popDraft(channel.id);
 
     // Check if this is something we can even send
@@ -413,7 +418,8 @@ export class Draft extends AbstractStore<"draft", TypeDraft> {
           (entry) => entry.idempotencyKey !== idempotencyKey,
         ),
       );
-    } catch {
+    } catch (error) {
+      onError?.(error);
       markFailed();
     }
   }
