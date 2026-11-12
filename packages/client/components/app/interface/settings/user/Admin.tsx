@@ -98,7 +98,7 @@ interface AdminDecoration {
   id: string;
   name: string;
   asset_url: string;
-  price_xp: number;
+  price_points: number;
   enabled: boolean;
 }
 
@@ -734,7 +734,7 @@ function DecorationsTab(props: { password: string }) {
         body: JSON.stringify({
           name: name().trim(),
           asset_id: assetId,
-          price_xp: Math.max(0, Number(price()) || 0),
+          price_points: Math.max(0, Number(price()) || 0),
         }),
       });
       setFile(undefined);
@@ -762,7 +762,7 @@ function DecorationsTab(props: { password: string }) {
           style={{ color: "var(--md-sys-color-on-surface-variant)" }}
         >
           <Trans>
-            Upload decorations here. Users can buy them with XP and equip them
+            Upload decorations here. Users can buy them with Tails Points and equip them
             from their profile settings.
           </Trans>
         </Text>
@@ -785,7 +785,7 @@ function DecorationsTab(props: { password: string }) {
           <TextField
             type="number"
             min={0}
-            label={t`XP price`}
+            label={t`Tails Points price`}
             value={price()}
             onChange={(event) => setPrice(event.currentTarget.value)}
           />
@@ -834,7 +834,7 @@ function DecorationsTab(props: { password: string }) {
                     <Column gap="xs">
                       <Text>{decoration.name}</Text>
                       <Text class={typography({ class: "label" })}>
-                        {decoration.price_xp} XP
+                        {decoration.price_points} Tails Points
                       </Text>
                     </Column>
                   </Row>

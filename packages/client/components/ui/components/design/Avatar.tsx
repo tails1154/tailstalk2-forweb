@@ -51,6 +51,11 @@ export type Props = {
   overlay?: JSXElement;
 
   /**
+   * Profile decoration image drawn around the avatar (Tails Points shop)
+   */
+  decorationUrl?: string;
+
+  /**
    * Whether this icon is interactive
    */
   interactive?: boolean;
@@ -164,6 +169,17 @@ export function Avatar(props: Props) {
           </Shape>
         </foreignObject>
       </g>
+      <Show when={props.decorationUrl}>
+        {/* Slightly larger than the avatar so the ring frames it. */}
+        <image
+          href={props.decorationUrl}
+          x="-4"
+          y="-4"
+          width="40"
+          height="40"
+          style={{ "pointer-events": "none" }}
+        />
+      </Show>
       {props.overlay}
     </ParentBase>
   );

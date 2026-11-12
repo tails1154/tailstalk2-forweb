@@ -43,6 +43,7 @@ import Notifications from "./user/notifications/Notifications";
 import { EditProfile } from "./user/profile";
 import { Sessions } from "./user/Sessions";
 import { AdminPanel } from "./user/Admin";
+import { TailsPoints } from "./user/TailsPoints";
 
 const [hasAdminAccess, setHasAdminAccess] = createSignal(false);
 let checkedAdminUserId: string | undefined;
@@ -112,6 +113,8 @@ const Config: SettingsConfiguration<{ server: Server }> = {
       }
       case "feedback":
         return <Feedback />;
+      case "tails_points":
+        return <TailsPoints />;
       case "feature_requests":
         return <FeatureRequests />;
       case "native":
@@ -285,6 +288,11 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               hidden: !hasAdminAccess(),
               icon: <MdAdminPanelSettings {...iconSize(20)} />,
               title: <Trans>Admin Panel</Trans>,
+            },
+            {
+              id: "tails_points",
+              icon: <Symbol size={20}>toll</Symbol>,
+              title: <Trans>Tails Points</Trans>,
             },
             {
               id: "advanced",
