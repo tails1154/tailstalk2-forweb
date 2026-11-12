@@ -13,7 +13,9 @@ interface Props {
  * @param email Email
  * @returns Provider
  */
-function mapMailProvider(email?: string): [string, string] | undefined {
+function mapMailProvider(
+  email?: string,
+): [string, string, boolean?] | undefined {
   if (!email) return;
 
   const match = /@(.+)/.exec(email);
@@ -106,6 +108,9 @@ function mapMailProvider(email?: string): [string, string] | undefined {
     case "revolt.wtf":
     case "stoat.chat":
       return ["TailsTalk 2 Mail", "https://webmail.revolt.wtf"];
+    case "cats.angletonisd.net":
+      // AISD student accounts are Google Workspace accounts
+      return ["Gmail", "https://mail.google.com", true];
     default:
       // Unknown domains always point users to Gmail
       return ["Gmail", "https://gmail.com"];
@@ -126,7 +131,11 @@ export function MailProvider(props: Props) {
     <Show when={provider()}>
       <a href={provider()![1]} target="_blank" rel="noreferrer">
         <Button>
-          <Trans>Open {provider()![0]}</Trans>
+          {provider()![2] ? (
+            <Trans>Go to Email</Trans>
+          ) : (
+            <Trans>Open {provider()![0]}</Trans>
+          )}
         </Button>
       </a>
     </Show>

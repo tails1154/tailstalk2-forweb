@@ -2511,6 +2511,10 @@ msgstr "60 84CK 70 L061N"
 msgid "Go to account settings to edit your username"
 msgstr ""
 
+#: components/auth/src/flows/MailProvider.tsx
+msgid "Go to Email"
+msgstr ""
+
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Go to the TailsTalk 2 Lounge"
 msgstr ""

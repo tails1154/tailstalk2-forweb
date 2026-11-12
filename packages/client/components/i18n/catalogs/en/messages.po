@@ -2519,6 +2519,10 @@ msgstr "Go back to login"
 msgid "Go to account settings to edit your username"
 msgstr "Go to account settings to edit your username"
 
+#: components/auth/src/flows/MailProvider.tsx
+msgid "Go to Email"
+msgstr "Go to Email"
+
 #: components/app/interface/settings/user/Feedback.tsx
 msgid "Go to the TailsTalk 2 Lounge"
 msgstr "Go to the TailsTalk 2 Lounge"
