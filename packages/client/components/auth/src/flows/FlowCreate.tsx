@@ -42,6 +42,7 @@ export default function FlowCreate() {
   const { t } = useLingui();
   const [aisdChoice, setAisdChoice] = createSignal<boolean | null>(null);
   const [studentIdError, setStudentIdError] = createSignal(false);
+  const [marketingOptOut, setMarketingOptOut] = createSignal(false);
   const isAisdStudent = () => aisdChoice() === true;
   const { login } = useClientLifecycle();
   const [registrationBlocked, setRegistrationBlocked] = createSignal(false);
@@ -95,6 +96,7 @@ export default function FlowCreate() {
         email,
         password,
         captcha,
+        marketing_opt_out: marketingOptOut(),
         ...(invite ? { invite } : {}),
       });
     } catch (error) {
@@ -184,6 +186,14 @@ export default function FlowCreate() {
           <Show when={isInviteOnly()}>
             <Fields fields={[{ field: "invite", value: code }]} />
           </Show>
+          <label>
+            <input
+              type="checkbox"
+              checked={marketingOptOut()}
+              onChange={(event) => setMarketingOptOut(event.currentTarget.checked)}
+            />{" "}
+            <Trans>Don't add me to marketing emails</Trans>
+          </label>
           <Row justify>
             <a href="..">
               <Button variant="text">

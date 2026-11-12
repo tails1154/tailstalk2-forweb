@@ -107,7 +107,8 @@ function mapMailProvider(email?: string): [string, string] | undefined {
     case "stoat.chat":
       return ["TailsTalk 2 Mail", "https://webmail.revolt.wtf"];
     default:
-      return [domain, `https://${domain}`];
+      // Unknown domains always point users to Gmail
+      return ["Gmail", "https://gmail.com"];
   }
 }
 

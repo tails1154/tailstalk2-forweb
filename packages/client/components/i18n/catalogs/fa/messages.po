@@ -211,6 +211,11 @@ msgstr ""
 #~ msgid "• TailsTalk Supporter profile badge"
 #~ msgstr ""
 
+#. placeholder {0}: quest.reward_points
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "+{0} points"
+msgstr ""
+
 #: components/ui/components/features/messaging/elements/SystemMessage.tsx
 msgid "<0/> has been added by <1/>"
 msgstr ""
@@ -740,6 +745,11 @@ msgstr ""
 msgid "Badges"
 msgstr "مدالها"
 
+#. placeholder {0}: quests()?.tails_points ?? 0
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "Balance: {0} Tails Points. Complete quests to earn points and spend them on profile decorations."
+msgstr ""
+
 #: components/modal/modals/ReportAction.tsx
 #: components/modal/modals/BanNonMember.tsx
 #: components/modal/modals/BanMember.tsx
@@ -884,9 +894,9 @@ msgstr ""
 msgid "Busy"
 msgstr ""
 
-#: components/app/interface/settings/user/profile/UserProfileEditor.tsx
-#~ msgid "Buy"
-#~ msgstr ""
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "Buy"
+msgstr ""
 
 #: components/modal/modals/CreateBot.tsx
 msgid "By creating this bot, you agree to the <0>Acceptable Use Policy</0>."
@@ -1133,6 +1143,14 @@ msgstr ""
 
 #: src/interface/Videos.tsx
 msgid "Choose video"
+msgstr ""
+
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "Claim"
+msgstr ""
+
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "Claimed"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
@@ -1689,8 +1707,24 @@ msgstr ""
 msgid "Decoration added to the catalog."
 msgstr ""
 
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "Decoration equipped."
+msgstr ""
+
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Decoration name"
+msgstr ""
+
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "Decoration purchased."
+msgstr ""
+
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "Decoration removed."
+msgstr ""
+
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "Decoration shop"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
@@ -1957,6 +1991,10 @@ msgstr ""
 
 #: components/modal/modals/SourceCode.tsx
 msgid "Do you want to view the backend or frontend code?"
+msgstr ""
+
+#: components/auth/src/flows/FlowCreate.tsx
+msgid "Don't add me to marketing emails"
 msgstr ""
 
 #: components/modal/modals/ScreenShareSettings.tsx
@@ -2229,6 +2267,10 @@ msgstr ""
 #: components/auth/src/flows/Form.tsx
 msgid "Enter your preferred username."
 msgstr "نام کاربری دلخواه خود را وارد کنید."
+
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "Equip"
+msgstr ""
 
 #: components/app/interface/settings/user/profile/UserProfileEditor.tsx
 #~ msgid "Equip decoration"
@@ -2602,6 +2644,10 @@ msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Impersonation"
+msgstr ""
+
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "In progress"
 msgstr ""
 
 #: src/PublicPage.tsx
@@ -3820,6 +3866,10 @@ msgstr ""
 #~ msgid "Questions (JSON)"
 #~ msgstr ""
 
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "Quests"
+msgstr ""
+
 #: components/modal/modals/ReportContent.tsx
 msgid "Raid or spam attack"
 msgstr ""
@@ -4193,6 +4243,10 @@ msgstr ""
 #: components/app/interface/settings/user/OAuth.tsx
 #~ msgid "Revoked"
 #~ msgstr ""
+
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "Reward claimed."
+msgstr ""
 
 #: components/app/interface/settings/server/XP.tsx
 msgid "Reward members with XP when they send messages in this server."
@@ -4720,6 +4774,10 @@ msgstr ""
 #~ msgid "Something went wrong! Try again later."
 #~ msgstr ""
 
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "Something went wrong."
+msgstr ""
+
 #: components/i18n/errors.ts
 msgid "Something went wrong. Try again later."
 msgstr ""
@@ -4956,6 +5014,16 @@ msgstr ""
 #: src/interface/channels/forum/ForumChannel.tsx
 #: src/interface/channels/forum/ForumChannel.tsx
 msgid "Tags (comma separated)"
+msgstr ""
+
+#: components/app/interface/settings/UserSettings.tsx
+#: components/app/interface/settings/user/TailsPoints.tsx
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "Tails Points"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Tails Points price"
 msgstr ""
 
 #: src/interface/Tailslets.tsx
@@ -5472,6 +5540,10 @@ msgstr ""
 msgid "Undeafen"
 msgstr ""
 
+#: components/app/interface/settings/user/TailsPoints.tsx
+msgid "Unequip"
+msgstr ""
+
 #: components/markdown/plugins/anchors.tsx
 msgid "Unknown Server"
 msgstr ""
@@ -5553,8 +5625,12 @@ msgstr ""
 #~ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
-msgid "Upload decorations here. Users can buy them with XP and equip them from their profile settings."
+msgid "Upload decorations here. Users can buy them with Tails Points and equip them from their profile settings."
 msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+#~ msgid "Upload decorations here. Users can buy them with XP and equip them from their profile settings."
+#~ msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Upload Files"
@@ -5965,8 +6041,8 @@ msgid "XP per message"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
-msgid "XP price"
-msgstr ""
+#~ msgid "XP price"
+#~ msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
 #: components/auth/src/flows/FlowCreate.tsx
