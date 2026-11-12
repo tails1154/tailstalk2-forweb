@@ -95,6 +95,14 @@ export function isInvalidStudentId(value: string) {
   return !value || /\s|@/u.test(value);
 }
 
+/**
+ * AISD student IDs start with 4 and are 6 digits long.
+ * Used when creating accounts only, so existing logins are unaffected.
+ */
+export function isValidAisdStudentId(value: string) {
+  return /^4\d{5}$/.test(value);
+}
+
 interface FieldPreset {
   field: Field;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

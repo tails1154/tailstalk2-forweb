@@ -12,7 +12,12 @@ import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?compon
 import { createSignal, onCleanup, onMount, Show } from "solid-js";
 import { FlowTitle } from "./Flow";
 import { setFlowCheckEmail } from "./FlowCheck";
-import { Fields, Form, isInvalidStudentId } from "./Form";
+import {
+  Fields,
+  Form,
+  isInvalidStudentId,
+  isValidAisdStudentId,
+} from "./Form";
 
 const AccountWarning = styled("div", {
   base: {
@@ -69,7 +74,11 @@ export default function FlowCreate() {
   async function create(data: FormData) {
     if (registrationLoading() || registrationBlocked()) return;
     const studentId = (data.get("student-id") as string | null)?.trim();
-    if (isAisdStudent() && isInvalidStudentId(studentId ?? "")) {
+    if (
+      isAisdStudent() &&
+      (isInvalidStudentId(studentId ?? "") ||
+        !isValidAisdStudentId(studentId ?? ""))
+    ) {
       setStudentIdError(true);
       return;
     }
