@@ -1406,6 +1406,10 @@ msgstr "Copy channel ID"
 msgid "Copy gift link"
 msgstr "Copy gift link"
 
+#: components/app/interface/settings/channel/webhooks/ViewWebhook.tsx
+msgid "Copy GitHub webhook URL"
+msgstr "Copy GitHub webhook URL"
+
 #: components/app/interface/settings/user/bots/ViewBot.tsx
 msgid "Copy ID"
 msgstr "Copy ID"

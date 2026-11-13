@@ -69,6 +69,10 @@ export const Permission = {
   React: 2n ** 29n,
   /// Bypass slowmode
   BypassSlowmode: 2n ** 39n,
+  /// Export server backups
+  BackupServer: 2n ** 40n,
+  /// Restore server backups
+  RestoreServer: 2n ** 41n,
 
   // * Voice permissions
   /// Connect to a voice channel

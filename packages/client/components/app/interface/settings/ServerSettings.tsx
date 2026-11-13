@@ -32,6 +32,7 @@ import { ServerRoleEditor } from "./server/roles/ServerRoleEditor";
 import { ServerRoleOverview } from "./server/roles/ServerRoleOverview";
 import ServerAuditLog from "./server/AuditLog";
 import ServerAutoModSettings from "./server/AutoMod";
+import ServerBackupSettings from "./server/Backup";
 
 import MdHistory from "@material-design-icons/svg/outlined/history.svg?component-solid";
 
@@ -102,6 +103,8 @@ const Config: SettingsConfiguration<Server> = {
         return <ServerAuditLog server={server} />;
       case "automod":
         return <ServerAutoModSettings server={server} />;
+      case "backup":
+        return <ServerBackupSettings server={server} />;
 
       default:
         return null;
@@ -181,7 +184,9 @@ const Config: SettingsConfiguration<Server> = {
           hidden:
             !server.havePermission("ManageServer") &&
             !server.havePermission("BanMembers") &&
-            !server.havePermission("ViewAuditLogs"),
+            !server.havePermission("ViewAuditLogs") &&
+            !server.havePermission("BackupServer") &&
+            !server.havePermission("RestoreServer"),
           title: <Trans>User Management</Trans>,
           entries: [
             {
@@ -189,6 +194,14 @@ const Config: SettingsConfiguration<Server> = {
               id: "automod",
               icon: <BiSolidFlagAlt size={20} />,
               title: <Trans>AutoMod</Trans>,
+            },
+            {
+              hidden:
+                !server.havePermission("BackupServer") &&
+                !server.havePermission("RestoreServer"),
+              id: "backup",
+              icon: <BiSolidFlagAlt size={20} />,
+              title: <Trans>Backup</Trans>,
             },
             {
               hidden: true,

@@ -1,109 +1,57 @@
-<div align="center">
-<h1>
-  Stoat Frontend
-  
-  [![Stars](https://img.shields.io/github/stars/stoatchat/for-web?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-web/stargazers)
-  [![Forks](https://img.shields.io/github/forks/stoatchat/for-web?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-web/network/members)
-  [![Pull Requests](https://img.shields.io/github/issues-pr/stoatchat/for-web?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-web/pulls)
-  [![Issues](https://img.shields.io/github/issues/stoatchat/for-web?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-web/issues)
-  [![Contributors](https://img.shields.io/github/contributors/stoatchat/for-web?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-web/graphs/contributors)
-  [![License](https://img.shields.io/github/license/stoatchat/for-web?style=flat-square&logoColor=white)](https://github.com/stoatchat/for-web/blob/main/LICENSE)
-</h1>
-The official web client powering https://stoat.chat/app, built with <a href="https://www.solidjs.com/">Solid.js</a> 💖. <br/>
-Track the project roadmap on <a href="https://op.stoatinternal.com/projects/revolt-for-web/roadmap">OpenProject</a>.
-</div>
-<br/>
+# TailsTalk 2 Web Client
 
-## Development Guide
+The web client for TailsTalk 2, built with [Solid.js](https://www.solidjs.com/). It is a fork of the Stoat web client (for-web). The client is served at `https://tails1154.com` and talks to the TailsTalk 2 backend at `https://tails1154.com:9961/api`.
 
-Before contributing, make yourself familiar with [our contribution guidelines](https://developers.stoat.chat/developing/contrib/), the [code style guidelines](./GUIDELINES.md), and the [technical documentation for this project](https://stoatchat.github.io/for-web/).
+## Development
 
-Before getting started, you'll want to install:
-
-- [Git](https://git-scm.com/install/)
-- [mise-en-place](https://mise.jdx.dev/getting-started.html)
-
-Then proceed to setup:
+Install [mise](https://mise.jdx.dev/getting-started.html) and [pnpm](https://pnpm.io/), then:
 
 ```bash
-# clone the repository
-git clone --recursive https://github.com/stoatchat/for-web client
+# clone with submodules
+git clone --recursive <this repository> client
 cd client
 
-# update submodules if you pull new changes
-# git submodule init && git submodule update
-
-# install all packages
+# install packages and build the shared libraries
 mise install:frozen
+mise build/deps
 
-# build deps:
-mise build:deps
-
-# or build a specific dep (e.g. stoat.js updates):
-# pnpm --filter stoat.js run build
-
-# customise the .env
+# optional: point the client at a different backend
 cp packages/client/.env.example packages/client/.env
 
-# run dev server
+# run the dev server
 mise dev
-
-# run all CI checks locally
-mise check
 ```
 
-Finally, navigate to http://local.revolt.chat:5173.
+The client reads its API address from `VITE_DEV_API_URL` in development and `VITE_API_URL` in production. If neither is set, it uses `https://tails1154.com:9961/api`.
 
-### Using the official backend
+### Tasks
 
-By default, the client connects to a backend running on the same host (localhost).
+| Task | What it does |
+| --- | --- |
+| `mise dev` | Start the Vite dev server |
+| `mise start` | Serve the built app |
+| `mise build` | Build the client |
+| `mise build/prod` | Build for production |
+| `mise test` | Run the tests |
+| `mise lint` | Lint the code |
+| `mise format` | Format the code |
+| `lingui/extract` | Pull new user-visible strings into the message catalogs |
+| `lingui/compile` | Compile the catalogs |
 
-If you want the client to connect to the official hosted backend instead, open the .env file at /packages/client/.env and comment out the local URL varaibles like this:
+Run `mise lint` and `mise test` before committing.
 
-```env
-# connect to local Stoat instance
-#VITE_API_URL=http://localhost:14702
-#VITE_WS_URL=ws://localhost:14703
-#VITE_MEDIA_URL=http://localhost:14704
-#VITE_PROXY_URL=http://localhost:14705
+## Conventions
 
-```
+- Every user-visible string must use Lingui (`t` or `<Trans>`). After adding strings, run the `lingui/extract` task and update the catalogs under `packages/client/components/i18n/catalogs/`.
+- Every change to the client bumps the version in **both** `packages/client/public/tailstalk2.version` and `packages/client/src/version.ts` (`CURRENT_VERSION`).
+- Do not commit build output (`dist/`), timestamp bundles, or local `.env` files.
 
-When these variables are not set, the client automatically falls back to the official backend. (See https://github.com/stoatchat/for-web/blob/main/packages/client/components/common/lib/env.ts)
+## Deployment
 
-## Deployment Guide
+Deploy with `./deploy.sh`. It extracts and compiles the translation catalogs, builds the client, and uploads it. Do not run the build steps by hand.
 
-### Build the app
+Output goes to `packages/client/dist`.
 
-```bash
-# install packages
-mise install:frozen
+## Licence
 
-# build dependencies
-mise build:deps
-
-# build for web
-mise build
-
-# ... when building for Stoat production
-mise build:prod
-```
-
-You can now deploy the directory `packages/client/dist`.
-
-### Routing Information
-
-The app currently needs the following routes:
-
-- `/login`
-- `/pwa`
-- `/dev`
-- `/discover`
-- `/settings`
-- `/invite`
-- `/bot`
-- `/friends`
-- `/server`
-- `/channel`
-
-This corresponds to [Content.tsx#L33](packages/client/src/index.tsx).
+The client is licensed under the GNU Affero General Public License v3.0 or later, the same as upstream Stoat.

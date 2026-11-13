@@ -337,6 +337,22 @@ export function ChannelPermissionsEditor(props: Props) {
       },
     },
     {
+      key: "BackupServer",
+      value: 2n ** 40n,
+      title: t`Backup Server`,
+      description: {
+        Server: t`Download backups of the server's settings and roles`,
+      },
+    },
+    {
+      key: "RestoreServer",
+      value: 2n ** 41n,
+      title: t`Restore Server`,
+      description: {
+        Server: t`Restore the server's settings and roles from a backup`,
+      },
+    },
+    {
       heading: t`Voice`,
       key: "Connect",
       value: 2n ** 30n,

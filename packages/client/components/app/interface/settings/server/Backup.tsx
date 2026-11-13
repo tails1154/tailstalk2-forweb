@@ -41,6 +41,6 @@ export default function ServerBackupSettings(props: ServerSettingsProps) {
 
   return <Column gap="xl">
     <Column gap="sm"><Text class="title" size="large"><Trans>Server backup and restore</Trans></Text><Text><Trans>Export or restore server configuration, including roles, categories, and permissions.</Trans></Text></Column>
-    <Column gap="sm"><Button onPress={exportBackup} isDisabled={busy()}><Trans>Download backup</Trans></Button><Button onPress={() => document.getElementById(`server-backup-${props.server.id}`)?.click()} isDisabled={busy()}><Trans>Restore backup</Trans></Button><input id={`server-backup-${props.server.id}`} type="file" accept="application/json" hidden onChange={restoreBackup} /><Show when={busy()}><Text><Trans>Working…</Trans></Text></Show></Column>
+    <Column gap="sm"><Show when={props.server.havePermission("BackupServer")}><Button onPress={exportBackup} isDisabled={busy()}><Trans>Download backup</Trans></Button></Show><Show when={props.server.havePermission("RestoreServer")}><Button onPress={() => document.getElementById(`server-backup-${props.server.id}`)?.click()} isDisabled={busy()}><Trans>Restore backup</Trans></Button><input id={`server-backup-${props.server.id}`} type="file" accept="application/json" hidden onChange={restoreBackup} /></Show><Show when={busy()}><Text><Trans>Working…</Trans></Text></Show></Column>
   </Column>;
 }
