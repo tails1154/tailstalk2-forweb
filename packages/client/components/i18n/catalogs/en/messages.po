@@ -746,8 +746,16 @@ msgid "Background"
 msgstr "Background"
 
 #: components/app/interface/settings/ServerSettings.tsx
+msgid "Backup"
+msgstr "Backup"
+
+#: components/app/interface/settings/ServerSettings.tsx
 #~ msgid "Backup and restore"
 #~ msgstr "Backup and restore"
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Backup Server"
+msgstr "Backup Server"
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Badges"
@@ -2064,6 +2072,10 @@ msgstr "Download"
 #: components/app/interface/settings/server/Backup.tsx
 msgid "Download backup"
 msgstr "Download backup"
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Download backups of the server's settings and roles"
+msgstr "Download backups of the server's settings and roles"
 
 #: components/modal/modals/ReportContent.tsx
 msgid "Drugs or illegal goods"
@@ -4231,6 +4243,14 @@ msgstr "Restore backup"
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #~ msgid "Restore call window"
 #~ msgstr "Restore call window"
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Restore Server"
+msgstr "Restore Server"
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Restore the server's settings and roles from a backup"
+msgstr "Restore the server's settings and roles from a backup"
 
 #: src/PublicPage.tsx
 msgid "Retention"

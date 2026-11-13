@@ -338,7 +338,7 @@ export function ChannelPermissionsEditor(props: Props) {
     },
     {
       key: "BackupServer",
-      value: 2n ** 40n,
+      value: 2n ** 14n,
       title: t`Backup Server`,
       description: {
         Server: t`Download backups of the server's settings and roles`,
@@ -346,7 +346,7 @@ export function ChannelPermissionsEditor(props: Props) {
     },
     {
       key: "RestoreServer",
-      value: 2n ** 41n,
+      value: 2n ** 15n,
       title: t`Restore Server`,
       description: {
         Server: t`Restore the server's settings and roles from a backup`,

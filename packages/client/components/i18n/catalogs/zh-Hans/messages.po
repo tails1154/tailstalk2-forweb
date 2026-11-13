@@ -738,8 +738,16 @@ msgid "Background"
 msgstr ""
 
 #: components/app/interface/settings/ServerSettings.tsx
+msgid "Backup"
+msgstr ""
+
+#: components/app/interface/settings/ServerSettings.tsx
 #~ msgid "Backup and restore"
 #~ msgstr ""
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Backup Server"
+msgstr ""
 
 #: components/ui/components/features/profiles/ProfileBadges.tsx
 msgid "Badges"
@@ -2039,6 +2047,10 @@ msgstr ""
 
 #: components/app/interface/settings/server/Backup.tsx
 msgid "Download backup"
+msgstr ""
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Download backups of the server's settings and roles"
 msgstr ""
 
 #: components/modal/modals/ReportContent.tsx
@@ -4194,6 +4206,14 @@ msgstr ""
 #: components/ui/components/features/voice/callCard/VoiceCallCardActions.tsx
 #~ msgid "Restore call window"
 #~ msgstr ""
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Restore Server"
+msgstr ""
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Restore the server's settings and roles from a backup"
+msgstr ""
 
 #: src/PublicPage.tsx
 msgid "Retention"
