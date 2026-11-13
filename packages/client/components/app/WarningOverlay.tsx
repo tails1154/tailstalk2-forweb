@@ -14,10 +14,6 @@ interface WarningItem {
   created_at: string;
 }
 
-function warningKey(warning: WarningItem) {
-  return `${warning.created_at}:${warning.reason}`;
-}
-
 export function WarningOverlay() {
   const client = useClient();
   const [warnings, setWarnings] = createSignal<WarningItem[]>([]);
@@ -41,23 +37,9 @@ export function WarningOverlay() {
     }
 
     try {
+      // The server only returns warnings the user has not acknowledged
       const res = await client().api.get("/users/@me/warnings");
-      const storageKey = user?.id
-        ? `tailstalk-dismissed-warnings:${user.id}`
-        : undefined;
-      let dismissed = new Set<string>();
-      if (storageKey) {
-        try {
-          const saved = JSON.parse(localStorage.getItem(storageKey) ?? "[]");
-          if (Array.isArray(saved)) dismissed = new Set(saved);
-        } catch {
-          // Ignore malformed local state and show the warnings normally.
-        }
-      }
-
-      const pendingWarnings = (res.warnings ?? []).filter(
-        (warning: WarningItem) => !dismissed.has(warningKey(warning)),
-      );
+      const pendingWarnings: WarningItem[] = res.warnings ?? [];
       if (pendingWarnings.length > 0) {
         setWarnings(pendingWarnings);
         setVisible(true);
@@ -79,21 +61,12 @@ export function WarningOverlay() {
     }, 1000);
   }
 
-  function dismiss() {
+  async function dismiss() {
     if (!canDismiss()) return;
-    const userId = client().user?.id;
-    if (userId) {
-      const storageKey = `tailstalk-dismissed-warnings:${userId}`;
-      let dismissed: string[] = [];
-      try {
-        const saved = JSON.parse(localStorage.getItem(storageKey) ?? "[]");
-        if (Array.isArray(saved)) dismissed = saved;
-      } catch {
-        // Replace malformed local state with a valid dismissal list.
-      }
-      const dismissedSet = new Set(dismissed);
-      for (const warning of warnings()) dismissedSet.add(warningKey(warning));
-      localStorage.setItem(storageKey, JSON.stringify([...dismissedSet]));
+    try {
+      await client().api.post("/users/@me/warnings/acknowledge");
+    } catch {
+      // Still hide the overlay; the warnings will be offered again next time
     }
     setVisible(false);
   }
@@ -111,7 +84,10 @@ export function WarningOverlay() {
                 >
                   <MdBlock {...iconSize(28)} style={{ color: "var(--md-sys-color-error)" }} />
                 </Show>
-                <Text class={typography({ class: "title", size: "medium" })}>
+                <Text
+                  class={typography({ class: "title", size: "medium" })}
+                  style={{ color: "var(--md-sys-color-on-surface)" }}
+                >
                   {isSuspended() ? "Account Suspended" : "Account Warning"}
                 </Text>
               </Header>
@@ -171,7 +147,7 @@ export function WarningOverlay() {
                     </Text>
                   }
                 >
-                  <Button onPress={dismiss}>
+                  <Button onPress={() => dismiss()}>
                     I understand, dismiss
                   </Button>
                 </Show>

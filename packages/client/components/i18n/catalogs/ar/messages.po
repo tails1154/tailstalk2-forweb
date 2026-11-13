@@ -5607,6 +5607,7 @@ msgid "Unsolicited advertising or spam"
 msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
+#: components/app/interface/settings/user/Admin.tsx
 msgid "Unsuspend"
 msgstr ""
 
@@ -6301,6 +6302,16 @@ msgstr "تم توثيق حسابك بنجاح!"
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Your account is not authorized to use the admin panel."
+msgstr ""
+
+#. placeholder {0}: reason ?? "No reason was given."
+#: components/auth/src/flows/FlowLogin.tsx
+msgid ""
+"Your account is suspended.\n"
+"\n"
+"Reason: {0}\n"
+"\n"
+"You can sign in again after {until}."
 msgstr ""
 
 #: src/AccountDeletionPage.tsx

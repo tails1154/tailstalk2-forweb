@@ -181,6 +181,14 @@ export class ModalControllerExtended extends ModalController {
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   showError(error: any) {
+    if (error?.type === "Suspended" || error?.type === "Banned") {
+      window.dispatchEvent(
+        new CustomEvent("tailstalk2:restricted", {
+          detail: { type: error.type, until: error.until },
+        }),
+      );
+      return;
+    }
     this.openModal({
       type: "error2",
       error,

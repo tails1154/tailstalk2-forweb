@@ -204,9 +204,9 @@ class Lifecycle {
     this.#controller.logout(false, "Your account has been disabled.");
   }
 
-  private rememberBanAtLogout(reason: string): void {
+  private rememberBanAtLogout(reason: string, suspendedUntil?: string): void {
     try {
-      const value = JSON.stringify({ reason });
+      const value = JSON.stringify({ reason, suspendedUntil });
       localStorage.setItem("tailstalk2:registration-blocked", value);
       localStorage.setItem("tailstalk2:ban-notice", value);
     } catch {
@@ -534,6 +534,23 @@ export default class ClientController {
 
     this.lifecycle = new Lifecycle(this);
 
+    // Requests from restricted accounts are reported by the modal system;
+    // sign the user out and show the notice on the login page
+    window.addEventListener("tailstalk2:restricted", (event) => {
+      const detail = (event as CustomEvent<{ type: string; until?: string | null }>)
+        .detail;
+      if (!this.isLoggedIn()) return;
+      if (detail.type === "Suspended") {
+        this.logout(
+          false,
+          "Your account has been suspended.",
+          detail.until ?? undefined,
+        );
+      } else {
+        this.logout(false, "Your account has been disabled.");
+      }
+    });
+
     this.login = this.login.bind(this);
     this.loginWithPasskey = this.loginWithPasskey.bind(this);
     this.logout = this.logout.bind(this);
@@ -700,10 +717,10 @@ export default class ClientController {
     });
   }
 
-  logout(keepAccount = false, bannedReason?: string) {
+  logout(keepAccount = false, bannedReason?: string, suspendedUntil?: string) {
     const currentUser = this.getCurrentClient()?.user;
     if (bannedReason) {
-      this.rememberBanAtLogout(bannedReason);
+      this.rememberBanAtLogout(bannedReason, suspendedUntil);
     } else if (
       currentUser &&
       (currentUser.flags & UserFlags.Banned) === UserFlags.Banned

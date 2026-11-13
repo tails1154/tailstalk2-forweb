@@ -47,7 +47,7 @@ export default function FlowLogin() {
   const [loginLoading, setLoginLoading] = createSignal(false);
 
   onMount(() => {
-    let notice: { reason?: string } | undefined;
+    let notice: { reason?: string; suspendedUntil?: string } | undefined;
     try {
       notice = JSON.parse(localStorage.getItem("tailstalk2:ban-notice") ?? "null");
       localStorage.removeItem("tailstalk2:ban-notice");
@@ -55,6 +55,16 @@ export default function FlowLogin() {
       notice = undefined;
     }
     if (!notice) return;
+
+    if (notice.suspendedUntil) {
+      const until = new Date(notice.suspendedUntil).toLocaleString();
+      modals.showError(
+        new Error(
+          t`Your account is suspended.\n\nReason: ${notice.reason ?? "No reason was given."}\n\nYou can sign in again after ${until}.`,
+        ),
+      );
+      return;
+    }
 
     modals.showError(
       new Error(
