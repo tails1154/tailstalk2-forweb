@@ -9,3 +9,6 @@ dist
 .vercel
 
 .idea
+
+# Vite config timestamp bundles
+vite.config.ts.timestamp-*.mjs
