@@ -99,6 +99,21 @@ type PolicyAttentionRequired = [
   () => Promise<void>,
 ];
 
+/**
+ * Block sign-up and show the notice on the login page after a ban or suspension
+ * @param reason Reason shown to the user
+ * @param suspendedUntil When the suspension ends, if it has an end time
+ */
+function rememberBanAtLogout(reason: string, suspendedUntil?: string): void {
+  try {
+    const value = JSON.stringify({ reason, suspendedUntil });
+    localStorage.setItem("tailstalk2:registration-blocked", value);
+    localStorage.setItem("tailstalk2:ban-notice", value);
+  } catch {
+    // Storage is optional; the server remains authoritative.
+  }
+}
+
 class Lifecycle {
   #controller: ClientController;
 
@@ -204,15 +219,6 @@ class Lifecycle {
     this.#controller.logout(false, "Your account has been disabled.");
   }
 
-  private rememberBanAtLogout(reason: string, suspendedUntil?: string): void {
-    try {
-      const value = JSON.stringify({ reason, suspendedUntil });
-      localStorage.setItem("tailstalk2:registration-blocked", value);
-      localStorage.setItem("tailstalk2:ban-notice", value);
-    } catch {
-      // Storage is optional; the server remains authoritative.
-    }
-  }
 
   #enter(nextState: State) {
     if (import.meta.env.DEV) {
@@ -676,6 +682,8 @@ export default class ClientController {
         "suspended_until" in session && typeof session.suspended_until === "string"
           ? session.suspended_until
           : undefined;
+      // Block sign-up on this browser even if the user never signs in successfully
+      rememberBanAtLogout(reason, suspendedUntil);
       const error = new Error("Account is not eligible to sign in");
       error.name = "DisabledAccount";
       (error as Error & { reason?: string; suspendedUntil?: string }).reason = reason;
@@ -720,12 +728,12 @@ export default class ClientController {
   logout(keepAccount = false, bannedReason?: string, suspendedUntil?: string) {
     const currentUser = this.getCurrentClient()?.user;
     if (bannedReason) {
-      this.rememberBanAtLogout(bannedReason, suspendedUntil);
+      rememberBanAtLogout(bannedReason, suspendedUntil);
     } else if (
       currentUser &&
       (currentUser.flags & UserFlags.Banned) === UserFlags.Banned
     ) {
-      this.rememberBanAtLogout("Your account has been disabled.");
+      rememberBanAtLogout("Your account has been disabled.");
     }
 
     this.state.settings.resetNotificationsState();
