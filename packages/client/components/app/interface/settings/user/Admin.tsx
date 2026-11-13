@@ -1565,6 +1565,15 @@ function UsersTab(props: { password: string }) {
     });
   }
 
+  async function unsuspendUser(id: string) {
+    await withLoading(id, async () => {
+      await apiFetch(`/admin/users/${id}/unsuspend`, props.password, {
+        method: "POST",
+      });
+      search();
+    });
+  }
+
   async function suspendUser(id: string) {
     const hours = prompt(t`Suspend for how many hours?`);
     if (!hours) return;
@@ -1735,9 +1744,12 @@ function UsersTab(props: { password: string }) {
                       style={{ margin: "auto" }}
                     />
                   </Show>
-                  <Show
-                    when={!isLoading(u.id) && (isBanned(u) || isSuspended(u))}
-                  >
+                  <Show when={!isLoading(u.id) && isSuspended(u) && !isBanned(u)}>
+                    <Button onPress={() => unsuspendUser(u.id)}>
+                      <MdCheckCircle {...iconSize(16)} /> <Trans>Unsuspend</Trans>
+                    </Button>
+                  </Show>
+                  <Show when={!isLoading(u.id) && isBanned(u)}>
                     <Button onPress={() => unbanUser(u.id)}>
                       <MdCheckCircle {...iconSize(16)} /> <Trans>Unban</Trans>
                     </Button>

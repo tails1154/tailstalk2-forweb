@@ -655,9 +655,15 @@ export default class ClientController {
           ? session.reason
           : "Your account has been disabled.";
       await new Promise((resolve) => setTimeout(resolve, 1000));
+      const suspendedUntil =
+        "suspended_until" in session && typeof session.suspended_until === "string"
+          ? session.suspended_until
+          : undefined;
       const error = new Error("Account is not eligible to sign in");
       error.name = "DisabledAccount";
-      (error as Error & { reason?: string }).reason = reason;
+      (error as Error & { reason?: string; suspendedUntil?: string }).reason = reason;
+      (error as Error & { reason?: string; suspendedUntil?: string }).suspendedUntil =
+        suspendedUntil;
       throw error;
     }
 

@@ -93,7 +93,20 @@ export default function FlowLogin() {
       await login({ email, password }, modals);
     } catch (error) {
       if (error instanceof Error && error.name === "DisabledAccount") {
-        modals.showError(new Error(t`This account cannot sign in.`));
+        const { reason, suspendedUntil } = error as Error & {
+          reason?: string;
+          suspendedUntil?: string;
+        };
+        if (suspendedUntil) {
+          const until = new Date(suspendedUntil).toLocaleString();
+          modals.showError(
+            new Error(
+              t`Your account is suspended.\n\nReason: ${reason ?? "No reason was given."}\n\nYou can sign in again after ${until}.`,
+            ),
+          );
+        } else {
+          modals.showError(new Error(t`This account cannot sign in.`));
+        }
       } else {
         modals.showError(error);
       }
