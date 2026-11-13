@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Early Supporter">
+  <defs>
+    <linearGradient id="ribbon" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7C5CFF"/>
+      <stop offset="1" stop-color="#3B2A9E"/>
+    </linearGradient>
+    <radialGradient id="medal" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#FFF3B0"/>
+      <stop offset="0.55" stop-color="#F5B82E"/>
+      <stop offset="1" stop-color="#B57A12"/>
+    </radialGradient>
+  </defs>
+  <!-- ribbon tails -->
+  <path d="M19 34 L11 60 L21 55 L26 62 L32 40 Z" fill="url(#ribbon)"/>
+  <path d="M45 34 L53 60 L43 55 L38 62 L32 40 Z" fill="url(#ribbon)"/>
+  <!-- medal -->
+  <circle cx="32" cy="26" r="20" fill="url(#medal)" stroke="#8A5A0C" stroke-width="1.5"/>
+  <circle cx="32" cy="26" r="15" fill="none" stroke="#FFF3B0" stroke-width="1.2" stroke-opacity="0.7"/>
+  <!-- star -->
+  <path d="M32 15 L35.1 22.1 L42.8 22.8 L37 27.9 L38.7 35.4 L32 31.5 L25.3 35.4 L27 27.9 L21.2 22.8 L28.9 22.1 Z" fill="#8A5A0C" fill-opacity="0.85"/>
+</svg>

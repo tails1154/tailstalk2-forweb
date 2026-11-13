@@ -171,6 +171,14 @@ export function ChannelPermissionsEditor(props: Props) {
       },
     },
     {
+      key: "ManageAutomod",
+      value: 2n ** 5n,
+      title: t`Manage AutoMod`,
+      description: {
+        Server: t`Edit the server's AutoMod filter`,
+      },
+    },
+    {
       heading: t`Members`,
       key: "KickMembers",
       value: 2n ** 6n,

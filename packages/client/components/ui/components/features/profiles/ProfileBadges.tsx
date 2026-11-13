@@ -9,6 +9,7 @@ import badgeJoke1 from "../../../../../public/assets/badges/amog.svg";
 import badgeJoke2 from "../../../../../public/assets/badges/amorbus.svg";
 import badgeDeveloper from "../../../../../public/assets/badges/developer.svg";
 import badgeEarlyAdopter from "../../../../../public/assets/badges/early_adopter.svg";
+import badgeEarlySupporter from "../../../../../public/assets/badges/early_supporter.svg";
 import badgeFounder from "../../../../../public/assets/badges/founder.svg";
 import badgeModeration from "../../../../../public/assets/badges/moderation.svg";
 import badgePaw from "../../../../../public/assets/badges/paw.svg";
@@ -85,6 +86,17 @@ export function ProfileBadges(props: { user: User }) {
                 },
               }}
               src={badgeEarlyAdopter}
+            />
+          </Show>
+          <Show when={props.user.badges & UserBadges.EarlySupporter}>
+            <img
+              use:floating={{
+                tooltip: {
+                  placement: "top",
+                  content: t`Early Supporter of TailsTalk 2`,
+                },
+              }}
+              src={badgeEarlySupporter}
             />
           </Show>
           <Show when={props.user.badges & UserBadges.PlatformModeration}>

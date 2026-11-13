@@ -43,6 +43,7 @@ import Notifications from "./user/notifications/Notifications";
 import { EditProfile } from "./user/profile";
 import { Sessions } from "./user/Sessions";
 import { AdminPanel } from "./user/Admin";
+import { AisdReview, aisdAllowed, refreshAisdAccess } from "./user/AisdReview";
 import { TailsPoints } from "./user/TailsPoints";
 
 const [hasAdminAccess, setHasAdminAccess] = createSignal(false);
@@ -107,6 +108,8 @@ const Config: SettingsConfiguration<{ server: Server }> = {
         return <MyBots />;
       case "language":
         return <LanguageSettings />;
+      case "aisd":
+        return <AisdReview />;
       case "admin": {
         refreshAdminAccess();
         return <Show when={hasAdminAccess()}><AdminPanel /></Show>;
@@ -137,6 +140,7 @@ const Config: SettingsConfiguration<{ server: Server }> = {
     const { logout } = useClientLifecycle();
     const user = useClient()().user;
     refreshAdminAccess();
+    refreshAisdAccess(useClient()());
 
     return {
       context: null!,
@@ -282,6 +286,12 @@ const Config: SettingsConfiguration<{ server: Server }> = {
               onClick: () => openModal({ type: "source_code" }),
               icon: <MdMemory {...iconSize(20)} />,
               title: <Trans>Source Code</Trans>,
+            },
+            {
+              id: "aisd",
+              hidden: !aisdAllowed(),
+              icon: <MdAdminPanelSettings {...iconSize(20)} />,
+              title: <Trans>AISD Review</Trans>,
             },
             {
               id: "admin",

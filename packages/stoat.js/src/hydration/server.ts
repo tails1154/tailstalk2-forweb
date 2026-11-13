@@ -41,6 +41,8 @@ export type HydratedServer = {
   analytics: boolean;
   discoverable: boolean;
   nsfw: boolean;
+  /** Set by platform administrators. Not part of the generated API types yet. */
+  adminSuspended: boolean;
 };
 
 export const serverHydration: Hydrate<APIServer, HydratedServer> = {
@@ -77,6 +79,9 @@ export const serverHydration: Hydrate<APIServer, HydratedServer> = {
     analytics: (server) => server.analytics || false,
     discoverable: (server) => server.discoverable || false,
     nsfw: (server) => server.nsfw || false,
+    adminSuspended: (server) =>
+      (server as APIServer & { admin_suspended?: boolean }).admin_suspended ||
+      false,
   },
   initialHydration: () => ({
     channelIds: new ReactiveSet(),

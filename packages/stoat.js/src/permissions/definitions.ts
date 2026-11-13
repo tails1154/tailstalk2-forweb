@@ -24,7 +24,8 @@ export const Permission = {
   /// Manage server customisation (includes emoji)
   ManageCustomisation: 2n ** 4n,
 
-  // % 1 bits reserved
+  /// Edit the server's AutoMod filter
+  ManageAutomod: 2n ** 5n,
 
   // * Member permissions
   /// Kick other members below their ranking

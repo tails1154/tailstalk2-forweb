@@ -205,6 +205,13 @@ export class Server {
   }
 
   /**
+   * Whether this server has been suspended by platform administrators
+   */
+  get adminSuspended(): boolean {
+    return this.#collection.getUnderlyingObject(this.id).adminSuspended;
+  }
+
+  /**
    * Whether this server is marked as mature
    */
   get mature(): boolean {

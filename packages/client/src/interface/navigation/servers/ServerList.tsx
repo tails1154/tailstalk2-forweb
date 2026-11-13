@@ -18,6 +18,7 @@ import MdExplore from "@material-design-icons/svg/filled/explore.svg?component-s
 import MdHome from "@material-design-icons/svg/filled/home.svg?component-solid";
 import MdMarkChatRead from "@material-design-icons/svg/outlined/mark_chat_read.svg?component-solid";
 import MdSettings from "@material-design-icons/svg/filled/settings.svg?component-solid";
+import MdWarning from "@material-design-icons/svg/round/warning.svg?component-solid";
 
 import { Tooltip } from "../../../../components/ui/components/floating";
 import { Draggable } from "../../../../components/ui/components/utils/Draggable";
@@ -269,6 +270,11 @@ export const ServerList = (props: Props) => {
                   <Text class="label" size="large">
                     {entry.item.name}
                   </Text>{" "}
+                  <Show when={entry.item.adminSuspended}>
+                    <Text class="label" size="small">
+                      <Trans>Suspended by platform administrators</Trans>
+                    </Text>
+                  </Show>
                   <Show when={state.notifications.isMuted(entry.item)}>
                     <Text class="label" size="small">
                       <Show
@@ -318,6 +324,9 @@ export const ServerList = (props: Props) => {
                     }
                     overlay={
                       <>
+                        <Show when={entry.item.adminSuspended}>
+                          <MdWarning width="18" height="18" fill="orange" />
+                        </Show>
                         <Show
                           when={
                             entry.item.mentions

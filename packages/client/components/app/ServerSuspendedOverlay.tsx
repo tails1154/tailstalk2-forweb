@@ -20,6 +20,12 @@ export function ServerSuspendedOverlay() {
     setVisible(false);
     if (!serverId) return;
 
+    // Already known from the server list, or changed live while connected
+    if (client().servers.get(serverId)?.adminSuspended) {
+      setVisible(true);
+      return;
+    }
+
     let cancelled = false;
     client()
       .api.get(`/servers/${serverId}`, { include_channels: false })

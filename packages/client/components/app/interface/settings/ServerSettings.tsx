@@ -190,7 +190,7 @@ const Config: SettingsConfiguration<Server> = {
           title: <Trans>User Management</Trans>,
           entries: [
             {
-              hidden: !server.havePermission("ManageServer"),
+              hidden: !server.havePermission("ManageAutomod"),
               id: "automod",
               icon: <BiSolidFlagAlt size={20} />,
               title: <Trans>AutoMod</Trans>,

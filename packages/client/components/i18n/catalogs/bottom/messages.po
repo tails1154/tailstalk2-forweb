@@ -556,6 +556,14 @@ msgstr ""
 msgid "After 3 days"
 msgstr ""
 
+#: components/app/interface/settings/UserSettings.tsx
+msgid "AISD Review"
+msgstr ""
+
+#: components/app/interface/settings/user/AisdReview.tsx
+msgid "AISD Safety Review"
+msgstr ""
+
 #: src/interface/Friends.tsx
 msgid "All"
 msgstr ""
@@ -2081,6 +2089,14 @@ msgstr ""
 #~ msgid "Each question needs an id, prompt, options, and a role_id on every option. Set multiple to true to allow more than one answer."
 #~ msgstr ""
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Early Supporter"
+msgstr ""
+
+#: components/ui/components/features/profiles/ProfileBadges.tsx
+msgid "Early Supporter of TailsTalk 2"
+msgstr ""
+
 #. placeholder {0}: props.member.displayName
 #: components/modal/modals/UserProfileRoles.tsx
 msgid "Edit {0}'s roles"
@@ -2122,6 +2138,10 @@ msgstr "💖✨🥺,,,,👉👈💖💖👉👈💖💖🥺👉👈💖💖✨�
 
 #: components/app/menus/UserContextMenu.tsx
 msgid "Edit roles"
+msgstr ""
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Edit the server's AutoMod filter"
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
@@ -3014,6 +3034,10 @@ msgid "Malware or phishing"
 msgstr ""
 
 #: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
+msgid "Manage AutoMod"
+msgstr ""
+
+#: components/app/interface/settings/channel/permissions/ChannelPermissionsEditor.tsx
 msgid "Manage Channel"
 msgstr ""
 
@@ -3631,6 +3655,10 @@ msgstr ""
 #: src/interface/Home.tsx
 #~ msgid "Open settings"
 #~ msgstr "💖✨✨🥺,,,,👉👈💖💖✨,,👉👈💖💖,👉👈💖💖✨👉👈✨✨✨,,👉👈💖💖✨🥺👉👈💖💖,👉👈💖💖✨🥺,👉👈💖💖✨🥺,👉👈💖💖🥺👉👈💖💖✨👉👈💖💖,,,👉👈💖💖✨🥺👉👈"
+
+#: components/app/interface/settings/user/AisdReview.tsx
+msgid "Open the review panel"
+msgstr ""
 
 #: src/interface/channels/text/Composition.tsx
 #~ msgid "Option {0}"
@@ -4278,6 +4306,10 @@ msgstr ""
 
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Review ideas submitted by users."
+msgstr ""
+
+#: components/app/interface/settings/user/AisdReview.tsx
+msgid "Review messages from school accounts that were flagged for safety."
 msgstr ""
 
 #: components/modal/modals/PolicyChange.tsx
@@ -5030,6 +5062,10 @@ msgstr ""
 msgid "Suspended"
 msgstr ""
 
+#: src/interface/navigation/servers/ServerList.tsx
+msgid "Suspended by platform administrators"
+msgstr ""
+
 #. placeholder {0}: u.suspended_until ? new Date(u.suspended_until).toLocaleString() : "?"
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Suspended until {0}"
@@ -5282,6 +5318,10 @@ msgstr ""
 
 #: components/auth/src/flows/FlowLogin.tsx
 msgid "This account cannot sign in."
+msgstr ""
+
+#: components/app/interface/settings/user/AisdReview.tsx
+msgid "This account does not have access to the review panel."
 msgstr ""
 
 #: components/i18n/errors.ts

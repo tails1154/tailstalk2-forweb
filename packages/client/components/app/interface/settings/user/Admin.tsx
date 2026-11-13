@@ -1756,6 +1756,7 @@ function UsersTab(props: { password: string }) {
   const customBadges = [
     { bit: UserBadges.XPChampion, label: t`XP Champion` },
     { bit: UserBadges.CommunityHelper, label: t`Community Helper` },
+    { bit: UserBadges.EarlySupporter, label: t`Early Supporter` },
   ];
 
   function handleSearchKeyDown(e: KeyboardEvent) {
