@@ -1565,6 +1565,15 @@ function UsersTab(props: { password: string }) {
     });
   }
 
+  async function verifyEmail(id: string) {
+    await withLoading(id, async () => {
+      await apiFetch(`/admin/users/${id}/verify-email`, props.password, {
+        method: "POST",
+      });
+      search();
+    });
+  }
+
   async function unsuspendUser(id: string) {
     await withLoading(id, async () => {
       await apiFetch(`/admin/users/${id}/unsuspend`, props.password, {
@@ -1747,6 +1756,11 @@ function UsersTab(props: { password: string }) {
                   <Show when={!isLoading(u.id) && isSuspended(u) && !isBanned(u)}>
                     <Button onPress={() => unsuspendUser(u.id)}>
                       <MdCheckCircle {...iconSize(16)} /> <Trans>Unsuspend</Trans>
+                    </Button>
+                  </Show>
+                  <Show when={!isLoading(u.id)}>
+                    <Button onPress={() => verifyEmail(u.id)}>
+                      <MdCheckCircle {...iconSize(16)} /> <Trans>Verify email</Trans>
                     </Button>
                   </Show>
                   <Show when={!isLoading(u.id) && isBanned(u)}>

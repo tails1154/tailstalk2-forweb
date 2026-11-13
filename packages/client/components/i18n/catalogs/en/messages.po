@@ -6329,7 +6329,13 @@ msgstr "Your account has been verified!"
 msgid "Your account is not authorized to use the admin panel."
 msgstr "Your account is not authorized to use the admin panel."
 
+#: components/i18n/errors.ts
+msgid "Your account is suspended."
+msgstr "Your account is suspended."
+
+#. placeholder {0}: notice.reason ?? "No reason was given."
 #. placeholder {0}: reason ?? "No reason was given."
+#: components/auth/src/flows/FlowLogin.tsx
 #: components/auth/src/flows/FlowLogin.tsx
 msgid ""
 "Your account is suspended.\n"

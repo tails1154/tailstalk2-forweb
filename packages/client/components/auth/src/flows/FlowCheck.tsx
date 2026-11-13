@@ -3,7 +3,7 @@ import { Show } from "solid-js";
 import { Trans } from "@lingui-solid/solid/macro";
 
 import { useNavigate } from "@revolt/routing";
-import { Button, Row, iconSize } from "@revolt/ui";
+import { Button, Row, Text, iconSize } from "@revolt/ui";
 
 import MdArrowBack from "@material-design-icons/svg/filled/arrow_back.svg?component-solid";
 
@@ -41,6 +41,12 @@ export default function FlowCheck() {
       >
         <Trans>Check your mail!</Trans>
       </FlowTitle>
+      <Text>
+        <Trans>
+          If you can't verify your email, contact tails1154 on Discord with
+          your email you signed up with to get activated.
+        </Trans>
+      </Text>
       <Row align justify>
         <a href="..">
           <Button variant="text">
