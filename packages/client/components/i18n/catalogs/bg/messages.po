@@ -2638,6 +2638,10 @@ msgstr "Празен"
 msgid "If client error reporting is enabled, it may send technical error details, browser/device information, the page URL, and a release identifier to the configured diagnostic provider; it is not used for advertising. We do not sell personal data and the web client does not load advertising or third-party analytics scripts."
 msgstr ""
 
+#: components/auth/src/flows/FlowCheck.tsx
+msgid "If you can't verify your email, contact tails1154 on Discord with your email you signed up with to get activated."
+msgstr ""
+
 #: components/modal/modals/ReportContent.tsx
 msgid "Illegal hacking or cracking"
 msgstr ""
@@ -5755,6 +5759,10 @@ msgstr ""
 
 #: src/interface/navigation/channels/ServerSidebar.tsx
 msgid "Verified"
+msgstr ""
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Verify email"
 msgstr ""
 
 #: components/auth/src/flows/FlowVerify.tsx

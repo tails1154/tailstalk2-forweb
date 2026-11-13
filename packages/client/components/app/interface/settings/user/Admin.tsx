@@ -48,6 +48,7 @@ type Tab =
   | "reports"
   | "servers"
   | "users"
+  | "pending_verification"
   | "discovery"
   | "feature_requests"
   | "whatsnew";
@@ -341,6 +342,12 @@ export function AdminPanel() {
               <MdPeople {...iconSize(16)} /> <Trans>Users</Trans>
             </TabButton>
             <TabButton
+              active={tab() === "pending_verification"}
+              onClick={() => setTab("pending_verification")}
+            >
+              <Trans>Pending verification</Trans>
+            </TabButton>
+            <TabButton
               active={tab() === "discovery"}
               onClick={() => setTab("discovery")}
             >
@@ -370,6 +377,9 @@ export function AdminPanel() {
           </Show>
           <Show when={tab() === "users"}>
             <UsersTab password={authToken()} />
+          </Show>
+          <Show when={tab() === "pending_verification"}>
+            <PendingVerificationTab password={authToken()} />
           </Show>
           <Show when={tab() === "discovery"}>
             <DiscoveryTab password={authToken()} />
@@ -1497,6 +1507,82 @@ function ServersTab(props: { password: string }) {
             </For>
           </Show>
         )}
+      </Show>
+    </Column>
+  );
+}
+
+/**
+ * Accounts that signed up but have not verified their email yet
+ */
+function PendingVerificationTab(props: { password: string }) {
+  const [accounts, setAccounts] = createSignal<
+    { id: string; email: string; username?: string | null }[]
+  >([]);
+  const [loading, setLoading] = createSignal(false);
+  const [busy, setBusy] = createSignal<string | undefined>();
+
+  async function load() {
+    setLoading(true);
+    try {
+      setAccounts(
+        await apiFetch("/admin/users/pending-verification", props.password),
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function verify(id: string) {
+    setBusy(id);
+    try {
+      await apiFetch(`/admin/users/${id}/verify-email`, props.password, {
+        method: "POST",
+      });
+      await load();
+    } finally {
+      setBusy(undefined);
+    }
+  }
+
+  onMount(load);
+
+  return (
+    <Column gap="md">
+      <Row justify>
+        <Text>
+          <Trans>Accounts waiting for email verification</Trans>
+        </Text>
+        <Button onPress={load} isDisabled={loading()}>
+          <Trans>Refresh</Trans>
+        </Button>
+      </Row>
+      <Show when={!loading()} fallback={<CircularProgress />}>
+        <Show
+          when={accounts().length > 0}
+          fallback={
+            <Text>
+              <Trans>No accounts are waiting for verification.</Trans>
+            </Text>
+          }
+        >
+          <For each={accounts()}>
+            {(account) => (
+              <Row justify align>
+                <Column gap="xs">
+                  <Text>{account.username ?? <Trans>(no user record)</Trans>}</Text>
+                  <Text>{account.email}</Text>
+                </Column>
+                <Button
+                  onPress={() => verify(account.id)}
+                  isDisabled={busy() === account.id}
+                >
+                  <MdCheckCircle {...iconSize(16)} /> <Trans>Verify email</Trans>
+                </Button>
+              </Row>
+            )}
+          </For>
+        </Show>
       </Show>
     </Column>
   );
