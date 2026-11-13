@@ -2309,7 +2309,11 @@ msgid "Experience points"
 msgstr ""
 
 #: components/app/interface/settings/server/Backup.tsx
-msgid "Export or restore server configuration, including roles, categories, and permissions."
+#~ msgid "Export or restore server configuration, including roles, categories, and permissions."
+#~ msgstr ""
+
+#: components/app/interface/settings/server/Backup.tsx
+msgid "Export or restore server configuration, including roles, categories, channels, and permissions."
 msgstr ""
 
 #: components/modal/modals/LinkWarning.tsx

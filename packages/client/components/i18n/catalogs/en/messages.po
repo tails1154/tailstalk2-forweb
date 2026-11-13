@@ -2317,8 +2317,12 @@ msgid "Experience points"
 msgstr "Experience points"
 
 #: components/app/interface/settings/server/Backup.tsx
-msgid "Export or restore server configuration, including roles, categories, and permissions."
-msgstr "Export or restore server configuration, including roles, categories, and permissions."
+#~ msgid "Export or restore server configuration, including roles, categories, and permissions."
+#~ msgstr "Export or restore server configuration, including roles, categories, and permissions."
+
+#: components/app/interface/settings/server/Backup.tsx
+msgid "Export or restore server configuration, including roles, categories, channels, and permissions."
+msgstr "Export or restore server configuration, including roles, categories, channels, and permissions."
 
 #: components/modal/modals/LinkWarning.tsx
 msgid "External links can be dangerous!"

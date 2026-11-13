@@ -3,6 +3,7 @@ import { Show, createSignal } from "solid-js";
 import { Trans, useLingui } from "@lingui-solid/solid/macro";
 
 import { useClient } from "@revolt/client";
+import { requestClientJson } from "../../../../client/customApi";
 import { Button, Column, Text, useSnackbar } from "@revolt/ui";
 
 import { ServerSettingsProps } from "../ServerSettings";
@@ -33,7 +34,7 @@ export default function ServerBackupSettings(props: ServerSettingsProps) {
     if (!file) return;
     setBusy(true);
     try {
-      await client().api.post(`/servers/${props.server.id}/backup`, JSON.parse(await file.text()));
+      await requestClientJson(client().api, "POST", `/servers/${props.server.id}/backup`, JSON.parse(await file.text()));
       snackbar.show({ message: t`Server backup restored.`, placement: "bottom", closeable: true });
     } catch { snackbar.show({ message: t`Unable to restore this server backup.`, placement: "bottom", closeable: true }); }
     finally { setBusy(false); }
