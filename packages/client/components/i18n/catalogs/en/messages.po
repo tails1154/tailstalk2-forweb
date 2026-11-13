@@ -42,6 +42,10 @@ msgstr "dddd [at] LT"
 msgid "(changes are being saved…)"
 msgstr "(changes are being saved…)"
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "(no user record)"
+msgstr "(no user record)"
+
 #. placeholder {0}: props.count
 #: components/ui/components/features/messaging/elements/BlockedMessage.tsx
 msgid "{0, plural, one {# blocked message} other {# blocked messages}}"
@@ -404,6 +408,10 @@ msgstr "Accept"
 #: components/app/menus/UserContextMenu.tsx
 msgid "Accept friend request"
 msgstr "Accept friend request"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Accounts waiting for email verification"
+msgstr "Accounts waiting for email verification"
 
 #: components/modal/modals/PolicyChange.tsx
 msgid "Acknowledge"
@@ -3368,6 +3376,10 @@ msgstr "Nickname"
 msgid "No account action"
 msgstr "No account action"
 
+#: components/app/interface/settings/user/Admin.tsx
+msgid "No accounts are waiting for verification."
+msgstr "No accounts are waiting for verification."
+
 #: components/app/interface/settings/server/AuditLog.tsx
 msgid "No audit events yet."
 msgstr "No audit events yet."
@@ -3679,6 +3691,10 @@ msgstr "Pending"
 #: components/app/interface/settings/user/FeatureRequests.tsx
 msgid "Pending review"
 msgstr "Pending review"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Pending verification"
+msgstr "Pending verification"
 
 #. placeholder {0}: server.name
 #: components/app/interface/settings/user/Admin.tsx
@@ -4003,6 +4019,10 @@ msgstr "Redo onboarding"
 #: components/app/interface/settings/user/appearance/AppearanceMenu.tsx
 #~ msgid "Reduced"
 #~ msgstr "Reduced"
+
+#: components/app/interface/settings/user/Admin.tsx
+msgid "Refresh"
+msgstr "Refresh"
 
 #: components/auth/src/flows/FlowCreate.tsx
 msgid "Register"
@@ -5777,6 +5797,7 @@ msgstr "Using"
 msgid "Verified"
 msgstr "Verified"
 
+#: components/app/interface/settings/user/Admin.tsx
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Verify email"
 msgstr "Verify email"

@@ -128,6 +128,17 @@ export function ViewWebhook(props: { webhook: ChannelWebhook }) {
         </CategoryButton>
         <CategoryButton
           action="chevron"
+          icon={<MdContentCopy />}
+          onClick={() =>
+            navigator.clipboard.writeText(
+              `${CONFIGURATION.DEFAULT_API_URL}/webhooks/${props.webhook.id}/${props.webhook.token}/github`,
+            )
+          }
+        >
+          <Trans>Copy GitHub webhook URL</Trans>
+        </CategoryButton>
+        <CategoryButton
+          action="chevron"
           icon={<MdDelete />}
           disabled={deleteWebhook.isPending}
           onClick={() => deleteWebhook.mutate()}
