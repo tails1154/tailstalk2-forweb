@@ -561,8 +561,8 @@ msgid "AISD Review"
 msgstr "AISD Review"
 
 #: components/app/interface/settings/user/AisdReview.tsx
-msgid "AISD Safety Review"
-msgstr "AISD Safety Review"
+#~ msgid "AISD Safety Review"
+#~ msgstr "AISD Safety Review"
 
 #: src/interface/Friends.tsx
 msgid "All"
@@ -3221,6 +3221,10 @@ msgstr "Message:"
 msgid "Messages"
 msgstr "Messages"
 
+#: components/app/interface/settings/user/AisdReview.tsx
+msgid "Messages from school accounts that were flagged for safety. Message text is shown to staff only."
+msgstr "Messages from school accounts that were flagged for safety. Message text is shown to staff only."
+
 #: components/modal/modals/EnableDmEncryption.tsx
 #~ msgid "Messages in this DM will be encrypted in your browser before they are sent. TailsTalk 2 will store only encrypted text."
 #~ msgstr "Messages in this DM will be encrypted in your browser before they are sent. TailsTalk 2 will store only encrypted text."
@@ -3660,6 +3664,10 @@ msgstr "Open file"
 msgid "Open navigation"
 msgstr "Open navigation"
 
+#: components/app/interface/settings/user/AisdReview.tsx
+msgid "Open review panel"
+msgstr "Open review panel"
+
 #: components/app/menus/ServerContextMenu.tsx
 msgid "Open server settings"
 msgstr "Open server settings"
@@ -3669,8 +3677,12 @@ msgstr "Open server settings"
 #~ msgstr "Open settings"
 
 #: components/app/interface/settings/user/AisdReview.tsx
-msgid "Open the review panel"
-msgstr "Open the review panel"
+msgid "Open the queue, search alerts, and act on accounts."
+msgstr "Open the queue, search alerts, and act on accounts."
+
+#: components/app/interface/settings/user/AisdReview.tsx
+#~ msgid "Open the review panel"
+#~ msgstr "Open the review panel"
 
 #: src/interface/channels/text/Composition.tsx
 #~ msgid "Option {0}"
@@ -4321,8 +4333,8 @@ msgid "Review ideas submitted by users."
 msgstr "Review ideas submitted by users."
 
 #: components/app/interface/settings/user/AisdReview.tsx
-msgid "Review messages from school accounts that were flagged for safety."
-msgstr "Review messages from school accounts that were flagged for safety."
+#~ msgid "Review messages from school accounts that were flagged for safety."
+#~ msgstr "Review messages from school accounts that were flagged for safety."
 
 #: components/modal/modals/PolicyChange.tsx
 msgid "Review policy changes"
@@ -4429,6 +4441,10 @@ msgstr "Saved Notes"
 #: components/modal/modals/ReportContent.tsx
 msgid "Scams or fraud"
 msgstr "Scams or fraud"
+
+#: components/app/interface/settings/user/AisdReview.tsx
+msgid "School safety review"
+msgstr "School safety review"
 
 #: components/modal/modals/ScreenShareSettings.tsx
 #: components/app/interface/settings/user/voice/ScreenShareOptions.tsx
