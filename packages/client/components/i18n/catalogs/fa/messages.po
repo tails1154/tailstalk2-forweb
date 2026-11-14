@@ -409,6 +409,14 @@ msgstr ""
 msgid "Accept friend request"
 msgstr "درخواست دوستی را قبول کنید"
 
+#: components/app/WarningOverlay.tsx
+msgid "Account Suspended"
+msgstr ""
+
+#: components/app/WarningOverlay.tsx
+msgid "Account Warning"
+msgstr ""
+
 #: components/app/interface/settings/user/Admin.tsx
 msgid "Accounts waiting for email verification"
 msgstr ""
@@ -2009,6 +2017,10 @@ msgstr ""
 msgid "Display Name"
 msgstr ""
 
+#: components/app/WarningOverlay.tsx
+msgid "Do not create another account."
+msgstr ""
+
 #: src/interface/navigation/servers/UserMenu.tsx
 msgid "Do Not Disturb"
 msgstr "مزاحم نشوید"
@@ -2664,6 +2676,10 @@ msgstr ""
 
 #: components/modal/modals/LinkWarning.tsx
 msgid "I understand the consequences"
+msgstr ""
+
+#: components/app/WarningOverlay.tsx
+msgid "I understand, dismiss"
 msgstr ""
 
 #: components/app/interface/settings/user/bots/ViewBot.tsx
@@ -5044,6 +5060,10 @@ msgstr ""
 #~ msgid "Suggestions forum"
 #~ msgstr ""
 
+#: components/app/WarningOverlay.tsx
+msgid "Support is available"
+msgstr ""
+
 #: components/app/interface/settings/user/SupporterSubscription.tsx
 #~ msgid "Support TailsTalk 2 and unlock Premium benefits."
 #~ msgstr ""
@@ -6211,6 +6231,10 @@ msgstr ""
 msgid "You are banned from this server."
 msgstr ""
 
+#: components/app/WarningOverlay.tsx
+msgid "You are not alone. If you are thinking about hurting yourself, you can call or text 988 (US) at any time to talk to someone. If you are in danger right now, call your local emergency number."
+msgstr ""
+
 #: src/interface/Home.tsx
 #~ msgid "You can also click the gear icon in the bottom left."
 #~ msgstr ""
@@ -6218,6 +6242,11 @@ msgstr ""
 #: src/interface/Home.tsx
 #~ msgid "You can also right-click the user icon in the top left, or left click it if you're already home."
 #~ msgstr "شما همچنین میتوانید روی تصویر بالا سمت چپ کلیک راست کنید یا اگر در حال حاضر در قسمت خانه هستید، کلیک چپ کنید."
+
+#. placeholder {0}: countdown()
+#: components/app/WarningOverlay.tsx
+msgid "You can dismiss this in {0} seconds"
+msgstr ""
 
 #: src/Interface.tsx
 msgid "You can download the Desktop Version of TailsTalk here"
@@ -6257,6 +6286,10 @@ msgstr ""
 
 #: components/i18n/errors.ts
 msgid "You cannot join this call."
+msgstr ""
+
+#: components/app/WarningOverlay.tsx
+msgid "You cannot perform any actions while suspended."
 msgstr ""
 
 #: components/i18n/errors.ts
@@ -6407,6 +6440,11 @@ msgstr ""
 
 #: components/app/interface/settings/user/Account.tsx
 msgid "Your account and all of your data (including your messages and friends list) will be queued for deletion. A confirmation email will be sent - you can cancel this within 7 days by contacting support."
+msgstr ""
+
+#. placeholder {0}: suspendedUntil()
+#: components/app/WarningOverlay.tsx
+msgid "Your account has been suspended until {0}."
 msgstr ""
 
 #: components/auth/src/flows/FlowVerify.tsx
